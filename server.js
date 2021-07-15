@@ -4,7 +4,8 @@
 const express           = require("express"),
       bodyParser        = require("body-parser"),
       cors              = require("cors"),
-      path              = require('path');
+      path              = require('path'),
+      enableWs          = require('express-ws');
 
 const serverConfig = require("./config/serverConfig.js");
 var app = express();
@@ -22,14 +23,16 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // react to express
-app.set('views', path.resolve('./src/views'));
-app.set('view engine', '.js'); 
+//app.set('views', path.resolve('./src/views'));
+//app.set('view engine', '.js'); 
 //app.engine('.js', require('react').createEngine());
+// ativa web-socket no app express
+enableWs(app); 
 
 // routes
 listFunction = require("./src/controllers/listFunction.js");
     // route - Main
-    app.get('/', listFunction.main);
+    //app.get('/', listFunction.main);
     // route - Recebe
     app.get('/recebe', function(req, res) {
       console.log(`Recebeu: ${PORT}.`);
@@ -45,3 +48,14 @@ const PORT = process.env.PORT || serverConfig.PORT;
 app.listen(PORT, () => {
   console.log(`Server está rodando na Porta: ${PORT}.`);
 });
+
+app.ws('/', (ws, req) => {
+    ws.on('message', msg => {
+        ws.send(msg)
+        console.log(`ESTOU RECEBENDO MENSAGEM NO SOCKET`);
+    })
+
+    ws.on('close', () => {
+        console.log('WebSocket was closed')
+    })
+})
