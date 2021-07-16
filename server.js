@@ -5,7 +5,8 @@ const express           = require("express"),
       bodyParser        = require("body-parser"),
       cors              = require("cors"),
       path              = require('path'),
-      enableWs          = require('express-ws');
+      enableWs          = require('express-ws'), 
+      mqtt              = require('mqtt');
 
 const serverConfig = require("./config/serverConfig.js");
 var app = express();
