@@ -5,7 +5,6 @@ const   Sequelize = require('sequelize');
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
   dialect: dbConfig.dialect,
-  operatorsAliases: false,
 
   pool: {
     max: dbConfig.pool.max,
@@ -88,7 +87,6 @@ const Sessao = sequelize.define('Sessao', {
         allowNull: true
     },
 });
-
 const Medicao = sequelize.define('Medicao', {
     idMedicao: {
         type: Sequelize.INTEGER,

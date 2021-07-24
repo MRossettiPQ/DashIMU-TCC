@@ -1,15 +1,14 @@
 /*
 
 */
-const express           = require("express"),
-      bodyParser        = require("body-parser"),
-      cors              = require("cors"),
-      path              = require('path'),
+const express           = require('express'),
       enableWs          = require('express-ws'), 
-      mqtt              = require('mqtt');
-
-const serverConfig = require("./config/serverConfig.js");
-var app = express();
+      bodyParser        = require('body-parser'),
+      cors              = require('cors'),
+      path              = require('path'),
+      mqtt              = require('mqtt'),
+      serverConfig      = require("./config/serverConfig.js");
+const app               = express();
 
 var corsOptions = {
   origin: `http://localhost:${serverConfig.PORT}`
@@ -23,10 +22,6 @@ app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// react to express
-//app.set('views', path.resolve('./src/views'));
-//app.set('view engine', '.js'); 
-//app.engine('.js', require('react').createEngine());
 // ativa web-socket no app express
 enableWs(app); 
 
@@ -43,20 +38,20 @@ listFunction = require("./src/controllers/listFunction.js");
         res.json({ message: "ERRO" });
         console.log(`Pagina: /ERRO`);
     });
+    // route - MQTT
+    app.ws('/socket', (ws, req) => {
+      ws.on('message', msg => {
+          ws.send(msg);
+          console.log(`ESTOU RECEBENDO MENSAGEM NO SOCKET`);
+      })
+  
+      ws.on('close', () => {
+          console.log('WebSocket was closed');
+      })
+    });
 
 // set port, listen for requests
 const PORT = process.env.PORT || serverConfig.PORT;
 app.listen(PORT, () => {
   console.log(`Server está rodando na Porta: ${PORT}.`);
 });
-
-app.ws('/', (ws, req) => {
-    ws.on('message', msg => {
-        ws.send(msg)
-        console.log(`ESTOU RECEBENDO MENSAGEM NO SOCKET`);
-    })
-
-    ws.on('close', () => {
-        console.log('WebSocket was closed')
-    })
-})
