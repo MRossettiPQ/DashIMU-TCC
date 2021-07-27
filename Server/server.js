@@ -7,14 +7,12 @@ const express       = require('express'),
       serverConfig  = require("./app/config/server.config.js"),
       db            = require("./app/models");
 const app = express();
-      require('./app/routes/auth.routes')(app),
-      require('./app/routes/user.routes')(app);
 
 var corsOptions = {
   origin: `Access-Control-Allow-Headers: http://localhost:${serverConfig.PORTCORS}/api/`
 };
 
-app.use(cors(corsOptions));
+app.use(cors());
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
@@ -22,6 +20,8 @@ app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
+require('./app/routes/auth.routes')(app),
+require('./app/routes/user.routes')(app);
 // ativa web-socket no app express
 enableWs(app);
 // Banco

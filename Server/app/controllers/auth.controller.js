@@ -11,7 +11,7 @@ exports.registrar = (req, res) => {
     Usuario.create({
         usernameUser:   req.body.usernameUser,
         emailUser:      req.body.emailUser,
-        telefoneUser:   req.body,telefoneUser,
+        telefoneUser:   req.body.telefoneUser,
         nomeUser:       req.body.nomeUser,
         nascUser:       req.body.nascUser,
         senhaUser:      bcrypt.hashSync(req.body.senhaUser, 8)
