@@ -11,7 +11,7 @@ const app = express();
       require('./app/routes/user.routes')(app);
 
 var corsOptions = {
-  origin: `http://localhost:${serverConfig.PORTCORS}`
+  origin: `Access-Control-Allow-Headers: http://localhost:${serverConfig.PORTCORS}/api/`
 };
 
 app.use(cors(corsOptions));
@@ -25,7 +25,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // ativa web-socket no app express
 enableWs(app);
 // Banco
-const Role = db.role;
+const Funcao = db.funcao;
+const Usuario = db.usuario;
 
 db.sequelize.sync({force: true}).then(() => {
   console.log('Drop and Resync Database');
@@ -33,31 +34,44 @@ db.sequelize.sync({force: true}).then(() => {
 });
 
 function initial(){
-  Role.create({
-    idRole: 1,
-    nomeRole: "USUARIO"
+  Funcao.create({
+    idFuncao: 1,
+    nomeFuncao: "USUARIO"
   });
-  Role.create({
-    idRole: 2,
-    nomeRole: "PACIENTE"
+  Funcao.create({
+    idFuncao: 2,
+    nomeFuncao: "PACIENTE"
   });
-  Role.create({
-    idRole: 3,
-    nomeRole: "ADMIN"
+  Funcao.create({
+    idFuncao: 3,
+    nomeFuncao: "ADMIN"
   });
-  Role.create({
-    idRole: 4,
-    nomeRole: "MODERADOR"
+  /*
+  Usuario.create({
+    idUser: 1,
+    nomeUser: "admin",
+    usernameUser: "admin",
+    emailUser: "admin@admin.com",
+    senhaUser: "admin",
+    funcao: [
+      {idFuncao: 1, idUser: 1 },
+      {idFuncao: 2, idUser: 1 },
+      {idFuncao: 3, idUser: 1 },
+    ]
   });
+  */
 };
-
+app.use((req, res, next) => {
+  console.log("acessei o cors");
+  next();
+});
 // Rotas - Main
 app.get('/ping', function (req, res) {
   res.json({ message: "testando server" });
   console.log(`Pagina: /`);
 });
 
-// Rotas - MQTT
+/* Rotas - MQTT
 app.ws('/socket', (ws, req) => {
   ws.on('message', msg => {
     ws.send(msg);
@@ -68,9 +82,10 @@ app.ws('/socket', (ws, req) => {
     console.log('WebSocket was closed');
   })
 });
-
+*/
 // set port, listen for requests
 const PORT = process.env.PORT || serverConfig.PORT;
 app.listen(PORT, () => {
   console.log(`Server está rodando na Porta: ${PORT}.`);
+  console.log(`Cors está rodando na Porta: ${serverConfig.PORTCORS}.`);
 });

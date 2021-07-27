@@ -1,32 +1,33 @@
 const   { autorizaJwt }         = require("../middleware"),
-        controller              = require("../controllers/user.controller");
+        userController          = require("../controllers/user.controller");
 
 module.exports = function (app) {
     app.use(function (req, res, next) {
-        res.header(
-            "Access-Control-Allow-Headers",
-            "x-access-token, Origin, Content-Type, Accept"
-        );
+        res.header({
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Credentials':true
+        });
         next();
     });
 
-    app.get("/api/test/all", controller.allAccess);
+    app.get("/api/test/all", userController.allAccess);
 
     app.get(
         "/api/test/user",
-        [autorizaJwt.verifyToken],
-        controller.userBoard
+        [autorizaJwt.verificaToken],
+        userController.userBoard
     );
 
     app.get(
-        "/api/test/mod",
-        [autorizaJwt.verifyToken, autorizaJwt.isModerator],
-        controller.moderatorBoard
+        "/api/test/paciente",
+        [autorizaJwt.verificaToken, autorizaJwt.sePaciente],
+        userController.pacienteBoard
     );
 
     app.get(
         "/api/test/admin",
-        [autorizaJwt.verifyToken, autorizaJwt.isAdmin],
-        controller.adminBoard
+        [autorizaJwt.verificaToken, autorizaJwt.seAdmin],
+        userController.adminBoard
     );
 };

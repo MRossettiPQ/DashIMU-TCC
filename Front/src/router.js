@@ -5,7 +5,7 @@ import Register from "./components/Register.vue";
 // lazy-loaded
 const Profile         = () => import("./components/Profile.vue")
 const BoardAdmin      = () => import("./components/BoardAdmin.vue")
-const BoardModerator  = () => import("./components/BoardModerator.vue")
+const BoardPaciente   = () => import("./components/BoardPaciente.vue")
 const BoardUser       = () => import("./components/BoardUser.vue")
 
 const routes = [
@@ -39,10 +39,10 @@ const routes = [
     component: BoardAdmin,
   },
   {
-    path: "/mod",
-    name: "moderator",
+    path: "/paciente",
+    name: "paciente",
     // lazy-loaded
-    component: BoardModerator,
+    component: BoardPaciente,
   },
   {
     path: "/user",

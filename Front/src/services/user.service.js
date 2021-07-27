@@ -1,5 +1,5 @@
 import axios from 'axios';
-import authHeader from './auth-header';
+import autorizaHeader from './auth-header';
 
 const API_URL = 'http://localhost:8080/api/test/';
 
@@ -9,15 +9,15 @@ class UserService {
   }
 
   getUserBoard() {
-    return axios.get(API_URL + 'user', { headers: authHeader() });
+    return axios.get(API_URL + 'user', { headers: autorizaHeader() });
   }
 
-  getModeratorBoard() {
-    return axios.get(API_URL + 'mod', { headers: authHeader() });
+  getPacienteBoard() {
+    return axios.get(API_URL + 'paciente', { headers: autorizaHeader() });
   }
 
   getAdminBoard() {
-    return axios.get(API_URL + 'admin', { headers: authHeader() });
+    return axios.get(API_URL + 'admin', { headers: autorizaHeader() });
   }
 }
 

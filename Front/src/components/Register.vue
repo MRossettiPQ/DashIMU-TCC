@@ -9,28 +9,43 @@
       <Form @submit="handleRegister" :validation-schema="schema">
         <div v-if="!successful">
           <div class="form-group">
-            <label for="username">Username</label>
-            <Field name="username" type="text" class="form-control" />
-            <ErrorMessage name="username" class="error-feedback" />
+            <label for="usernameUser">Username</label>
+            <Field name="usernameUser" type="text" class="form-control" />
+            <ErrorMessage name="usernameUser" class="error-feedback" />
           </div>
           <div class="form-group">
-            <label for="email">Email</label>
-            <Field name="email" type="email" class="form-control" />
-            <ErrorMessage name="email" class="error-feedback" />
+            <label for="nomeUser">Nome Completo</label>
+            <Field name="nomeUser" type="text" class="form-control" />
+            <ErrorMessage name="nomeUser" class="error-feedback" />
           </div>
           <div class="form-group">
-            <label for="password">Password</label>
-            <Field name="password" type="password" class="form-control" />
-            <ErrorMessage name="password" class="error-feedback" />
+            <label for="emailUser">Email</label>
+            <Field name="emailUser" type="email" class="form-control" />
+            <ErrorMessage name="emailUser" class="error-feedback" />
           </div>
-
           <div class="form-group">
+            <label for="nascUser">Data de Nascimento</label>
+            <Field name="nascUser" type="date" class="form-control" />
+            <ErrorMessage name="nascUser" class="error-feedback" />
+          </div>
+          <div class="form-group">
+            <label for="telefoneUser">Telefone</label>
+            <Field name="telefoneUser" type="number" class="form-control" />
+            <ErrorMessage name="telefoneUser" class="error-feedback" />
+          </div>
+          <div class="form-group">
+            <label for="senhaUser">Senha</label>
+            <Field name="senhaUser" type="password" class="form-control" />
+            <ErrorMessage name="senhaUser" class="error-feedback" />
+          </div>
+          <div class="form-group">
+            <label for=""></label>
             <button class="btn btn-primary btn-block" :disabled="loading">
               <span
                 v-show="loading"
                 class="spinner-border spinner-border-sm"
               ></span>
-              Sign Up
+              Cadastrar
             </button>
           </div>
         </div>
@@ -60,19 +75,30 @@ export default {
   },
   data() {
     const schema = yup.object().shape({
-      username: yup
+      usernameUser: yup
         .string()
-        .required("Username is required!")
+        .required("Campo obrigatorio!")
         .min(3, "Must be at least 3 characters!")
         .max(20, "Must be maximum 20 characters!"),
-      email: yup
+      nomeUser: yup
         .string()
-        .required("Email is required!")
+        .required("Campo obrigatorio!")
+        .min(3, "Must be at least 3 characters!")
+        .max(20, "Must be maximum 20 characters!"),
+      nascUser: yup
+        .date()
+        .required("Campo obrigatorio!"),
+      telefoneUser: yup
+        .number()
+        .required("Campo obrigatorio!"),
+      emailUser: yup
+        .string()
+        .required("Campo obrigatorio!")
         .email("Email is invalid!")
         .max(50, "Must be maximum 50 characters!"),
-      password: yup
+      senhaUser: yup
         .string()
-        .required("Password is required!")
+        .required("Campo obrigatorio!")
         .min(6, "Must be at least 6 characters!")
         .max(40, "Must be maximum 40 characters!"),
     });

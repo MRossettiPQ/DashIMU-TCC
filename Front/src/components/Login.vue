@@ -8,23 +8,23 @@
       />
       <Form @submit="handleLogin" :validation-schema="schema">
         <div class="form-group">
-          <label for="username">Usuario</label>
-          <Field name="username" type="text" class="form-control" />
-          <ErrorMessage name="username" class="error-feedback" />
+          <label for="usernameUser">Usuario</label>
+          <Field name="usernameUser" type="text" class="form-control" />
+          <ErrorMessage name="usernameUser" class="error-feedback" />
         </div>
         <div class="form-group">
-          <label for="password">Senha</label>
-          <Field name="password" type="password" class="form-control" />
-          <ErrorMessage name="password" class="error-feedback" />
+          <label for="senhaUser">Senha</label>
+          <Field name="senhaUser" type="password" class="form-control" />
+          <ErrorMessage name="senhaUser" class="error-feedback" />
         </div>
-
         <div class="form-group">
+          <label for=""></label>
           <button class="btn btn-primary btn-block" :disabled="loading">
             <span
               v-show="loading"
               class="spinner-border spinner-border-sm"
             ></span>
-            <span>Login</span>
+            <span>Logar</span>
           </button>
         </div>
 
@@ -51,8 +51,8 @@ export default {
   },
   data() {
     const schema = yup.object().shape({
-      username: yup.string().required("Usuario é requerido!"),
-      password: yup.string().required("Senha é requerida!"),
+      usernameUser: yup.string().required("Usuario é obrigatorio!"),
+      senhaUser: yup.string().required("Senha é obrigatorio!"),
     });
 
     return {

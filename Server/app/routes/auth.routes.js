@@ -1,12 +1,13 @@
 const   { verificaCadastro }        = require("../middleware"),
-        controller                  = require("../controllers/auth.controller");
+        autController               = require("../controllers/auth.controller");
 
 module.exports = function (app) {
     app.use(function (req, res, next) {
-        res.header(
-            "Access-Control-Allow-Headers",
-            "x-access-token, Origin, Content-Type, Accept"
-        );
+        res.header({
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Credentials':true
+        });
         next();
     });
 
@@ -16,8 +17,8 @@ module.exports = function (app) {
             verificaCadastro.verificaUsuarioEmailDuplicados,
             verificaCadastro.verificaRoleExistente
         ],
-        controller.signup
+        autController.registrar
     );
 
-    app.post("/api/auth/signin", controller.signin);
+    app.post("/api/auth/signin", autController.logar);
 };

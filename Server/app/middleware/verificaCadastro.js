@@ -1,15 +1,15 @@
 const   db          = require("../models"),
-        ROLES       = db.ROLES,
-        User        = db.user;
+        FUNCAO      = db.FUNCAO,
+        Usuario     = db.usuario;
 
 verificaUsuarioEmailDuplicados = (req, res, next) => {
     // Username
-    User.findOne({
+    Usuario.findOne({
         where: {
             usernameUser: req.body.usernameUser
         }
-    }).then(user => {
-        if (user) {
+    }).then(usuarioVerifica => {
+        if (usuarioVerifica) {
             res.status(400).send({
                 message: "Falhou! Usuario esta em uso!"
             });
@@ -17,12 +17,12 @@ verificaUsuarioEmailDuplicados = (req, res, next) => {
         }
 
         // Email
-        User.findOne({
+        Usuario.findOne({
             where: {
                 emailUser: req.body.emailUser
             }
-        }).then(user => {
-            if (user) {
+        }).then(usuarioVerifica => {
+            if (usuarioVerifica) {
                 res.status(400).send({
                     message: "Falhou! E-Mail esta em uso!"
                 });
@@ -35,11 +35,11 @@ verificaUsuarioEmailDuplicados = (req, res, next) => {
 };
 
 verificaRoleExistente = (req, res, next) => {
-    if (req.body.roles) {
-        for (let i = 0; i < req.body.roles.length; i++) {
-            if (!ROLES.includes(req.body.roles[i])) {
+    if (req.body.funcao) {
+        for (let i = 0; i < req.body.funcao.length; i++) {
+            if (!FUNCAO.includes(req.body.funcao[i])) {
                 res.status(400).send({
-                    message: "Falhou! Role não existe = " + req.body.roles[i]
+                    message: "Falhou! Função não existe = " + req.body.funcao[i]
                 });
                 return;
             }

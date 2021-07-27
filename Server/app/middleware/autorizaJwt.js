@@ -1,9 +1,9 @@
 const   jwt             = require("jsonwebtoken"),
-        config          = require("../config/auth.config.js"),
+        configAuth      = require("../config/auth.config.js"),
         db              = require("../models"),
-        User            = db.user;
+        Usuario         = db.usuario;
 
-verifyToken = (req, res, next) => {
+verificaToken = (req, res, next) => {
     let token = req.headers["x-access-token"];
 
     if (!token) {
@@ -12,7 +12,7 @@ verifyToken = (req, res, next) => {
         });
     }
 
-    jwt.verify(token, config.secret, (err, decoded) => {
+    jwt.verify(token, configAuth.secret, (err, decoded) => {
         if (err) {
             return res.status(401).send({
                 message: "Não Autorizado!"
@@ -23,67 +23,44 @@ verifyToken = (req, res, next) => {
     });
 };
 
-isAdmin = (req, res, next) => {
-    User.findByPk(req.idUser).then(user => {
-        user.getRoles().then(roles => {
-            for (let i = 0; i < roles.length; i++) {
-                if (roles[i].name === "ADMIN") {
+seAdmin = (req, res, next) => {
+    Usuario.findByPk(req.idUser).then(usuarioVerifica => {
+        usuarioVerifica.getFuncao().then(funcaoVerifica => {
+            for (let i = 0; i < funcaoVerifica.length; i++) {
+                if (funcaoVerifica[i].nomeFuncao === "ADMIN") {
                     next();
                     return;
                 }
             }
 
             res.status(403).send({
-                message: "Requer Admin Role!"
+                message: "Requer função de Admin!"
             });
             return;
         });
     });
 };
 
-isModerator = (req, res, next) => {
-    User.findByPk(req.idUser).then(user => {
-        user.getRoles().then(roles => {
-            for (let i = 0; i < roles.length; i++) {
-                if (roles[i].nomeRole === "MODERADOR") {
+sePaciente = (req, res, next) => {
+    Usuario.findByPk(req.idUser).then(usuarioVerifica => {
+        usuarioVerifica.getFuncao().then(funcaoVerifica => {
+            for (let i = 0; i < funcaoVerifica.length; i++) {
+                if (funcaoVerifica[i].nomeFuncao === "PACIENTE") {
                     next();
                     return;
                 }
             }
 
             res.status(403).send({
-                message: "Requer Moderator Role!"
-            });
-        });
-    });
-};
-
-isModeratorOrAdmin = (req, res, next) => {
-    User.findByPk(req.idUser).then(user => {
-        user.getRoles().then(roles => {
-            for (let i = 0; i < roles.length; i++) {
-                if (roles[i].nomeRole === "MODERADOR") {
-                    next();
-                    return;
-                }
-
-                if (roles[i].nomeRole === "ADMIN") {
-                    next();
-                    return;
-                }
-            }
-
-            res.status(403).send({
-                message: "Requer Moderator ou Admin Role!"
+                message: "Requer ser um Paciente!"
             });
         });
     });
 };
 
 const autorizaJwt = {
-    verifyToken: verifyToken,
-    isAdmin: isAdmin,
-    isModerator: isModerator,
-    isModeratorOrAdmin: isModeratorOrAdmin
+    verificaToken: verificaToken,
+    seAdmin: seAdmin,
+    sePaciente: sePaciente,
 };
 module.exports = autorizaJwt;

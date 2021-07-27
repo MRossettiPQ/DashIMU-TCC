@@ -1,83 +1,80 @@
 const   db          = require("../models"),
-        config      = require("../config/auth.config"),
-        User        = db.user,
-        Role        = db.role,
+        authConfig  = require("../config/auth.config"),
+        Usuario     = db.usuario,
+        Funcao      = db.funcao,
         Op          = db.Sequelize.Op,
         jwt         = require("jsonwebtoken"),
         bcrypt      = require("bcryptjs");
 
-exports.signup = (req, res) => {
+exports.registrar = (req, res) => {
     // Save User to Database
-    User.create({
-        usernameUser: req.body.usernameUser,
-        emailUser: req.body.emailUser,
-        telefoneUser: req.body,telefoneUser,
-        nomeUser: req.body.nomeUser,
-        nascUser: req.body.nascUser,
-        senhaUser: bcrypt.hashSync(req.body.senhaUser, 8)
-    })
-        .then(user => {
-            if (req.body.roles) {
-                Role.findAll({
+    Usuario.create({
+        usernameUser:   req.body.usernameUser,
+        emailUser:      req.body.emailUser,
+        telefoneUser:   req.body,telefoneUser,
+        nomeUser:       req.body.nomeUser,
+        nascUser:       req.body.nascUser,
+        senhaUser:      bcrypt.hashSync(req.body.senhaUser, 8)
+    }).then(usuarioCad => {
+            if (req.body.funcao) {
+                Funcao.findAll({
                     where: {
-                        nomeRole: {
-                            [Op.or]: req.body.roles
+                        name: {
+                            [Op.or]: req.body.funcao
                         }
                     }
-                }).then(roles => {
-                    user.setRoles(roles).then(() => {
+                }).then(funcao => {
+                    usuarioCad.setFuncao(funcao).then(() => {
                         res.send({ message: "Usuario registrado!" });
                     });
                 });
             } else {
                 // user role = 1
-                user.setRoles([1]).then(() => {
+                usuarioCad.setFuncao([1]).then(() => {
                     res.send({ message: "Usuario não foi registrado!" });
                 });
             }
-        })
-        .catch(err => {
-            res.status(500).send({ message: err.message });
-        });
+    }).catch(err => {
+        res.status(500).send({ message: err.message });
+    });
 };
 
-exports.signin = (req, res) => {
-    User.findOne({
+exports.logar = (req, res) => {
+    Usuario.findOne({
         where: {
             usernameUser: req.body.usernameUser
         }
-    })
-        .then(user => {
-            if (!user) {
+    }).then(usuarioLog => {
+            if (!usuarioLog) {
                 return res.status(404).send({ message: "Usuario não encontrado." });
             }
 
-            var passwordIsValid = bcrypt.compareSync(
+            var senhaValida = bcrypt.compareSync(
                 req.body.senhaUser,
-                user.senhaUser
+                usuarioLog.senhaUser
             );
 
-            if (!passwordIsValid) {
+            if (!senhaValida) {
                 return res.status(401).send({
                     accessToken: null,
                     message: "Senha invalida!"
                 });
             }
 
-            var token = jwt.sign({ idUser: user.idUser }, config.secret, {
+            var token = jwt.sign({ idUser: user.idUser }, authConfig.secret, {
                 expiresIn: 86400 // 24 hours
             });
 
             var authorities = [];
-            user.getRoles().then(roles => {
-                for (let i = 0; i < roles.length; i++) {
-                    authorities.push("ROLE_" + roles[i].nomeRole.toUpperCase());
+            usuarioLog.getFuncao().then(funcao => {
+                for (let i = 0; i < funcao.length; i++) {
+                    authorities.push("ROLE_" + funcao[i].nomeFuncao.toUpperCase());
                 }
                 res.status(200).send({
                     idUser: user.idUser,
                     usernameUser: user.usernameUser,
                     emailUser: user.emailUser,
-                    roles: authorities,
+                    funcao: authorities,
                     accessToken: token
                 });
             });

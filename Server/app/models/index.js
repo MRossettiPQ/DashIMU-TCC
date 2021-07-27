@@ -22,29 +22,29 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.user     = require("../models/user.model.js")(sequelize, Sequelize);
-db.role     = require("../models/role.model.js")(sequelize, Sequelize);
+db.usuario  = require("../models/user.model.js")(sequelize, Sequelize);
+db.funcao   = require("../models/funcao.model.js")(sequelize, Sequelize);
 db.sessao   = require("../models/sessao.model.js")(sequelize, Sequelize);
 db.medicao  = require("../models/medicao.model.js")(sequelize, Sequelize);
 //
-db.role.belongsToMany(db.user, {
-    through:    "user_roles",
-    foreignKey: "idRole",
+db.funcao.belongsToMany(db.usuario, {
+    through:    "usuario_funcao",
+    foreignKey: "idFuncao",
     otherKey:   "idUser"
 });
-db.user.belongsToMany(db.role, {
-    through:    "user_roles",
+db.usuario.belongsToMany(db.funcao, {
+    through:    "usuario_funcao",
     foreignKey: "idUser",
-    otherKey:   "idRole"
+    otherKey:   "idFuncao"
 });
 //
-db.sessao.belongsToMany(db.user, {
-    through:    "user_sessao",
+db.sessao.belongsToMany(db.usuario, {
+    through:    "usuario_sessao",
     foreignKey: "idSessao",
     otherKey:   "idUser"
 });
-db.user.belongsToMany(db.sessao, {
-    through:    "user_sessao",
+db.usuario.belongsToMany(db.sessao, {
+    through:    "usuario_sessao",
     foreignKey: "idUser",
     otherKey:   "idSessao"
 });
@@ -60,6 +60,6 @@ db.sessao.belongsToMany(db.medicao, {
     otherKey:   "idMedicao"
 });
 
-db.ROLES = ["USUARIO", "PACIENTE", "ADMIN", "MODERADOR"];
+db.FUNCAO = ["USUARIO", "PACIENTE", "ADMIN"];
 
 module.exports = db;
