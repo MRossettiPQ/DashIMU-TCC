@@ -2,24 +2,36 @@
   <div class="container">
     <header class="jumbotron">
       <h3>
-        <strong>{{currentUser.username}}</strong> Profile
+        Perfil de <strong>{{currentUser.usernameUser}}</strong>
       </h3>
     </header>
+    <p>
+      <strong>Nome:</strong>
+      {{currentUser.nomeUser}}
+    </p>
     <p>
       <strong>Token:</strong>
       {{currentUser.accessToken.substring(0, 20)}} ... {{currentUser.accessToken.substr(currentUser.accessToken.length - 20)}}
     </p>
     <p>
       <strong>Id:</strong>
-      {{currentUser.id}}
+      {{currentUser.idUser}}
     </p>
     <p>
       <strong>Email:</strong>
-      {{currentUser.email}}
+      {{currentUser.emailUser}}
+    </p>
+    <p>
+      <strong>Telefone:</strong>
+      {{currentUser.telefoneUser}}
+    </p>
+    <p>
+      <strong>Nascimento:</strong>
+      {{currentUser.nascUser}}
     </p>
     <strong>Authorities:</strong>
     <ul>
-      <li v-for="role in currentUser.roles" :key="role">{{role}}</li>
+      <li v-for="funcao in currentUser.funcao" :key="funcao">{{funcao}}</li>
     </ul>
   </div>
 </template>

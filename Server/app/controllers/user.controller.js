@@ -3,11 +3,11 @@ exports.allAccess = (req, res) => {
 };
 
 exports.userBoard = (req, res) => {
-    res.status(200).send("Apenas usuario.");
+    res.status(200).send("Apenas o fisioterapeuta.");
 };
 
 exports.adminBoard = (req, res) => {
-    res.status(200).send("Apenas administrador.");
+    res.status(200).send("Apenas o administrador.");
 };
 
 exports.pacienteBoard = (req, res) => {

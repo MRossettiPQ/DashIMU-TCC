@@ -26,45 +26,26 @@ require('./app/routes/user.routes')(app);
 enableWs(app);
 // Banco
 const Funcao = db.funcao;
-const Usuario = db.usuario;
 
-db.sequelize.sync({force: true}).then(() => {
+db.sequelize.sync({force: false}).then(() => {
   console.log('Drop and Resync Database');
-  initial();
+  //initial();
 });
 
 function initial(){
   Funcao.create({
     idFuncao: 1,
-    nomeFuncao: "USUARIO"
+    nomeFuncao: "PACIENTE"
   });
   Funcao.create({
     idFuncao: 2,
-    nomeFuncao: "PACIENTE"
+    nomeFuncao: "FISIO"
   });
   Funcao.create({
     idFuncao: 3,
     nomeFuncao: "ADMIN"
   });
-  /*
-  Usuario.create({
-    idUser: 1,
-    nomeUser: "admin",
-    usernameUser: "admin",
-    emailUser: "admin@admin.com",
-    senhaUser: "admin",
-    funcao: [
-      {idFuncao: 1, idUser: 1 },
-      {idFuncao: 2, idUser: 1 },
-      {idFuncao: 3, idUser: 1 },
-    ]
-  });
-  */
 };
-app.use((req, res, next) => {
-  console.log("acessei o cors");
-  next();
-});
 // Rotas - Main
 app.get('/ping', function (req, res) {
   res.json({ message: "testando server" });

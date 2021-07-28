@@ -4,6 +4,6 @@ export default function autorizaHeader() {
   if (user && user.accessToken) {
     return { 'x-access-token': user.accessToken };             // for Node.js Express back-end
   } else {
-    return { '': ''};
+    return {};
   }
 }

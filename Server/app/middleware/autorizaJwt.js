@@ -25,7 +25,7 @@ verificaToken = (req, res, next) => {
 
 seAdmin = (req, res, next) => {
     Usuario.findByPk(req.idUser).then(usuarioVerifica => {
-        usuarioVerifica.getFuncao().then(funcaoVerifica => {
+        usuarioVerifica.getFuncaos().then(funcaoVerifica => {
             for (let i = 0; i < funcaoVerifica.length; i++) {
                 if (funcaoVerifica[i].nomeFuncao === "ADMIN") {
                     next();
@@ -43,7 +43,7 @@ seAdmin = (req, res, next) => {
 
 sePaciente = (req, res, next) => {
     Usuario.findByPk(req.idUser).then(usuarioVerifica => {
-        usuarioVerifica.getFuncao().then(funcaoVerifica => {
+        usuarioVerifica.getFuncaos().then(funcaoVerifica => {
             for (let i = 0; i < funcaoVerifica.length; i++) {
                 if (funcaoVerifica[i].nomeFuncao === "PACIENTE") {
                     next();
@@ -58,9 +58,26 @@ sePaciente = (req, res, next) => {
     });
 };
 
+seUsuario = (req, res, next) => {
+    Usuario.findByPk(req.idUser).then(usuarioVerifica => {
+        usuarioVerifica.getFuncaos().then(funcaoVerifica => {
+            for (let i = 0; i < funcaoVerifica.length; i++) {
+                if (funcaoVerifica[i].nomeFuncao === "FISIO") {
+                    next();
+                    return;
+                }
+            }
+
+            res.status(403).send({
+                message: "Requer ser um Fisioterapeuta!"
+            });
+        });
+    });
+};
 const autorizaJwt = {
     verificaToken: verificaToken,
     seAdmin: seAdmin,
+    seUsuario: seUsuario,
     sePaciente: sePaciente,
 };
 module.exports = autorizaJwt;

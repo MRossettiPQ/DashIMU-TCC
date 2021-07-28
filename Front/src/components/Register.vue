@@ -9,7 +9,7 @@
       <Form @submit="handleRegister" :validation-schema="schema">
         <div v-if="!successful">
           <div class="form-group">
-            <label for="usernameUser">Username</label>
+            <label for="usernameUser">Usuario</label>
             <Field name="usernameUser" type="text" class="form-control" />
             <ErrorMessage name="usernameUser" class="error-feedback" />
           </div>

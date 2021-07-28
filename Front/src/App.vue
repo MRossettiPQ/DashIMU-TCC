@@ -5,17 +5,21 @@
       <div class="navbar-nav mr-auto">
         <li class="nav-item">
           <router-link to="/home" class="nav-link">
-            <font-awesome-icon icon="home" /> Home
+            <font-awesome-icon icon="home" />Home
           </router-link>
         </li>
         <li v-if="showAdminBoard" class="nav-item">
-          <router-link to="/admin" class="nav-link">Admin Board</router-link>
+          <router-link to="/admin" class="nav-link">Tela Admin</router-link>
         </li>
         <li v-if="showPacienteBoard" class="nav-item">
-          <router-link to="/paciente" class="nav-link">Paciente Board</router-link>
+          <router-link to="/paciente" class="nav-link"
+            >Tela Paciente</router-link
+          >
         </li>
-        <li class="nav-item">
-          <router-link v-if="currentUser" to="/user" class="nav-link">User</router-link>
+        <li v-if="showUsuarioBoard" class="nav-item">
+          <router-link v-if="currentUser" to="/user" class="nav-link"
+            >Fisioterapeuta</router-link
+          >
         </li>
       </div>
 
@@ -36,7 +40,7 @@
         <li class="nav-item">
           <router-link to="/profile" class="nav-link">
             <font-awesome-icon icon="user" />
-            {{ currentUser.username }}
+            Perfil:{{ currentUser.usernameUser }}
           </router-link>
         </li>
         <li class="nav-item">
@@ -59,26 +63,33 @@ export default {
     currentUser() {
       return this.$store.state.auth.user;
     },
+    showUsuarioBoard() {
+      if (this.currentUser && this.currentUser["funcao"]) {
+        return this.currentUser["funcao"].includes("ROLE_USUARIO");
+      }
+
+      return false;
+    },
     showAdminBoard() {
-      if (this.currentUser && this.currentUser['funcao']) {
-        return this.currentUser['roles'].includes('ROLE_ADMIN');
+      if (this.currentUser && this.currentUser["funcao"]) {
+        return this.currentUser["funcao"].includes("ROLE_ADMIN");
       }
 
       return false;
     },
     showPacienteBoard() {
-      if (this.currentUser && this.currentUser['funcao']) {
-        return this.currentUser['funcao'].includes('ROLE_PACIENTE');
+      if (this.currentUser && this.currentUser["funcao"]) {
+        return this.currentUser["funcao"].includes("ROLE_PACIENTE");
       }
 
       return false;
-    }
+    },
   },
   methods: {
     logOut() {
-      this.$store.dispatch('auth/logout');
-      this.$router.push('/login');
-    }
-  }
+      this.$store.dispatch("auth/logout");
+      this.$router.push("/login");
+    },
+  },
 };
 </script>
