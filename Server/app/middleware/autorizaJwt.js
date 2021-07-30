@@ -58,7 +58,7 @@ sePaciente = (req, res, next) => {
     });
 };
 
-seUsuario = (req, res, next) => {
+seFisio = (req, res, next) => {
     Usuario.findByPk(req.idUser).then(usuarioVerifica => {
         usuarioVerifica.getFuncaos().then(funcaoVerifica => {
             for (let i = 0; i < funcaoVerifica.length; i++) {
@@ -77,7 +77,7 @@ seUsuario = (req, res, next) => {
 const autorizaJwt = {
     verificaToken: verificaToken,
     seAdmin: seAdmin,
-    seUsuario: seUsuario,
+    seFisio: seFisio,
     sePaciente: sePaciente,
 };
 module.exports = autorizaJwt;

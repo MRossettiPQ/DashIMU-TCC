@@ -8,12 +8,16 @@ class UserService {
     return axios.get(API_URL + 'all');
   }
 
-  getUserBoard() {
-    return axios.get(API_URL + 'user', { headers: autorizaHeader() });
+  getFisioBoard() {
+    return axios.get(API_URL + 'fisio', { headers: autorizaHeader() });
   }
 
   getPacienteBoard() {
     return axios.get(API_URL + 'paciente', { headers: autorizaHeader() });
+  }
+
+  getSensorBoard() {
+    return axios.get(API_URL + 'leitura-sensor', { headers: autorizaHeader() });
   }
 
   getAdminBoard() {

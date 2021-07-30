@@ -12,21 +12,23 @@ module.exports = function (app) {
 
     app.get("/api/test/all", userController.allAccess);
 
-    app.get(
-        "/api/test/user",
-        [autorizaJwt.verificaToken],
-        userController.userBoard
+    app.get("/api/test/fisio",
+            [autorizaJwt.verificaToken, autorizaJwt.seFisio],
+            userController.fisioBoard
     );
 
-    app.get(
-        "/api/test/paciente",
-        [autorizaJwt.verificaToken, autorizaJwt.sePaciente],
-        userController.pacienteBoard
+    app.get("/api/test/leitura-sensor",
+            [autorizaJwt.verificaToken, autorizaJwt.seFisio],
+            userController.sensorBoard
     );
 
-    app.get(
-        "/api/test/admin",
-        [autorizaJwt.verificaToken, autorizaJwt.seAdmin],
-        userController.adminBoard
+    app.get("/api/test/paciente",
+            [autorizaJwt.verificaToken, autorizaJwt.sePaciente],
+            userController.pacienteBoard
+    );
+
+    app.get("/api/test/admin",
+            [autorizaJwt.verificaToken, autorizaJwt.seAdmin],
+            userController.adminBoard
     );
 };

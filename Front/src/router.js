@@ -6,7 +6,8 @@ import Register from "./components/Register.vue";
 const Profile         = () => import("./components/Profile.vue")
 const BoardAdmin      = () => import("./components/BoardAdmin.vue")
 const BoardPaciente   = () => import("./components/BoardPaciente.vue")
-const BoardUser       = () => import("./components/BoardUser.vue")
+const BoardFisio      = () => import("./components/BoardFisio.vue")
+const BoardSensor     = () => import("./components/BoardSensor.vue")
 
 const routes = [
   {
@@ -45,10 +46,16 @@ const routes = [
     component: BoardPaciente,
   },
   {
-    path: "/user",
-    name: "user",
+    path: "/fisio",
+    name: "fisio",
     // lazy-loaded
-    component: BoardUser,
+    component: BoardFisio,
+  },
+  {
+    path: "/leitura-sensor",
+    name: "leitura-sensor",
+    // lazy-loaded
+    component: BoardSensor,
   },
 ];
 

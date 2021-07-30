@@ -9,17 +9,24 @@
           </router-link>
         </li>
         <li v-if="showAdminBoard" class="nav-item">
-          <router-link to="/admin" class="nav-link">Tela Admin</router-link>
+          <router-link to="/admin" class="nav-link">
+            Admin
+          </router-link>
         </li>
         <li v-if="showPacienteBoard" class="nav-item">
-          <router-link to="/paciente" class="nav-link"
-            >Tela Paciente</router-link
-          >
+          <router-link to="/paciente" class="nav-link">
+            Paciente
+          </router-link>
         </li>
-        <li v-if="showUsuarioBoard" class="nav-item">
-          <router-link v-if="currentUser" to="/user" class="nav-link"
-            >Fisioterapeuta</router-link
-          >
+        <li v-if="showFisioBoard" class="nav-item">
+          <router-link v-if="currentUser" to="/fisio" class="nav-link">
+            Fisioterapeuta
+          </router-link>
+        </li>
+        <li v-if="showSensorBoard" class="nav-item">
+          <router-link v-if="currentUser" to="/leitura-sensor" class="nav-link">
+            Sensor
+          </router-link>
         </li>
       </div>
 
@@ -63,25 +70,28 @@ export default {
     currentUser() {
       return this.$store.state.auth.user;
     },
-    showUsuarioBoard() {
+    showFisioBoard() {
       if (this.currentUser && this.currentUser["funcao"]) {
-        return this.currentUser["funcao"].includes("ROLE_USUARIO");
+        return this.currentUser["funcao"].includes("ROLE_FISIO");
       }
-
+      return false;
+    },
+    showSensorBoard() {
+      if (this.currentUser && this.currentUser["funcao"]) {
+        return this.currentUser["funcao"].includes("ROLE_FISIO");
+      }
       return false;
     },
     showAdminBoard() {
       if (this.currentUser && this.currentUser["funcao"]) {
         return this.currentUser["funcao"].includes("ROLE_ADMIN");
       }
-
       return false;
     },
     showPacienteBoard() {
       if (this.currentUser && this.currentUser["funcao"]) {
         return this.currentUser["funcao"].includes("ROLE_PACIENTE");
       }
-
       return false;
     },
   },

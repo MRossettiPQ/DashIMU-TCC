@@ -2,8 +2,12 @@ exports.allAccess = (req, res) => {
     res.status(200).send("Publico.");
 };
 
-exports.userBoard = (req, res) => {
+exports.fisioBoard = (req, res) => {
     res.status(200).send("Apenas o fisioterapeuta.");
+};
+
+exports.sensorBoard = (req, res) => {
+    res.status(200).send("Aqui terá dados do sensor.");
 };
 
 exports.adminBoard = (req, res) => {
