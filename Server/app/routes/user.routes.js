@@ -15,7 +15,7 @@ module.exports = function (app) {
     app.get("/api/test/fisio",
             [autorizaJwt.verificaToken, autorizaJwt.seFisio],
             userController.fisioBoard
-    );
+    );          
 
     app.get("/api/test/leitura-sensor",
             [autorizaJwt.verificaToken, autorizaJwt.seFisio],

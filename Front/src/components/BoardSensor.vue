@@ -1,8 +1,13 @@
 <template>
   <div class="container">
     <header class="jumbotron">
-      <h3>{{ content }}</h3>
+      <h3>Paciente:</h3>{{ content }}
     </header>
+    <div class="Text-center">
+      <apexchart width="70%" height="450px" type="line" :options="options" :series="series"></apexchart>
+    </div>
+    <div>
+    </div>
   </div>
 </template>
 
@@ -14,6 +19,18 @@ export default {
   data() {
     return {
       content: "",
+      options: {
+        chart: {
+          id: 'vuechart-example'
+        },
+        xaxis: {
+          categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998]
+        }
+      },
+      series: [{
+        name: 'line-1',
+        data: [30, 40, 45, 50, 49, 60, 70, 91]
+      }]
     };
   },
   mounted() {

@@ -11,7 +11,7 @@
           <ul class="navbar-nav me-auto mb-2 mb-md-0">
             <li class="nav-item">
               <router-link to="/home" class="nav-link  active">
-                <font-awesome-icon icon="home" />Home
+                <font-awesome-icon icon="home" /> Home
               </router-link>
             </li>
             <li v-if="showAdminBoard" class="nav-item active">
@@ -58,13 +58,13 @@
           <div v-if="currentUser" class="navbar-nav ml-auto">
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <font-awesome-icon icon="user" />Perfil:{{ currentUser.usernameUser }}
+                <font-awesome-icon icon="user" /> Menu
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li>
                   <router-link to="/profile" class="dropdown-item">
                     <font-awesome-icon icon="user" />
-                    Perfil:{{ currentUser.usernameUser }}
+                    Perfil
                   </router-link>
                 </li>
                 <li>
