@@ -14,7 +14,7 @@ createApp(App)
   .use(store)
   // .use(BootstrapVue)  // Make BootstrapVue available throughout your project         
   // .use(IconsPlugin)   // Optionally install the BootstrapVue icon components plugin
-  //.use(VueApexCharts)
-  //.component('apexchart', VueApexCharts)
+  // .use(VueApexCharts)
+  // .component('apexchart', VueApexCharts)
   .component("font-awesome-icon", FontAwesomeIcon)
   .mount("#app");
