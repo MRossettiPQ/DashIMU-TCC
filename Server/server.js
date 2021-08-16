@@ -1,12 +1,13 @@
-const express       = require('express'),
-      enableWs      = require('express-ws'),
-      bodyParser    = require('body-parser'),
-      cors          = require('cors'),
-      path          = require('path'),
-      mqtt          = require('mqtt'),
-      serverConfig  = require("./app/config/server.config.js"),
-      db            = require("./app/models");
-const app = express();
+const   express       = require('express'),
+        enableWs      = require('express-ws'),
+        bodyParser    = require('body-parser'),
+        cors          = require('cors'),
+        path          = require('path'),
+        mqtt          = require('mqtt'),
+        serverConfig  = require("./app/config/server.config.js"),
+        db            = require("./app/models");
+const   app = express();
+var     comandoStoS;
 
 var corsOptions = {
   origin: `Access-Control-Allow-Headers: http://localhost:${serverConfig.PORTCORS}/api/`
@@ -51,19 +52,18 @@ app.get('/ping', function (req, res) {
   res.json({ message: "testando server" });
   console.log(`Pagina: /`);
 });
-
-/* Rotas - MQTT
+//Rotas - MQTT
 app.ws('/socket', (ws, req) => {
   ws.on('message', msg => {
-    ws.send(msg);
-    console.log(`ESTOU RECEBENDO MENSAGEM NO SOCKET`);
-  })
+    comandoStoS = "ON";
+    ws.send(comandoStoS);
+    console.log(msg);
+  });
 
   ws.on('close', () => {
     console.log('WebSocket was closed');
-  })
+  });
 });
-*/
 // set port, listen for requests
 const PORT = process.env.PORT || serverConfig.PORT;
 app.listen(PORT, () => {

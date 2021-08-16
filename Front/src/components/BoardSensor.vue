@@ -5,7 +5,7 @@
     </header>
     <div class="d-flex justify-content-center h-auto">
       <div class="w-75" >
-        <apexchart width="100%" height="450px" type="line" :options="options" :series="series"></apexchart>
+        <apexchart width="100%" height="auto" type="line" :options="options" :series="series"></apexchart>
       </div>
       
       <div class="w-25">
@@ -66,6 +66,7 @@ export default {
     apexchart: VueApexCharts,
   },
   data() {
+    // idSensor, horaSensor, numLeitura, AccelX_mss, AccelY_mss, AccelZ_mss, GyroX_rads, GyroY_rads, GyroZ_rads, MagX_uT, MagY_uT, MagZ_uT
     return {
       content: "",
       options: {
