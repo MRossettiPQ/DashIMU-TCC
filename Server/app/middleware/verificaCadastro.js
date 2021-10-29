@@ -1,6 +1,7 @@
 const db = require("../models");
 const FUNCAO = db.FUNCAO;
 const Usuario = db.usuario;
+const Paciente = db.paciente;
 
 verificaUsuarioEmailDuplicados = (req, res, next) => {
   // Username
@@ -49,7 +50,27 @@ verificaRoleExistente = (req, res, next) => {
   next();
 };
 
+verificaCPF = (req, res, next) => {
+  console.log("VERIFICAR CPF");
+  // Email
+  Paciente.findOne({
+    where: {
+      cpfPaciente: req.body.cpfPaciente,
+    },
+  }).then((usuarioVerifica) => {
+    if (usuarioVerifica) {
+      res.status(400).send({
+        message: "Falhou! CPF esta na lista!",
+      });
+      return;
+    }
+
+    next();
+  });
+};
+
 const verificaCadastro = {
+  verificaCPF: verificaCPF,
   verificaUsuarioEmailDuplicados: verificaUsuarioEmailDuplicados,
   verificaRoleExistente: verificaRoleExistente,
 };
