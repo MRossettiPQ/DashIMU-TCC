@@ -1,5 +1,4 @@
-const { autorizaJwt } = require("../middleware");
-const userController = require("../controllers/user.controller");
+const pacienteController = require("../controllers/pacientes.controller");
 
 module.exports = function (app) {
   app.use(function (req, res, next) {
@@ -13,11 +12,5 @@ module.exports = function (app) {
     next();
   });
 
-  app.get("/api/all", userController.allAccess);
-
-  app.get(
-    "/api/fisio",
-    [autorizaJwt.verificaToken, autorizaJwt.seFisio],
-    userController.fisioBoard
-  );
+  app.post("/api/pacientes", pacienteController.registrar);
 };
