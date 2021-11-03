@@ -2,8 +2,10 @@ const express = require("express");
 const enableWs = require("express-ws");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const path = require("path");
-const mqtt = require("mqtt");
+
+// const path = require("path");
+// const mqtt = require("mqtt");
+
 const serverConfig = require("./app/config/server.config.js");
 const db = require("./app/models");
 const app = express();
@@ -50,17 +52,13 @@ app.get("/ping", function (req, res) {
   console.log(`Pagina: /`);
 });
 //Rotas - Socket
-app.ws("/socket", (ws, req) => {
-  ws.on("message", (msg) => {
-    comandoStoS = "ON";
-    ws.send(comandoStoS);
+app.ws("/socket", function (ws, req) {
+  ws.on("message", function (msg) {
     console.log(msg);
   });
-
-  ws.on("close", () => {
-    console.log("WebSocket was closed");
-  });
+  console.log("socket", req.testing);
 });
+
 // set port, listen for requests
 const PORT = process.env.PORT || serverConfig.PORT;
 app.listen(PORT, () => {

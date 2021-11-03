@@ -24,6 +24,7 @@ int status, numLeitura = 0;
 const char *idSensor = "Sensor_1";
 String comandoStoS, horaLeitura;
 // idSensor, horaSensor, numLeitura, AccelX_mss, AccelY_mss, AccelZ_mss, GyroX_rads, GyroY_rads, GyroZ_rads, MagX_uT, MagY_uT, MagZ_uT
+double roll, pitch, yaw;
 
 void setup()
 {
@@ -113,6 +114,30 @@ void loop()
     {
       IMU.readSensor();
       horaLeitura = ntp.getFormattedTime();
+      double AccelX_mss = IMU.getAccelX_mss();
+      double AccelY_mss = IMU.getAccelY_mss();
+      double AccelZ_mss = IMU.getAccelZ_mss();
+
+      double GyroX_rads = IMU.getGyroX_rads();
+      double GyroY_rads = IMU.getGyroY_rads();
+      double GyroZ_rads = IMU.getGyroZ_rads();
+
+      double MagX_uT = IMU.getMagX_uT();
+      double MagY_uT = IMU.getMagY_uT();
+      double MagZ_uT = IMU.getMagZ_uT();
+
+      pitch = atan2(AccelX_mss, (sqrt((AccelX_mss * AccelX_mss) + (AccelZ_mss * AccelZ_mss))));
+      roll = atan2(-AccelX_mss, (sqrt((AccelY_mss * AccelY_mss) + (AccelZ_mss * AccelZ_mss))));
+
+      float Yh = (MagY_uT * cos(roll)) - (MagZ_uT * sin(roll));
+      float Xh = (MagX_uT * cos(pitch)) + (MagY_uT * sin(roll) * sin(pitch)) + (MagZ_uT * cos(roll) * sin(pitch));
+
+      yaw = atan2(Yh, Xh);
+
+      roll = roll * 57.3;
+      pitch = pitch * 57.3;
+      yaw = yaw * 57.3;      
+
       //------------LEITURA DO SENSOR------------
       String json = "{\"idSensor\":";
       json += idSensor;
@@ -122,25 +147,25 @@ void loop()
       json += horaLeitura;
       //--------------Acelerometro---------------
       json += ",\"AccelX_mss\":";
-      json += IMU.getAccelX_mss();
+      json += AccelX_mss;
       json += ",\"AccelY_mss\":";
-      json += IMU.getAccelY_mss();
+      json += AccelY_mss;
       json += ",\"AccelZ_mss\":";
-      json += IMU.getAccelZ_mss();
+      json += AccelZ_mss;
       //---------------Giroscopio---------------
       json += ",\"GyroX_rads\":";
-      json += IMU.getGyroX_rads();
+      json += GyroX_rads;
       json += ",\"GyroY_rads\":";
-      json += IMU.getGyroY_rads();
+      json += GyroY_rads;
       json += ",\"GyroZ_rads\":";
-      json += IMU.getGyroZ_rads();
+      json += GyroZ_rads;
       //--------------Magnetometro--------------
       json += ",\"MagX_uT\":";
-      json += IMU.getMagX_uT();
+      json += MagX_uT;
       json += ",\"MagY_uT\":";
-      json += IMU.getMagY_uT();
+      json += MagY_uT;
       json += ",\"MagZ_uT\":";
-      json += IMU.getMagZ_uT();
+      json += MagZ_uT;
       json += "}";
 
       numLeitura = numLeitura + 1;
