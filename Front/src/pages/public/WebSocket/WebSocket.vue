@@ -30,14 +30,12 @@
               label="Enviar msg"
               class="row btn"
               size="lg"
-              @click="sendMessage('teste', 0)"
+              @click="sendMessage('ok', 0)"
           />
         </div>
 
-        <div class="scrollable overflow-auto flex-grow-1 flex-shrink-0">
-          <div class="m-t-8" v-for="(lista, index) in sensores[0].tabela" :key="index">
-            {{lista.tabela}}
-          </div>
+        <div v-if="sensores[0].sensor.ativo" class="scrollable overflow-auto flex-grow-1 flex-shrink-0">
+          {{sensores[0].tabela}}
         </div>
       </div>
       <div class="col "/>

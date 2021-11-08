@@ -54,7 +54,15 @@ app.get("/ping", function (req, res) {
 //Rotas - Socket
 app.ws("/socket", function (ws, req) {
   ws.on("message", function (msg) {
+    if (msg === "OK" || msg === "ok" || msg === "Ok") {
+      ws.send("RECEBI OK");
+    } else {
+      ws.send("NÃO RECEBI OK");
+    }
     console.log(msg);
+  });
+  ws.on("close", () => {
+    console.log("WebSocket was closed");
   });
   console.log("socket", req.testing);
 });
