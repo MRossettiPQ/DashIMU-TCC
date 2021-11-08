@@ -25,6 +25,7 @@
     "chartjs-chart-geo": "^3.5.1",
     "chartjs-chart-matrix": "^1.1.0",
     "core-js": "^3.6.5",
+    "http": "0.0.1-security",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "quasar": "^1.0.0",
@@ -42,6 +43,8 @@
     "vue2-google-maps": "^0.10.7",
     "vuex": "^3.6.2",
     "vuex-module-decorators": "^1.0.1",
+    "websocket": "^1.0.34",
+    "ws": "^8.2.3",
     "yup": "^0.32.11"
   },
   "devDependencies": {

@@ -1,5 +1,6 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { exportFile } from "quasar";
+import json from "./Sensor_2.json";
 
 @Component({
   name: "Sensor",
@@ -18,7 +19,7 @@ class Sensor extends Vue {
 
   created = function () {
     console.log("Criando conexão com websocket");
-    this.connection = new WebSocket("wss://localhost:8080/api/socket");
+    this.connection = new WebSocket("ws://192.168.16.121:9000/");
 
     this.connection.onopen = function (event) {
       console.log(event);
@@ -39,18 +40,21 @@ class Sensor extends Vue {
         ip: "",
         ativo: false,
       },
+      tabela: [{}],
     },
     {
       sensor: {
         ip: "",
         ativo: false,
       },
+      tabela: [{}],
     },
     {
       sensor: {
         ip: "",
         ativo: false,
       },
+      tabela: [{}],
     },
   ];
 
@@ -102,42 +106,8 @@ class Sensor extends Vue {
     { name: "Pitch", label: "Pitch", field: "Pitch" },
     { name: "Yaw", label: "Yaw", field: "Yaw" },
   ];
-  tabelaData = [
-    {
-      idSensor: 1,
-      numLeitura: 44315,
-      horaLeitura: "00:00",
-      AccelX_mss: 0.389548,
-      AccelY_mss: -0.246837,
-      AccelZ_mss: 9.787989,
-      GyroX_rads: -0.004073,
-      GyroY_rads: 0.013677,
-      GyroZ_rads: 0.076276,
-      MagX_uT: 0.331525,
-      MagY_uT: 0.157594,
-      MagZ_uT: 0.342544,
-      Roll: -1.850855,
-      Pitch: -2.088984,
-      Yaw: 1.896105,
-    },
-    {
-      idSensor: 1,
-      numLeitura: 44316,
-      horaLeitura: "00:00",
-      AccelX_mss: 0.389548,
-      AccelY_mss: -0.246837,
-      AccelZ_mss: 9.787989,
-      GyroX_rads: -0.004073,
-      GyroY_rads: 0.013677,
-      GyroZ_rads: 0.076276,
-      MagX_uT: 0.331525,
-      MagY_uT: 0.157594,
-      MagZ_uT: 0.342544,
-      Roll: -1.850855,
-      Pitch: -2.088984,
-      Yaw: 1.896105,
-    },
-  ];
+
+  tabelaData = json;
 
   exportTable() {
     function wrapCsvValue(val, formatFn) {

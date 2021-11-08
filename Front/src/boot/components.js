@@ -23,7 +23,7 @@ import {
   QCardSection,
   QToolbar,
   QToolbarTitle,
-  QDialog
+  QDialog,
 } from "quasar";
 import {
   ColorPicker,
@@ -34,7 +34,7 @@ import {
   Select,
   Autocomplete,
   Ajuda,
-  DataTable
+  DataTable,
 } from "@crusader-vue/components";
 import VueApexCharts from "vue-apexcharts";
 
@@ -50,7 +50,7 @@ export default async ({ Vue }) => {
   );
 
   // For each matching file name...
-  requireComponent.keys().forEach(fileName => {
+  requireComponent.keys().forEach((fileName) => {
     // Get the component config
     const componentConfig = requireComponent(fileName);
 

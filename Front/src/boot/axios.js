@@ -6,23 +6,23 @@ import { Notify, throttle } from "quasar";
 Vue.prototype.$axios = axios;
 
 const AxiosApi = Axios.create({
-  baseURL: process.env.SERVER
+  baseURL: process.env.SERVER,
 });
 
-let notifySuccess = throttle(msg => {
+let notifySuccess = throttle((msg) => {
   Notify.create({
     message: msg,
     textColor: "white",
     color: "positive",
-    icon: "check"
+    icon: "check",
   });
 }, 500);
 
-let notifyError = throttle(msg => {
+let notifyError = throttle((msg) => {
   Notify.create({
     message: msg,
     textColor: "white",
     color: "negative",
-    icon: "priority_high"
+    icon: "priority_high",
   });
 }, 500);

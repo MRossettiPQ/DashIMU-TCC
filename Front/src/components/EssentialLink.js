@@ -1,7 +1,7 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component({
-  name: "EssentialLink"
+  name: "EssentialLink",
 })
 class EssentialLink extends Vue {
   @Prop({ type: String, required: true })

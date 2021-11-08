@@ -1,12 +1,13 @@
 import axios from "axios";
 import AutorizaHeader from "./AutorizaHeader";
 
-const API_URL = "http://localhost:9000/api/";
+const API_URL = `http://localhost:9000/api/`;
+// const API_URL = `http://${process.env.DEV}:9000/api/`;
 
 class PacienteService {
   getListaPaciente(data) {
     return axios.get(API_URL + "pacientes", {
-      headers: AutorizaHeader()
+      headers: AutorizaHeader(),
     });
   }
 
@@ -19,7 +20,7 @@ class PacienteService {
       emailPaciente: paciente.emailPaciente,
       alturaPaciente: paciente.alturaPaciente,
       cpfPaciente: paciente.cpfPaciente,
-      idUser: paciente.idUser
+      idUser: paciente.idUser,
     });
   }
 }
