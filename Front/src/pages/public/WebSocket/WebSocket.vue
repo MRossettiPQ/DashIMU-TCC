@@ -27,6 +27,15 @@
           <q-btn
               color="primary"
               unelevated
+              label="IMPRESSÃO"
+              class="row btn"
+              size="lg"
+              @click="printLeitura( 0)"
+          />
+
+          <q-btn
+              color="primary"
+              unelevated
               label="Enviar msg"
               class="row btn"
               size="lg"
@@ -34,7 +43,7 @@
           />
         </div>
 
-        <div v-if="sensores[0].sensor.ativo" class="scrollable overflow-auto flex-grow-1 flex-shrink-0">
+        <div class="scrollable overflow-auto flex-grow-1 flex-shrink-0">
           {{sensores[0].tabela}}
         </div>
       </div>

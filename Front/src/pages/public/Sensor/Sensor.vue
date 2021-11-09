@@ -160,7 +160,17 @@
                               label="Conectar"
                               class="row btn"
                               size="lg"
-                              @click="conectaSensor(sensores[0].sensor.ip, 2)"
+                              @click="conectaSensor(0)"
+                            />
+
+                            <q-btn
+                                v-if="sensores[0].tabela !== null"
+                                color="primary"
+                                unelevated
+                                label="Print"
+                                class="row btn"
+                                size="lg"
+                                @click="printLeitura(0)"
                             />
                           </div>
                         </q-form>
@@ -183,7 +193,17 @@
                             label="Conectar"
                             class="row btn"
                             size="lg"
-                            @click="conectaSensor(sensores[1].sensor.ip, 2)"
+                            @click="conectaSensor(1)"
+                          />
+
+                          <q-btn
+                              v-if="sensores[1].tabela !== null"
+                              color="primary"
+                              unelevated
+                              label="Print"
+                              class="row btn"
+                              size="lg"
+                              @click="printLeitura(1)"
                           />
                         </div>
                       </q-tab-panel>
@@ -205,7 +225,17 @@
                             label="Conectar"
                             class="row btn"
                             size="lg"
-                            @click="conectaSensor(sensores[2].sensor.ip, 2)"
+                            @click="conectaSensor(2)"
+                          />
+
+                          <q-btn
+                              v-if="sensores[2].tabela !== null"
+                              color="primary"
+                              unelevated
+                              label="Print"
+                              class="row btn"
+                              size="lg"
+                              @click="printLeitura(2)"
                           />
                         </div>
                       </q-tab-panel>

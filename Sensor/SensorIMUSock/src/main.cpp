@@ -55,7 +55,7 @@ void setup()
     Serial.print('.');
   }
   Serial.println('\n');
-  Serial.println("Conexão estabelecida");
+  Serial.println("Conexão Wi-Fi estabelecida");
   Serial.print("Endereço IP:\t");
   Serial.println(WiFi.localIP());
 
@@ -112,9 +112,9 @@ void setup()
   Serial.print("Socket server disponivel? ");
   Serial.println(serverSocket.available());
   Serial.print("Endereço IP:\t");
-  Serial.println(WiFi.localIP());
+  Serial.print(WiFi.localIP());
   Serial.print(":");
-  Serial.println(socket_server);
+  Serial.print(socket_server);
 
   timeClient.begin();
 }
@@ -126,10 +126,10 @@ void loop()
   Serial.println("CLIENTE CONECTOU");
   do
   {
-    clientsList.send("Echo: " + RetornaValoresIMU(NumeroLeitura));
+    clientsList.send(RetornaValoresIMU(NumeroLeitura));
     NumeroLeitura = NumeroLeitura + 1;
 
-    delay(12);
+    delay(8);
   } while (clientsList.available());
 
   clientsList.close();

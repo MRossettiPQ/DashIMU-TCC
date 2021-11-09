@@ -6,39 +6,12 @@ import json from "./Sensor_2.json";
   name: "Sensor",
 })
 class Sensor extends Vue {
-  methods = function (message) {
-    console.log(this.connection);
-    this.connection.send(message);
-  };
-
-  data = function () {
-    return {
-      connection: null,
-    };
-  };
-
-  created = function () {
-    console.log("Criando conexão com websocket");
-    this.connection = new WebSocket("ws://192.168.16.121:9000/");
-
-    this.connection.onopen = function (event) {
-      console.log(event);
-      console.log("Conectado com sucesso");
-    };
-
-    this.connection.onmessage = function (event) {
-      console.log(event);
-    };
-  };
-
-  tab = "Sensor_1";
-  tabGrande = "Tab_1";
-
   sensores = [
     {
       sensor: {
         ip: "",
         ativo: false,
+        connection: null,
       },
       tabela: [{}],
     },
@@ -46,6 +19,7 @@ class Sensor extends Vue {
       sensor: {
         ip: "",
         ativo: false,
+        connection: null,
       },
       tabela: [{}],
     },
@@ -53,16 +27,58 @@ class Sensor extends Vue {
       sensor: {
         ip: "",
         ativo: false,
+        connection: null,
       },
       tabela: [{}],
     },
   ];
 
-  conectaSensor(ip_sensor, id) {
-    const url = `http://${ip_sensor}:8080/socket/`;
+  conectaSensor(id) {
+    let url = `ws://${this.sensores[id].sensor.ip}:8080`;
+    console.log(url);
+    this.sensores[id].sensor.connection = new WebSocket(url);
+
+    this.sensores[id].sensor.connection.onmessage = (event) => {
+      // console.log(event);
+      this.addLeitura(event.data, id);
+    };
+
+    this.sensores[id].sensor.connection.onopen = (event) => {
+      console.log(event);
+      this.setConectado(id);
+      console.log("Conexão com o sensor realizada com websocket...");
+    };
+
+    this.sensores[id].sensor.connection.onerror = (event) => {
+      console.log(event);
+      console.log("Error no websocket server...");
+    };
+
+    this.sensores[id].sensor.connection.onclose = (event) => {
+      console.log(event);
+      this.setDesconectado(id);
+      console.log("Websocket desconectado do server...");
+    };
   }
 
-  opcao() {}
+  addLeitura(data, id) {
+    this.sensores[id].tabela.push(data);
+  }
+
+  printLeitura(id) {
+    console.log(this.sensores[id]);
+  }
+
+  setConectado(id) {
+    this.sensores[id].sensor.ativo = true;
+  }
+
+  setDesconectado(id) {
+    this.sensores[id].sensor.ativo = false;
+  }
+
+  tab = "Sensor_1";
+  tabGrande = "Tab_1";
 
   options = {
     chart: {
@@ -78,6 +94,9 @@ class Sensor extends Vue {
     { name: "idSensor", data: [30, 40, 45, 50, 49, 60, 70, 91] },
     { name: "horaSensor", data: [35, 45, 45, 120, 76, 89, 95, 95] },
     { name: "numLeitura", data: [40, 75, 25, 80, 61, 69, 85, 85] },
+    { name: "AccelX_Lin", data: [45, 55, 57, 130, 85, 99, 72, 60] },
+    { name: "AccelY_Lin", data: [40, 75, 25, 80, 61, 69, 85, 85] },
+    { name: "AccelZ_Lin", data: [40, 75, 25, 80, 61, 69, 85, 85] },
     { name: "AccelX_mss", data: [45, 55, 57, 130, 85, 99, 72, 60] },
     { name: "AccelY_mss", data: [40, 75, 25, 80, 61, 69, 85, 85] },
     { name: "AccelZ_mss", data: [40, 75, 25, 80, 61, 69, 85, 85] },
@@ -93,6 +112,9 @@ class Sensor extends Vue {
     { name: "idSensor", label: "idSensor", field: "idSensor", align: "center" },
     { name: "horaSensor", label: "horaSensor", field: "horaSensor" },
     { name: "numLeitura", label: "numLeitura", field: "numLeitura" },
+    { name: "AccelX_Lin", label: "AccelX_Lin", field: "AccelX_Lin" },
+    { name: "AccelY_Lin", label: "AccelY_Lin", field: "AccelY_Lin" },
+    { name: "AccelZ_Lin", label: "AccelZ_Lin", field: "AccelZ_Lin" },
     { name: "AccelX_mss", label: "AccelX_mss", field: "AccelX_mss" },
     { name: "AccelY_mss", label: "AccelY_mss", field: "AccelY_mss" },
     { name: "AccelZ_mss", label: "AccelZ_mss", field: "AccelZ_mss" },
@@ -107,7 +129,9 @@ class Sensor extends Vue {
     { name: "Yaw", label: "Yaw", field: "Yaw" },
   ];
 
-  tabelaData = json;
+  tabelaData = [{}];
+
+  opcao() {}
 
   exportTable() {
     function wrapCsvValue(val, formatFn) {
