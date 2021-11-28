@@ -1,7 +1,7 @@
 import axios from "axios";
 import AutorizaHeader from "./AutorizaHeader";
 
-const API_URL = `http://localhost:9000/api/`;
+const API_URL = `http://localhost:8000/api/`;
 // const API_URL = `http://${process.env.DEV}:9000/api/`;
 
 class PacienteService {

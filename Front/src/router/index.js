@@ -4,8 +4,6 @@ import VueRouter from "vue-router";
 import VueI18n from "vue-i18n";
 import moment from "moment";
 import VueApexCharts from "vue-apexcharts";
-// import VueWebsocket from "vue-websocket";
-import VueNativeSock from "vue-native-websocket";
 
 import routes from "./routes";
 

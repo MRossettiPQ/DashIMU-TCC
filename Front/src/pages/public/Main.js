@@ -12,44 +12,44 @@ export default {
           caption: "Tela inicial",
           icon: "home",
           link: "/home",
-          logged: true
+          logged: true,
         },
         {
           title: "Login",
           caption: "Para logar",
           icon: "login",
           link: "/logar",
-          logged: !!!this.$store.state.autentica.user
+          logged: !this.logged(),
         },
         {
           title: "Registrar",
           caption: "Para registro",
           icon: "app_registration",
           link: "/registrar",
-          logged: !!!this.$store.state.autentica.user
+          logged: !this.logged(),
         },
         {
           title: "Perfil",
           caption: "Ver perfil",
           icon: "account_circle",
           link: "/perfil",
-          logged: !!this.$store.state.autentica.user
+          logged: this.logged(),
         },
         {
           title: "Pacientes",
           caption: "Ver pacientes",
           icon: "local_hospital",
           link: "/pacientes",
-          logged: !!this.$store.state.autentica.user
+          logged: this.logged(),
         },
         {
           title: "Sensor",
           caption: "Ver sensor",
           icon: "square_foot",
           link: "/sensor",
-          logged: !!this.$store.state.autentica.user
-        }
-      ]
+          logged: this.logged(),
+        },
+      ],
     };
   },
   computed: {
@@ -79,14 +79,19 @@ export default {
         return this.currentUser["funcao"].includes("ROLE_PACIENTE");
       }
       return false;
-    }
+    },
   },
   methods: {
+    logged() {
+      console.log(this.$store.state.autentica.user !== null);
+      return this.$store.state.autentica.user !== null;
+    },
     logOut() {
       this.$store.dispatch("autentica/logout");
+      this.$router.push("/");
     },
     goPerfil() {
       this.$router.push("/perfil");
-    }
-  }
+    },
+  },
 };

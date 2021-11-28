@@ -1,5 +1,5 @@
 module.exports = {
-  PORT: "9000",
-  PORTCORS: "9001",
+  PORT: "8000",
+  PORTCORS: "8001",
   INDEV: false,
 };

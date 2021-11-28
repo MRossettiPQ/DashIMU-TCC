@@ -9,6 +9,7 @@
 #include "eeprom_utils.h"
 //WebSocket
 #include <ArduinoWebsockets.h>
+#include <ArduinoJson.h>
 
 // NTP Time Servers
 WiFiUDP ntpUDP;
@@ -24,9 +25,9 @@ const int websockets_server_port = 8080;               // Porta de conexão do s
 //Socket server
 const int socket_server = 8080;
 
-int status, NumeroLeitura = 0;
+int status, NumeroLeitura = 0, UltimoEnvio;
 const char *IdSensor = "Sensor_1";
-String ComandoRecebido, HoraLeitura, json;
+String ComandoRecebido, HoraLeitura, json, BUFFER;
 
 MPU9250 mpu;
 
@@ -65,10 +66,10 @@ void setup()
     Wire.begin();
     if (!mpu.setup(0x68))
     {
-      //Serial.println("IMU Não foi inicializada");
-      //Serial.println("Confira a ligação da IMU com o ESP32 e reinicie o aparelho");
-      //Serial.print("Status: ");
-      //Serial.println(status);
+      Serial.println("IMU Não foi inicializada");
+      Serial.println("Confira a ligação da IMU com o ESP32 e reinicie o aparelho");
+      Serial.print("Status: ");
+      Serial.println(status);
     }
     else
     {
@@ -113,7 +114,7 @@ void setup()
   Serial.println(serverSocket.available());
   Serial.print("Endereço IP:\t");
   Serial.print(WiFi.localIP());
-  Serial.print(":");
+  Serial.print(":\"");
   Serial.print(socket_server);
 
   timeClient.begin();
@@ -123,10 +124,31 @@ void loop()
 {
   timeClient.update();
   clientsList = serverSocket.accept();
-  Serial.println("CLIENTE CONECTOU");
+  NumeroLeitura = 0;
+  UltimoEnvio = 0;
+  Serial.println("\n CLIENTE CONECTOU");
   do
   {
-    clientsList.send(RetornaValoresIMU(NumeroLeitura));
+    // clientsList.onMessage([&](WebsocketsMessage message)
+    //                       {
+    //                         Serial.print("Recebi uma mensage do cliente ->");
+    //                         Serial.println(message);
+    //                       });
+
+    BUFFER += RetornaValoresIMU(NumeroLeitura);
+
+    if (NumeroLeitura == (UltimoEnvio + 13))
+    {
+      clientsList.send(BUFFER);
+      // clientsList.send("[" + BUFFER + "]");
+      UltimoEnvio = NumeroLeitura;
+      BUFFER = "";
+    }
+    else
+    {
+      BUFFER += ",";
+    }
+
     NumeroLeitura = NumeroLeitura + 1;
 
     delay(8);
@@ -139,21 +161,20 @@ void loop()
 
 String RetornaValoresIMU(int NumeroLeitura)
 {
-  String Leitura;
 
   HoraLeitura = timeClient.getFormattedTime();
   //Acelerometro
-  double AccelX_mss = mpu.getAccBiasX();
-  double AccelY_mss = mpu.getAccBiasY();
-  double AccelZ_mss = mpu.getAccBiasZ();
+  double AccelX_mss = mpu.getAccBiasX() * 1000.f / (float)MPU9250::CALIB_ACCEL_SENSITIVITY;
+  double AccelY_mss = mpu.getAccBiasY() * 1000.f / (float)MPU9250::CALIB_ACCEL_SENSITIVITY;
+  double AccelZ_mss = mpu.getAccBiasZ() * 1000.f / (float)MPU9250::CALIB_ACCEL_SENSITIVITY;
   //Aceleração Linear
   double AccelX_Lin = mpu.getLinearAccX();
   double AccelY_Lin = mpu.getLinearAccY();
   double AccelZ_Lin = mpu.getLinearAccZ();
   //Giroscopio
-  double GyroX_rads = mpu.getGyroBiasX();
-  double GyroY_rads = mpu.getGyroBiasY();
-  double GyroZ_rads = mpu.getGyroBiasZ();
+  double GyroX_rads = mpu.getGyroBiasX() / (float)MPU9250::CALIB_GYRO_SENSITIVITY;
+  double GyroY_rads = mpu.getGyroBiasY() / (float)MPU9250::CALIB_GYRO_SENSITIVITY;
+  double GyroZ_rads = mpu.getGyroBiasZ() / (float)MPU9250::CALIB_GYRO_SENSITIVITY;
   //Magnetometro
   double MagX_uT = mpu.getMagBiasX();
   double MagY_uT = mpu.getMagBiasY();
@@ -164,48 +185,49 @@ String RetornaValoresIMU(int NumeroLeitura)
   double Yaw = mpu.getYaw();
 
   //------------LEITURA DO SENSOR-----------
-  Leitura = "{\"idSensor\":";
+
+  String Leitura = "{\"idSensor\":\"";
   Leitura += IdSensor;
-  Leitura += ",\"numLeitura\":";
+  Leitura += "\",\"numLeitura\":\"";
   Leitura += NumeroLeitura;
-  Leitura += ",\"horaLeitura\":";
+  Leitura += "\",\"horaLeitura\":\"";
   Leitura += HoraLeitura;
   //--------------Acelerometro--------------
-  Leitura += ",\"AccelX_mss\":";
+  Leitura += "\",\"AccelX_mss\":\"";
   Leitura += AccelX_mss;
-  Leitura += ",\"AccelY_mss\":";
+  Leitura += "\",\"AccelY_mss\":\"";
   Leitura += AccelY_mss;
-  Leitura += ",\"AccelZ_mss\":";
+  Leitura += "\",\"AccelZ_mss\":\"";
   Leitura += AccelZ_mss;
   //--------------Acel. Liner---------------
-  Leitura += ",\"AccelX_Lin\":";
+  Leitura += "\",\"AccelX_Lin\":\"";
   Leitura += AccelX_Lin;
-  Leitura += ",\"AccelY_Lin\":";
+  Leitura += "\",\"AccelY_Lin\":\"";
   Leitura += AccelY_Lin;
-  Leitura += ",\"AccelZ_Lin\":";
+  Leitura += "\",\"AccelZ_Lin\":\"";
   Leitura += AccelZ_Lin;
   //---------------Giroscopio---------------
-  Leitura += ",\"GyroX_rads\":";
+  Leitura += "\",\"GyroX_rads\":\"";
   Leitura += GyroX_rads;
-  Leitura += ",\"GyroY_rads\":";
+  Leitura += "\",\"GyroY_rads\":\"";
   Leitura += GyroY_rads;
-  Leitura += ",\"GyroZ_rads\":";
+  Leitura += "\",\"GyroZ_rads\":\"";
   Leitura += GyroZ_rads;
   //--------------Magnetometro--------------
-  Leitura += ",\"MagX_uT\":";
+  Leitura += "\",\"MagX_uT\":\"";
   Leitura += MagX_uT;
-  Leitura += ",\"MagY_uT\":";
+  Leitura += "\",\"MagY_uT\":\"";
   Leitura += MagY_uT;
-  Leitura += ",\"MagZ_uT\":";
+  Leitura += "\",\"MagZ_uT\":\"";
   Leitura += MagZ_uT;
   //----------Roll, Pitch e Yaw-------------
-  Leitura += ",\"Roll\":";
+  Leitura += "\",\"Roll\":\"";
   Leitura += Roll;
-  Leitura += ",\"Pitch\":";
+  Leitura += "\",\"Pitch\":\"";
   Leitura += Pitch;
-  Leitura += ",\"Yaw\":";
+  Leitura += "\",\"Yaw\":\"";
   Leitura += Yaw;
-  Leitura += "}";
+  Leitura += "\"}";
 
   return Leitura;
 }
@@ -215,30 +237,30 @@ void print_calibration()
   Serial.println("< calibration parameters >");
   Serial.println("accel bias [g]: ");
   Serial.print(mpu.getAccBiasX() * 1000.f / (float)MPU9250::CALIB_ACCEL_SENSITIVITY);
-  Serial.print(", ");
+  Serial.print("\", ");
   Serial.print(mpu.getAccBiasY() * 1000.f / (float)MPU9250::CALIB_ACCEL_SENSITIVITY);
-  Serial.print(", ");
+  Serial.print("\", ");
   Serial.print(mpu.getAccBiasZ() * 1000.f / (float)MPU9250::CALIB_ACCEL_SENSITIVITY);
   Serial.println();
   Serial.println("gyro bias [deg/s]: ");
   Serial.print(mpu.getGyroBiasX() / (float)MPU9250::CALIB_GYRO_SENSITIVITY);
-  Serial.print(", ");
+  Serial.print("\", ");
   Serial.print(mpu.getGyroBiasY() / (float)MPU9250::CALIB_GYRO_SENSITIVITY);
-  Serial.print(", ");
+  Serial.print("\", ");
   Serial.print(mpu.getGyroBiasZ() / (float)MPU9250::CALIB_GYRO_SENSITIVITY);
   Serial.println();
   Serial.println("mag bias [mG]: ");
   Serial.print(mpu.getMagBiasX());
-  Serial.print(", ");
+  Serial.print("\", ");
   Serial.print(mpu.getMagBiasY());
-  Serial.print(", ");
+  Serial.print("\", ");
   Serial.print(mpu.getMagBiasZ());
   Serial.println();
   Serial.println("mag scale []: ");
   Serial.print(mpu.getMagScaleX());
-  Serial.print(", ");
+  Serial.print("\", ");
   Serial.print(mpu.getMagScaleY());
-  Serial.print(", ");
+  Serial.print("\", ");
   Serial.print(mpu.getMagScaleZ());
   Serial.println();
 }

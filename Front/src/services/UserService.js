@@ -1,7 +1,7 @@
 import axios from "axios";
 import AutorizaHeader from "./AutorizaHeader";
 
-const API_URL = "http://localhost:9000/api/";
+const API_URL = "http://localhost:8000/api/";
 
 class UserService {
   getPublicContent() {

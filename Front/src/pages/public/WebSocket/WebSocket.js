@@ -86,7 +86,7 @@ export default {
             ativo: false,
             connection: null,
           },
-          tabela: [{}],
+          tabela: [],
         },
         {
           sensor: {
@@ -94,7 +94,7 @@ export default {
             ativo: false,
             connection: null,
           },
-          tabela: [{}],
+          tabela: [],
         },
         {
           sensor: {
@@ -102,7 +102,7 @@ export default {
             ativo: false,
             connection: null,
           },
-          tabela: [{}],
+          tabela: [],
         },
       ],
     };

@@ -1,0 +1,2 @@
+CMakeLists.txt not found in H:\TCC\MATERIAL\Programas\Computador\DashIMU-TCC\Sensor Select CMakeLists.txt
+Toolchains are not configured Configure Disable profile
