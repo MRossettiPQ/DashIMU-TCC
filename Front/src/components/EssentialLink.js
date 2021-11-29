@@ -19,7 +19,7 @@ class EssentialLink extends Vue {
   @Prop({ type: Function, default: null })
   action;
 
-  @Prop({ type: Boolean, default: null })
+  @Prop({ type: Boolean, default: true })
   logged;
 
   get attrs() {
