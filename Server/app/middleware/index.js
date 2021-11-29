@@ -1,7 +1,7 @@
-const   autorizaJwt             = require("./autorizaJwt"),
-        verificaCadastro        = require("./verificaCadastro");
+const autorizaJwt = require("./autorizaJwt");
+const verificaCadastro = require("./verificaCadastro");
 
 module.exports = {
-    autorizaJwt,
-    verificaCadastro,
+  autorizaJwt,
+  verificaCadastro,
 };
