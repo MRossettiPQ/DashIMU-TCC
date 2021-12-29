@@ -12,9 +12,7 @@
             @click="leftDrawerOpen = !leftDrawerOpen"
           />
 
-          <q-toolbar-title>
-            Dashi-IMU
-          </q-toolbar-title>
+          <q-toolbar-title> Dashi-IMU </q-toolbar-title>
 
           <div>
             <q-toolbar-title>
@@ -59,7 +57,7 @@
           />
 
           <q-item
-            v-if="!!this.$store.state.autentica.user"
+            v-if="!!$store.state.autenticacao.user"
             clickable
             tag="a"
             @click="logOut"
@@ -70,9 +68,7 @@
 
             <q-item-section>
               <q-item-label>Logout</q-item-label>
-              <q-item-label caption>
-                Sair da conta
-              </q-item-label>
+              <q-item-label caption> Sair da conta </q-item-label>
             </q-item-section>
           </q-item>
         </q-list>

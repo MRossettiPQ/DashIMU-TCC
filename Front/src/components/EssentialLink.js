@@ -26,6 +26,7 @@ class EssentialLink extends Vue {
     if (this.link) {
       return { to: this.link };
     }
+    return "";
   }
 }
 

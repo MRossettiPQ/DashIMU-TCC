@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import autentica from "./autentica";
+import autenticacao from "./autenticacao";
 import paciente from "./paciente";
 // import example from './module-example'
 
@@ -14,18 +14,16 @@ Vue.use(Vuex);
  * async/await or return a Promise which resolves
  * with the Store instance.
  */
-export default function(/* { ssrContext } */) {
-  const Store = new Vuex.Store({
+export default function (/* { ssrContext } */) {
+  return new Vuex.Store({
     modules: {
       // example
-      autentica,
-      paciente
+      autenticacao,
+      paciente,
     },
 
     // enable strict mode (adds overhead!)
     // for dev mode only
-    strict: process.env.DEBUGGING
+    strict: process.env.DEBUGGING,
   });
-
-  return Store;
 }

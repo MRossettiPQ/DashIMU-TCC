@@ -1,5 +1,5 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { exportFile } from "quasar";
+// import { exportFile } from "quasar";
 
 @Component({
   name: "TabTable",
@@ -34,39 +34,40 @@ class TabTable extends Vue {
   ];
 
   exportTable() {
-    function wrapCsvValue(val, formatFn) {
-      let formatted = formatFn !== void 0 ? formatFn(val) : val;
-      formatted =
-        formatted === void 0 || formatted === null ? "" : String(formatted);
-      formatted = formatted.split('"').join('""');
-      return `"${formatted}"`;
-    }
-
-    // naive encoding to csv format
-    const content = [this.columns.map((col) => wrapCsvValue(col.label))]
-      .concat(
-        data.map((row) =>
-          this.columns
-            .map((col) =>
-              wrapCsvValue(
-                typeof col.field === "function"
-                  ? col.field(row)
-                  : row[col.field === void 0 ? col.name : col.field],
-                col.format
-              )
-            )
-            .join(",")
-        )
-      )
-      .join("\r\n");
-    const status = exportFile("table-export.csv", content, "text/csv");
-    if (status !== true) {
-      this.$q.notify({
-        message: "Browser denied file download...",
-        color: "negative",
-        icon: "warning",
-      });
-    }
+    console.log(this.data);
+    // function wrapCsvValue(val, formatFn) {
+    //   let formatted = formatFn !== void 0 ? formatFn(val) : val;
+    //   formatted =
+    //     formatted === void 0 || formatted === null ? "" : String(formatted);
+    //   formatted = formatted.split('"').join('""');
+    //   return `"${formatted}"`;
+    // }
+    //
+    // // naive encoding to csv format
+    // const content = [this.columns.map((col) => wrapCsvValue(col.label))]
+    //   .concat(
+    //     data.map((row) =>
+    //       this.columns
+    //         .map((col) =>
+    //           wrapCsvValue(
+    //             typeof col.field === "function"
+    //               ? col.field(row)
+    //               : row[col.field === void 0 ? col.name : col.field],
+    //             col.format
+    //           )
+    //         )
+    //         .join(",")
+    //     )
+    //   )
+    //   .join("\r\n");
+    // const status = exportFile("table-export.csv", content, "text/csv");
+    // if (status !== true) {
+    //   this.$q.notify({
+    //     message: "Browser denied file download...",
+    //     color: "negative",
+    //     icon: "warning",
+    //   });
+    // }
   }
 }
 

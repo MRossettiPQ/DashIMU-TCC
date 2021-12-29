@@ -34,11 +34,6 @@ const routes = [
         path: "sensor",
         component: () => import("pages/public/Sensor/Sensor.vue"),
       },
-      {
-        name: "acesso.websocket",
-        path: "websocket",
-        component: () => import("pages/public/WebSocket/WebSocket.vue"),
-      },
     ],
   },
   // Always leave this as last one,

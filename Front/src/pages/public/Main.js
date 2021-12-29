@@ -54,7 +54,7 @@ export default {
   },
   computed: {
     currentUser() {
-      return this.$store.state.autentica.user;
+      return this.$store.state.autenticacao.user;
     },
     showFisioBoard() {
       if (this.currentUser && this.currentUser["funcao"]) {
@@ -83,15 +83,14 @@ export default {
   },
   methods: {
     logged() {
-      console.log(this.$store.state.autentica.user !== null);
-      return this.$store.state.autentica.user !== null;
+      return this.$store.state.autenticacao.user !== null;
     },
     logOut() {
       this.$store.dispatch("autentica/logout");
-      this.$router.push("/");
+      this.$router.push("/").then((r) => console.log(r));
     },
     goPerfil() {
-      this.$router.push("/perfil");
+      this.$router.push("/perfil").then((r) => console.log(r));
     },
   },
 };

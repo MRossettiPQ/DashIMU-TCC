@@ -1,13 +1,13 @@
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 
 @Component({
   name: "Logar",
-  components: {}
+  components: {},
 })
 class Logar extends Vue {
   credencial = {
     usernameUser: "",
-    senhaUser: ""
+    senhaUser: "",
   };
 
   isRequired(value) {
@@ -17,7 +17,7 @@ class Logar extends Vue {
   computed = {
     loggedIn() {
       return this.$store.state.autentica.status.loggedIn;
-    }
+    },
   };
 
   created() {
@@ -29,13 +29,13 @@ class Logar extends Vue {
   handleLogin(user) {
     this.loading = true;
 
-    console.log(user);
+    // console.log(user);
 
     this.$store.dispatch("autentica/login", user).then(
       () => {
         this.$router.push("/perfil");
       },
-      error => {
+      (error) => {
         this.loading = false;
         this.message =
           (error.response &&

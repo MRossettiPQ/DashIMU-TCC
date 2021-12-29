@@ -29,19 +29,18 @@ verificaToken = (req, res, next) => {
 
 seAdmin = (req, res, next) => {
   Usuario.findByPk(req.idUser).then((usuarioVerifica) => {
-    //console.log("VERIFICAR ADMIN");
     usuarioVerifica.getFuncaos().then((funcaoVerifica) => {
       for (let i = 0; i < funcaoVerifica.length; i++) {
         if (funcaoVerifica[i].nomeFuncao === "ADMIN") {
+          console.log("VERIFICOU FISIO");
           next();
           return;
         }
       }
 
       res.status(403).send({
-        message: "Requer função de Admin!",
+        message: "Requer ser um Administrador!",
       });
-      return;
     });
   });
 };
@@ -82,10 +81,33 @@ seFisio = (req, res, next) => {
     });
   });
 };
+
+seAdminFisio = (req, res, next) => {
+  Usuario.findByPk(req.idUser).then((usuarioVerifica) => {
+    usuarioVerifica.getFuncaos().then((funcaoVerifica) => {
+      for (let i = 0; i < funcaoVerifica.length; i++) {
+        if (
+          funcaoVerifica[i].nomeFuncao === "ADMIN" ||
+          funcaoVerifica[i].nomeFuncao === "FISIO"
+        ) {
+          console.log("VERIFICOU FISIO OU ADMIN");
+          next();
+          return;
+        }
+      }
+
+      res.status(403).send({
+        message: "Requer ser um Administrador/Fisioterapeuta!",
+      });
+    });
+  });
+};
+
 const autorizaJwt = {
   verificaToken: verificaToken,
   seAdmin: seAdmin,
   seFisio: seFisio,
   sePaciente: sePaciente,
+  seAdminFisio: seAdminFisio,
 };
 module.exports = autorizaJwt;

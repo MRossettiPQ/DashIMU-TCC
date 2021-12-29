@@ -30,7 +30,7 @@ Vue.use(VueApexCharts);
 moment.locale("pt-br");
 
 export default function (/* { store, ssrContext } */) {
-  const Router = new VueRouter({
+  return new VueRouter({
     scrollBehavior: () => ({ x: 0, y: 0 }),
     routes,
 
@@ -40,6 +40,4 @@ export default function (/* { store, ssrContext } */) {
     mode: process.env.VUE_ROUTER_MODE,
     base: process.env.VUE_ROUTER_BASE,
   });
-
-  return Router;
 }

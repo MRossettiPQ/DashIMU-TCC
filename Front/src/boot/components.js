@@ -1,45 +1,37 @@
 import upperFirst from "lodash/upperFirst";
 import camelCase from "lodash/camelCase";
 import {
-  QMarkupTable,
-  QLinearProgress,
-  QBtn,
-  QInput,
-  QIcon,
-  QDate,
-  QPopupProxy,
-  QCheckbox,
-  QMenu,
   QBadge,
-  QSelect,
-  QItemSection,
-  QItem,
-  QItemLabel,
-  QImg,
-  QTime,
-  QColor,
+  QBtn,
   QCard,
   QCardActions,
   QCardSection,
+  QCheckbox,
+  QColor,
+  QDate,
+  QDialog,
+  QField,
+  QIcon,
+  QImg,
+  QInput,
+  QItem,
+  QItemLabel,
+  QItemSection,
+  QLinearProgress,
+  QMarkupTable,
+  QMenu,
+  QPopupProxy,
+  QSelect,
+  QTime,
   QToolbar,
   QToolbarTitle,
-  QDialog,
 } from "quasar";
-import {
-  ColorPicker,
-  DateTimePicker,
-  DropUpload,
-  Editor,
-  MaskedInput,
-  Select,
-  Autocomplete,
-  Ajuda,
-  DataTable,
-} from "@crusader-vue/components";
+import { DateTimePicker, MaskedInput } from "@crusader-vue/components";
 import VueApexCharts from "vue-apexcharts";
 
 export default async ({ Vue }) => {
   console.log("loading components");
+  // https://webpack.js.org/guides/dependency-management/#require-context
   const requireComponent = require.context(
     // Look for files in the current directory
     "../components",
@@ -73,6 +65,7 @@ export default async ({ Vue }) => {
   });
 
   Vue.component("date-time-picker", DateTimePicker);
+  Vue.component("masked-input", MaskedInput);
   Vue.component("q-markup-table", QMarkupTable);
   Vue.component("q-linear-progress", QLinearProgress);
   Vue.component("q-btn", QBtn);
@@ -96,5 +89,6 @@ export default async ({ Vue }) => {
   Vue.component("q-toolbar", QToolbar);
   Vue.component("q-toolbar-title", QToolbarTitle);
   Vue.component("q-dialog", QDialog);
+  Vue.component("q-field", QField);
   Vue.component("apexchart", VueApexCharts);
 };

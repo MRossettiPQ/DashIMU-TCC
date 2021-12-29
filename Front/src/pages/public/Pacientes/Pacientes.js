@@ -16,32 +16,32 @@ export default {
           name: "nomePaciente",
           align: "left",
           label: "Nome",
-          field: "nomePaciente"
+          field: "nomePaciente",
         },
         {
           name: "idPaciente",
           align: "left",
           label: "ID Paciente",
-          field: "nomePaciente"
+          field: "nomePaciente",
         },
         {
           name: "cpfPaciente",
           align: "left",
           label: "CPF",
-          field: "cpfPaciente"
-        }
+          field: "cpfPaciente",
+        },
       ],
-      data: []
+      data: [],
     };
   },
   mounted() {
     PacienteService.getListaPaciente().then(
-      response => {
+      (response) => {
         console.log("lista de pacientes", response);
         this.content = response.data;
         this.data = response.data;
       },
-      error => {
+      (error) => {
         this.content =
           (error.response &&
             error.response.data &&
@@ -52,7 +52,7 @@ export default {
     );
   },
   methods: {
-    resetPerfil() {
+    atualizarPerfil() {
       this.perfilAberto = {};
       //console.log(this.perfilAberto);
     },
@@ -68,11 +68,11 @@ export default {
       paciente.idUser = this.$store.state.autentica.user.idUser;
       //console.log(paciente);
       this.$store.dispatch("paciente/register", paciente).then(
-        data => {
+        (data) => {
           this.message = data.message;
           this.reloadTabela();
         },
-        error => {
+        (error) => {
           this.message =
             (error.response &&
               error.response.data &&
@@ -84,12 +84,12 @@ export default {
     },
     reloadTabela() {
       PacienteService.getListaPaciente().then(
-        response => {
+        (response) => {
           //console.log("lista de pacientes", response);
           this.content = response.data;
           this.data = response.data;
         },
-        error => {
+        (error) => {
           this.content =
             (error.response &&
               error.response.data &&
@@ -122,7 +122,7 @@ export default {
         //   ];
         this.loading = false;
       }, 500);
-    }
+    },
     // removeRow() {
     //   this.loading = true;
     //   setTimeout(() => {
@@ -134,5 +134,5 @@ export default {
     //     this.loading = false;
     //   }, 500);
     // }
-  }
+  },
 };

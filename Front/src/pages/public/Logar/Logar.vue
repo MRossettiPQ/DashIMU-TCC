@@ -7,16 +7,16 @@
         </div>
 
         <q-input
+          v-model="credencial.usernameUser"
           filled
           label="Username"
           type="text"
-          v-model="credencial.usernameUser"
           class="col m-t-16"
         />
 
         <q-input
-          filled
           v-model="credencial.senhaUser"
+          filled
           label="Senha"
           type="password"
           class="col m-t-16"

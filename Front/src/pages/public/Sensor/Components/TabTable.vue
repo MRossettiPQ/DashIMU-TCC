@@ -1,18 +1,18 @@
 <template>
   <div class="scrollable overflow-auto flex-grow-1 flex-shrink-0">
     <q-table
-        :title="label"
-        :columns="tabelaColumns"
-        :pagination="data"
-        color="primary"
+      :title="label"
+      :columns="tabelaColumns"
+      :rows="data"
+      color="primary"
     >
-      <template v-slot:top-right>
+      <template #top-right>
         <q-btn
-            color="primary"
-            icon-right="archive"
-            label="Export to csv"
-            no-caps
-            @click="exportTable"
+          color="primary"
+          icon-right="archive"
+          label="Export to csv"
+          no-caps
+          @click="exportTable"
         />
       </template>
     </q-table>

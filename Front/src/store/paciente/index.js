@@ -5,13 +5,13 @@ export default {
   actions: {
     register({ commit }, paciente) {
       return PacienteService.registerPaciente(paciente).then(
-        response => {
+        (response) => {
           return Promise.resolve(response.data);
         },
-        error => {
+        (error) => {
           return Promise.reject(error);
         }
       );
-    }
-  }
+    },
+  },
 };

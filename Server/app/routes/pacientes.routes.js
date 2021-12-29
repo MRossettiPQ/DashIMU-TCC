@@ -16,17 +16,13 @@ module.exports = function (app) {
 
   app.get(
     "/api/pacientes",
-    [autorizaJwt.verificaToken, autorizaJwt.seFisio],
+    [autorizaJwt.verificaToken, autorizaJwt.seAdminFisio],
     pacienteController.getListaPacientes
   );
 
   app.post(
     "/api/pacientes",
-    [
-      //autorizaJwt.verificaToken,
-      verificaCadastro.verificaCPF,
-      // autorizaJwt.seFisio,
-    ],
+    [autorizaJwt.verificaToken, autorizaJwt.seAdminFisio],
     pacienteController.postRegistrarPaciente
   );
 };

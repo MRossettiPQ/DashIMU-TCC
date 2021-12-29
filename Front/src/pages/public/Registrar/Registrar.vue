@@ -8,55 +8,55 @@
         </div>
         <q-form @submit="onSubmit(cadastro)">
           <q-input
-            filled
             v-model="cadastro.nomeUser"
+            filled
             label="Nome"
             class="m-t-40"
           />
           <q-input
-            filled
             v-model="cadastro.usernameUser"
+            filled
             label="Username"
             class="m-t-40"
           />
           <date-time-picker
+            v-model="cadastro.nascUser"
             filled
             label="Data de Nascimento"
-            v-model="cadastro.nascUser"
             class="m-t-8"
             :rule="[dataNascimentoValidator]"
           />
           <q-input
-            filled
             v-model="cadastro.telefoneUser"
+            filled
             label="Telefone"
             class="m-t-40"
           />
           <q-input
-            filled
             v-model="cadastro.emailUser"
+            filled
             label="Email"
             class="m-t-8"
             type="email"
             :rules="[$validators.notBlank]"
           />
           <q-input
-            filled
             v-model="cadastro.senhaUser"
+            filled
             label="Senha"
             type="password"
             class="m-t-8"
           />
           <q-input
-            filled
             v-model="cadastro.senhaConfirmar"
+            filled
             label="Repetir Senha"
             type="password"
             class="m-t-8"
             :rules="[
-              val =>
+              (val) =>
                 val == cadastro.senhaUser ||
-                'As senhas informadas são diferentes'
+                'As senhas informadas são diferentes',
             ]"
           />
           <q-btn

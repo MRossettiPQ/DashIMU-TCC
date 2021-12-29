@@ -1,7 +1,8 @@
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
+import moment from "moment";
 
 @Component({
-  name: "Registrar"
+  name: "Registrar",
 })
 class Registrar extends Vue {
   cadastro = {
@@ -11,7 +12,7 @@ class Registrar extends Vue {
     senhaUser: "",
     senhaConfirmar: "",
     usernameUser: "",
-    telefoneUser: ""
+    telefoneUser: "",
   };
 
   dataNascimentoValidator(value) {
@@ -24,7 +25,7 @@ class Registrar extends Vue {
   computed = {
     loggedIn() {
       return this.$store.state.auth.status.loggedIn;
-    }
+    },
   };
 
   mounted() {
@@ -35,10 +36,10 @@ class Registrar extends Vue {
 
   onSubmit(user) {
     this.$store.dispatch("autentica/register", user).then(
-      data => {
+      (data) => {
         this.message = data.message;
       },
-      error => {
+      (error) => {
         this.message =
           (error.response &&
             error.response.data &&

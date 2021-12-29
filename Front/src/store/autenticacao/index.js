@@ -11,11 +11,11 @@ export default {
   actions: {
     login({ commit }, user) {
       return AutenticaService.login(user).then(
-        user => {
+        (user) => {
           commit("loginSuccess", user);
           return Promise.resolve(user);
         },
-        error => {
+        (error) => {
           commit("loginFailure");
           return Promise.reject(error);
         }
@@ -27,16 +27,16 @@ export default {
     },
     register({ commit }, user) {
       return AutenticaService.register(user).then(
-        response => {
+        (response) => {
           commit("registerSuccess");
           return Promise.resolve(response.data);
         },
-        error => {
+        (error) => {
           commit("registerFailure");
           return Promise.reject(error);
         }
       );
-    }
+    },
   },
   mutations: {
     loginSuccess(state, user) {
@@ -56,6 +56,6 @@ export default {
     },
     registerFailure(state) {
       state.status.loggedIn = false;
-    }
-  }
+    },
+  },
 };
