@@ -2,69 +2,69 @@
   <q-page class="flex flex-center">
     <q-card class="cadastro-card">
       <q-card-section>
-        <div class="row items-center m-b-32">
-          <q-btn round flat icon="navigate_before" to="logar" />
-          <h5 class="title col">Cadastrar</h5>
-        </div>
-        <q-form @submit="onSubmit(cadastro)">
+        <q-form greedy ref="mainForm" class="form-lines">
+          <div class="row items-center">
+            <h3 class="title col">Cadastrar</h3>
+          </div>
+
           <q-input
-            v-model="cadastro.nomeUser"
+            class="row"
             filled
+            v-model="bean.nomeUser"
             label="Nome"
-            class="m-t-40"
+            :rules="[$validators.notBlank]"
           />
           <q-input
-            v-model="cadastro.usernameUser"
+            class="row"
             filled
+            v-model="bean.usernameUser"
             label="Username"
-            class="m-t-40"
+            :rules="[$validators.notBlank]"
           />
           <date-time-picker
-            v-model="cadastro.nascUser"
+            class="row"
             filled
+            v-model="bean.nascUser"
             label="Data de Nascimento"
-            class="m-t-8"
-            :rule="[dataNascimentoValidator]"
+            :rule="[$validators.notBlank, $validators.dateBorn]"
           />
           <q-input
-            v-model="cadastro.telefoneUser"
+            class="row"
+            v-model="bean.telefoneUser"
             filled
             label="Telefone"
-            class="m-t-40"
+            :rules="[$validators.notBlank]"
           />
           <q-input
-            v-model="cadastro.emailUser"
+            class="row"
+            v-model="bean.emailUser"
             filled
             label="Email"
-            class="m-t-8"
             type="email"
             :rules="[$validators.notBlank]"
           />
           <q-input
-            v-model="cadastro.senhaUser"
+            class="row"
+            v-model="bean.senhaUser"
             filled
             label="Senha"
             type="password"
-            class="m-t-8"
+            :rules="[$validators.notBlank]"
           />
           <q-input
-            v-model="cadastro.senhaConfirmar"
+            class="row"
+            v-model="bean.senhaConfirmar"
             filled
             label="Repetir Senha"
             type="password"
-            class="m-t-8"
-            :rules="[
-              (val) =>
-                val == cadastro.senhaUser ||
-                'As senhas informadas são diferentes',
-            ]"
+            :rules="[$validators.notBlank, $validators.equal(bean.senhaUser)]"
           />
           <q-btn
+            class="row cadastro-btn"
             color="primary"
             label="cadastrar-se"
-            class="cadastro-btn"
             size="lg"
-            type="submit"
+            @click="onSubmit"
           />
         </q-form>
         <p class="possui-conta">
@@ -99,7 +99,6 @@
 .cadastro-btn
   width 100%
   height 64px
-  margin-top 16px
 
 .cadastro-card
   width 470px

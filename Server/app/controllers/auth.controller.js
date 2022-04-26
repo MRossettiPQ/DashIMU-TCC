@@ -14,14 +14,14 @@ exports.registrar = (req, res) => {
     telefoneUser: req.body.telefoneUser,
     nomeUser: req.body.nomeUser,
     nascUser: req.body.nascUser,
-    senhaUser: bcrypt.hashSync(req.body.senhaUser, 8),
+    senhaUser: bcrypt.hashSync(req.body.senhaUser, 8)
   })
-    .then((usuarioCad) => {
+    .then(usuarioCad => {
       usuarioCad.setFuncaos([1]).then(() => {
         res.send({ message: "Usuario registrado com sucesso!" });
       });
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).send({ message: err.message });
     });
 };
@@ -29,15 +29,15 @@ exports.registrar = (req, res) => {
 exports.logar = (req, res) => {
   Usuario.findOne({
     where: {
-      usernameUser: req.body.usernameUser,
-    },
+      usernameUser: req.body.usernameUser
+    }
   })
-    .then((usuarioLog) => {
+    .then(usuarioLog => {
       if (!usuarioLog) {
         return res.status(404).send({ message: "Usuario não encontrado." });
       }
 
-      var senhaValida = bcrypt.compareSync(
+      const senhaValida = bcrypt.compareSync(
         req.body.senhaUser,
         usuarioLog.senhaUser
       );
@@ -45,16 +45,16 @@ exports.logar = (req, res) => {
       if (!senhaValida) {
         return res.status(401).send({
           accessToken: null,
-          message: "Senha invalida!",
+          message: "Senha invalida!"
         });
       }
 
-      var token = jwt.sign({ idUser: usuarioLog.idUser }, authConfig.secret, {
-        expiresIn: 86400, // 24 hours
+      const token = jwt.sign({ idUser: usuarioLog.idUser }, authConfig.secret, {
+        expiresIn: 86400 // 24 hours
       });
 
-      var authorities = [];
-      usuarioLog.getFuncaos().then((funcao) => {
+      const authorities = [];
+      usuarioLog.getFuncaos().then(funcao => {
         for (let i = 0; i < funcao.length; i++) {
           authorities.push("ROLE_" + funcao[i].nomeFuncao.toUpperCase());
         }
@@ -66,11 +66,11 @@ exports.logar = (req, res) => {
           usernameUser: usuarioLog.usernameUser,
           emailUser: usuarioLog.emailUser,
           funcao: authorities,
-          accessToken: token,
+          accessToken: token
         });
       });
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).send({ message: err.message });
     });
 };

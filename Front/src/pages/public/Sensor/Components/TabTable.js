@@ -2,14 +2,16 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 // import { exportFile } from "quasar";
 
 @Component({
-  name: "TabTable",
+  name: "tab-table"
 })
 class TabTable extends Vue {
   @Prop()
   label;
 
-  @Prop()
+  @Prop({ type: Array, default: [{}] })
   data;
+
+  openFullscreen = false;
 
   tabelaColumns = [
     { name: "id", label: "id", field: "id", align: "center" },
@@ -30,8 +32,12 @@ class TabTable extends Vue {
     { name: "MagZ_uT", label: "MagZ_uT", field: "MagZ_uT" },
     { name: "Roll", label: "Roll", field: "Roll" },
     { name: "Pitch", label: "Pitch", field: "Pitch" },
-    { name: "Yaw", label: "Yaw", field: "Yaw" },
+    { name: "Yaw", label: "Yaw", field: "Yaw" }
   ];
+
+  openFullscren() {
+    this.openFullscreen = !this.openFullscreen;
+  }
 
   exportTable() {
     console.log(this.data);

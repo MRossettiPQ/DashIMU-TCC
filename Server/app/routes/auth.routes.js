@@ -1,23 +1,17 @@
 const { verificaCadastro } = require("../middleware");
 const autController = require("../controllers/auth.controller");
+const header = require("./header");
 
-module.exports = function (app) {
-  app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-    res.header(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-    );
-
-    next();
+module.exports = function(app) {
+  app.use(function(req, res, next) {
+    header(req, res, next);
   });
 
   app.post(
     "/api/auth/signup",
     [
       verificaCadastro.verificaUsuarioEmailDuplicados,
-      verificaCadastro.verificaRoleExistente,
+      verificaCadastro.verificaRoleExistente
     ],
     autController.registrar
   );

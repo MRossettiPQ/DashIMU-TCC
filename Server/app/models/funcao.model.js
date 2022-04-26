@@ -1,14 +1,13 @@
 module.exports = (sequelize, Sequelize) => {
-  const Funcao = sequelize.define("funcao", {
+  return sequelize.define("funcao", {
     idFuncao: {
       type: Sequelize.INTEGER,
       primaryKey: true,
-      autoIncrement: true,
+      autoIncrement: true
     },
     nomeFuncao: {
       type: Sequelize.STRING,
-      unique: true,
-    },
+      unique: true
+    }
   });
-  return Funcao;
-}; 
+};

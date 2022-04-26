@@ -7,19 +7,11 @@ class AuthService {
     return axios
       .post(API_URL + "signin", {
         usernameUser: user.usernameUser,
-        senhaUser: user.senhaUser,
+        senhaUser: user.senhaUser
       })
-      .then((response) => {
-        if (response.data.accessToken) {
-          localStorage.setItem("user", JSON.stringify(response.data));
-        }
-
+      .then(response => {
         return response.data;
       });
-  }
-
-  logout() {
-    localStorage.removeItem("user");
   }
 
   register(user) {
@@ -29,7 +21,7 @@ class AuthService {
       nascUser: user.nascUser,
       telefoneUser: user.telefoneUser,
       emailUser: user.emailUser,
-      senhaUser: user.senhaUser,
+      senhaUser: user.senhaUser
     });
   }
 }

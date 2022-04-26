@@ -24,10 +24,11 @@ import {
   QSelect,
   QTime,
   QToolbar,
-  QToolbarTitle,
+  QToolbarTitle
 } from "quasar";
 import { DateTimePicker, MaskedInput } from "@crusader-vue/components";
 import VueApexCharts from "vue-apexcharts";
+import ValidatorPlugin from "src/commons/utils/ValidatorsUtils";
 
 export default async ({ Vue }) => {
   console.log("loading components");
@@ -42,7 +43,7 @@ export default async ({ Vue }) => {
   );
 
   // For each matching file name...
-  requireComponent.keys().forEach((fileName) => {
+  requireComponent.keys().forEach(fileName => {
     // Get the component config
     const componentConfig = requireComponent(fileName);
 
@@ -91,4 +92,5 @@ export default async ({ Vue }) => {
   Vue.component("q-dialog", QDialog);
   Vue.component("q-field", QField);
   Vue.component("apexchart", VueApexCharts);
+  Vue.use(ValidatorPlugin);
 };

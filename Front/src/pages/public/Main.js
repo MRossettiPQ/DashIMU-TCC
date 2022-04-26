@@ -1,96 +1,81 @@
-import EssentialLink from "components/EssentialLink.vue";
+import { Component, Vue } from "vue-property-decorator";
+import EssentialLink from "components/EssentialLink/EssentialLink.vue";
 
-export default {
-  name: "Main",
-  components: { EssentialLink },
-  data() {
-    return {
-      leftDrawerOpen: false,
-      essentialLinks: [
-        {
-          title: "Home",
-          caption: "Tela inicial",
-          icon: "home",
-          link: "/home",
-          logged: true,
-        },
-        {
-          title: "Login",
-          caption: "Para logar",
-          icon: "login",
-          link: "/logar",
-          logged: !this.logged(),
-        },
-        {
-          title: "Registrar",
-          caption: "Para registro",
-          icon: "app_registration",
-          link: "/registrar",
-          logged: !this.logged(),
-        },
-        {
-          title: "Perfil",
-          caption: "Ver perfil",
-          icon: "account_circle",
-          link: "/perfil",
-          logged: this.logged(),
-        },
-        {
-          title: "Pacientes",
-          caption: "Ver pacientes",
-          icon: "local_hospital",
-          link: "/pacientes",
-          logged: this.logged(),
-        },
-        {
-          title: "Sensor",
-          caption: "Ver sensor",
-          icon: "square_foot",
-          link: "/sensor",
-          logged: this.logged(),
-        },
-      ],
-    };
-  },
-  computed: {
-    currentUser() {
-      return this.$store.state.autenticacao.user;
+@Component({
+  name: "main",
+  components: { EssentialLink }
+})
+class Main extends Vue {
+  leftDrawerOpen = false;
+
+  get logged() {
+    return !!this.$store.state.autenticacao.user;
+  }
+
+  get currentUser() {
+    return this.$store.state.autenticacao.user;
+  }
+
+  essentialLinks = [
+    {
+      title: "Home",
+      caption: "Tela inicial",
+      icon: "home",
+      link: "/home"
     },
-    showFisioBoard() {
-      if (this.currentUser && this.currentUser["funcao"]) {
-        return this.currentUser["funcao"].includes("ROLE_FISIO");
-      }
-      return false;
+    {
+      title: "Login",
+      caption: "Para logar",
+      icon: "login",
+      link: "/logar",
+      inLogged: true
     },
-    showSensorBoard() {
-      if (this.currentUser && this.currentUser["funcao"]) {
-        return this.currentUser["funcao"].includes("ROLE_FISIO");
-      }
-      return false;
+    {
+      title: "Registrar",
+      caption: "Para registro",
+      icon: "app_registration",
+      link: "/registrar",
+      inLogged: true
     },
-    showAdminBoard() {
-      if (this.currentUser && this.currentUser["funcao"]) {
-        return this.currentUser["funcao"].includes("ROLE_ADMIN");
-      }
-      return false;
+    {
+      title: "Perfil",
+      caption: "Ver perfil",
+      icon: "account_circle",
+      link: "/perfil",
+      inLogged: false
     },
-    showPacienteBoard() {
-      if (this.currentUser && this.currentUser["funcao"]) {
-        return this.currentUser["funcao"].includes("ROLE_PACIENTE");
-      }
-      return false;
+    {
+      title: "Pacientes",
+      caption: "Ver pacientes",
+      icon: "local_hospital",
+      link: "/pacientes",
+      inLogged: false
     },
-  },
-  methods: {
-    logged() {
-      return this.$store.state.autenticacao.user !== null;
-    },
-    logOut() {
-      this.$store.dispatch("autentica/logout");
-      this.$router.push("/").then((r) => console.log(r));
-    },
-    goPerfil() {
-      this.$router.push("/perfil").then((r) => console.log(r));
-    },
-  },
-};
+    {
+      title: "Sensor",
+      caption: "Ver sensor",
+      icon: "square_foot",
+      link: "/sensor",
+      inLogged: false
+    }
+  ];
+
+  logOut() {
+    try {
+      this.$store.dispatch("autenticacao/logout");
+      this.$router.push("/home");
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  goPerfil() {
+    try {
+      this.$router.push("/perfil");
+    } catch (e) {
+      console.log(e);
+    }
+  }
+}
+
+export default Main;

@@ -3,17 +3,9 @@ const enableWs = require("express-ws");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
-// const path = require("path");
-// const mqtt = require("mqtt");
-
 const serverConfig = require("./app/config/server.config.js");
 const db = require("./app/models");
 const app = express();
-var comandoStoS;
-
-var corsOptions = {
-  origin: `Access-Control-Allow-Headers: http://localhost:${serverConfig.PORTCORS}/api`,
-};
 
 app.use(cors());
 
@@ -24,7 +16,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 require("./app/routes/auth.routes")(app);
-require("./app/routes/user.routes")(app);
 require("./app/routes/pacientes.routes")(app);
 // ativa web-socket no app express
 enableWs(app);
@@ -39,33 +30,33 @@ db.sequelize.sync({ force: false }).then(() => {
 function initial() {
   Funcao.create({
     idFuncao: 1,
-    nomeFuncao: "FISIO",
+    nomeFuncao: "FISIO"
   });
   Funcao.create({
     idFuncao: 2,
-    nomeFuncao: "ADMIN",
+    nomeFuncao: "ADMIN"
   });
 }
-// Rotas - Ping
-app.get("/ping", function (req, res) {
-  res.json({ message: "testando server" });
-  console.log(`Pagina: /`);
-});
-//Rotas - Socket
-app.ws("/socket", function (ws, req) {
-  ws.on("message", function (msg) {
-    if (msg === "OK" || msg === "ok" || msg === "Ok") {
-      ws.send("RECEBI OK");
-    } else {
-      ws.send("NÃO RECEBI OK");
-    }
-    console.log(msg);
-  });
-  ws.on("close", () => {
-    console.log("WebSocket was closed");
-  });
-  console.log("socket", req.testing);
-});
+// // Rotas - Ping
+// app.get("/ping", function (req, res) {
+//   res.json({ message: "testando server" });
+//   console.log(`Pagina: /`);
+// });
+// //Rotas - Socket
+// app.ws("/socket", function (ws, req) {
+//   ws.on("message", function (msg) {
+//     if (msg === "OK" || msg === "ok" || msg === "Ok") {
+//       ws.send("RECEBI OK");
+//     } else {
+//       ws.send("NÃO RECEBI OK");
+//     }
+//     console.log(msg);
+//   });
+//   ws.on("close", () => {
+//     console.log("WebSocket was closed");
+//   });
+//   console.log("socket", req.testing);
+// });
 
 // set port, listen for requests
 const PORT = process.env.PORT || serverConfig.PORT;

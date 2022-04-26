@@ -51,13 +51,12 @@ verificaRoleExistente = (req, res, next) => {
 };
 
 verificaCPF = (req, res, next) => {
-  console.log("VERIFICAR CPF");
-  // Email
   Paciente.findOne({
     where: {
       cpfPaciente: req.body.cpfPaciente,
     },
   }).then((usuarioVerifica) => {
+    console.log("Usuario encontrado: ", usuarioVerifica);
     if (usuarioVerifica) {
       res.status(400).send({
         message: "Falhou! CPF esta na lista!",

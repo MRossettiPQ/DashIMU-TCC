@@ -1,41 +1,45 @@
 <template>
   <q-page class="flex flex-center">
     <q-card class="login-card">
-      <q-card-section>
-        <div class="row items-center m-b-32">
-          <h5 class="title col">Entrar</h5>
-        </div>
+      <q-form greedy ref="mainForm" class="col">
+        <q-card-section class="form-lines">
+          <div class="row items-center m-b-32">
+            <h3 class="title col">Entrar</h3>
+          </div>
 
-        <q-input
-          v-model="credencial.usernameUser"
-          filled
-          label="Username"
-          type="text"
-          class="col m-t-16"
-        />
+          <q-input
+            v-model="bean.usernameUser"
+            filled
+            label="Username"
+            type="text"
+            class="row"
+            :rules="[$validators.notBlank]"
+          />
 
-        <q-input
-          v-model="credencial.senhaUser"
-          filled
-          label="Senha"
-          type="password"
-          class="col m-t-16"
-        />
+          <q-input
+            v-model="bean.senhaUser"
+            filled
+            label="Senha"
+            type="password"
+            class="row"
+            :rules="[$validators.notBlank]"
+          />
 
-        <q-btn
-          color="primary"
-          unelevated
-          label="Entrar"
-          class="login-btn"
-          size="lg"
-          @click="handleLogin(credencial)"
-        />
+          <q-btn
+            color="primary"
+            unelevated
+            label="Entrar"
+            class="login-btn"
+            size="lg"
+            @click="onSubmit"
+          />
 
-        <p class="cadastre-se">
-          Não possui conta?
-          <router-link to="registrar">Cadastre-se</router-link>
-        </p>
-      </q-card-section>
+          <p class="cadastre-se">
+            Não possui conta?
+            <router-link to="registrar">Cadastre-se</router-link>
+          </p>
+        </q-card-section>
+      </q-form>
     </q-card>
   </q-page>
 </template>
@@ -73,12 +77,7 @@
     font-weight bold
     color $dark
 
-.login-btn
-  width 100%
-  height 64px
-  margin-top 24px
-
 .login-card
   width 470px
-  padding 30px 46px
+  padding 46px 46px
 </style>

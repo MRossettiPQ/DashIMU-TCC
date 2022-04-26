@@ -1,5 +1,5 @@
 <template>
-  <q-item v-if="logged" clickable tag="a" v-bind="attrs">
+  <q-item v-if="renderLink" clickable tag="a" v-bind="attrs">
     <q-item-section v-if="icon" avatar>
       <q-icon :name="icon" />
     </q-item-section>

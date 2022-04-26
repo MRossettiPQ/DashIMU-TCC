@@ -1,7 +1,7 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component({
-  name: "TabGrafico",
+  name: "tab-grafico"
 })
 class TabGrafico extends Vue {
   @Prop()
@@ -10,7 +10,7 @@ class TabGrafico extends Vue {
   @Prop()
   options;
 
-  @Prop()
+  @Prop({ type: Array, default: [] })
   data;
 
   tabelaColumns = [
@@ -32,7 +32,7 @@ class TabGrafico extends Vue {
     { name: "MagZ_uT", label: "MagZ_uT" },
     { name: "Roll", label: "Roll" },
     { name: "Pitch", label: "Pitch" },
-    { name: "Yaw", label: "Yaw" },
+    { name: "Yaw", label: "Yaw" }
   ];
 }
 

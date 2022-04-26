@@ -1,36 +1,69 @@
 <template>
-  <section name="sensor" class="responsive-height">
-    <div class="row responsive-content grid-tela">
-      <div class="col" />
-      <div class="col">
-        <div class="grid-conteudo">
-          <h1>Perfil de {{ currentUser.nomeUser }}</h1>
-          <q-field filled label="Nome" stack-label>
-            {{ currentUser.nomeUser }}
-          </q-field>
-          <q-field filled label="Data de Nascimento" stack-label>
-            {{ currentUser.nascUser }}
-          </q-field>
-          <q-field filled label="Telefone" stack-label>
-            {{ currentUser.telefoneUser }}
-          </q-field>
-          <q-field filled label="Email" stack-label>
-            {{ currentUser.emailUser }}
-          </q-field>
-          <q-field filled label="Id" stack-label>
-            {{ currentUser.idUser }}
-          </q-field>
-          <q-field filled label="Tokenn" stack-label>
-            {{ currentUser.accessToken.substring(0, 20) }} ...
-            {{
-              currentUser.accessToken.substr(
-                currentUser.accessToken.length - 20
-              )
-            }}
-          </q-field>
-        </div>
+  <section class="responsive-height">
+    <div class="row responsive-content form-column">
+      <div class="col" v-if="bean !== null">
+        <h1>Perfil de {{ bean.nomeUser }}</h1>
+        <q-form greedy ref="mainForm">
+          <q-card bordered flat class="form-column">
+            <q-card-section class="col form-lines form-lines__gap">
+              <q-input
+                class="col"
+                v-model="bean.idUser"
+                filled
+                stack-label
+                readonly
+                label="Id do usuario"
+              />
+              <q-input
+                class="col"
+                v-model="bean.nomeUser"
+                filled
+                stack-label
+                readonly
+                label="Nome"
+              />
+            </q-card-section>
+
+            <q-card-section class="col form-lines form-lines__gap">
+              <q-input
+                class="col"
+                v-model="bean.nascUser"
+                filled
+                stack-label
+                readonly
+                label="Data de nascimento"
+              />
+              <q-input
+                class="col"
+                v-model="bean.telefoneUser"
+                filled
+                stack-label
+                readonly
+                label="Telefone"
+              />
+            </q-card-section>
+
+            <q-card-section class="col form-lines form-lines__gap">
+              <q-input
+                class="col"
+                v-model="bean.emailUser"
+                filled
+                stack-label
+                readonly
+                label="E-mail"
+              />
+              <q-input
+                class="col"
+                v-model="bean.accessToken"
+                filled
+                stack-label
+                readonly
+                label="Token"
+              />
+            </q-card-section>
+          </q-card>
+        </q-form>
       </div>
-      <div class="col" />
     </div>
   </section>
 </template>
@@ -38,17 +71,14 @@
 <script src="./Perfil.js" />
 
 <style lang="stylus" scoped>
+h1
+  font-size 2rem
+  padding 0
+  margin 0
+
 .grid-conteudo
   padding 16px
   display flex
   gap 16px
   flex-direction column
-
-  h1
-    font-size 2rem
-    padding 0
-    margin 0
-
-  strong, p
-    font-size 1.5em
 </style>

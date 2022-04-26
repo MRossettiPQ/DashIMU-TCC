@@ -1,28 +1,33 @@
 <template>
-  <div class="scrollable overflow-auto flex-grow-1 flex-shrink-0">
-    <q-table
-      :title="label"
-      :columns="tabelaColumns"
-      :rows="data"
-      color="primary"
-    >
-      <template #top-right>
-        <q-btn
-          color="primary"
-          icon-right="archive"
-          label="Export to csv"
-          no-caps
-          @click="exportTable"
-        />
-      </template>
-    </q-table>
-  </div>
+  <q-table
+    class="col"
+    :fullscreen="openFullscreen"
+    :title="label"
+    :columns="tabelaColumns"
+    :rows="data"
+    color="primary"
+    bordered
+    flat
+  >
+    <template #top-right>
+      <q-btn
+        class="m-r-5"
+        color="primary"
+        icon-right="archive"
+        label="Export to csv"
+        no-caps
+        @click="exportTable"
+      />
+      <q-btn
+        color="primary"
+        :label="openFullscreen ? 'Fechar tabela' : 'Abrir em tela cheia'"
+        no-caps
+        @click="openFullscren"
+      />
+    </template>
+  </q-table>
 </template>
 
 <script src="./TabTable.js" />
 
-<style lang="stylus" scoped>
-.grafico
-  width 100%
-  height 100%
-</style>
+<style lang="stylus" scoped></style>

@@ -1,7 +1,7 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component({
-  name: "EssentialLink",
+  name: "EssentialLink"
 })
 class EssentialLink extends Vue {
   @Prop({ type: String, required: true })
@@ -19,14 +19,22 @@ class EssentialLink extends Vue {
   @Prop({ type: Function, default: null })
   action;
 
-  @Prop({ type: Boolean, default: true })
-  logged;
+  @Prop({ type: Boolean, default: null })
+  inLogged;
 
   get attrs() {
     if (this.link) {
       return { to: this.link };
     }
     return "";
+  }
+
+  get logged() {
+    return !!this.$store.state.autenticacao.user;
+  }
+
+  get renderLink() {
+    return this.inLogged !== null ? this.logged === !this.inLogged : true;
   }
 }
 

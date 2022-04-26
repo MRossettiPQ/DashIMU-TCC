@@ -1,85 +1,96 @@
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 import TabGrafico from "./Components/TabGrafico.vue";
 import TabTable from "./Components/TabTable.vue";
+import PacienteService from "src/commons/services/PacienteService";
+import DateUtils from "src/commons/utils/DateUtils";
 
 @Component({
-  name: "Sensor",
-  components: { TabTable, TabGrafico },
+  name: "sensor",
+  components: { TabTable, TabGrafico }
 })
 class Sensor extends Vue {
   cont = 0;
   tab = "Sensor_1";
   tabGrande = "Tab_1";
+  bean = {};
+
+  @Prop()
+  idPaciente;
+
+  mounted() {
+    const { idPaciente } = this.$route.query;
+    this.dataLoad(idPaciente);
+  }
 
   renderRows = [
     {
       name: "horaSensor",
-      data: [],
+      data: []
     },
     {
       name: "AccelX_mss",
-      data: [],
+      data: []
     },
     {
       name: "AccelY_mss",
-      data: [],
+      data: []
     },
     {
       name: "AccelZ_mss",
-      data: [],
+      data: []
     },
     {
       name: "GyroX_rads",
-      data: [],
+      data: []
     },
     {
       name: "GyroY_rads",
-      data: [],
+      data: []
     },
     {
       name: "GyroZ_rads",
-      data: [],
+      data: []
     },
     {
       name: "MagX_uT",
-      data: [],
+      data: []
     },
     {
       name: "MagY_uT",
-      data: [],
+      data: []
     },
     {
       name: "MagZ_uT",
-      data: [],
+      data: []
     },
     {
       name: "Roll",
-      data: [],
+      data: []
     },
     {
       name: "Pitch",
-      data: [],
+      data: []
     },
     {
       name: "Yaw",
-      data: [],
+      data: []
     },
     {
       name: "AccelX_Lin",
-      data: [],
+      data: []
     },
     {
       name: "AccelY_Lin",
-      data: [],
+      data: []
     },
     {
       name: "AccelZ_Lin",
-      data: [],
+      data: []
     },
     {
       name: "TESTE",
-      data: [],
-    },
+      data: []
+    }
   ];
 
   sensores = [
@@ -92,9 +103,9 @@ class Sensor extends Vue {
         ativo: false,
         connection: null,
         corBtn: "primary",
-        corTab: "",
+        corTab: ""
       },
-      data: [],
+      data: [{}]
     },
     {
       tab_label: "Sensor 2",
@@ -105,9 +116,9 @@ class Sensor extends Vue {
         ativo: false,
         connection: null,
         corBtn: "primary",
-        classTab: "",
+        classTab: ""
       },
-      data: [],
+      data: [{}]
     },
     {
       tab_label: "Sensor 3",
@@ -118,36 +129,36 @@ class Sensor extends Vue {
         ativo: false,
         connection: null,
         corBtn: "primary",
-        classTab: "",
+        classTab: ""
       },
-      data: [],
-    },
+      data: [{}]
+    }
   ];
 
   conectaSensor(id) {
     let url = `ws://${this.sensores[id].sensor.ip}:8080`;
     this.sensores[id].sensor.connection = new WebSocket(url);
 
-    this.sensores[id].sensor.connection.onmessage = (event) => {
+    this.sensores[id].sensor.connection.onmessage = event => {
       const jSonParsed = JSON.parse(`[${event.data}]`);
       this.addLeitura(jSonParsed, id);
       // this.closeSocket(id);
     };
 
     // eslint-disable-next-line no-unused-vars
-    this.sensores[id].sensor.connection.onopen = (event) => {
+    this.sensores[id].sensor.connection.onopen = event => {
       this.setConectado(id);
       console.log("Conexão com o sensor realizada com websocket...");
     };
 
     // eslint-disable-next-line no-unused-vars
-    this.sensores[id].sensor.connection.onerror = (event) => {
+    this.sensores[id].sensor.connection.onerror = event => {
       this.setDesconectado(id);
       console.log("Error no websocket server...");
     };
 
     // eslint-disable-next-line no-unused-vars
-    this.sensores[id].sensor.connection.onclose = (event) => {
+    this.sensores[id].sensor.connection.onclose = event => {
       this.setDesconectado(id);
       console.log("Websocket desconectado do server...");
     };
@@ -193,13 +204,10 @@ class Sensor extends Vue {
       this.renderRows[13].data.push(campo.AccelX_Lin);
       this.renderRows[14].data.push(campo.AccelY_Lin);
       this.renderRows[15].data.push(campo.AccelZ_Lin);
+      console.log(campo.Roll, campo.Pitch, campo.Yaw);
     });
 
     console.log(this.sensores[id].data);
-  }
-
-  printLeitura(id) {
-    console.log(this.sensores[id]);
   }
 
   setConectado(id) {
@@ -215,7 +223,6 @@ class Sensor extends Vue {
   }
 
   sendStart() {
-    // eslint-disable-next-line no-unused-vars
     this.sensores.map((item, index) => {
       if (item.sensor.ativo === true) {
         item.sensor.connection.send(JSON.stringify({ cmd: "START" }));
@@ -224,7 +231,6 @@ class Sensor extends Vue {
   }
 
   sendStop() {
-    // eslint-disable-next-line no-unused-vars
     this.sensores.map((item, index) => {
       if (item.sensor.ativo === true) {
         item.sensor.connection.send(JSON.stringify({ cmd: "STOP" }));
@@ -233,7 +239,6 @@ class Sensor extends Vue {
   }
 
   sendRestart() {
-    // eslint-disable-next-line no-unused-vars
     this.sensores.map((item, index) => {
       if (item.sensor.ativo === true) {
         item.sensor.connection.send(JSON.stringify({ cmd: "RESTART" }));
@@ -245,8 +250,8 @@ class Sensor extends Vue {
 
   options = {
     chart: {
-      id: "real-time",
-    },
+      id: "real-time"
+    }
     // animations: {
     //   enabled: true,
     //   easing: "linear",
@@ -255,6 +260,30 @@ class Sensor extends Vue {
     //   },
     // },
   };
+
+  dataLoad(id) {
+    try {
+      PacienteService.getPaciente(id).then(
+        response => {
+          this.bean = response.data;
+        },
+        error => {
+          this.content =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
+        }
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  filterDate(date) {
+    return DateUtils.getDateFormated(date);
+  }
 }
 
 export default Sensor;
