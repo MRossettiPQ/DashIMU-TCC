@@ -1,10 +1,12 @@
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
+import FormUtils from "../../../commons/utils/FormUtils";
 
 @Component({
   name: "Registrar"
 })
 class Registrar extends Vue {
-  cadastro = {
+  loading = false;
+  bean = {
     emailUser: "",
     nomeUser: "",
     nascUser: "",
@@ -14,18 +16,9 @@ class Registrar extends Vue {
     telefoneUser: ""
   };
 
-  dataNascimentoValidator(value) {
-    return (
-      moment(value, "DD/MM/YYYY").isBefore(moment().subtract(18, "years")) ||
-      "Deve ser maior de 18 anos."
-    );
+  get loggedIn() {
+    return this.$store.state.auth?.status?.loggedIn;
   }
-
-  computed = {
-    loggedIn() {
-      return this.$store.state.auth.status.loggedIn;
-    }
-  };
 
   mounted() {
     if (this.loggedIn) {
@@ -33,21 +26,31 @@ class Registrar extends Vue {
     }
   }
 
-  onSubmit(user) {
-    this.$store.dispatch("autentica/register", user).then(
-      data => {
-        this.message = data.message;
-      },
-      error => {
-        this.message =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-      }
-    );
-    this.$router.push("/home");
+  async onSubmit() {
+    try {
+      this.loading = true;
+      await FormUtils.validateAsync(this.$refs.mainForm);
+
+      this.$store.dispatch("autenticacao/register", this.bean).then(
+        data => {
+          this.message = data.message;
+        },
+        error => {
+          this.message =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
+        }
+      );
+
+      await this.$router.push("/home");
+    } catch (e) {
+      console.log(e);
+    } finally {
+      this.loading = false;
+    }
   }
 }
 

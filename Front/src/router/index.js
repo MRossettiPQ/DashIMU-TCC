@@ -10,14 +10,6 @@ import routes from "./routes";
 Vue.use(VueRouter);
 Vue.use(VueI18n);
 Vue.use(VueApexCharts);
-// Vue.use(VueWebsocket);
-// Vue.use(VueNativeSock, "ws://localhost:9090/api/socket", {
-//   connectManually: true,
-//   reconnection: true, // (Boolean) whether to reconnect automatically (false)
-//   reconnectionAttempts: 5, // (Number) number of reconnection attempts before giving up (Infinity),
-//   reconnectionDelay: 3000, // (Number) how long to initially wait before attempting a new (1000)
-//   format: "json",
-// });
 
 /*
  * If not building with SSR mode, you can
@@ -29,8 +21,8 @@ Vue.use(VueApexCharts);
  */
 moment.locale("pt-br");
 
-export default function (/* { store, ssrContext } */) {
-  const Router = new VueRouter({
+export default function(/* { store, ssrContext } */) {
+  return new VueRouter({
     scrollBehavior: () => ({ x: 0, y: 0 }),
     routes,
 
@@ -38,8 +30,6 @@ export default function (/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> vueRouterMode
     // quasar.conf.js -> build -> publicPath
     mode: process.env.VUE_ROUTER_MODE,
-    base: process.env.VUE_ROUTER_BASE,
+    base: process.env.VUE_ROUTER_BASE
   });
-
-  return Router;
 }

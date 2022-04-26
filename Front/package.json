@@ -2,7 +2,7 @@
   "name": "dashi-imu",
   "version": "0.0.1",
   "description": "Projeto de TCC em quasar v1",
-  "productName": "Quasar App",
+  "productName": "DashIMU App",
   "author": "Matheus Rossetti <matheus__rossetti@hotmail.com>",
   "private": true,
   "scripts": {
@@ -20,6 +20,7 @@
     "@vee-validate/rules": "^4.5.3",
     "apexcharts": "^3.29.0",
     "axios": "^0.21.1",
+    "big.js": "^6.1.1",
     "bootstrap": "^5.1.1",
     "chart.js": "^3.6.0",
     "chartjs-chart-geo": "^3.5.1",

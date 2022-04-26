@@ -1,32 +1,28 @@
 const pacienteController = require("../controllers/pacientes.controller");
 const { autorizaJwt } = require("../middleware");
 const { verificaCadastro } = require("../middleware");
+const header = require("./header");
 
-module.exports = function (app) {
-  app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-    res.header(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-    );
-
-    next();
+module.exports = function(app) {
+  app.use(function(req, res, next) {
+    header(req, res, next);
   });
 
   app.get(
-    "/api/pacientes",
-    [autorizaJwt.verificaToken, autorizaJwt.seFisio],
+    "/api/paciente",
+    [autorizaJwt.verificaToken, autorizaJwt.seAdminFisio],
     pacienteController.getListaPacientes
   );
 
+  app.get(
+    "/api/paciente/:id",
+    [autorizaJwt.verificaToken, autorizaJwt.seAdminFisio],
+    pacienteController.getPaciente
+  );
+
   app.post(
-    "/api/pacientes",
-    [
-      //autorizaJwt.verificaToken,
-      verificaCadastro.verificaCPF,
-      // autorizaJwt.seFisio,
-    ],
+    "/api/paciente/:id/cadastropaciente",
+    [verificaCadastro.verificaCPF],
     pacienteController.postRegistrarPaciente
   );
 };

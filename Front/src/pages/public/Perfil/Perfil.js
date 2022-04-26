@@ -1,13 +1,18 @@
-export default {
-  name: "Perfil",
-  computed: {
-    currentUser() {
-      return this.$store.state.autentica.user;
-    }
-  },
+import { Vue, Component } from "vue-property-decorator";
+
+@Component({
+  name: "perfil"
+})
+class Perfil extends Vue {
+  get bean() {
+    return this.$store.state.autenticacao.user;
+  }
+
   mounted() {
-    if (!this.currentUser) {
-      this.$router.push("/logar");
+    if (!this.bean) {
+      this.$router.push("/logar").then(r => console.log(r));
     }
   }
-};
+}
+
+export default Perfil;

@@ -1,50 +1,52 @@
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 
 @Component({
   name: "Logar",
   components: {}
 })
 class Logar extends Vue {
-  credencial = {
+  loading = false;
+  bean = {
     usernameUser: "",
     senhaUser: ""
   };
 
-  isRequired(value) {
-    return value ? true : "This field is required";
+  get loggedIn() {
+    return this.$store.state.autenticacao.status.loggedIn;
   }
-
-  computed = {
-    loggedIn() {
-      return this.$store.state.autentica.status.loggedIn;
-    }
-  };
 
   created() {
-    if (this.loggedIn) {
-      this.$router.push("/perfil");
+    try {
+      if (this.loggedIn) {
+        this.$router.push("/perfil");
+      }
+    } catch (e) {
+      console.log(e);
     }
   }
 
-  handleLogin(user) {
-    this.loading = true;
+  async onSubmit() {
+    try {
+      this.loading = true;
 
-    console.log(user);
-
-    this.$store.dispatch("autentica/login", user).then(
-      () => {
-        this.$router.push("/perfil");
-      },
-      error => {
-        this.loading = false;
-        this.message =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-      }
-    );
+      this.$store.dispatch("autenticacao/login", this.bean).then(
+        () => {
+          this.$router.push("/perfil");
+        },
+        error => {
+          this.message =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
+        }
+      );
+    } catch (e) {
+      console.log(e);
+    } finally {
+      this.loading = false;
+    }
   }
 }
 

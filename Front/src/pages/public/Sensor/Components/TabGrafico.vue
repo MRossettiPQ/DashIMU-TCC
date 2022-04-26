@@ -3,10 +3,10 @@
     <div class="text-h6">{{ label }}</div>
     <div class="row">
       <apexchart
-          class="grafico"
-          type="line"
-          :options="options"
-          :series="data"
+        class="grafico"
+        type="line"
+        :options="options"
+        :series="data"
       />
     </div>
   </div>
