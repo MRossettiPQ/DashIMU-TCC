@@ -8,59 +8,41 @@ const db = require("./app/models");
 const app = express();
 
 app.use(cors());
+app.use(express.static('public'))
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 
-require("./app/routes/auth.routes")(app);
-require("./app/routes/pacientes.routes")(app);
 // ativa web-socket no app express
 enableWs(app);
+require("./app/routes/auth.routes")(app);
+require("./app/routes/pacientes.routes")(app);
+require("./app/routes/socket.routes")(app);
 // Banco
 const Funcao = db.funcao;
 
-db.sequelize.sync({ force: false }).then(() => {
-  console.log("Drop and Resync Database");
-  //initial();
+db.sequelize.sync({force: false}).then(() => {
+    console.log("Drop and Resync Database");
+    //initial();
 });
 
 function initial() {
-  Funcao.create({
-    idFuncao: 1,
-    nomeFuncao: "FISIO"
-  });
-  Funcao.create({
-    idFuncao: 2,
-    nomeFuncao: "ADMIN"
-  });
+    Funcao.create({
+        idFuncao: 1,
+        nomeFuncao: "FISIO"
+    });
+    Funcao.create({
+        idFuncao: 2,
+        nomeFuncao: "ADMIN"
+    });
 }
-// // Rotas - Ping
-// app.get("/ping", function (req, res) {
-//   res.json({ message: "testando server" });
-//   console.log(`Pagina: /`);
-// });
-// //Rotas - Socket
-// app.ws("/socket", function (ws, req) {
-//   ws.on("message", function (msg) {
-//     if (msg === "OK" || msg === "ok" || msg === "Ok") {
-//       ws.send("RECEBI OK");
-//     } else {
-//       ws.send("NÃO RECEBI OK");
-//     }
-//     console.log(msg);
-//   });
-//   ws.on("close", () => {
-//     console.log("WebSocket was closed");
-//   });
-//   console.log("socket", req.testing);
-// });
 
 // set port, listen for requests
 const PORT = process.env.PORT || serverConfig.PORT;
 app.listen(PORT, () => {
-  console.log(`Server está rodando na Porta: ${PORT}.`);
-  console.log(`Cors está rodando na Porta: ${serverConfig.PORTCORS}.`);
+    console.log(`Server está rodando na Porta: ${PORT}.`);
+    console.log(`Cors está rodando na Porta: ${serverConfig.PORTCORS}.`);
 });

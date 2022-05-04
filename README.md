@@ -7,3 +7,6 @@ Sensor:
 Server:
 -Primeiro instale as dependencias
     npm install
+
+
+APOS BUILD DO FRONT ADICIONAR OS ARQUIVOS DE DIST->SPA em PUBLIC do server

@@ -1,25 +1,30 @@
-import { Component, Prop, Vue } from "vue-property-decorator";
+import {Component, Prop, Vue} from "vue-property-decorator";
 import TabGrafico from "./Components/TabGrafico.vue";
 import TabTable from "./Components/TabTable.vue";
 import PacienteService from "src/commons/services/PacienteService";
 import DateUtils from "src/commons/utils/DateUtils";
+import {exportFile, Notify} from "quasar";
+import SocketService from "src/commons/services/SocketService";
 
 @Component({
   name: "sensor",
-  components: { TabTable, TabGrafico }
+  components: {TabTable, TabGrafico}
 })
 class Sensor extends Vue {
+  sensoresDisponiveis = []
   cont = 0;
   tab = "Sensor_1";
   tabGrande = "Tab_1";
   bean = {};
+  numeroConexoes = 0;
 
   @Prop()
   idPaciente;
 
   mounted() {
-    const { idPaciente } = this.$route.query;
+    const {idPaciente} = this.$route.query;
     this.dataLoad(idPaciente);
+    this.listaSensoresLoad();
   }
 
   renderRows = [
@@ -148,19 +153,37 @@ class Sensor extends Vue {
     // eslint-disable-next-line no-unused-vars
     this.sensores[id].sensor.connection.onopen = event => {
       this.setConectado(id);
-      console.log("Conexão com o sensor realizada com websocket...");
+      const message = "Conexão com o sensor realizada com websocket..."
+      Notify.create({
+        message,
+        textColor: "white",
+        color: "positive"
+      });
     };
 
     // eslint-disable-next-line no-unused-vars
     this.sensores[id].sensor.connection.onerror = event => {
       this.setDesconectado(id);
-      console.log("Error no websocket server...");
+      const message = "Error no websocket server..."
+
+      Notify.create({
+        message,
+        textColor: "white",
+        color: "error"
+      });
+      console.log(message);
     };
 
     // eslint-disable-next-line no-unused-vars
     this.sensores[id].sensor.connection.onclose = event => {
       this.setDesconectado(id);
-      console.log("Websocket desconectado do server...");
+      const message = "Websocket desconectado do server..."
+      Notify.create({
+        message,
+        textColor: "white",
+        color: "warning"
+      });
+      console.log(message);
     };
   }
 
@@ -225,7 +248,7 @@ class Sensor extends Vue {
   sendStart() {
     this.sensores.map((item, index) => {
       if (item.sensor.ativo === true) {
-        item.sensor.connection.send(JSON.stringify({ cmd: "START" }));
+        item.sensor.connection.send(JSON.stringify({cmd: 1}));
       }
     });
   }
@@ -233,7 +256,7 @@ class Sensor extends Vue {
   sendStop() {
     this.sensores.map((item, index) => {
       if (item.sensor.ativo === true) {
-        item.sensor.connection.send(JSON.stringify({ cmd: "STOP" }));
+        item.sensor.connection.send(JSON.stringify({cmd: 2}));
       }
     });
   }
@@ -241,12 +264,13 @@ class Sensor extends Vue {
   sendRestart() {
     this.sensores.map((item, index) => {
       if (item.sensor.ativo === true) {
-        item.sensor.connection.send(JSON.stringify({ cmd: "RESTART" }));
+        item.sensor.connection.send(JSON.stringify({cmd: "RESTART"}));
       }
     });
   }
 
-  sendSave() {}
+  sendSave() {
+  }
 
   options = {
     chart: {
@@ -260,6 +284,26 @@ class Sensor extends Vue {
     //   },
     // },
   };
+
+  listaSensoresLoad() {
+    try {
+      SocketService.getSensores().then(
+        response => {
+          this.sensoresDisponiveis = response.data;
+        },
+        error => {
+          this.content =
+            (error.response &&
+              error.response.data &&
+              error.response.data.message) ||
+            error.message ||
+            error.toString();
+        }
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   dataLoad(id) {
     try {

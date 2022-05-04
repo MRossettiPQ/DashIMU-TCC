@@ -1,3 +1,69 @@
-Server/node_modules
-Front/node_modules
-Mobile/node_modules
+# Editor directories and files
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.iml
+
+
+#IGNORE SERVER
+/Server/node_modules
+/Server/.idea
+/Server/yarn.lock
+/Server/.vscode
+/Server/*.iml
+/Server/package-lock.json
+
+#IGNORE FRONT
+/Front/node_modules
+/Front/package-lock.json
+/Front/.idea
+/Front/yarn.lock
+/Front/.vscode
+/Front/*.iml
+/Front/.DS_Store
+/Front/.thumbs.db
+# Quasar core related directories
+/Front/.quasar
+/Front/dist
+
+# Cordova related directories and files
+/Front/src-cordova/node_modules
+/Front/src-cordova/platforms
+/Front/src-cordova/plugins
+/Front/src-cordova/www
+/Front/src-cordova/android
+/Front/src-cordova/yarn.lock
+/Front/src-cordova/*
+
+# Capacitor related directories and files
+/Front/src-capacitor/www
+/Front/src-capacitor/node_modules
+/Front/src-capacitor/android
+/Front/src-capacitor/yarn.lock
+/Front/src-capacitor/*
+
+# BEX related directories and files
+/Front/src-bex/www
+/Front/src-bex/js/core
+
+# Log files
+/Front/npm-debug.log*
+/Front/yarn-debug.log*
+/Front/yarn-error.log*
+
+/Front/.quasar-ide-helper
+
+/Front/webpack.config.js
+
+/Front/dev.env
+/Front/prod.env
+
+#IGNORE SENSOR
+Sensor/.idea
+Sensor/.vscode
+Sensor/*.iml
+Sensor/.pio
+Sensor/cmake-build-debug
+Sensor/cmake-build-esp32dev

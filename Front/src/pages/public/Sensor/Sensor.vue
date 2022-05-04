@@ -118,6 +118,15 @@
                       <div class="text-h6">{{ lista.label }}</div>
                       <q-form>
                         <div class="row form-lines form-lines__gap">
+                          <q-select
+                            filled
+                            v-model="lista.sensor.ip"
+                            :options="sensoresDisponiveis"
+                            option-value="ip"
+                            option-label="ip"
+                            emit-value
+                            label="Sensores disponiveis"
+                          />
                           <q-input
                             class="row"
                             v-model="lista.sensor.ip"

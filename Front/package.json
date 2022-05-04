@@ -8,7 +8,9 @@
   "scripts": {
     "build": "cross-env NODE_ENV=production quasar build",
     "build-homolog": "cross-env NODE_ENV=homolog quasar build",
+    "build-electron": "cross-env NODE_ENV=production quasar build -m electron",
     "serve": "cross-env NODE_ENV=development quasar dev",
+    "serve-electron": "cross-env NODE_ENV=development quasar dev --mode electron",
     "lint": "eslint --ext .js,.vue ./",
     "test": "echo \"No test specified\" && exit 0"
   },
@@ -55,6 +57,11 @@
     "@quasar/quasar-app-extension-qmediaplayer": "^1.4.1",
     "babel-eslint": "^10.0.1",
     "cross-env": "^7.0.3",
+    "devtron": "^1.4.0",
+    "electron": "^9.0.0",
+    "electron-debug": "^3.0.1",
+    "electron-devtools-installer": "^3.0.0",
+    "electron-packager": "^14.1.1",
     "eslint": "^7.21.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-vue": "^7.7.0",
