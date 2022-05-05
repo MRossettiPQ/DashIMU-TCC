@@ -35,14 +35,12 @@
 /Front/src-cordova/www
 /Front/src-cordova/android
 /Front/src-cordova/yarn.lock
-/Front/src-cordova/*
 
 # Capacitor related directories and files
 /Front/src-capacitor/www
 /Front/src-capacitor/node_modules
 /Front/src-capacitor/android
 /Front/src-capacitor/yarn.lock
-/Front/src-capacitor/*
 
 # BEX related directories and files
 /Front/src-bex/www
@@ -67,3 +65,11 @@ Sensor/*.iml
 Sensor/.pio
 Sensor/cmake-build-debug
 Sensor/cmake-build-esp32dev
+
+
+/Init/node_modules
+/Init/package-lock.json
+/Init/.idea
+/Init/yarn.lock
+/Init/.vscode
+/Init/*.iml

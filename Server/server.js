@@ -8,6 +8,7 @@ const db = require("./app/models");
 const app = express();
 
 app.use(cors());
+// pasta contendo o projeto SPA apos ser realizado o build
 app.use(express.static('public'))
 
 // parse requests of content-type - application/json
