@@ -22,7 +22,6 @@ class Sensor extends Vue {
   idPaciente;
 
   mounted() {
-    console.log(process.env.SERVER_API)
     const {idPaciente} = this.$route.query;
     this.dataLoad(idPaciente);
     this.listaSensoresLoad();
