@@ -40,7 +40,7 @@
           </q-tab-panels>
         </div>
         <div class="col">
-          <q-card-section class="column form-column form-column__gap">
+          <q-card-section class="column form-column form-column__gap" v-if="numeroConexoes >= 2">
             <div class="col form-lines form-lines__gap form-lines__no-padding">
               <q-btn
                 color="primary"

@@ -1,23 +1,21 @@
-import axios from "axios";
-import AutorizaHeader from "./AutorizaHeader";
-
-const API_URL = "http://localhost:8000/api/";
+import axios from 'axios';
+import AutorizaHeader from './AutorizaHeader';
 
 class UserService {
-  getPublicContent() {
-    return axios.get(API_URL + "all");
+  async getPublicContent() {
+    return await axios.get(`${process.env.SERVER_API}/all`);
   }
 
-  getPerfil() {
-    return axios.get(API_URL + "fisio", { headers: AutorizaHeader() });
+  async getPerfil() {
+    return await axios.get(`${process.env.SERVER_API}/perfil`, {headers: AutorizaHeader()});
   }
 
-  getFisioBoard() {
-    return axios.get(API_URL + "fisio", { headers: AutorizaHeader() });
+  async getFisioBoard() {
+    return await axios.get(`${process.env.SERVER_API}/fisio`, {headers: AutorizaHeader()});
   }
 
-  getPacienteBoard() {
-    return axios.get(API_URL + "paciente", { headers: AutorizaHeader() });
+  async getPacienteBoard() {
+    return await axios.get(`${process.env.SERVER_API}/paciente`, {headers: AutorizaHeader()});
   }
 }
 

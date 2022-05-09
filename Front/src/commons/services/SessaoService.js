@@ -2,22 +2,20 @@ import axios from "axios";
 import AutorizaHeader from "./AutorizaHeader";
 
 class SessaoService {
-  API_URL = `http://localhost:8000/api`;
-
-  getSessao(id, data) {
-    return axios.get(`${this.API_URL}/paciente/${id}`, {
+  async getSessao(id, data) {
+    return await axios.get(`${process.env.SERVER_API}/paciente/${id}`, {
       headers: AutorizaHeader()
     });
   }
 
-  getListaSessao(data) {
-    return axios.get(`${this.API_URL}/paciente`, {
+  async getListaSessao(data) {
+    return await axios.get(`${process.env.SERVER_API}/paciente`, {
       headers: AutorizaHeader()
     });
   }
 
-  postSessao(id, data) {
-    return axios.post(`${this.API_URL}/paciente/${id}/cadastropaciente`, {
+  async postSessao(id, data) {
+    return await axios.post(`${process.env.SERVER_API}/paciente/${id}/cadastropaciente`, {
       // headers: AutorizaHeader(),
       nomePaciente: data.nomePaciente,
       nascPaciente: data.nascPaciente,

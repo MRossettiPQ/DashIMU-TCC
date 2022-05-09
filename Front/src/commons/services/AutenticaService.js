@@ -1,11 +1,9 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8000/api/auth/";
-
 class AuthService {
-  login(user) {
-    return axios
-      .post(API_URL + "signin", {
+  async login(user) {
+    return await axios
+      .post(`${process.env.SERVER_API}/auth/signin`, {
         usernameUser: user.usernameUser,
         senhaUser: user.senhaUser
       })
@@ -14,8 +12,8 @@ class AuthService {
       });
   }
 
-  register(user) {
-    return axios.post(API_URL + "signup", {
+  async register(user) {
+    return await axios.post(`${process.env.SERVER_API}/auth/signup`, {
       usernameUser: user.usernameUser,
       nomeUser: user.nomeUser,
       nascUser: user.nascUser,
