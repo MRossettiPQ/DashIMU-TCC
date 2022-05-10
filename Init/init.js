@@ -3,6 +3,9 @@ import path from 'path';
 
 async function start() {
     try {
+        //TODO realiza o build da versão de produção do Front
+        execSync('npm run build --prefix ../Front', {stdio: 'inherit'})
+
         switch (process.platform) {
             case 'linux':
                 //TODO move os arquivos da pasta de build do quasar para a pasta public de distribuição do express
@@ -18,12 +21,16 @@ async function start() {
                 console.log('Sistema não reconhecido para script de inicialização');
                 break;
         }
-        //execSync('npm run dev', null, {shell: true});
-        console.log('All is fine!');
+
+        //TODO inicializa servidor
+        execSync('npm run dev --prefix ../Server', {stdio: 'inherit'})
+
+        console.log('Tudo certo!!!');
+        console.log('Servidor será iniciado!!!');
     } catch (e) {
-        console.error('Error while starting backend');
+        console.error('Error ao executar script "init.js"');
         console.error(e);
     }
 }
 
-start()
+start().then(r => console.log(r))
