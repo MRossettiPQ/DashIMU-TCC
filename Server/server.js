@@ -1,10 +1,10 @@
-const express = require("express");
-const enableWs = require("express-ws");
-const bodyParser = require("body-parser");
-const cors = require("cors");
+const express = require('express');
+const enableWs = require('express-ws');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 
-const serverConfig = require("./app/config/server.config.js");
-const db = require("./app/models");
+const serverConfig = require('./app/config/server.config.js');
+const db = require('./app/models');
 const app = express();
 
 app.use(cors());
@@ -19,25 +19,35 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 // ativa web-socket no app express
 enableWs(app);
-require("./app/routes/auth.routes")(app);
-require("./app/routes/pacientes.routes")(app);
-require("./app/routes/socket.routes")(app);
+require('./app/routes/auth.routes')(app);
+require('./app/routes/pacientes.routes')(app);
+require('./app/routes/socket.routes')(app);
+
 // Banco
 const Funcao = db.funcao;
 
 db.sequelize.sync({force: false}).then(() => {
-    console.log("Drop and Resync Database");
-    //initial();
+    console.log('Drop and Resync Database');
+    initial();
 });
 
 function initial() {
-    Funcao.create({
-        idFuncao: 1,
-        nomeFuncao: "FISIO"
-    });
-    Funcao.create({
-        idFuncao: 2,
-        nomeFuncao: "ADMIN"
+    Funcao.findAll().then(funcao => {
+        console.log(funcao)
+        if(funcao === null){
+            Funcao.create({
+                idFuncao: 1,
+                nomeFuncao: "FISIO"
+            });
+            Funcao.create({
+                idFuncao: 2,
+                nomeFuncao: "ADMIN"
+            });
+        } else {
+            console.log('ja possui as funções cadastrada')
+        }
+    }).catch(err => {
+        console.log(err)
     });
 }
 

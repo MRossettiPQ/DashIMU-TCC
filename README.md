@@ -141,11 +141,17 @@ CREATE DATABASE IF NOT EXISTS database_dashimu;
 ```
 criar usuario: ServerOperator, lembrar da senha para utilização posterior no servidor
 ```sh
-CREATE USER 'ServerOperator'@'localhost' IDENTIFIED BY 'password';
+CREATE USER 'OperatorDash'@localhost IDENTIFIED BY 'OperatorDash1060';
 ```
 ```sh
-GRANT ALL PRIVILEGES ON * . * TO 'ServerOperator'@'localhost';
+GRANT ALL PRIVILEGES ON database_dashimu.* TO 'OperatorDash'@localhost;
 ```
 ```sh
 FLUSH PRIVILEGES;
+```
+```sh
+INSERT INTO funcao (idFuncao,nomeFuncao) VALUES (1,'FISIO'),(2,'ADMIN');
+```
+```sh
+INSERT INTO funcao (idFuncao,nomeFuncao) VALUES (1,'FISIO'),(2,'ADMIN');
 ```

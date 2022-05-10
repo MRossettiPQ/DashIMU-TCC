@@ -2,10 +2,10 @@ const {autorizaJwt} = require("../middleware");
 
 let listaSensores = [];
 module.exports = function (app) {
-    // app.get("/ping", function (req, res) {
-//   res.json({ message: "testando server" });
-//   console.log(`Pagina: /`);
-// });
+    app.get("/ping", function (req, res) {
+        res.json({ message: "testando server" });
+        console.log(`Pagina: /`);
+    });
     app.ws("/", function (client, req) {
         console.log(client.getgid())
         client.on("message", function (msg) {
@@ -32,3 +32,4 @@ module.exports = function (app) {
         }
     );
 };
+
