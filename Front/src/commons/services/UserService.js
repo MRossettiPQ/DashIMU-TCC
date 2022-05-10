@@ -3,19 +3,19 @@ import AutorizaHeader from './AutorizaHeader';
 
 class UserService {
   async getPublicContent() {
-    return await axios.get(`${process.env.SERVER_API}/all`);
+    return await axios.get(`${process.env.SERVER_API}/api/all`);
   }
 
   async getPerfil() {
-    return await axios.get(`${process.env.SERVER_API}/perfil`, {headers: AutorizaHeader()});
+    return await axios.get(`${process.env.SERVER_API}/api/perfil`, {headers: AutorizaHeader()});
   }
 
   async getFisioBoard() {
-    return await axios.get(`${process.env.SERVER_API}/fisio`, {headers: AutorizaHeader()});
+    return await axios.get(`${process.env.SERVER_API}/api/fisio`, {headers: AutorizaHeader()});
   }
 
   async getPacienteBoard() {
-    return await axios.get(`${process.env.SERVER_API}/paciente`, {headers: AutorizaHeader()});
+    return await axios.get(`${process.env.SERVER_API}/api/paciente`, {headers: AutorizaHeader()});
   }
 }
 

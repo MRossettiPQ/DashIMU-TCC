@@ -22,7 +22,7 @@ const char *wifi_password = "Zotac460"; //  Senha de Acesso da Wi-Fi
 const char *websockets_server_host = "192.168.16.104"; // IP do servidor websocket
 const int websockets_server_port = 8080;               // Porta de conexão do servidor
 
-const char *websockets_client_host = "192.168.16.113"; // IP do servidor websocket
+const char *websockets_client_host = "192.168.16.142"; // IP do servidor websocket
 const int websockets_client_port = 8000;               // Porta de conexão do servidor
 
 int status, NumeroLeitura = 0, UltimoEnvio;

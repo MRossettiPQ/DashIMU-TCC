@@ -1,5 +1,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import FormUtils from "../../../commons/utils/FormUtils";
+import PacienteService from 'src/commons/services/PacienteService';
+import AutenticaService from 'src/commons/services/AutenticaService';
 
 @Component({
   name: "Registrar"
@@ -31,17 +33,12 @@ class Registrar extends Vue {
       this.loading = true;
       await FormUtils.validateAsync(this.$refs.mainForm);
 
-      this.$store.dispatch("autenticacao/register", this.bean).then(
-        data => {
-          this.message = data.message;
+      AutenticaService.register(this.bean).then(
+        response => {
+          return Promise.resolve(response.data);
         },
         error => {
-          this.message =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
+          return Promise.reject(error);
         }
       );
 

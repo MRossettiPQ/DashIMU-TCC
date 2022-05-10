@@ -17,6 +17,7 @@ class Logar extends Vue {
 
   created() {
     try {
+      console.log(process.env.SERVER_API)
       if (this.loggedIn) {
         this.$router.push("/perfil");
       }

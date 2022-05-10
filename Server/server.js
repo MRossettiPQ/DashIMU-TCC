@@ -33,8 +33,9 @@ db.sequelize.sync({force: false}).then(() => {
 
 function initial() {
     Funcao.findAll().then(funcao => {
-        console.log(funcao)
-        if(funcao === null){
+        if(funcao.length){
+            console.log('ja possui as funções cadastrada')
+        } else {
             Funcao.create({
                 idFuncao: 1,
                 nomeFuncao: "FISIO"
@@ -43,8 +44,6 @@ function initial() {
                 idFuncao: 2,
                 nomeFuncao: "ADMIN"
             });
-        } else {
-            console.log('ja possui as funções cadastrada')
         }
     }).catch(err => {
         console.log(err)

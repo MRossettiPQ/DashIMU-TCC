@@ -2,10 +2,10 @@ serverConfig = require('./server.config.js');
 module.exports = {
     HOST: '127.0.0.1',
     PORT: '3306',
-    USER: 'OperatorDash',
-    PASSWORD: 'OperatorDash1060',
+    USER: 'root',
+    PASSWORD: '1',
     DB: 'database_dashimu',
-    dialect: 'mariadb', //mariadb
+    dialect: 'mysql', //mariadb
     logging: serverConfig.INDEV,
     pool: {
         max: 5,

@@ -6,8 +6,8 @@
   "author": "Matheus Rossetti <matheus__rossetti@hotmail.com>",
   "private": true,
   "scripts": {
-    "build": "cross-env NODE_ENV=prod quasar build",
-    "build-electron": "cross-env NODE_ENV=prod quasar build -m electron",
+    "build": "cross-env NODE_ENV=production quasar build",
+    "build-electron": "cross-env NODE_ENV=production quasar build -m electron",
     "serve": "cross-env NODE_ENV=development quasar dev",
     "serve-electron": "cross-env NODE_ENV=development quasar dev --mode electron",
     "lint": "eslint --ext .js,.vue ./",

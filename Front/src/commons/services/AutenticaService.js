@@ -1,9 +1,9 @@
-import axios from "axios";
+import axios from 'axios';
 
 class AuthService {
   async login(user) {
     return await axios
-      .post(`${process.env.SERVER_API}/auth/signin`, {
+      .post(`${process.env.SERVER_API}/api/auth/signin`, {
         usernameUser: user.usernameUser,
         senhaUser: user.senhaUser
       })
@@ -12,15 +12,8 @@ class AuthService {
       });
   }
 
-  async register(user) {
-    return await axios.post(`${process.env.SERVER_API}/auth/signup`, {
-      usernameUser: user.usernameUser,
-      nomeUser: user.nomeUser,
-      nascUser: user.nascUser,
-      telefoneUser: user.telefoneUser,
-      emailUser: user.emailUser,
-      senhaUser: user.senhaUser
-    });
+  async register(data) {
+    return await axios.post(`${process.env.SERVER_API}/api/auth/signup`, data);
   }
 }
 
