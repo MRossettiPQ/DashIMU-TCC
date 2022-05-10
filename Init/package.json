@@ -1,8 +1,10 @@
 {
   "type": "module",
   "scripts": {
-    "build": "node init.js",
-    "before:build": "node init.js",
-    "dev": " nodemon ../Server/server.js"
-  }
+    "build": "npm run build --prefix ../Front &&  node init.js && npm run dev --prefix ../Server"
+  },
+  "dependencies": {
+    "path": "^0.12.7"
+  },
+  "license" : "ISC"
 }

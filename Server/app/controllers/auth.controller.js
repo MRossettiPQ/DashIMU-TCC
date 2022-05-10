@@ -54,9 +54,8 @@ exports.logar = (req, res) => {
                 {
                     expiresIn: 86400
                 },
-                (err, token) => {
-                    console.log('TOKENZADO');
-                });
+                (err, token) => console.log('Usuario verificado')
+            );
 
             const authorities = [];
             usuarioLog.getFuncaos().then(funcao => {

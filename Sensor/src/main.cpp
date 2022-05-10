@@ -19,7 +19,6 @@ const char *wifi_ssid = "ROTador";      //  Nome da rede de Wi-Fi
 const char *wifi_password = "Zotac460"; //  Senha de Acesso da Wi-Fi
 
 // Dados do servidor a ser conectado
-const char *websockets_server_host = "192.168.16.104"; // IP do servidor websocket
 const int websockets_server_port = 8080;               // Porta de conexão do servidor
 
 const char *websockets_client_host = "192.168.16.142"; // IP do servidor websocket

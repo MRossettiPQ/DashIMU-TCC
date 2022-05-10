@@ -1,23 +1,16 @@
 const db = require('../models');
+const UserContext = require('../utils/UserContext');
 const Sessao = db.sessao;
 const Medicao = db.medicao;
 const Usuario = db.usuario;
 
 exports.postRegistraMedicao = (req, res) => {
-    const {id} = req.params;
+    const usuarioId = UserContext.getUserContextId(req, res)
+    const {id: idPaciente} = req.params;
 
-    Paciente.create({
-        nomePaciente: req.body.nomePaciente,
-        cpfPaciente: req.body.cpfPaciente,
-        emailPaciente: req.body.emailPaciente,
-        telefonePaciente: req.body.telefonePaciente,
-        nascPaciente: req.body.nascPaciente,
-        alturaPaciente: req.body.alturaPaciente
-    })
-        .then(pacienteCad => {
-            pacienteCad.setUsers(id).then(() => {
-                res.status(200).send({message: 'Paciente registrado com sucesso!'});
-            });
+    Medicao.create(req.body)
+        .then(medicao => {
+            res.status(200).send({message: 'Paciente registrado com sucesso!'});
         })
         .catch(err => {
             res.status(500).send({message: err.message});

@@ -33,17 +33,16 @@ db.sequelize.sync({force: false}).then(() => {
 
 function initial() {
     Funcao.findAll().then(funcao => {
-        if(funcao.length){
+        if (funcao.length) {
             console.log('ja possui as funções cadastrada')
         } else {
-            Funcao.create({
+            Funcao.bulkCreate([{
                 idFuncao: 1,
-                nomeFuncao: "FISIO"
-            });
-            Funcao.create({
+                nomeFuncao: 'FISIO'
+            }, {
                 idFuncao: 2,
-                nomeFuncao: "ADMIN"
-            });
+                nomeFuncao: 'ADMIN'
+            }]).then(r => console.log('Foram cadastradas as funções de usuarios'));
         }
     }).catch(err => {
         console.log(err)
