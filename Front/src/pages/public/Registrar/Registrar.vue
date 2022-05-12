@@ -10,34 +10,35 @@
           <q-input
             class="row"
             filled
-            v-model="bean.nomeUser"
+            v-model="bean.nomeUsuario"
             label="Nome"
             :rules="[$validators.notBlank]"
           />
           <q-input
             class="row"
             filled
-            v-model="bean.usernameUser"
+            v-model="bean.usernameUsuario"
             label="Username"
             :rules="[$validators.notBlank]"
           />
           <date-time-picker
             class="row"
             filled
-            v-model="bean.nascUser"
+            v-model="bean.nascUsuario"
             label="Data de Nascimento"
             :rule="[$validators.notBlank, $validators.dateBorn]"
           />
-          <q-input
+          <masked-input
             class="row"
-            v-model="bean.telefoneUser"
+            v-model="bean.telefoneUsuario"
             filled
             label="Telefone"
-            :rules="[$validators.notBlank]"
+            type="telefone"
+            :rules="[$validators.notBlank, $validators.telefone]"
           />
           <q-input
             class="row"
-            v-model="bean.emailUser"
+            v-model="bean.emailUsuario"
             filled
             label="Email"
             type="email"
@@ -45,7 +46,7 @@
           />
           <q-input
             class="row"
-            v-model="bean.senhaUser"
+            v-model="bean.senhaUsuario"
             filled
             label="Senha"
             type="password"
@@ -57,7 +58,7 @@
             filled
             label="Repetir Senha"
             type="password"
-            :rules="[$validators.notBlank, $validators.equal(bean.senhaUser)]"
+            :rules="[$validators.notBlank, $validators.equal(bean.senhaUsuario)]"
           />
           <q-btn
             class="row cadastro-btn"

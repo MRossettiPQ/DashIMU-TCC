@@ -1,23 +1,23 @@
 <template>
   <section name="sensor" class="responsive-height">
-    <div class="row responsive-content p-16">
+    <div class="row responsive-content form-column form-column__padding">
       <q-card bordered flat class="col grid-conteudo">
         <div class="col">
           <q-tabs
             v-model="tabGrande"
             dense
-            class="text-grey"
+            class="col text-grey"
             active-color="primary"
             indicator-color="primary"
             align="justify"
             narrow-indicator
           >
-            <q-tab name="Tab_1" label="Grafico" icon="leaderboard" />
-            <q-tab name="Tab_2" label="Grafico em Grid" icon="trending_up" />
-            <q-tab name="Tab_3" label="Tabela" icon="table_rows" />
+            <q-tab name="Tab_1" label="Grafico" icon="leaderboard"/>
+            <q-tab name="Tab_2" label="Grafico em Grid" icon="trending_up"/>
+            <q-tab name="Tab_3" label="Tabela" icon="table_rows"/>
           </q-tabs>
-          <q-separator />
-          <q-tab-panels v-model="tabGrande" animated>
+          <q-separator/>
+          <q-tab-panels class="col" v-model="tabGrande" animated>
             <q-tab-panel name="Tab_1">
               <tab-grafico
                 label="Grafico"
@@ -35,12 +35,12 @@
             </q-tab-panel>
 
             <q-tab-panel name="Tab_3">
-              <tab-table label="Tabela" :data="sensores[0].data" />
+              <tab-table label="Tabela" :data="sensores[0].data"/>
             </q-tab-panel>
           </q-tab-panels>
         </div>
         <div class="col">
-          <q-card-section class="column form-column form-column__gap" v-if="numeroConexoes >= 2">
+          <q-card-section class="col form-column form-column__gap" v-if="numeroConexoes >= 2">
             <div class="col form-lines form-lines__gap form-lines__no-padding">
               <q-btn
                 color="primary"
@@ -78,7 +78,7 @@
               />
             </div>
           </q-card-section>
-          <q-card-section>
+          <q-card-section class="col">
             <q-list bordered class="rounded-borders">
               <q-expansion-item
                 expand-separator
@@ -107,7 +107,7 @@
                     </q-tabs>
                   </q-card-section>
 
-                  <q-separator />
+                  <q-separator/>
 
                   <q-tab-panels v-model="tab" animated>
                     <q-tab-panel
@@ -161,42 +161,7 @@
                 </q-card>
               </q-expansion-item>
 
-              <q-expansion-item
-                expand-separator
-                icon="perm_identity"
-                label="Paciente"
-              >
-                <q-card>
-                  <q-card-section class="form-lines form-lines__gap">
-                    <q-field filled label="Nome" stack-label color="black">
-                      {{ bean.nomePaciente }}
-                    </q-field>
-                    <q-field filled label="CPF" stack-label color="black">
-                      {{ bean.cpfPaciente }}
-                    </q-field>
-                    <q-field filled label="Telefone" stack-label color="black">
-                      {{ bean.telefonePaciente }}
-                    </q-field>
-                    <q-field
-                      filled
-                      label="Data de Nascimento"
-                      stack-label
-                      color="black"
-                    >
-                      {{ filterDate(bean.nascPaciente) }}
-                    </q-field>
-                    <q-field filled label="Email" stack-label color="black">
-                      {{ bean.emailPaciente }}
-                    </q-field>
-                    <q-field filled label="Telefone" stack-label color="black">
-                      {{ bean.telefonePaciente }}
-                    </q-field>
-                    <q-field filled label="Altura" stack-label color="black">
-                      {{ bean.alturaPaciente }}
-                    </q-field>
-                  </q-card-section>
-                </q-card>
-              </q-expansion-item>
+              <paciente-expasion :bean="bean"/>
             </q-list>
           </q-card-section>
         </div>
@@ -205,12 +170,17 @@
   </section>
 </template>
 
-<script src="./Sensor.js" />
+<script src="./Sensor.js"/>
 
 <style lang="stylus" scoped>
+@import "~src/css/mixins.styl"
 .grid-conteudo
+  padding 16px
   grid-template-columns 75% 25%
   display grid
-  flex-direction column
-  flex-wrap wrap
+  +mobile-portrait()
+    display block
+    grid-auto-rows 1fr
+
+
 </style>

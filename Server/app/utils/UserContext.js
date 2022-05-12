@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
-const configAuth = require('../config/auth.config');
+const {enviroment} = require('../../enviroment.js');
 
-export function getUserContextId(req, res) {
+const getUserContextId = (req, res) => {
     let token = req.headers['x-access-token'];
 
     if (!token) {
@@ -10,14 +10,25 @@ export function getUserContextId(req, res) {
         });
     }
 
-    jwt.verify(token, configAuth.secret, (err, decoded) => {
+    return jwt.verify(token, enviroment.JWT_SECRET, (err, decoded) => {
         if (err) {
             return res.status(401).send({
                 message: 'Não Autorizado!',
             });
         }
-        req.idUser = decoded.idUser;
-    }, (err, token) => console.log('Usuario verificado'));
-
-    return req.idUser;
+        req.idUsuario = decoded.idUsuario;
+    }, (err, token) => {
+        if (token !== null) {
+            return req.idUsuario;
+        } else {
+            res.status(500).send({message: 'Necessario estar logado'});
+        }
+    });
 }
+
+
+const UserContext = {
+    getUserContextId: getUserContextId,
+};
+
+module.exports = UserContext;

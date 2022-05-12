@@ -1,72 +1,79 @@
-const dbConfig = require("../config/db.config.js"),
-  Sequelize = require("sequelize");
+const {enviroment} = require('../../enviroment.js');
+const {Sequelize} = require('sequelize');
+
 //Conexao MySQL com Sequelize
-const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
-  host: dbConfig.HOST,
-  dialect: dbConfig.dialect,
-  logging: dbConfig.logging,
-  pool: {
-    max: dbConfig.pool.max,
-    min: dbConfig.pool.min,
-    acquire: dbConfig.pool.acquire,
-    idle: dbConfig.pool.idle,
-  },
-});
-const db = {};
+const sequelize = new Sequelize(
+    enviroment.DATABASE.NAME,
+    enviroment.DATABASE.USER,
+    enviroment.DATABASE.PASSWORD,
+    {
+        host: enviroment.DATABASE.HOST,
+        port: enviroment.DATABASE.PORT,
+        dialect: enviroment.DATABASE.DIALECT,
+        logging: enviroment.DATABASE.LOGGING,
+        pool: {
+            max: enviroment.DATABASE.POOL.MAX,
+            min: enviroment.DATABASE.POOL.MIN,
+            acquire: enviroment.DATABASE.POOL.ACQUIRE,
+            idle: enviroment.DATABASE.POOL.IDLE,
+        },
+    }
+);
+const DataBaseOperator = {};
 
-db.Sequelize = Sequelize;
-db.sequelize = sequelize;
+DataBaseOperator.Sequelize = Sequelize;
+DataBaseOperator.sequelize = sequelize;
 
-db.usuario = require("../models/user.model.js")(sequelize, Sequelize);
-db.funcao = require("../models/funcao.model.js")(sequelize, Sequelize);
-db.sessao = require("../models/sessao.model.js")(sequelize, Sequelize);
-db.medicao = require("../models/medicao.model.js")(sequelize, Sequelize);
-db.paciente = require("../models/paciente.model.js")(sequelize, Sequelize);
+DataBaseOperator.usuario = require('../models/usuario.model.js')(sequelize, Sequelize);
+DataBaseOperator.funcao = require('../models/funcao.model.js')(sequelize, Sequelize);
+DataBaseOperator.sessao = require('../models/sessao.model.js')(sequelize, Sequelize);
+DataBaseOperator.medicao = require('../models/medicao.model.js')(sequelize, Sequelize);
+DataBaseOperator.paciente = require('../models/paciente.model.js')(sequelize, Sequelize);
 //usuario e função
-db.funcao.belongsToMany(db.usuario, {
-  through: "usuario_funcao",
-  foreignKey: "idFuncao",
-  otherKey: "idUser",
+DataBaseOperator.funcao.belongsToMany(DataBaseOperator.usuario, {
+    through: 'usuario_funcao',
+    foreignKey: 'idFuncao',
+    otherKey: 'idUsuario',
 });
-db.usuario.belongsToMany(db.funcao, {
-  through: "usuario_funcao",
-  foreignKey: "idUser",
-  otherKey: "idFuncao",
+DataBaseOperator.usuario.belongsToMany(DataBaseOperator.funcao, {
+    through: 'usuario_funcao',
+    foreignKey: 'idUsuario',
+    otherKey: 'idFuncao',
 });
 //usuario e paciente
-db.paciente.belongsToMany(db.usuario, {
-  through: "usuario_paciente",
-  foreignKey: "idPaciente",
-  otherKey: "idUser",
+DataBaseOperator.paciente.belongsToMany(DataBaseOperator.usuario, {
+    through: 'usuario_paciente',
+    foreignKey: 'idPaciente',
+    otherKey: 'idUsuario',
 });
-db.usuario.belongsToMany(db.paciente, {
-  through: "usuario_paciente",
-  foreignKey: "idUser",
-  otherKey: "idPaciente",
+DataBaseOperator.usuario.belongsToMany(DataBaseOperator.paciente, {
+    through: 'usuario_paciente',
+    foreignKey: 'idUsuario',
+    otherKey: 'idPaciente',
 });
 //paciente e sessão
-db.sessao.belongsToMany(db.paciente, {
-  through: "paciente_sessao",
-  foreignKey: "idSessao",
-  otherKey: "idPaciente",
+DataBaseOperator.sessao.belongsToMany(DataBaseOperator.paciente, {
+    through: 'paciente_sessao',
+    foreignKey: 'idSessao',
+    otherKey: 'idPaciente',
 });
-db.paciente.belongsToMany(db.sessao, {
-  through: "paciente_sessao",
-  foreignKey: "idPaciente",
-  otherKey: "idSessao",
+DataBaseOperator.paciente.belongsToMany(DataBaseOperator.sessao, {
+    through: 'paciente_sessao',
+    foreignKey: 'idPaciente',
+    otherKey: 'idSessao',
 });
 //sessão e medição
-db.medicao.belongsToMany(db.sessao, {
-  through: "sessao_medicao",
-  foreignKey: "idMedicao",
-  otherKey: "idSessao",
+DataBaseOperator.medicao.belongsToMany(DataBaseOperator.sessao, {
+    through: 'sessao_medicao',
+    foreignKey: 'idMedicao',
+    otherKey: 'idSessao',
 });
-db.sessao.belongsToMany(db.medicao, {
-  through: "sessao_medicao",
-  foreignKey: "idSessao",
-  otherKey: "idMedicao",
+DataBaseOperator.sessao.belongsToMany(DataBaseOperator.medicao, {
+    through: 'sessao_medicao',
+    foreignKey: 'idSessao',
+    otherKey: 'idMedicao',
 });
 
-db.FUNCAO = ["USUARIO", "PACIENTE", "ADMIN"];
+DataBaseOperator.FUNCAO = ['FISIO', 'ADMIN'];
 
-module.exports = db;
+module.exports = DataBaseOperator;

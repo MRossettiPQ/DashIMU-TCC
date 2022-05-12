@@ -3,11 +3,18 @@
     <q-card class="column full-height dialog-card">
       <q-card-section class="div-header">
         <div class="text-h6" v-if="id">Paciente nº {{ id }}</div>
-        <div class="text-h6" v-else>Cadastrar novo paciente</div>
-        <q-btn v-close-popup flat label="Fechar" />
+        <div class="text-h6" v-else>Novo paciente</div>
+        <q-btn
+          v-close-popup
+          size="md"
+          dense
+          flat
+          icon="close"
+          :label="!$q.platform.is.mobile ? 'Fechar' : null"
+        />
       </q-card-section>
-      <q-separator />
-      <q-card-section class="col form-column form-column__gap">
+      <q-separator/>
+      <q-card-section :class="$q.platform.is.mobile ? 'col form-lines form-lines__gap' : 'col form-column form-column__gap'  ">
         <q-form greedy ref="mainForm" class="col form-lines form-lines__gap-sm">
           <q-input
             v-model="bean.nomePaciente"
@@ -51,47 +58,15 @@
             :rules="[$validators.notBlank]"
           />
         </q-form>
-        <q-table
-          class="col"
-          v-if="id"
-          title="Treats"
-          :data="dataTable"
-          :columns="columns"
-          row-key="id"
-          :filter="filter"
-          :loading="loading"
-          @row-click="openDialog"
-          flat
-        >
-          <template #top>
-            <q-btn
-              color="primary"
-              :disable="loading"
-              label="Nova sessão"
-              @click="toMedicao"
-            />
-            <q-space />
-            <q-input
-              v-model="filter"
-              outlined
-              borderless
-              dense
-              debounce="300"
-              color="primary"
-            >
-              <template #append>
-                <q-icon name="search" />
-              </template>
-            </q-input>
-          </template>
-        </q-table>
+        <table-sessao :id="id"/>
       </q-card-section>
-      <q-separator />
+      <q-separator/>
       <q-card-actions align="right" class="bg-white text-teal">
         <q-btn
           color="primary"
           :label="id !== null ? 'atualizar' : 'cadastrar'"
-          size="lg"
+          size="md"
+          dense
           @click="save"
         />
       </q-card-actions>
@@ -99,7 +74,7 @@
   </q-dialog>
 </template>
 
-<script src="./Paciente.js" />
+<script src="./Paciente.js"/>
 
 <style lang="stylus" scoped>
 .div-header

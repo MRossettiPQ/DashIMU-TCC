@@ -17,10 +17,9 @@
           <div>
             <q-toolbar-title>
               <div class="conteudo">
-                <q-icon name="ion-logo-github" size="14px" />
-                <a href="https://github.com/MRossettiPQ/DashIMU-TCC"
-                  >Matheus Rossetti</a
-                >
+                <q-icon name="ion-logo-github" size="14px"/>
+                <a href="https://github.com/MRossettiPQ/DashIMU-TCC" target="_blank"
+                >Matheus Rossetti</a>
               </div>
             </q-toolbar-title>
           </div>
@@ -34,7 +33,7 @@
         content-class="bg-grey-1"
       >
         <q-img
-          v-if="!!currentUser"
+          v-if="!!bean"
           src="https://cdn.quasar.dev/img/material.png"
           style="height: 150px"
           clickable
@@ -42,10 +41,10 @@
         >
           <div class="absolute-bottom bg-transparent">
             <q-avatar size="56px" class="q-mb-sm">
-              <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+              <img src="https://cdn.quasar.dev/img/boy-avatar.png"/>
             </q-avatar>
-            <div class="text-weight-bold">{{ currentUser.nomeUser }}</div>
-            <div>@{{ currentUser.usernameUser }}</div>
+            <div class="text-weight-bold">{{ bean.nomeUsuario }}</div>
+            <div>@{{ bean.usernameUsuario }}</div>
           </div>
         </q-img>
 
@@ -58,7 +57,7 @@
 
           <q-item v-if="!!logged" clickable tag="a" @click="logOut">
             <q-item-section avatar>
-              <q-icon name="logout" />
+              <q-icon name="logout"/>
             </q-item-section>
 
             <q-item-section>
@@ -70,13 +69,13 @@
       </q-drawer>
 
       <div>
-        <router-view />
+        <router-view/>
       </div>
     </q-page-container>
   </q-layout>
 </template>
 
-<script src="./Main.js" />
+<script src="./Main.js"/>
 
 <style lang="stylus" scoped>
 

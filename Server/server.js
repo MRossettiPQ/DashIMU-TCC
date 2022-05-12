@@ -2,9 +2,9 @@ const express = require('express');
 const enableWs = require('express-ws');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const {enviroment} = require('./enviroment.js');
 
-const serverConfig = require('./app/config/server.config.js');
-const db = require('./app/models');
+const DataBaseOperator = require('./app/models');
 const app = express();
 
 app.use(cors());
@@ -24,9 +24,9 @@ require('./app/routes/pacientes.routes')(app);
 require('./app/routes/socket.routes')(app);
 
 // Banco
-const Funcao = db.funcao;
+const Funcao = DataBaseOperator.funcao;
 
-db.sequelize.sync({force: false}).then(() => {
+DataBaseOperator.sequelize.sync({force: false}).then(() => {
     console.log('Drop and Resync Database');
     initial();
 });
@@ -50,8 +50,8 @@ function initial() {
 }
 
 // set port, listen for requests
-const PORT = process.env.PORT || serverConfig.PORT;
+const PORT = process.env.PORT || enviroment.HOST.PORT;
 app.listen(PORT, () => {
     console.log(`Server está rodando na Porta: ${PORT}.`);
-    console.log(`Cors está rodando na Porta: ${serverConfig.PORTCORS}.`);
+    console.log(`Cors está rodando na Porta: ${enviroment.HOST.PORT_CORS}.`);
 });

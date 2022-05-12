@@ -15,8 +15,8 @@ class PacienteService {
     });
   }
 
-  async postPaciente({id, data}) {
-    return await axios.post(`${process.env.SERVER_API}/api/paciente/${id}/cadastropaciente`, data, {
+  async postPaciente({data}) {
+    return await axios.post(`${process.env.SERVER_API}/api/paciente/cadastropaciente`, data, {
       headers: AutorizaHeader()
     });
   }

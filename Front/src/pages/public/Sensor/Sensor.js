@@ -1,6 +1,7 @@
 import {Component, Prop, Vue} from "vue-property-decorator";
 import TabGrafico from "./Components/TabGrafico.vue";
 import TabTable from "./Components/TabTable.vue";
+import PacienteExpasion from "./Components/PacienteExpasion.vue";
 import PacienteService from "src/commons/services/PacienteService";
 import DateUtils from "src/commons/utils/DateUtils";
 import {exportFile, Notify} from "quasar";
@@ -8,7 +9,7 @@ import SocketService from "src/commons/services/SocketService";
 
 @Component({
   name: "sensor",
-  components: {TabTable, TabGrafico}
+  components: {TabTable, TabGrafico, PacienteExpasion}
 })
 class Sensor extends Vue {
   sensoresDisponiveis = []
@@ -323,10 +324,6 @@ class Sensor extends Vue {
     } catch (e) {
       console.log(e);
     }
-  }
-
-  filterDate(date) {
-    return DateUtils.getDateFormated(date);
   }
 }
 

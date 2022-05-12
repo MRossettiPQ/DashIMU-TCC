@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="column">
     <div class="text-h6">{{ label }}</div>
     <div class="row">
       <apexchart

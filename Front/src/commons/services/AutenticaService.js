@@ -1,12 +1,8 @@
 import axios from 'axios';
 
 class AuthService {
-  async login(user) {
-    return await axios
-      .post(`${process.env.SERVER_API}/api/auth/signin`, {
-        usernameUser: user.usernameUser,
-        senhaUser: user.senhaUser
-      })
+  async login(data) {
+    return await axios.post(`${process.env.SERVER_API}/api/auth/signin`, data)
       .then(response => {
         return response.data;
       });

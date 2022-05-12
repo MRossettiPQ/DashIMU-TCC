@@ -13,26 +13,28 @@
         bordered
         flat
       >
-        <template #top>
+        <template #top class="flex">
           <q-btn
             color="primary"
             :disable="loading"
-            label="Adicionar Paciente"
+            icon="add"
+            :label="!$q.platform.is.mobile ? 'Paciente' : null"
             @click="openDialog"
-            dense
             unelevated
+            dense
           />
-          <q-space />
+          <q-space/>
           <q-input
-            v-model="filter"
+            class="col-5"
             outlined
+            v-model="filter"
             borderless
             dense
             debounce="300"
             color="primary"
           >
             <template #append>
-              <q-icon name="search" />
+              <q-icon name="search"/>
             </template>
           </q-input>
         </template>
@@ -41,7 +43,7 @@
   </section>
 </template>
 
-<script src="./Pacientes.js" />
+<script src="./Pacientes.js"/>
 
 <style lang="stylus" scoped>
 .dialog-card

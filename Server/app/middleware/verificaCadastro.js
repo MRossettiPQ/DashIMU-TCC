@@ -4,10 +4,10 @@ const Usuario = db.usuario;
 const Paciente = db.paciente;
 
 verificaUsuarioEmailDuplicados = (req, res, next) => {
-  // Username
+  // Usuarioname
   Usuario.findOne({
     where: {
-      usernameUser: req.body.usernameUser,
+      usernameUsuario: req.body.usernameUsuario,
     },
   }).then((usuarioVerifica) => {
     if (usuarioVerifica) {
@@ -20,7 +20,7 @@ verificaUsuarioEmailDuplicados = (req, res, next) => {
     // Email
     Usuario.findOne({
       where: {
-        emailUser: req.body.emailUser,
+        emailUsuario: req.body.emailUsuario,
       },
     }).then((usuarioVerifica) => {
       if (usuarioVerifica) {

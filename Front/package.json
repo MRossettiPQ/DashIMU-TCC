@@ -8,8 +8,10 @@
   "scripts": {
     "build": "cross-env NODE_ENV=production quasar build",
     "build-electron": "cross-env NODE_ENV=production quasar build -m electron",
+    "build-mobile": "cross-env NODE_ENV=production quasar build -m capacitor -T android",
     "serve": "cross-env NODE_ENV=development quasar dev",
     "serve-electron": "cross-env NODE_ENV=development quasar dev --mode electron",
+    "serve-mobile": "cross-env NODE_ENV=development quasar dev --mode capacitor -T android",
     "lint": "eslint --ext .js,.vue ./",
     "test": "echo \"No test specified\" && exit 0"
   },

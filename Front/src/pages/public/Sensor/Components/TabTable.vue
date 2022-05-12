@@ -9,18 +9,22 @@
     bordered
     flat
   >
-    <template #top-right>
+    <template #top-right class="flex">
       <q-btn
-        class="m-r-5"
+        class="col-2 m-r-5"
+        dense
         color="primary"
         icon-right="archive"
-        label="Export to csv"
+        :label="!$q.platform.is.mobile ? 'Exportar' : null"
         no-caps
         @click="exportTable"
       />
       <q-btn
+        class="col-2"
+        dense
         color="primary"
-        :label="openFullscreen ? 'Fechar tabela' : 'Abrir em tela cheia'"
+        :icon="openFullscreen ? 'close_fullscreen': 'width_full'"
+        :label="!$q.platform.is.mobile ? (openFullscreen ? 'Fechar' : 'Tela cheia') : null"
         no-caps
         @click="openFullscren"
       />
@@ -28,6 +32,6 @@
   </q-table>
 </template>
 
-<script src="./TabTable.js" />
+<script src="./TabTable.js"/>
 
 <style lang="stylus" scoped></style>

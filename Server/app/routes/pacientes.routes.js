@@ -21,8 +21,8 @@ module.exports = function (app) {
     );
 
     app.post(
-        '/api/paciente/:id/cadastropaciente',
-        [verificaCadastro.verificaCPF],
+        '/api/paciente/cadastropaciente',
+        [autorizaJwt.verificaToken, verificaCadastro.verificaCPF],
         pacienteController.postRegistrarPaciente
     );
 };

@@ -1,14 +1,14 @@
 <template>
   <section class="responsive-height">
     <div class="row responsive-content form-column">
-      <div class="col" v-if="bean !== null">
-        <h1>Perfil de {{ bean.nomeUser }}</h1>
+      <div class="col p-16" v-if="bean !== null">
+        <h1>Perfil de {{ bean.nomeUsuario }}</h1>
         <q-form greedy ref="mainForm">
           <q-card bordered flat class="form-column">
             <q-card-section class="col form-lines form-lines__gap">
               <q-input
                 class="col"
-                v-model="bean.idUser"
+                v-model="bean.idUsuario"
                 filled
                 stack-label
                 readonly
@@ -16,7 +16,7 @@
               />
               <q-input
                 class="col"
-                v-model="bean.nomeUser"
+                v-model="bean.nomeUsuario"
                 filled
                 stack-label
                 readonly
@@ -27,7 +27,7 @@
             <q-card-section class="col form-lines form-lines__gap">
               <q-input
                 class="col"
-                v-model="bean.nascUser"
+                v-model="bean.nascUsuario"
                 filled
                 stack-label
                 readonly
@@ -35,7 +35,7 @@
               />
               <q-input
                 class="col"
-                v-model="bean.telefoneUser"
+                v-model="bean.telefoneUsuario"
                 filled
                 stack-label
                 readonly
@@ -46,7 +46,7 @@
             <q-card-section class="col form-lines form-lines__gap">
               <q-input
                 class="col"
-                v-model="bean.emailUser"
+                v-model="bean.emailUsuario"
                 filled
                 stack-label
                 readonly
@@ -71,6 +71,7 @@
 <script src="./Perfil.js" />
 
 <style lang="stylus" scoped>
+@import "~src/css/mixins.styl"
 h1
   font-size 2rem
   padding 0
@@ -81,4 +82,15 @@ h1
   display flex
   gap 16px
   flex-direction column
+
+.form-column
+  flex-direction row
+  +mobile-portrait()
+    padding 16px
+    gap 16px
+    flex-direction column
+
+.form-lines
+  +mobile-portrait()
+    padding 0
 </style>

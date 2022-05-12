@@ -7,8 +7,8 @@ import { Component, Vue } from "vue-property-decorator";
 class Logar extends Vue {
   loading = false;
   bean = {
-    usernameUser: "",
-    senhaUser: ""
+    usernameUsuario: "",
+    senhaUsuario: ""
   };
 
   get loggedIn() {

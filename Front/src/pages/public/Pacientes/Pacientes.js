@@ -59,7 +59,7 @@ class Pacientes extends Vue {
 
   async tableLoad() {
     try {
-      const result = await PacienteService.getListaPaciente().then(
+      await PacienteService.getListaPaciente().then(
         response => {
           this.dataTable = response.data;
         },

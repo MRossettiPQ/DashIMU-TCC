@@ -1,23 +1,28 @@
-const db = require('../models');
-const authConfig = require('../config/auth.config');
-const Usuario = db.usuario;
+const DataBaseOperator = require('../models');
+const {enviroment} = require('../../enviroment.js');
+const Usuario = DataBaseOperator.usuario;
+const Funcao = DataBaseOperator.funcao;
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
 exports.registrar = (req, res) => {
+    console.log('[POST] /api/auth/signup')
     // Salva o cadastro do usuario no banco
-    Usuario.create({
-        usernameUser: req.body.usernameUser,
-        emailUser: req.body.emailUser,
-        telefoneUser: req.body.telefoneUser,
-        nomeUser: req.body.nomeUser,
-        nascUser: req.body.nascUser,
-        senhaUser: bcrypt.hashSync(req.body.senhaUser, 8)
-    })
+    Usuario
+        .create({
+            usernameUsuario: req.body.usernameUsuario,
+            emailUsuario: req.body.emailUsuario,
+            telefoneUsuario: req.body.telefoneUsuario,
+            nomeUsuario: req.body.nomeUsuario,
+            nascUsuario: req.body.nascUsuario,
+            senhaUsuario: bcrypt.hashSync(req.body.senhaUsuario, 8)
+        })
         .then(usuarioCad => {
-            usuarioCad.setFuncaos([1]).then(() => {
-                res.send({message: 'Usuario registrado com sucesso!'});
-            });
+            usuarioCad
+                .setFuncaos([1])
+                .then(() => {
+                    res.send({message: 'Usuario registrado com sucesso!'});
+                });
         })
         .catch(err => {
             res.status(500).send({message: err.message});
@@ -25,19 +30,22 @@ exports.registrar = (req, res) => {
 };
 
 exports.logar = (req, res) => {
-    Usuario.findOne({
-        where: {
-            usernameUser: req.body.usernameUser
-        }
-    })
+    console.log('[POST] /api/auth/signin')
+    Usuario
+        .findOne({
+            where: {
+                usernameUsuario: req.body.usernameUsuario
+            },
+            include: Funcao
+        })
         .then(usuarioLog => {
             if (!usuarioLog) {
                 return res.status(404).send({message: 'Usuario não encontrado.'});
             }
 
             const senhaValida = bcrypt.compareSync(
-                req.body.senhaUser,
-                usuarioLog.senhaUser
+                req.body.senhaUsuario,
+                usuarioLog.senhaUsuario
             );
 
             if (!senhaValida) {
@@ -48,31 +56,46 @@ exports.logar = (req, res) => {
             }
 
             const token = jwt.sign({
-                    idUser: usuarioLog.idUser
+                    idUsuario: usuarioLog.idUsuario
                 },
-                authConfig.secret,
+                enviroment.JWT_SECRET,
                 {
                     expiresIn: 86400
                 },
-                (err, token) => console.log('Usuario verificado')
-            );
-
-            const authorities = [];
-            usuarioLog.getFuncaos().then(funcao => {
-                for (let i = 0; i < funcao.length; i++) {
-                    authorities.push('ROLE_' + funcao[i].nomeFuncao.toUpperCase());
+                (err, token) => {
+                    if (token !== null) {
+                        const authorities = [];
+                        console.log(usuarioLog)
+                        usuarioLog
+                            .getFuncaos()
+                            .then(listaFuncoes => {
+                                for (let i = 0; i < listaFuncoes.length; i++) {
+                                    authorities.push('ROLE_' + listaFuncoes[i].nomeFuncao.toUpperCase());
+                                }
+                                console.log('authorities', authorities, listaFuncoes, usuarioLog.idUsuario)
+                                if (listaFuncoes.length) {
+                                    console.log('[POST] /api/auth/signin - Usuario verificado')
+                                    res.status(200).send({
+                                        idUsuario: usuarioLog.idUsuario,
+                                        nomeUsuario: usuarioLog.nomeUsuario,
+                                        nascUsuario: usuarioLog.nascUsuario,
+                                        telefoneUsuario: usuarioLog.telefoneUsuario,
+                                        usernameUsuario: usuarioLog.usernameUsuario,
+                                        emailUsuario: usuarioLog.emailUsuario,
+                                        funcao: authorities,
+                                        accessToken: token
+                                    });
+                                } else {
+                                    console.log('[POST] /api/auth/signin - Usuario não autorizado')
+                                    res.status(500).send({message: `Não foi possivel autenticar o usuario`});
+                                }
+                            });
+                    } else {
+                        console.log('[POST] /api/auth/signin - Usuario não autorizado')
+                        res.status(500).send({message: `Não foi possivel autenticar o usuario ${err.message}`});
+                    }
                 }
-                res.status(200).send({
-                    idUser: usuarioLog.idUser,
-                    nomeUser: usuarioLog.nomeUser,
-                    nascUser: usuarioLog.nascUser,
-                    telefoneUser: usuarioLog.telefoneUser,
-                    usernameUser: usuarioLog.usernameUser,
-                    emailUser: usuarioLog.emailUser,
-                    funcao: authorities,
-                    accessToken: token
-                });
-            });
+            );
         })
         .catch(err => {
             res.status(500).send({message: err.message});

@@ -8,7 +8,7 @@
           </div>
 
           <q-input
-            v-model="bean.usernameUser"
+            v-model="bean.usernameUsuario"
             filled
             label="Username"
             type="text"
@@ -17,7 +17,7 @@
           />
 
           <q-input
-            v-model="bean.senhaUser"
+            v-model="bean.senhaUsuario"
             filled
             label="Senha"
             type="password"
@@ -29,7 +29,6 @@
             color="primary"
             unelevated
             label="Entrar"
-            class="login-btn"
             size="lg"
             @click="onSubmit"
           />

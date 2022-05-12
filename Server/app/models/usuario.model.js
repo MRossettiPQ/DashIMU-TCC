@@ -1,32 +1,32 @@
 module.exports = (sequelize, Sequelize) => {
-  return sequelize.define("users", {
-    idUser: {
+  return sequelize.define("usuario", {
+    idUsuario: {
       type: Sequelize.INTEGER,
       primaryKey: true,
       autoIncrement: true
     },
-    usernameUser: {
+    usernameUsuario: {
       type: Sequelize.STRING,
       allowNull: false
     },
-    nomeUser: {
+    nomeUsuario: {
       type: Sequelize.STRING,
       allowNull: false,
       unique: true
     },
-    emailUser: {
+    emailUsuario: {
       type: Sequelize.STRING,
       allowNull: false
     },
-    telefoneUser: {
+    telefoneUsuario: {
       type: Sequelize.STRING,
       allowNull: true
     },
-    senhaUser: {
+    senhaUsuario: {
       type: Sequelize.STRING,
       allowNull: false
     },
-    nascUser: {
+    nascUsuario: {
       type: Sequelize.DATE,
       allowNull: true
     }

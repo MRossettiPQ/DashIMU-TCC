@@ -18,7 +18,7 @@ exports.postRegistraMedicao = (req, res) => {
 };
 
 exports.getListaMedicao = (req, res) => {
-    Usuario.findByPk(req.idUser)
+    Usuario.findByPk(req.idUsuario)
         .then(contextoUsuario => {
             contextoUsuario.getPacientes().then(listaPacientes => {
                 res.status(200).send(listaPacientes);
@@ -33,7 +33,7 @@ exports.getMedicao = (req, res) => {
     const {id} = req.params;
 
     if (id) {
-        Usuario.findByPk(req.idUser)
+        Usuario.findByPk(req.idUsuario)
             .then(contextoUsuario => {
                 Paciente.findByPk(id)
                     .then(paciente => {

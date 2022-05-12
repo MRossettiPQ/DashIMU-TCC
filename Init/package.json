@@ -1,11 +1,14 @@
 {
   "type": "module",
   "scripts": {
-    "build": "cross-env NODE_ENV=development node init.js"
+    "start": "cross-env NODE_INIT_ENV=start node init.js",
+    "inicialize-dev": "cross-env NODE_INIT_ENV=inicialize node init.js",
+    "inicialize-build": "cross-env NODE_INIT_ENV=inicialize node init.js"
   },
   "dependencies": {
-    "path": "^0.12.7",
-    "cross-env": "^7.0.3"
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.0.1",
+    "path": "^0.12.7"
   },
   "license": "ISC"
 }

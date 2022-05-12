@@ -1,6 +1,5 @@
 import { Component, Vue } from "vue-property-decorator";
 import FormUtils from "../../../commons/utils/FormUtils";
-import PacienteService from 'src/commons/services/PacienteService';
 import AutenticaService from 'src/commons/services/AutenticaService';
 
 @Component({
@@ -9,13 +8,13 @@ import AutenticaService from 'src/commons/services/AutenticaService';
 class Registrar extends Vue {
   loading = false;
   bean = {
-    emailUser: "",
-    nomeUser: "",
-    nascUser: "",
-    senhaUser: "",
+    emailUsuario: "",
+    nomeUsuario: "",
+    nascUsuario: "",
+    senhaUsuario: "",
     senhaConfirmar: "",
-    usernameUser: "",
-    telefoneUser: ""
+    usernameUsuario: "",
+    telefoneUsuario: ""
   };
 
   get loggedIn() {
