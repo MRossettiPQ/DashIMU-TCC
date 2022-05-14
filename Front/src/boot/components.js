@@ -26,9 +26,8 @@ import {
   QToolbar,
   QToolbarTitle
 } from "quasar";
-import { DateTimePicker, MaskedInput } from "@crusader-vue/components";
 import VueApexCharts from "vue-apexcharts";
-import ValidatorPlugin from "src/commons/utils/ValidatorsUtils";
+import ValidatorPlugin from "../commons/utils/ValidatorsUtils";
 
 export default async ({ Vue }) => {
   console.log("loading components");
@@ -65,8 +64,6 @@ export default async ({ Vue }) => {
     );
   });
 
-  Vue.component("date-time-picker", DateTimePicker);
-  Vue.component("masked-input", MaskedInput);
   Vue.component("q-markup-table", QMarkupTable);
   Vue.component("q-linear-progress", QLinearProgress);
   Vue.component("q-btn", QBtn);

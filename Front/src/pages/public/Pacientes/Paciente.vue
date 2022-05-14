@@ -22,25 +22,24 @@
             label="Nome"
             :rules="[$validators.notBlank]"
           />
-          <masked-input
+          <q-input
             v-model="bean.cpfPaciente"
             filled
             label="CPF"
             :rules="[$validators.notBlank, $validators.cpf]"
-            type="cpf"
           />
-          <date-time-picker
+          <q-date
             v-model="bean.nascPaciente"
+            minimal
             filled
             label="Data de Nascimento"
             :rule="[$validators.notBlank, $validators.dateBorn]"
           />
-          <masked-input
+          <q-input
             v-model="bean.telefonePaciente"
             filled
             label="Telefone"
-            type="telefone"
-            :rules="[$validators, $validators.telefone]"
+            :rules="[$validators.notBlank, $validators.telefone]"
           />
           <q-input
             v-model="bean.emailPaciente"
@@ -49,11 +48,10 @@
             type="email"
             :rules="[$validators.notBlank, $validators.email]"
           />
-          <masked-input
+          <q-input
             v-model="bean.alturaPaciente"
             filled
             label="Altura"
-            type="money"
             prefix="m"
             :rules="[$validators.notBlank]"
           />

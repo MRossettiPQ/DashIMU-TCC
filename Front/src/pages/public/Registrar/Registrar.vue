@@ -3,6 +3,14 @@
     <q-card class="cadastro-card">
       <q-card-section>
         <q-form greedy ref="mainForm" class="form-lines">
+          <rot-input-date
+            class="row m-2"
+            v-model="bean.nascUsuario"
+            minimal
+            filled
+            label="Data de Nascimento"
+            :rule="[$validators.notBlank, $validators.dateBorn]"
+          />
           <div class="row items-center">
             <h3 class="title col">Cadastrar</h3>
           </div>
@@ -21,19 +29,19 @@
             label="Username"
             :rules="[$validators.notBlank]"
           />
-          <date-time-picker
-            class="row"
-            filled
+          <rot-input-date
+            class="row m-2"
             v-model="bean.nascUsuario"
+            minimal
+            filled
             label="Data de Nascimento"
             :rule="[$validators.notBlank, $validators.dateBorn]"
           />
-          <masked-input
+          <q-input
             class="row"
             v-model="bean.telefoneUsuario"
             filled
             label="Telefone"
-            type="telefone"
             :rules="[$validators.notBlank, $validators.telefone]"
           />
           <q-input
@@ -42,7 +50,7 @@
             filled
             label="Email"
             type="email"
-            :rules="[$validators.notBlank]"
+            :rules="[$validators.notBlank, $validators.email]"
           />
           <q-input
             class="row"
