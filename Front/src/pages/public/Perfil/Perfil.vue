@@ -27,11 +27,11 @@
             <q-card-section class="col form-lines form-lines__gap">
               <q-input
                 class="col"
-                v-model="bean.nascUsuario"
+                v-model="bean.funcoesUsuario"
                 filled
                 stack-label
                 readonly
-                label="Data de nascimento"
+                label="Funções do usuario"
               />
               <q-input
                 class="col"

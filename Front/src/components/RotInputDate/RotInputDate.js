@@ -11,7 +11,10 @@ class RotInputDate extends Vue {
   value;
 
   @Prop({type: Array, default: () => []})
-  rules;
+  rule;
+
+  @Prop()
+  mask;
 
   handleInput (e) {
     this.$emit('input', this.content)

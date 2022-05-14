@@ -1,14 +1,15 @@
-const db = require('../models');
-const UserContext = require('../utils/UserContext');
-const Sessao = db.sessao;
-const Medicao = db.medicao;
-const Usuario = db.usuario;
+const DataBaseOperator = require('../../Core/DataBase');
+const UserContext = require('../../Core/Utils/UserContext');
+const Medicao = DataBaseOperator.medicao;
+const Usuario = DataBaseOperator.usuario;
 
 exports.postRegistraMedicao = (req, res) => {
+    console.log('[POST] - /api/medicao')
     const usuarioId = UserContext.getUserContextId(req, res)
     const {id: idPaciente} = req.params;
 
-    Medicao.create(req.body)
+    Medicao
+        .create(req.body)
         .then(medicao => {
             res.status(200).send({message: 'Paciente registrado com sucesso!'});
         })
@@ -18,7 +19,9 @@ exports.postRegistraMedicao = (req, res) => {
 };
 
 exports.getListaMedicao = (req, res) => {
-    Usuario.findByPk(req.idUsuario)
+    console.log('[GET] - /api/medicao')
+    Usuario
+        .findByPk(req.idUsuario)
         .then(contextoUsuario => {
             contextoUsuario.getPacientes().then(listaPacientes => {
                 res.status(200).send(listaPacientes);
@@ -30,10 +33,12 @@ exports.getListaMedicao = (req, res) => {
 };
 
 exports.getMedicao = (req, res) => {
+    console.log('[GET] - /api/medicao/:id')
     const {id} = req.params;
 
     if (id) {
-        Usuario.findByPk(req.idUsuario)
+        Usuario
+            .findByPk(req.idUsuario)
             .then(contextoUsuario => {
                 Paciente.findByPk(id)
                     .then(paciente => {

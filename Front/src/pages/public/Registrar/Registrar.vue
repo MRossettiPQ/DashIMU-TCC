@@ -3,14 +3,6 @@
     <q-card class="cadastro-card">
       <q-card-section>
         <q-form greedy ref="mainForm" class="form-lines">
-          <rot-input-date
-            class="row m-2"
-            v-model="bean.nascUsuario"
-            minimal
-            filled
-            label="Data de Nascimento"
-            :rule="[$validators.notBlank, $validators.dateBorn]"
-          />
           <div class="row items-center">
             <h3 class="title col">Cadastrar</h3>
           </div>
@@ -28,14 +20,6 @@
             v-model="bean.usernameUsuario"
             label="Username"
             :rules="[$validators.notBlank]"
-          />
-          <rot-input-date
-            class="row m-2"
-            v-model="bean.nascUsuario"
-            minimal
-            filled
-            label="Data de Nascimento"
-            :rule="[$validators.notBlank, $validators.dateBorn]"
           />
           <q-input
             class="row"

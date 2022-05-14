@@ -2,17 +2,15 @@ import {Component, Prop, Vue} from "vue-property-decorator";
 import TabGrafico from "./Components/TabGrafico.vue";
 import TabTable from "./Components/TabTable.vue";
 import PacienteExpasion from "./Components/PacienteExpasion.vue";
-import PacienteService from "src/commons/services/PacienteService";
-import DateUtils from "src/commons/utils/DateUtils";
+import SensorExpasion from "./Components/SensorExpasion.vue";
 import {exportFile, Notify} from "quasar";
-import SocketService from "src/commons/services/SocketService";
+import PacienteService from "src/commons/services/PacienteService";
 
 @Component({
   name: "sensor",
-  components: {TabTable, TabGrafico, PacienteExpasion}
+  components: {TabTable, TabGrafico, PacienteExpasion, SensorExpasion}
 })
 class Sensor extends Vue {
-  sensoresDisponiveis = []
   cont = 0;
   tab = "Sensor_1";
   tabGrande = "Tab_1";
@@ -25,7 +23,6 @@ class Sensor extends Vue {
   mounted() {
     const {idPaciente} = this.$route.query;
     this.dataLoad(idPaciente);
-    this.listaSensoresLoad();
   }
 
   renderRows = [
@@ -104,7 +101,7 @@ class Sensor extends Vue {
       tab_label: "Sensor 1",
       tab_name: "Sensor_1",
       label: "Conectar Sensor 1",
-      sensor: {
+      dispositivo: {
         ip: "",
         ativo: false,
         connection: null,
@@ -117,7 +114,7 @@ class Sensor extends Vue {
       tab_label: "Sensor 2",
       tab_name: "Sensor_2",
       label: "Conectar Sensor 2",
-      sensor: {
+      dispositivo: {
         ip: "",
         ativo: false,
         connection: null,
@@ -130,7 +127,7 @@ class Sensor extends Vue {
       tab_label: "Sensor 3",
       tab_name: "Sensor_3",
       label: "Conectar Sensor 3",
-      sensor: {
+      dispositivo: {
         ip: "",
         ativo: false,
         connection: null,
@@ -141,18 +138,18 @@ class Sensor extends Vue {
     }
   ];
 
-  conectaSensor(id) {
-    let url = `ws://${this.sensores[id].sensor.ip}:8080`;
-    this.sensores[id].sensor.connection = new WebSocket(url);
+  conectarSensor(id) {
+    let url = `ws://${this.sensores[id].dispositivo.ip}:8080`;
+    this.sensores[id].dispositivo.connection = new WebSocket(url);
 
-    this.sensores[id].sensor.connection.onmessage = event => {
+    this.sensores[id].dispositivo.connection.onmessage = event => {
       const jSonParsed = JSON.parse(`[${event.data}]`);
       this.addLeitura(jSonParsed, id);
       // this.closeSocket(id);
     };
 
     // eslint-disable-next-line no-unused-vars
-    this.sensores[id].sensor.connection.onopen = event => {
+    this.sensores[id].dispositivo.connection.onopen = event => {
       this.setConectado(id);
       const message = "Conexão com o sensor realizada com websocket..."
       Notify.create({
@@ -163,7 +160,7 @@ class Sensor extends Vue {
     };
 
     // eslint-disable-next-line no-unused-vars
-    this.sensores[id].sensor.connection.onerror = event => {
+    this.sensores[id].dispositivo.connection.onerror = event => {
       this.setDesconectado(id);
       const message = "Error no websocket server..."
 
@@ -176,7 +173,7 @@ class Sensor extends Vue {
     };
 
     // eslint-disable-next-line no-unused-vars
-    this.sensores[id].sensor.connection.onclose = event => {
+    this.sensores[id].dispositivo.connection.onclose = event => {
       this.setDesconectado(id);
       const message = "Websocket desconectado do server..."
       Notify.create({
@@ -188,8 +185,8 @@ class Sensor extends Vue {
     };
   }
 
-  closeSocket(id) {
-    this.sensores[id].sensor.connection.close();
+  desconectarSensor(id) {
+    this.sensores[id].dispositivo.connection.close();
     this.setDesconectado(id);
   }
 
@@ -235,38 +232,40 @@ class Sensor extends Vue {
   }
 
   setConectado(id) {
-    this.sensores[id].sensor.corBtn = "positive";
-    this.sensores[id].sensor.corTab = "text-green";
-    this.sensores[id].sensor.ativo = true;
+    this.sensores[id].dispositivo.corBtn = "positive";
+    this.sensores[id].dispositivo.corTab = "text-green";
+    this.sensores[id].dispositivo.ativo = true;
   }
 
   setDesconectado(id) {
-    this.sensores[id].sensor.corBtn = "primary";
-    this.sensores[id].sensor.corTab = "";
-    this.sensores[id].sensor.ativo = false;
+    this.sensores[id].dispositivo.corBtn = "primary";
+    this.sensores[id].dispositivo.corTab = "";
+    this.sensores[id].dispositivo.ativo = false;
   }
 
   sendStart() {
     this.sensores.map((item, index) => {
-      if (item.sensor.ativo === true) {
-        item.sensor.connection.send(JSON.stringify({cmd: 1}));
+      if (item.dispositivo.ativo === true) {
+        item.dispositivo.connection.send(JSON.stringify({cmd: 1}));
       }
     });
   }
 
   sendStop() {
     this.sensores.map((item, index) => {
-      if (item.sensor.ativo === true) {
-        item.sensor.connection.send(JSON.stringify({cmd: 2}));
+      if (item.dispositivo.ativo === true) {
+        item.dispositivo.connection.send(JSON.stringify({cmd: 2}));
       }
     });
   }
 
   sendRestart() {
-    this.sensores.map((item, index) => {
-      if (item.sensor.ativo === true) {
-        item.sensor.connection.send(JSON.stringify({cmd: "RESTART"}));
+    for(let sensor in this.sensores){
+      if (sensor.dispositivo.ativo === true) {
+        sensor.dispositivo.connection.send(JSON.stringify({cmd: "RESTART"}));
       }
+    }
+    this.sensores.map((item, index) => {
     });
   }
 
@@ -285,26 +284,6 @@ class Sensor extends Vue {
     //   },
     // },
   };
-
-  listaSensoresLoad() {
-    try {
-      SocketService.getSensores().then(
-        response => {
-          this.sensoresDisponiveis = response.data;
-        },
-        error => {
-          this.content =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-        }
-      );
-    } catch (e) {
-      console.log(e);
-    }
-  }
 
   dataLoad(id) {
     try {

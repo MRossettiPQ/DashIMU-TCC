@@ -2,56 +2,61 @@ const express = require('express');
 const enableWs = require('express-ws');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const {enviroment} = require('./enviroment.js');
+const enviroment = require('./enviroment.js');
 
-const DataBaseOperator = require('./app/models');
+const DataBaseOperator = require('./app/Core/DataBase');
+const Routes = require('./routes');
 const app = express();
 
 app.use(cors());
-// pasta contendo o projeto SPA apos ser realizado o build
+// Pasta contendo o projeto SPA apos ser realizado o build
 app.use(express.static('public'))
 
-// parse requests of content-type - application/json
+// Parse requests of content-type - application/json
 app.use(bodyParser.json());
 
-// parse requests of content-type - application/x-www-form-urlencoded
+// Parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({extended: true}));
 
-// ativa web-socket no app express
+// Ativa web-socket no app express
 enableWs(app);
-require('./app/routes/auth.routes')(app);
-require('./app/routes/pacientes.routes')(app);
-require('./app/routes/socket.routes')(app);
 
-// Banco
+// Rotas
+Routes(app)
+
+// Inicialização do Banco
 const Funcao = DataBaseOperator.funcao;
-
-DataBaseOperator.sequelize.sync({force: false}).then(() => {
-    console.log('Drop and Resync Database');
-    initial();
-});
-
-function initial() {
-    Funcao.findAll().then(funcao => {
-        if (funcao.length) {
-            console.log('ja possui as funções cadastrada')
-        } else {
-            Funcao.bulkCreate([{
-                idFuncao: 1,
-                nomeFuncao: 'FISIO'
-            }, {
-                idFuncao: 2,
-                nomeFuncao: 'ADMIN'
-            }]).then(r => console.log('Foram cadastradas as funções de usuarios'));
-        }
-    }).catch(err => {
-        console.log(err)
+//TODO - { force : false } opção para não dropar os dados do banco de dados -> se true deletaria todo banco a cada inicialização
+DataBaseOperator
+    .sequelize
+    .sync({force: false})
+    .then(() => {
+        console.log('[SERVER] - Drop or Resync Database');
+        DataBaseInicialize();
     });
+
+function DataBaseInicialize() {
+    Funcao
+        .findAll()
+        .then(funcao => {
+            if (funcao.length) {
+                console.log('[SERVER] - Ja possui as funções cadastrada')
+            } else {
+                Funcao
+                    .bulkCreate([{
+                        idFuncao: 1,
+                        nomeFuncao: 'FISIO'
+                    }, {
+                        idFuncao: 2,
+                        nomeFuncao: 'ADMIN'
+                    }])
+                    .then(r => console.log('[SERVER] - Foram cadastradas as funções de usuarios', r))
+                    .catch(err => console.log('[SERVER] - Erro ao cadastradar as funções de usuarios', err));
+            }
+        })
+        .catch(err => console.log(err));
 }
 
 // set port, listen for requests
 const PORT = process.env.PORT || enviroment.HOST.PORT;
-app.listen(PORT, () => {
-    console.log(`Server está rodando na Porta: ${PORT}.`);
-    console.log(`Cors está rodando na Porta: ${enviroment.HOST.PORT_CORS}.`);
-});
+app.listen(PORT, () => console.log(`[SERVER] - Server está rodando na Porta: ${PORT}`));

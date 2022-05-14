@@ -1,5 +1,5 @@
 <template>
-  <section name="sensor" class="responsive-height">
+  <section class="responsive-height">
     <div class="row responsive-content form-column form-column__padding">
       <q-card bordered flat class="col grid-conteudo">
         <div class="col">
@@ -13,8 +13,7 @@
             narrow-indicator
           >
             <q-tab name="Tab_1" label="Grafico" icon="leaderboard"/>
-            <q-tab name="Tab_2" label="Grafico em Grid" icon="trending_up"/>
-            <q-tab name="Tab_3" label="Tabela" icon="table_rows"/>
+            <q-tab name="Tab_2" label="Tabela" icon="table_rows"/>
           </q-tabs>
           <q-separator/>
           <q-tab-panels class="col" v-model="tabGrande" animated>
@@ -27,14 +26,6 @@
             </q-tab-panel>
 
             <q-tab-panel name="Tab_2">
-              <tab-grafico
-                label="Grafico em grid"
-                :options="options"
-                :data="renderRows"
-              />
-            </q-tab-panel>
-
-            <q-tab-panel name="Tab_3">
               <tab-table label="Tabela" :data="sensores[0].data"/>
             </q-tab-panel>
           </q-tab-panels>
@@ -80,87 +71,7 @@
           </q-card-section>
           <q-card-section class="col">
             <q-list bordered class="rounded-borders">
-              <q-expansion-item
-                expand-separator
-                icon="sensor_window"
-                label="Sensor"
-              >
-                <q-card>
-                  <q-card-section>
-                    <q-tabs
-                      v-model="tab"
-                      dense
-                      class="text-grey"
-                      active-color="primary"
-                      indicator-color="primary"
-                      align="justify"
-                      narrow-indicator
-                    >
-                      <q-tab
-                        v-for="(lista, index) in sensores"
-                        :key="index"
-                        :name="lista.tab_name"
-                        :label="lista.tab_label"
-                        icon="sensors"
-                        :content-class="sensores[index].sensor.corTab"
-                      />
-                    </q-tabs>
-                  </q-card-section>
-
-                  <q-separator/>
-
-                  <q-tab-panels v-model="tab" animated>
-                    <q-tab-panel
-                      v-for="(lista, index) in sensores"
-                      :key="index"
-                      :name="lista.tab_name"
-                    >
-                      <div class="text-h6">{{ lista.label }}</div>
-                      <q-form>
-                        <div class="row form-lines form-lines__gap">
-                          <q-select
-                            filled
-                            v-model="lista.sensor.ip"
-                            :options="sensoresDisponiveis"
-                            option-value="ip"
-                            option-label="ip"
-                            emit-value
-                            label="Sensores disponiveis"
-                          />
-                          <q-input
-                            class="row"
-                            v-model="lista.sensor.ip"
-                            filled
-                            :label="'IP Sensor ' + lista.tab_label"
-                            type="text"
-                          />
-
-                          <q-btn
-                            class="row"
-                            v-if="!lista.sensor.ativo"
-                            :color="lista.sensor.corBtn"
-                            unelevated
-                            label="Conectar"
-                            size="lg"
-                            @click="conectaSensor(index)"
-                          />
-
-                          <q-btn
-                            class="row"
-                            v-if="lista.sensor.ativo"
-                            :color="lista.sensor.corBtn"
-                            unelevated
-                            label="Desconectar"
-                            size="lg"
-                            @click="closeSocket(index)"
-                          />
-                        </div>
-                      </q-form>
-                    </q-tab-panel>
-                  </q-tab-panels>
-                </q-card>
-              </q-expansion-item>
-
+              <sensor-expasion :tab="tab" :sensores="sensores" @conectarSensor="conectarSensor($event)"  @desconectarSensor="desconectarSensor($event)" />
               <paciente-expasion :bean="bean"/>
             </q-list>
           </q-card-section>

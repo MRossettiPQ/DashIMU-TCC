@@ -1,7 +1,13 @@
-const {enviroment} = require('../../enviroment.js');
+const enviroment = require('../../../enviroment.js');
 const {Sequelize} = require('sequelize');
+const UsuarioModel = require('../../Usuario/Models/Usuario.js')
+const FuncaoModel = require('../../Usuario/Models/Funcao.js')
+const SessaoModel = require('../../Sessao/Models/Sessao.js')
+const MedicaoModel = require('../../Sessao/Models/Medicao.js')
+const PacienteModel = require('../../Paciente/Models/Paciente.js')
 
-//Conexao MySQL com Sequelize
+//Conexão com Banco usando Sequelize
+//TODO configurar via enviroment
 const sequelize = new Sequelize(
     enviroment.DATABASE.NAME,
     enviroment.DATABASE.USER,
@@ -24,11 +30,11 @@ const DataBaseOperator = {};
 DataBaseOperator.Sequelize = Sequelize;
 DataBaseOperator.sequelize = sequelize;
 
-DataBaseOperator.usuario = require('../models/usuario.model.js')(sequelize, Sequelize);
-DataBaseOperator.funcao = require('../models/funcao.model.js')(sequelize, Sequelize);
-DataBaseOperator.sessao = require('../models/sessao.model.js')(sequelize, Sequelize);
-DataBaseOperator.medicao = require('../models/medicao.model.js')(sequelize, Sequelize);
-DataBaseOperator.paciente = require('../models/paciente.model.js')(sequelize, Sequelize);
+DataBaseOperator.usuario = UsuarioModel(sequelize, Sequelize);
+DataBaseOperator.funcao = FuncaoModel(sequelize, Sequelize);
+DataBaseOperator.sessao = SessaoModel(sequelize, Sequelize);
+DataBaseOperator.medicao = MedicaoModel(sequelize, Sequelize);
+DataBaseOperator.paciente = PacienteModel(sequelize, Sequelize);
 //usuario e função
 DataBaseOperator.funcao.belongsToMany(DataBaseOperator.usuario, {
     through: 'usuario_funcao',
@@ -74,6 +80,6 @@ DataBaseOperator.sessao.belongsToMany(DataBaseOperator.medicao, {
     otherKey: 'idMedicao',
 });
 
-DataBaseOperator.FUNCAO = ['FISIO', 'ADMIN'];
+DataBaseOperator.FuncaoEnum = ['FISIO', 'ADMIN'];
 
 module.exports = DataBaseOperator;

@@ -75,7 +75,7 @@
   </q-layout>
 </template>
 
-<script src="./Main.js"/>
+<script src="./MainApp.js"/>
 
 <style lang="stylus" scoped>
 

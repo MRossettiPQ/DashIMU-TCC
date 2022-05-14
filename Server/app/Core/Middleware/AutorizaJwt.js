@@ -1,9 +1,10 @@
 const jwt = require('jsonwebtoken');
-const {enviroment} = require('../../enviroment.js');
-const DataBaseOperator = require('../models');
+const enviroment = require('../../../enviroment.js');
+const DataBaseOperator = require('../DataBase');
 const Usuario = DataBaseOperator.usuario;
 
 verificaToken = (req, res, next) => {
+    console.log('[JWT] - Validar token')
     let token = req.headers['x-access-token'];
 
     if (!token) {
@@ -12,16 +13,16 @@ verificaToken = (req, res, next) => {
         });
     }
 
-  jwt.verify(token, enviroment.JWT_SECRET, (err, decoded) => {
-    if (err) {
-      return res.status(401).send({
-        message: "Não Autorizado!",
-      });
-    }
-    req.idUsuario = decoded.idUsuario;
-    console.log("VERIFICOU JWT - ID USER:", req.idUsuario);
-    next();
-  });
+    jwt.verify(token, enviroment.JWT_SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(401).send({
+                message: 'Não Autorizado!',
+            });
+        }
+        req.idUsuario = decoded.idUsuario;
+        console.log(`[JWT] - ${req.idUsuario} - ${token}`);
+        next();
+    }, null);
 };
 
 seAdmin = (req, res, next) => {
@@ -85,13 +86,11 @@ seAdminFisio = (req, res, next) => {
                     funcaoVerifica[i].nomeFuncao === 'ADMIN' ||
                     funcaoVerifica[i].nomeFuncao === 'FISIO'
                 ) {
-                    console.log('VERIFICOU FISIO OU ADMIN');
+                    console.log('[JWT] - Permissão verificada - Autorizado');
                     next();
                     return;
                 }
             }
-            console.log('aqui 403')
-
             res.status(403).send({
                 message: 'Requer ser um Administrador/Fisioterapeuta!',
             });
@@ -99,11 +98,10 @@ seAdminFisio = (req, res, next) => {
     });
 };
 
-const autorizaJwt = {
+module.exports = {
     verificaToken: verificaToken,
     seAdmin: seAdmin,
     seFisio: seFisio,
     sePaciente: sePaciente,
     seAdminFisio: seAdminFisio,
 };
-module.exports = autorizaJwt;

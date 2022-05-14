@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
-const {enviroment} = require('../../enviroment.js');
+const enviroment = require('../../../enviroment.js');
+const DataBaseOperator = require('../DataBase');
+const Usuario = DataBaseOperator.usuario;
 
 const getUserContextId = (req, res) => {
     let token = req.headers['x-access-token'];
@@ -26,9 +28,20 @@ const getUserContextId = (req, res) => {
     });
 }
 
+const getUserContext = (req, res) => {
+    const idUsuarioContexto = getUserContextId(req, res)
 
-const UserContext = {
+    Usuario
+        .findById(idUsuarioContexto)
+        .then(contextoUsuario => {
+            return contextoUsuario
+        })
+        .catch(err => {
+            res.status(500).send({message: 'Necessario estar logado'});
+        });
+}
+
+module.exports = {
     getUserContextId: getUserContextId,
+    getUserContext: getUserContext,
 };
-
-module.exports = UserContext;

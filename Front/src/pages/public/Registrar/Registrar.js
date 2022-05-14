@@ -1,11 +1,9 @@
 import { Component, Vue } from "vue-property-decorator";
 import FormUtils from "../../../commons/utils/FormUtils";
 import AutenticaService from '../../../commons/services/AutenticaService';
-import RotInputDate from 'components/RotInputDate/RotInputDate.vue';
 
 @Component({
-  name: "Registrar",
-  components: {RotInputDate}
+  name: "Registrar"
 })
 class Registrar extends Vue {
   loading = false;

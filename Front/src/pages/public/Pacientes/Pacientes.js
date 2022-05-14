@@ -1,34 +1,35 @@
-import PacienteService from "src/commons/services/PacienteService";
+import PacienteService from 'src/commons/services/PacienteService';
 
-import { Component, Vue } from "vue-property-decorator";
-import Paciente from "./Paciente.vue";
+import {Component, Vue} from 'vue-property-decorator';
+import Paciente from './Paciente.vue';
+import DialogUtils from 'src/commons/utils/DialogUtils';
 
 @Component({
-  name: "pacientes",
-  components: { Paciente }
+  name: 'pacientes',
+  components: {Paciente}
 })
 class Pacientes extends Vue {
   loading = false;
-  filter = "";
+  filter = '';
   bean = {};
   columns = [
     {
-      name: "nomePaciente",
-      align: "left",
-      label: "Nome",
-      field: "nomePaciente"
+      name: 'idPaciente',
+      align: 'left',
+      label: 'ID Paciente',
+      field: 'idPaciente'
     },
     {
-      name: "idPaciente",
-      align: "left",
-      label: "ID Paciente",
-      field: "nomePaciente"
+      name: 'nomePaciente',
+      align: 'left',
+      label: 'Nome',
+      field: 'nomePaciente'
     },
     {
-      name: "cpfPaciente",
-      align: "left",
-      label: "CPF",
-      field: "cpfPaciente"
+      name: 'cpfPaciente',
+      align: 'left',
+      label: 'CPF',
+      field: 'cpfPaciente'
     }
   ];
   dataTable = [];
@@ -46,9 +47,10 @@ class Pacientes extends Vue {
       const data = await this.$q.dialog({
         component: Paciente,
         id: row.idPaciente || null,
-        parent: this
+        parent: this,
       });
-      console.log(data);
+
+      console.log('save', data)
       if (data?.save) {
         await this.tableLoad();
       }

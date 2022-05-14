@@ -1,8 +1,10 @@
 import { Vue, Component, Prop } from "vue-property-decorator";
 import SessaoService from "src/commons/services/SessaoService";
+import DialogHeader from "../../../components/DialogHeader/DialogHeader.vue";
 
 @Component({
-  name: "historico-medicao"
+  name: "historico-medicao",
+  components: { DialogHeader }
 })
 class HistoricoMedicao extends Vue {
   @Prop()

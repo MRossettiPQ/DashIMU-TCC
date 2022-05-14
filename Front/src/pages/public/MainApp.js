@@ -2,10 +2,10 @@ import {Component, Vue} from 'vue-property-decorator';
 import EssentialLink from 'components/EssentialLink/EssentialLink.vue';
 
 @Component({
-  name: 'main',
+  name: 'main-app',
   components: {EssentialLink}
 })
-class Main extends Vue {
+class MainApp extends Vue {
   leftDrawerOpen = false;
 
   get logged() {
@@ -96,4 +96,4 @@ class Main extends Vue {
   }
 }
 
-export default Main;
+export default MainApp;

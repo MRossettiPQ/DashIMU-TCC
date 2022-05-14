@@ -1,7 +1,7 @@
-const db = require("../models");
-const FUNCAO = db.FUNCAO;
-const Usuario = db.usuario;
-const Paciente = db.paciente;
+const DataBaseOperator = require('../../Core/DataBase');
+const FuncaoEnum = DataBaseOperator.FuncaoEnum;
+const Usuario = DataBaseOperator.usuario;
+const Paciente = DataBaseOperator.paciente;
 
 verificaUsuarioEmailDuplicados = (req, res, next) => {
   // Usuarioname
@@ -38,7 +38,7 @@ verificaUsuarioEmailDuplicados = (req, res, next) => {
 verificaRoleExistente = (req, res, next) => {
   if (req.body.funcao) {
     for (let i = 0; i < req.body.funcao.length; i++) {
-      if (!FUNCAO.includes(req.body.funcao[i])) {
+      if (!FuncaoEnum.includes(req.body.funcao[i])) {
         res.status(400).send({
           message: "Falhou! Função não existe = " + req.body.funcao[i],
         });
@@ -68,10 +68,8 @@ verificaCPF = (req, res, next) => {
   });
 };
 
-const verificaCadastro = {
-  verificaCPF: verificaCPF,
-  verificaUsuarioEmailDuplicados: verificaUsuarioEmailDuplicados,
-  verificaRoleExistente: verificaRoleExistente,
+module.exports = {
+    verificaCPF: verificaCPF,
+    verificaUsuarioEmailDuplicados: verificaUsuarioEmailDuplicados,
+    verificaRoleExistente: verificaRoleExistente,
 };
-
-module.exports = verificaCadastro;

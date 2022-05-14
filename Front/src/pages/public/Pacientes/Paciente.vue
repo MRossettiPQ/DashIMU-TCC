@@ -1,18 +1,7 @@
 <template>
   <q-dialog ref="dialog" full-width full-height class="dialog">
     <q-card class="column full-height dialog-card">
-      <q-card-section class="div-header">
-        <div class="text-h6" v-if="id">Paciente nº {{ id }}</div>
-        <div class="text-h6" v-else>Novo paciente</div>
-        <q-btn
-          v-close-popup
-          size="md"
-          dense
-          flat
-          icon="close"
-          :label="!$q.platform.is.mobile ? 'Fechar' : null"
-        />
-      </q-card-section>
+      <dialog-header :id="id" idMsg="Paciente nº" elseMsg="Novo paciente" :labelRightButton="!$q.platform.is.mobile ? 'Fechar' : null" />
       <q-separator/>
       <q-card-section :class="$q.platform.is.mobile ? 'col form-lines form-lines__gap' : 'col form-column form-column__gap'  ">
         <q-form greedy ref="mainForm" class="col form-lines form-lines__gap-sm">
@@ -26,19 +15,29 @@
             v-model="bean.cpfPaciente"
             filled
             label="CPF"
+            mask="###.###.###-##"
             :rules="[$validators.notBlank, $validators.cpf]"
           />
-          <q-date
+          <q-input
             v-model="bean.nascPaciente"
-            minimal
             filled
             label="Data de Nascimento"
-            :rule="[$validators.notBlank, $validators.dateBorn]"
+            mask="##-##-####"
+            :rules="[$validators.notBlank, $validators.dateBorn]"
           />
+<!--          <rot-input-date-->
+<!--            v-model="bean.nascPaciente"-->
+<!--            minimal-->
+<!--            filled-->
+<!--            label="Data de Nascimento"-->
+<!--            :rule="[$validators.notBlank, $validators.dateBorn]"-->
+<!--            mask="YYYY-MM-DD"-->
+<!--          />-->
           <q-input
             v-model="bean.telefonePaciente"
             filled
             label="Telefone"
+            mask="(##) #####-####"
             :rules="[$validators.notBlank, $validators.telefone]"
           />
           <q-input

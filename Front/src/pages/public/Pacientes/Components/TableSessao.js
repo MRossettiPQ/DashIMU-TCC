@@ -1,6 +1,5 @@
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import HistoricoMedicao from '../HistoricoMedicao.vue';
-import PacienteService from 'src/commons/services/PacienteService';
 import SessaoService from 'src/commons/services/SessaoService';
 
 @Component({

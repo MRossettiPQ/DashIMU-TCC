@@ -1,12 +1,12 @@
-import { Vue, Component, Prop } from "vue-property-decorator";
-import PacienteService from "src/commons/services/PacienteService";
-import FormUtils from "src/commons/utils/FormUtils";
-import HistoricoMedicao from "./HistoricoMedicao.vue";
-import TableSessao from "./Components/TableSessao.vue";
+import {Vue, Component, Prop, Emit} from 'vue-property-decorator';
+import PacienteService from 'src/commons/services/PacienteService';
+import FormUtils from 'src/commons/utils/FormUtils';
+import HistoricoMedicao from './HistoricoMedicao.vue';
+import TableSessao from './Components/TableSessao.vue';
 
 @Component({
-  name: "paciente",
-  components: { HistoricoMedicao, TableSessao }
+  name: 'paciente',
+  components: {HistoricoMedicao, TableSessao}
 })
 class Paciente extends Vue {
   @Prop()
@@ -17,10 +17,6 @@ class Paciente extends Vue {
 
   show() {
     this.$refs.dialog.show();
-  }
-
-  hide() {
-    this.$refs.dialog.hide();
   }
 
   async mounted() {
@@ -37,6 +33,7 @@ class Paciente extends Vue {
         response => {
           this.content = response.data;
           this.bean = response.data;
+          console.log(this.bean)
         },
         error => {
           this.content =
@@ -55,9 +52,10 @@ class Paciente extends Vue {
   async save() {
     try {
       this.loading = true;
+      console.log("mainForm",this.$refs.mainForm)
       await FormUtils.validateAsync(this.$refs.mainForm);
 
-      PacienteService.postPaciente({ data: this.bean }).then(
+      PacienteService.postPaciente({data: this.bean}).then(
         response => {
           return Promise.resolve(response.data);
         },
@@ -65,7 +63,7 @@ class Paciente extends Vue {
           return Promise.reject(error);
         }
       );
-      this.$refs.dialog.hide({ save: true });
+      this.$refs.dialog.hide();
     } catch (e) {
       console.log(e);
     } finally {
