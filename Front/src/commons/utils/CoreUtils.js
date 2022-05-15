@@ -20,4 +20,4 @@ const _createClass = (Constructor, protoProps, staticProps) => {
   return Constructor;
 };
 
-export { _classCallCheck, _createClass, _defineProperties };
+export {_classCallCheck, _createClass, _defineProperties};

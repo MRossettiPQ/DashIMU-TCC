@@ -1,7 +1,8 @@
 <template>
   <q-dialog ref="dialog" full-width full-height class="dialog">
     <q-card class="column full-height dialog-card">
-      <dialog-header :id="id" idMsg="Medição nº" elseMsg="Sem sessão" :labelRightButton="!$q.platform.is.mobile ? 'Fechar' : null" />
+      <dialog-header :id="id" idMsg="Medição nº" elseMsg="Sem sessão"
+                     :labelRightButton="!$q.platform.is.mobile ? 'Fechar' : null"/>
       <q-separator/>
       <q-card-section class="col content-column">
         <q-table

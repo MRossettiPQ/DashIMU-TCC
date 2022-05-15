@@ -4,7 +4,7 @@ import SessaoService from 'src/commons/services/SessaoService';
 
 @Component({
   name: "table-sessao",
-  components: { HistoricoMedicao }
+  components: {HistoricoMedicao}
 })
 class TableSessao extends Vue {
   @Prop()
@@ -37,22 +37,9 @@ class TableSessao extends Vue {
   }
 
 
-
   async tableLoad() {
     try {
-      await SessaoService.getListaSessao().then(
-        response => {
-          this.dataTable = response.data;
-        },
-        error => {
-          this.content =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-        }
-      );
+      this.dataTable = await SessaoService.getListaSessao();
     } catch (e) {
       console.log(e);
     }

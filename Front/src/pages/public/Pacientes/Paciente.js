@@ -1,4 +1,4 @@
-import {Vue, Component, Prop, Emit} from 'vue-property-decorator';
+import {Component, Prop, Vue} from 'vue-property-decorator';
 import PacienteService from 'src/commons/services/PacienteService';
 import FormUtils from 'src/commons/utils/FormUtils';
 import HistoricoMedicao from './HistoricoMedicao.vue';
@@ -27,23 +27,9 @@ class Paciente extends Vue {
     }
   }
 
-  dataLoad(id) {
+  async dataLoad(id) {
     try {
-      PacienteService.getPaciente(id).then(
-        response => {
-          this.content = response.data;
-          this.bean = response.data;
-          console.log(this.bean)
-        },
-        error => {
-          this.content =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-        }
-      );
+      this.bean = await PacienteService.getPaciente(id);
     } catch (e) {
       console.log(e);
     }
@@ -52,7 +38,7 @@ class Paciente extends Vue {
   async save() {
     try {
       this.loading = true;
-      console.log("mainForm",this.$refs.mainForm)
+      console.log("mainForm", this.$refs.mainForm)
       await FormUtils.validateAsync(this.$refs.mainForm);
 
       PacienteService.postPaciente({data: this.bean}).then(

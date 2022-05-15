@@ -1,4 +1,6 @@
-const routes = [
+import AutenticacaoUtils from 'src/commons/utils/AutenticacaoUtils';
+
+export const routes = [
   {
     path: "/",
     component: () => import("pages/public/MainApp.vue"),
@@ -44,4 +46,26 @@ const routes = [
   },
 ];
 
-export default routes;
+export const RouteBeforeGuard = async (to, from, next) => {
+  let acessoLiberado = ['acesso.login', 'acesso.registrar', 'acesso.home']
+
+  let token = AutenticacaoUtils.getToken();
+  let isLoggedIn = !!token;
+
+  if(isLoggedIn) {
+    next();
+  } else {
+    if (acessoLiberado.includes(to.name)) {
+      next();
+      return;
+    } else {
+      next({
+        path: '/logar'
+      });
+      return;
+    }
+  }
+  next();
+};
+
+export default {routes, RouteBeforeGuard};

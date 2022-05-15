@@ -71,7 +71,8 @@
           </q-card-section>
           <q-card-section class="col">
             <q-list bordered class="rounded-borders">
-              <sensor-expasion :tab="tab" :sensores="sensores" @conectarSensor="conectarSensor($event)"  @desconectarSensor="desconectarSensor($event)" />
+              <sensor-expasion :tab="tab" :sensores="sensores" @conectarSensor="conectarSensor($event)"
+                               @desconectarSensor="desconectarSensor($event)"/>
               <paciente-expasion :bean="bean"/>
             </q-list>
           </q-card-section>

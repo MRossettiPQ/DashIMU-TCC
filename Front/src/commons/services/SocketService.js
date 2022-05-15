@@ -1,11 +1,9 @@
-import axios from "axios";
-import AutorizaHeader from "./AutorizaHeader";
+import {Axios} from '../utils/AxiosUtils';
 
 class PacienteService {
   async getSensores() {
-    return await axios.get(`${process.env.SERVER_API}/api/sensores/lista`, {
-      headers: AutorizaHeader()
-    });
+    const request = await Axios.get(`/api/sensores/lista`);
+    return request?.data
   }
 }
 

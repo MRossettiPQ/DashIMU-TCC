@@ -39,7 +39,7 @@
   </div>
 </template>
 
-<script src="./PacienteExpasion.js" />
+<script src="./PacienteExpasion.js"/>
 
 <style scoped>
 

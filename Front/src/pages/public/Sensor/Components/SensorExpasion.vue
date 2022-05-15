@@ -83,7 +83,7 @@
   </div>
 </template>
 
-<script src="./SensorExpasion.js" />
+<script src="./SensorExpasion.js"/>
 
 <style scoped>
 

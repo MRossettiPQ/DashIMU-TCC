@@ -12,7 +12,7 @@ Vue.use(Vuex);
  * async/await or return a Promise which resolves
  * with the Store instance.
  */
-export default function(/* { ssrContext } */) {
+export default function (/* { ssrContext } */) {
   return new Vuex.Store({
     modules: {
       autenticacao

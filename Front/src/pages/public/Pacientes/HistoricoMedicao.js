@@ -1,10 +1,10 @@
-import { Vue, Component, Prop } from "vue-property-decorator";
+import {Component, Prop, Vue} from "vue-property-decorator";
 import SessaoService from "src/commons/services/SessaoService";
 import DialogHeader from "../../../components/DialogHeader/DialogHeader.vue";
 
 @Component({
   name: "historico-medicao",
-  components: { DialogHeader }
+  components: {DialogHeader}
 })
 class HistoricoMedicao extends Vue {
   @Prop()
@@ -54,20 +54,7 @@ class HistoricoMedicao extends Vue {
 
   async dataLoad(id) {
     try {
-      const result = await SessaoService.getListaSessao().then(
-        response => {
-          this.content = response.data;
-          this.dataTable = response.data;
-        },
-        error => {
-          this.content =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-        }
-      );
+      this.dataTable = await SessaoService.getListaSessao();
     } catch (e) {
       console.log(e);
     }

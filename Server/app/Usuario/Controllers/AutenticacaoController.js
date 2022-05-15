@@ -21,7 +21,11 @@ registrar = (req, res) => {
             usuarioCad
                 .setFuncaos([1])
                 .then(() => {
-                    res.send({message: 'Usuario registrado com sucesso!'});
+                    res.send({
+                        usernameUsuario: usuarioCad.usernameUsuario,
+                        emailUsuario: usuarioCad.emailUsuario,
+                        message: 'Usuario registrado com sucesso!'
+                    });
                 });
         })
         .catch(err => {
@@ -83,7 +87,8 @@ logar = (req, res) => {
                                 usernameUsuario: usuarioLog.usernameUsuario,
                                 emailUsuario: usuarioLog.emailUsuario,
                                 funcao: authorities,
-                                accessToken: token
+                                accessToken: token,
+                                message: 'Logado com sucesso'
                             });
                         } else {
                             console.log('[POST] - /api/auth/signin - Usuario não autorizado')

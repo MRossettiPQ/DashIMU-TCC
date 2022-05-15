@@ -1,21 +1,24 @@
-import axios from 'axios';
-import AutorizaHeader from './AutorizaHeader';
+import {Axios} from '../utils/AxiosUtils';
 
 class UserService {
   async getPublicContent() {
-    return await axios.get(`${process.env.SERVER_API}/api/all`);
+    const request = await Axios.get(`/api/all`);
+    return request?.data
   }
 
   async getPerfil() {
-    return await axios.get(`${process.env.SERVER_API}/api/perfil`, {headers: AutorizaHeader()});
+    const request = await Axios.get(`/api/perfil`);
+    return request?.data
   }
 
   async getFisioBoard() {
-    return await axios.get(`${process.env.SERVER_API}/api/fisio`, {headers: AutorizaHeader()});
+    const request = await Axios.get(`/api/fisio`);
+    return request?.data
   }
 
   async getPacienteBoard() {
-    return await axios.get(`${process.env.SERVER_API}/api/paciente`, {headers: AutorizaHeader()});
+    const request = await Axios.get(`/api/paciente`);
+    return request?.data
   }
 }
 

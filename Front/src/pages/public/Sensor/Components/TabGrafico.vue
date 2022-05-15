@@ -12,7 +12,7 @@
   </div>
 </template>
 
-<script src="./TabGrafico.js" />
+<script src="./TabGrafico.js"/>
 
 <style lang="stylus" scoped>
 .grafico

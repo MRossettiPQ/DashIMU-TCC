@@ -1,5 +1,4 @@
-import { Component, Prop, Vue } from "vue-property-decorator";
-import DateUtils from 'src/commons/utils/DateUtils';
+import {Component, Prop, Vue} from "vue-property-decorator";
 import SocketService from 'src/commons/services/SocketService';
 
 @Component({
@@ -18,21 +17,9 @@ class SensorExpasion extends Vue {
     this.listaSensoresLoad()
   }
 
-  listaSensoresLoad() {
+  async listaSensoresLoad() {
     try {
-      SocketService.getSensores().then(
-        response => {
-          this.sensoresDisponiveis = response.data;
-        },
-        error => {
-          this.content =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-        }
-      );
+      this.sensoresDisponiveis = await SocketService.getSensores();
     } catch (e) {
       console.log(e);
     }
@@ -42,7 +29,7 @@ class SensorExpasion extends Vue {
     this.$emit("conectarSensor", index);
   }
 
-  desconecta(index){
+  desconecta(index) {
     this.$emit("desconectarSensor", index);
   }
 

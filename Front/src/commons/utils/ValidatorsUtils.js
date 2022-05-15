@@ -1,8 +1,8 @@
 import Vue from "vue";
 import moment$1 from "moment";
-import { moneyFilter, formatDecimal } from "./FilterUtils";
-import Big from "big.js";
 import moment from "moment";
+import {formatDecimal, moneyFilter} from "./FilterUtils";
+import Big from "big.js";
 
 const isCep = cep => {
   if (!cep) {
@@ -130,7 +130,7 @@ const isCpfOrCnpj = s => {
 };
 
 const isDateValidator = format => {
-  return function(val) {
+  return function (val) {
     if (!val) {
       return true;
     }
@@ -171,7 +171,7 @@ const isEmail = email => {
 };
 
 const isMaxLengthValidator = maxLength => {
-  return function(val) {
+  return function (val) {
     return (
       !val ||
       val.length <= maxLength ||
@@ -181,7 +181,7 @@ const isMaxLengthValidator = maxLength => {
 };
 
 const isNotBlankIfValidator = condition => {
-  return function(val) {
+  return function (val) {
     return (
       !condition ||
       typeof val == "number" ||
@@ -242,7 +242,7 @@ const isTelefone = telefone => {
 };
 
 const isMaxValValidator = maxValue => {
-  return function(value) {
+  return function (value) {
     maxValue = Big(maxValue);
     value = parseFloat(value);
     const toNumber = Big(value);
@@ -258,7 +258,7 @@ const isMaxValValidator = maxValue => {
 };
 
 const isMaxMoneyValValidator = maxValue => {
-  return function(value) {
+  return function (value) {
     maxValue = Big(maxValue);
     value = reverseFormatNumber(value, "pt-BR");
     const toNumber = Big(value);
@@ -281,7 +281,7 @@ const isDataNascimentoValidator = (value, minAge = 18) => {
 };
 
 const isMinValValidator = minValue => {
-  return function(value) {
+  return function (value) {
     value = formatDecimal(value);
     const toNumber = parseFloat(value);
     const isNaN = Number.isNaN(toNumber);
@@ -294,7 +294,7 @@ const isMinValValidator = minValue => {
 };
 
 const isEqual = (equalFor, msg = "As senhas informadas são diferentes") => {
-  return function(value) {
+  return function (value) {
     if (equalFor !== value) {
       return msg;
     }

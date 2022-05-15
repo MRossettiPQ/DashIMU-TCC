@@ -1,7 +1,7 @@
 <template>
   <q-item v-if="renderLink" clickable tag="a" v-bind="attrs">
     <q-item-section v-if="icon" avatar>
-      <q-icon :name="icon" />
+      <q-icon :name="icon"/>
     </q-item-section>
 
     <q-item-section>
@@ -13,4 +13,4 @@
   </q-item>
 </template>
 
-<script src="./EssentialLink.js" />
+<script src="./EssentialLink.js"/>

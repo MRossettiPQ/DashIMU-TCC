@@ -3,7 +3,7 @@ import TabGrafico from "./Components/TabGrafico.vue";
 import TabTable from "./Components/TabTable.vue";
 import PacienteExpasion from "./Components/PacienteExpasion.vue";
 import SensorExpasion from "./Components/SensorExpasion.vue";
-import {exportFile, Notify} from "quasar";
+import {Notify} from "quasar";
 import PacienteService from "src/commons/services/PacienteService";
 
 @Component({
@@ -260,7 +260,7 @@ class Sensor extends Vue {
   }
 
   sendRestart() {
-    for(let sensor in this.sensores){
+    for (let sensor in this.sensores) {
       if (sensor.dispositivo.ativo === true) {
         sensor.dispositivo.connection.send(JSON.stringify({cmd: "RESTART"}));
       }
@@ -276,30 +276,11 @@ class Sensor extends Vue {
     chart: {
       id: "real-time"
     }
-    // animations: {
-    //   enabled: true,
-    //   easing: "linear",
-    //   dynamicAnimation: {
-    //     speed: 108,
-    //   },
-    // },
   };
 
-  dataLoad(id) {
+  async dataLoad(id) {
     try {
-      PacienteService.getPaciente(id).then(
-        response => {
-          this.bean = response.data;
-        },
-        error => {
-          this.content =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-        }
-      );
+      this.bean = await PacienteService.getPaciente(id);
     } catch (e) {
       console.log(e);
     }

@@ -2,43 +2,33 @@ import AutenticaService from "src/commons/services/AutenticaService";
 
 const user = JSON.parse(localStorage.getItem("user"));
 const initialState = user
-  ? { status: { loggedIn: true }, user }
-  : { status: { loggedIn: false }, user: null };
+  ? {status: {loggedIn: true}, user}
+  : {status: {loggedIn: false}, user: null};
 
 export default {
   namespaced: true,
   state: initialState,
   actions: {
-    login({ commit }, user) {
-      return AutenticaService.login(user).then(
-        user => {
-          if (user.accessToken) {
-            localStorage.setItem("user", JSON.stringify(user));
-          }
-          commit("loginSuccess", user);
-          return Promise.resolve(user);
-        },
-        error => {
-          commit("loginFailure");
-          return Promise.reject(error);
-        }
-      );
+    async login({commit}, user) {
+      const login = await AutenticaService.login(user)
+      if (login?.accessToken) {
+        localStorage.setItem("user", JSON.stringify(login));
+        commit("loginSuccess", login);
+      } else {
+        commit("loginFailure");
+      }
+      return login
     },
-    logout({ commit }) {
+    logout({commit}) {
       localStorage.removeItem("user");
       commit("logout");
     },
-    register({ commit }, user) {
-      return AutenticaService.register(user).then(
-        response => {
-          commit("registerSuccess");
-          return Promise.resolve(response.data);
-        },
-        error => {
-          commit("registerFailure");
-          return Promise.reject(error);
-        }
-      );
+    register({commit}, user) {
+      const register = AutenticaService.register(user)
+      if(register){
+        commit("registerSuccess");
+      }
+      return register
     }
   },
   mutations: {

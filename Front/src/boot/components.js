@@ -29,7 +29,7 @@ import {
 import VueApexCharts from "vue-apexcharts";
 import ValidatorPlugin from "../commons/utils/ValidatorsUtils";
 
-export default async ({ Vue }) => {
+export default async ({Vue}) => {
   console.log("loading components");
   // https://webpack.js.org/guides/dependency-management/#require-context
   const requireComponent = require.context(

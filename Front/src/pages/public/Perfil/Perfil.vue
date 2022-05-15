@@ -68,7 +68,7 @@
   </section>
 </template>
 
-<script src="./Perfil.js" />
+<script src="./Perfil.js"/>
 
 <style lang="stylus" scoped>
 @import "~src/css/mixins.styl"

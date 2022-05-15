@@ -3,9 +3,9 @@
     <template v-slot:prepend>
       <q-icon name="event" class="cursor-pointer">
         <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-          <q-date v-model="value" :mask="mask"  :rule="[ ...rule ]">
+          <q-date v-model="value" :mask="mask" :rule="[ ...rule ]">
             <div class="row items-center justify-end">
-              <q-btn v-close-popup label="Close" color="primary" flat />
+              <q-btn v-close-popup label="Close" color="primary" flat/>
             </div>
           </q-date>
         </q-popup-proxy>
@@ -17,7 +17,7 @@
         <q-popup-proxy cover transition-show="scale" transition-hide="scale">
           <q-time v-model="value" :mask="mask" format24h>
             <div class="row items-center justify-end">
-              <q-btn v-close-popup label="Close" color="primary" flat />
+              <q-btn v-close-popup label="Close" color="primary" flat/>
             </div>
           </q-time>
         </q-popup-proxy>
@@ -26,7 +26,7 @@
   </q-input>
 </template>
 
-<script src="./RotInputDate.js" />
+<script src="./RotInputDate.js"/>
 
 <style scoped>
 

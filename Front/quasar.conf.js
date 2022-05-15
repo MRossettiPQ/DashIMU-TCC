@@ -9,7 +9,7 @@
 const ESLintPlugin = require("eslint-webpack-plugin");
 const envparser = require("./envparser.js");
 
-module.exports = function(/* ctx */) {
+module.exports = function (/* ctx */) {
   return {
     // https://v1.quasar.dev/quasar-cli/supporting-ts
     supportTS: false,
@@ -66,7 +66,7 @@ module.exports = function(/* ctx */) {
       chainWebpack(chain) {
         chain
           .plugin("eslint-webpack-plugin")
-          .use(ESLintPlugin, [{ extensions: ["js", "vue"] }]);
+          .use(ESLintPlugin, [{extensions: ["js", "vue"]}]);
       }
     },
 
@@ -237,7 +237,8 @@ module.exports = function(/* ctx */) {
       // More info: https://v1.quasar.dev/quasar-cli/developing-electron-apps/node-integration
       nodeIntegration: true,
 
-      extendWebpack(/* cfg */) {}
+      extendWebpack(/* cfg */) {
+      }
     }
   };
 };

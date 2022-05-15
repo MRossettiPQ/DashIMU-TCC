@@ -1,23 +1,20 @@
 import axios from 'axios';
-import AutorizaHeader from './AutorizaHeader';
+import {Axios} from '../utils/AxiosUtils';
 
 class SessaoService {
   async getSessao(id) {
-    return await axios.get(`${process.env.SERVER_API}/api/sessao/${id}`, {
-      headers: AutorizaHeader()
-    });
+    const request = await Axios.get(`/api/sessao/${id}`);
+    return request?.data
   }
 
   async getListaSessao() {
-    return await axios.get(`${process.env.SERVER_API}/api/sessao`, {
-      headers: AutorizaHeader()
-    });
+    const request = await Axios.get(`/api/sessao`);
+    return request?.data
   }
 
   async postSessao({id, data}) {
-    return await axios.post(`${process.env.SERVER_API}/api/sessao/${id}/cadastropaciente`, data, {
-      headers: AutorizaHeader()
-    });
+    const request = await Axios.post(`/api/sessao/${id}/cadastropaciente`, data);
+    return request?.data
   }
 }
 

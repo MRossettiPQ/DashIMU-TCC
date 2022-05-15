@@ -1,15 +1,14 @@
-import axios from 'axios';
+import {Axios} from '../utils/AxiosUtils';
 
 class AuthService {
   async login(data) {
-    return await axios.post(`${process.env.SERVER_API}/api/auth/signin`, data)
-      .then(response => {
-        return response.data;
-      });
+    const request = await Axios.post(`${process.env.SERVER_API}/api/auth/signin`, data);
+    return request?.data
   }
 
   async register(data) {
-    return await axios.post(`${process.env.SERVER_API}/api/auth/signup`, data);
+    const request = await Axios.post(`api/auth/signup`, data);
+    return request?.data
   }
 }
 

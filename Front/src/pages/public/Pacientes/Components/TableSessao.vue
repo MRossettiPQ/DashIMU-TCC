@@ -19,7 +19,7 @@
         :label="!$q.platform.is.mobile && 'Sessão'"
         @click="toMedicao"
       />
-      <q-space />
+      <q-space/>
       <q-input
         class="col-5"
         v-model="filter"
@@ -30,14 +30,14 @@
         color="primary"
       >
         <template #append>
-          <q-icon name="search" />
+          <q-icon name="search"/>
         </template>
       </q-input>
     </template>
   </q-table>
 </template>
 
-<script src="./TableSessao.js" />
+<script src="./TableSessao.js"/>
 
 <style scoped>
 

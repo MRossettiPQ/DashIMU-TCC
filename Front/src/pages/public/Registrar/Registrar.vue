@@ -25,6 +25,7 @@
             class="row"
             v-model="bean.telefoneUsuario"
             filled
+            mask="(##) #####-####"
             label="Telefone"
             :rules="[$validators.notBlank, $validators.telefone]"
           />
@@ -69,7 +70,7 @@
   </q-page>
 </template>
 
-<script src="./Registrar.js" />
+<script src="./Registrar.js"/>
 
 <style lang="stylus" scoped>
 .title

@@ -1,4 +1,4 @@
-import { Component, Prop, Vue } from "vue-property-decorator";
+import {Component, Prop, Vue} from "vue-property-decorator";
 
 @Component({
   name: "rot-input-date"
@@ -16,7 +16,7 @@ class RotInputDate extends Vue {
   @Prop()
   mask;
 
-  handleInput (e) {
+  handleInput(e) {
     this.$emit('input', this.content)
   }
 }

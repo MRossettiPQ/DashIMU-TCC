@@ -2,7 +2,6 @@ import PacienteService from 'src/commons/services/PacienteService';
 
 import {Component, Vue} from 'vue-property-decorator';
 import Paciente from './Paciente.vue';
-import DialogUtils from 'src/commons/utils/DialogUtils';
 
 @Component({
   name: 'pacientes',
@@ -61,19 +60,7 @@ class Pacientes extends Vue {
 
   async tableLoad() {
     try {
-      await PacienteService.getListaPaciente().then(
-        response => {
-          this.dataTable = response.data;
-        },
-        error => {
-          this.content =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-        }
-      );
+      this.dataTable = await PacienteService.getListaPaciente();
     } catch (e) {
       console.log(e);
     }

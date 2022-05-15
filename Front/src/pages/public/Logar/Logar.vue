@@ -43,7 +43,7 @@
   </q-page>
 </template>
 
-<script src="./Logar.js" />
+<script src="./Logar.js"/>
 
 <style lang="stylus" scoped>
 .title

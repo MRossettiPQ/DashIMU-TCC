@@ -4,4 +4,4 @@
   </q-page>
 </template>
 
-<script src="./Home.js" />
+<script src="./Home.js"/>
