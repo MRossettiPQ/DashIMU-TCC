@@ -20,7 +20,7 @@ verificaToken = (req, res, next) => {
             });
         }
         req.idUsuario = decoded.idUsuario;
-        console.log(`[JWT] - ${req.idUsuario} - ${token}`);
+        console.log(`[JWT] - ${req.idUsuario} - ${token.substring(0,60)}...`);
         next();
     }, null);
 };
