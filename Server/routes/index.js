@@ -1,6 +1,6 @@
 const AutorizaJwt = require('../app/Core/Middleware/AutorizaJwt.js');
 const MedicaoController = require('../app/Sessao/Controllers/MedicaoController.js');
-const SciLabController = require("../app/Sessao/Controllers/SciLabController.js");
+const SciLabController = require('../app/Sessao/Controllers/SciLabController.js');
 const VerificaCadastro = require('../app/Core/Middleware/VerificaCadastro.js');
 const PacienteController = require('../app/Paciente/Controllers/PacienteController.js');
 const AutenticacaoController = require('../app/Usuario/Controllers/AutenticacaoController.js');
@@ -16,8 +16,8 @@ module.exports = function (app) {
     });
 
     //TODO SENSOR
-    app.ws('/socket', function (client, req) {
-        client.on('message', function (msg) {
+    app.ws('/socket', (client, req) => {
+        client.on('message', (msg) => {
             listaSensores.push({
                 id: client.id,
                 ip: msg
@@ -38,6 +38,7 @@ module.exports = function (app) {
         header(req, res, next);
     });
 
+    //TODO Sensores
     app.get(
         '/api/sensores/lista',
         [
@@ -93,7 +94,7 @@ module.exports = function (app) {
         PacienteController.postRegistrarPaciente
     );
 
-    //TODO medição
+    //TODO Medição
     app.get(
         '/api/medicao',
         [
@@ -115,12 +116,13 @@ module.exports = function (app) {
     app.post(
         '/api/medicao/',
         [
+            AutorizaJwt.verificaToken,
             VerificaCadastro.verificaCPF
         ],
         MedicaoController.postRegistraMedicao
     );
 
-    //TODO scilab
+    //TODO Scilab
     app.post(
         '/api/scilab/',
         [
