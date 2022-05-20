@@ -3,6 +3,7 @@ import PacienteService from 'src/commons/services/PacienteService';
 import FormUtils from 'src/commons/utils/FormUtils';
 import HistoricoMedicao from './HistoricoMedicao.vue';
 import TableSessao from './Components/TableSessao.vue';
+import DateUtils from "src/commons/utils/DateUtils";
 
 @Component({
   name: 'paciente',
@@ -38,23 +39,18 @@ class Paciente extends Vue {
   async save() {
     try {
       this.loading = true;
-      console.log("mainForm", this.$refs.mainForm)
       await FormUtils.validateAsync(this.$refs.mainForm);
-
-      PacienteService.postPaciente({data: this.bean}).then(
-        response => {
-          return Promise.resolve(response.data);
-        },
-        error => {
-          return Promise.reject(error);
-        }
-      );
+      this.bean = PacienteService.postPaciente({data: this.bean});
       this.$refs.dialog.hide();
     } catch (e) {
       console.log(e);
     } finally {
       this.loading = false;
     }
+  }
+
+  filterDate(date) {
+    return DateUtils.getDateFormated(date);
   }
 }
 

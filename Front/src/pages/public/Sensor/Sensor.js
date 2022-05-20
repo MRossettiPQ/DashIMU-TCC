@@ -89,10 +89,6 @@ class Sensor extends Vue {
     {
       name: "AccelZ_Lin",
       data: []
-    },
-    {
-      name: "TESTE",
-      data: []
     }
   ];
 
@@ -108,7 +104,7 @@ class Sensor extends Vue {
         corBtn: "primary",
         corTab: ""
       },
-      data: [{}]
+      data: []
     },
     {
       tab_label: "Sensor 2",
@@ -121,7 +117,7 @@ class Sensor extends Vue {
         corBtn: "primary",
         classTab: ""
       },
-      data: [{}]
+      data: []
     },
     {
       tab_label: "Sensor 3",
@@ -134,7 +130,7 @@ class Sensor extends Vue {
         corBtn: "primary",
         classTab: ""
       },
-      data: [{}]
+      data: []
     }
   ];
 
@@ -143,7 +139,7 @@ class Sensor extends Vue {
     this.sensores[id].dispositivo.connection = new WebSocket(url);
 
     this.sensores[id].dispositivo.connection.onmessage = event => {
-      const jSonParsed = JSON.parse(`[${event.data}]`);
+      const jSonParsed = JSON.parse(event.data);
       this.addLeitura(jSonParsed, id);
       // this.closeSocket(id);
     };
@@ -151,6 +147,7 @@ class Sensor extends Vue {
     // eslint-disable-next-line no-unused-vars
     this.sensores[id].dispositivo.connection.onopen = event => {
       this.setConectado(id);
+      this.numeroConexoes = this.numeroConexoes + 1
       const message = "Conexão com o sensor realizada com websocket..."
       Notify.create({
         message,
@@ -191,7 +188,7 @@ class Sensor extends Vue {
   }
 
   addLeitura(data, id) {
-    this.sensores[id].data.push(data);
+    console.log(data, this.sensores[id])
 
     this.renderRows[1].data = [];
     this.renderRows[2].data = [];
@@ -210,6 +207,7 @@ class Sensor extends Vue {
     this.renderRows[15].data = [];
     // eslint-disable-next-line no-unused-vars
     data.map((campo, index) => {
+      this.sensores[id].data.push(campo);
       this.renderRows[1].data.push(campo.AccelX_mss);
       this.renderRows[2].data.push(campo.AccelY_mss);
       this.renderRows[3].data.push(campo.AccelZ_mss);
@@ -225,7 +223,6 @@ class Sensor extends Vue {
       this.renderRows[13].data.push(campo.AccelX_Lin);
       this.renderRows[14].data.push(campo.AccelY_Lin);
       this.renderRows[15].data.push(campo.AccelZ_Lin);
-      console.log(campo.Roll, campo.Pitch, campo.Yaw);
     });
 
     console.log(this.sensores[id].data);
@@ -248,7 +245,7 @@ class Sensor extends Vue {
       if (item.dispositivo.ativo === true) {
         item.dispositivo.connection.send(JSON.stringify({cmd: 1}));
       }
-    });
+    })
   }
 
   sendStop() {
@@ -256,20 +253,19 @@ class Sensor extends Vue {
       if (item.dispositivo.ativo === true) {
         item.dispositivo.connection.send(JSON.stringify({cmd: 2}));
       }
-    });
+    })
   }
 
   sendRestart() {
-    for (let sensor in this.sensores) {
-      if (sensor.dispositivo.ativo === true) {
-        sensor.dispositivo.connection.send(JSON.stringify({cmd: "RESTART"}));
-      }
-    }
     this.sensores.map((item, index) => {
-    });
+      if (item.dispositivo.ativo === true) {
+        item.dispositivo.connection.send(JSON.stringify({cmd: 3}));
+      }
+    })
   }
 
   sendSave() {
+    console.log(this.sensores[0].data)
   }
 
   options = {

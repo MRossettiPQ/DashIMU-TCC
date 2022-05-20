@@ -10,8 +10,12 @@ class TabTable extends Vue {
   @Prop()
   label;
 
-  @Prop({type: Array, default: [{}]})
+  @Prop({type: Array, default: []})
   data;
+
+  get dataTable (){
+    return this.data
+  }
 
   openFullscreen = false;
 

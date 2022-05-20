@@ -4,7 +4,7 @@
     :fullscreen="openFullscreen"
     :title="label"
     :columns="tabelaColumns"
-    :rows="data"
+    :rows="dataTable"
     color="primary"
     bordered
     flat

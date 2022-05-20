@@ -31,7 +31,7 @@
           </q-tab-panels>
         </div>
         <div class="col">
-          <q-card-section class="col form-column form-column__gap" v-if="numeroConexoes >= 2">
+          <q-card-section class="col form-column form-column__gap" >
             <div class="col form-lines form-lines__gap form-lines__no-padding">
               <q-btn
                 color="primary"
@@ -69,6 +69,15 @@
               />
             </div>
           </q-card-section>
+
+          <q-btn
+            color="primary"
+            label="Guardar"
+            class="col"
+            size="md"
+            @click="sendSave"
+            unelevated
+          />
           <q-card-section class="col">
             <q-list bordered class="rounded-borders">
               <sensor-expasion :tab="tab" :sensores="sensores" @conectarSensor="conectarSensor($event)"

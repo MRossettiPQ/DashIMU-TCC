@@ -24,7 +24,6 @@
             v-model="bean.nascPaciente"
             filled
             label="Data de Nascimento"
-            mask="##-##-####"
             :rules="[$validators.notBlank, $validators.dateBorn]"
           />
           <!--          <rot-input-date-->
@@ -53,7 +52,8 @@
             v-model="bean.alturaPaciente"
             filled
             label="Altura"
-            prefix="m"
+            mask="#.##"
+            suffix="metros"
             :rules="[$validators.notBlank]"
           />
         </q-form>

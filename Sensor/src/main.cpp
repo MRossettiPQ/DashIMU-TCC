@@ -1,4 +1,7 @@
 #include <Arduino.h>
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
+#include <esp_ipc.h>
 // Wi-Fi e Timer
 #include <WiFi.h> // for WiFi shield
 #include <NTPClient.h>
@@ -15,17 +18,17 @@
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "a.st1.ntp.br", -3 * 3600, 60000);
 // Roteador - SSID & Password
-const char *wifi_ssid = "ROTador";      //  Nome da rede de Wi-Fi
-const char *wifi_password = "Zotac460"; //  Senha de Acesso da Wi-Fi
+const char *wifi_ssid = "Mokinho";      //  Nome da rede de Wi-Fi
+const char *wifi_password = "Rian2405"; //  Senha de Acesso da Wi-Fi
 
 // Dados do servidor a ser conectado
 const int websockets_server_port = 8080;               // Porta de conexão do servidor
 
-const char *websockets_client_host = "192.168.16.142"; // IP do servidor websocket
+const char *websockets_client_host = "192.168.3.13"; // IP do servidor websocket
 const int websockets_client_port = 8000;               // Porta de conexão do servidor
 
-int status, NumeroLeitura = 0, UltimoEnvio;
-const char *IdSensor = "Sensor_1";
+int status, NumeroLeitura = 0, UltimoEnvio, tentativaConectarWifi = 0, cmdAtual = 0;
+const char *IdSensor = "Sensor_2";
 String HoraLeitura, json, BUFFER;
 
 MPU9250 mpu;
@@ -43,18 +46,6 @@ void print_calibration();
 
 void setup() {
     Serial.begin(115200);
-    // Inicializa configuração da rede
-    WiFi.begin(wifi_ssid, wifi_password);
-    // Verifica se a conexão foi estabelecida
-    while (WiFi.status() != WL_CONNECTED) {
-        // Aguarda até a Wi-Fi conectar
-        delay(500);
-        Serial.print('.');
-    }
-    Serial.println('\n');
-    Serial.println("Conexão Wi-Fi estabelecida");
-    Serial.print("Endereço IP:\t");
-    Serial.println(WiFi.localIP());
 
     // Inicialização do IMU
     do {
@@ -69,6 +60,27 @@ void setup() {
         }
         delay(500);
     } while (!mpu.available());
+
+    WiFi.disconnect(true, true);
+    // Inicializa configuração da rede
+    WiFi.begin(wifi_ssid, wifi_password);
+    // Verifica se a conexão foi estabelecida
+    while (WiFi.status() != WL_CONNECTED) {
+        tentativaConectarWifi++;
+        // Aguarda até a Wi-Fi conectar
+        delay(500);
+        Serial.print('.');
+        if (tentativaConectarWifi == 25) {
+            Serial.println("Reiniciando WIFI");
+            WiFi.disconnect(true, true);
+            tentativaConectarWifi = 0;
+            WiFi.begin(wifi_ssid, wifi_password);
+        }
+    }
+    Serial.println('\n');
+    Serial.println("Conexão Wi-Fi estabelecida");
+    Serial.print("Endereço IP:\t");
+    Serial.println(WiFi.localIP());
 
 #if defined(ESP_PLATFORM) || defined(ESP32)
     EEPROM.begin(0x80);
@@ -129,27 +141,43 @@ void setup() {
     });
 }
 
+void LoopOnProCpu(void *arg) {
+    (void) arg;
+    Serial.print("This loop runs on PRO_CPU which id is:");
+    Serial.println(xPortGetCoreID());
+    Serial.println();
+    Serial.println();
+}
+
 void loop() {
+    //Execute LoopOnAppCpu on PRO_CPU
+    //esp_ipc_call(PRO_CPU_NUM, LoopOnProCpu, NULL);
     WebsocketsClient clientsList = serverSocket.accept();
+    Serial.println("\n CLIENTE CONECTOU");
     timeClient.update();
     NumeroLeitura = 0;
     UltimoEnvio = 0;
-    Serial.println("\n CLIENTE CONECTOU");
     do {
         DynamicJsonDocument doc(1024);
         clientsList.onMessage([&](WebsocketsMessage message) {
             deserializeJson(doc, message.data());
+            Serial.println(message.data());
         });
         JsonObject obj = doc.as<JsonObject>();
 
         int opt = obj["cmd"].as<int>();
-        Serial.println(opt);
-        switch (opt) {
+        if (opt != 0) {
+            cmdAtual = opt;
+        }
+        switch (cmdAtual) {
             case 1:
+                Serial.println("OPÇÃO:" + opt);
+                Serial.println("ATUAL:" + cmdAtual);
                 Serial.println("\n ENVIAR LEITURA");
                 BUFFER += RetornaValoresIMU(NumeroLeitura);
 
-                if (NumeroLeitura == (UltimoEnvio + 13)) {
+                //Buffer de 320 leituras
+                if (NumeroLeitura == (UltimoEnvio + 40)) {
                     // clientsList.send(BUFFER);
                     clientsList.send("[" + BUFFER + "]");
                     UltimoEnvio = NumeroLeitura;
@@ -167,6 +195,22 @@ void loop() {
                 break;
 
             default:
+                if(mpu.update()){
+                    Serial.println("\n ENVIAR LEITURA");
+                    BUFFER += RetornaValoresIMU(NumeroLeitura);
+
+                    //Buffer de 320 leituras
+                    if (NumeroLeitura == (UltimoEnvio + 40)) {
+                        // clientsList.send(BUFFER);
+                        clientsList.send("[" + BUFFER + "]");
+                        UltimoEnvio = NumeroLeitura;
+                        BUFFER = "";
+                    } else {
+                        BUFFER += ",";
+                    }
+
+                    NumeroLeitura = NumeroLeitura + 1;
+                }
                 break;
         }
 
@@ -184,7 +228,6 @@ void loop() {
 }
 
 String RetornaValoresIMU(int NumeroLeitura) {
-
     HoraLeitura = timeClient.getFormattedTime();
     // Acelerometro
     double AccelX_mss = mpu.getAccBiasX() * 1000.f / (float) MPU9250::CALIB_ACCEL_SENSITIVITY;
@@ -206,6 +249,10 @@ String RetornaValoresIMU(int NumeroLeitura) {
     double Roll = mpu.getRoll();
     double Pitch = mpu.getPitch();
     double Yaw = mpu.getYaw();
+
+    //double veloX = mpu.ge();
+    //double veloY = mpu.getYaw();
+    //double veloZ = mpu.getYaw();
 
     //------------LEITURA DO SENSOR-----------
 

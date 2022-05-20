@@ -1,5 +1,6 @@
 const AutorizaJwt = require('../app/Core/Middleware/AutorizaJwt.js');
 const MedicaoController = require('../app/Sessao/Controllers/MedicaoController.js');
+const SciLabController = require("../app/Sessao/Controllers/SciLabController.js");
 const VerificaCadastro = require('../app/Core/Middleware/VerificaCadastro.js');
 const PacienteController = require('../app/Paciente/Controllers/PacienteController.js');
 const AutenticacaoController = require('../app/Usuario/Controllers/AutenticacaoController.js');
@@ -8,21 +9,14 @@ const header = require('./header');
 
 let listaSensores = [];
 module.exports = function (app) {
-    //TODO header
-    app.use((req, res, next) => {
-        header(req, res, next);
-    });
-
     //TODO root
     app.get('/ping', (req, res, next) => {
-        console.log(`Pagina: /`);
+        console.log(`Pagina: /ping`);
         res.json({message: 'Testando server'});
     });
 
     //TODO SENSOR
-    app.ws('/', function (client, req) {
-        console.log(`Pagina: /`);
-        console.log(client.getgid())
+    app.ws('/socket', function (client, req) {
         client.on('message', function (msg) {
             listaSensores.push({
                 id: client.id,
@@ -37,6 +31,11 @@ module.exports = function (app) {
             // listaSensores.splice(ws.socket.id, 1)
             console.log(`Adicionar sensor: ${listaSensores} - ${ws}`);
         });
+    });
+
+    //TODO header
+    app.use((req, res, next) => {
+        header(req, res, next);
     });
 
     app.get(
@@ -120,4 +119,15 @@ module.exports = function (app) {
         ],
         MedicaoController.postRegistraMedicao
     );
+
+    //TODO scilab
+    app.post(
+        '/api/scilab/',
+        [
+            AutorizaJwt.verificaToken,
+            AutorizaJwt.seAdminFisio
+        ],
+        SciLabController.getCalcular
+    );
+
 };

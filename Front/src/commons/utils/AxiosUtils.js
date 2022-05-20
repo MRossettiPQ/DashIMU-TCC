@@ -17,7 +17,6 @@ Axios.interceptors.response.use((response) => {
       notifySuccess(response.data.message || response.data.msg);
     }
   }
-  console.log('response', response)
 
   return response;
 }, (error) => {
@@ -38,7 +37,6 @@ Axios.interceptors.response.use((response) => {
 Axios.interceptors.request.use(
   (config) => {
     let token = AutenticacaoUtils.getToken();
-    console.log('token', token)
     token ? config.headers['x-access-token'] = token : void 0;
     return config;
   },
