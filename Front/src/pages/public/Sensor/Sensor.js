@@ -27,6 +27,58 @@ class Sensor extends Vue {
 
   renderRows = [
     {
+      name: "numLeitura",
+      data: []
+    },
+    {
+      name: "Acc_X",
+      data: []
+    },
+    {
+      name: "Acc_Y",
+      data: []
+    },
+    {
+      name: "Acc_Z",
+      data: []
+    },
+    {
+      name: "Gyr_X",
+      data: []
+    },
+    {
+      name: "Gyr_Y",
+      data: []
+    },
+    {
+      name: "Gyr_Z",
+      data: []
+    },
+    {
+      name: "Mag_X",
+      data: []
+    },
+    {
+      name: "Mag_Y",
+      data: []
+    },
+    {
+      name: "Mag_Z",
+      data: []
+    },
+    {
+      name: "Roll",
+      data: []
+    },
+    {
+      name: "Pitch",
+      data: []
+    },
+    {
+      name: "Yaw",
+      data: []
+    },
+    {
       name: "horaSensor",
       data: []
     },
@@ -43,51 +95,7 @@ class Sensor extends Vue {
       data: []
     },
     {
-      name: "GyroX_rads",
-      data: []
-    },
-    {
-      name: "GyroY_rads",
-      data: []
-    },
-    {
-      name: "GyroZ_rads",
-      data: []
-    },
-    {
-      name: "MagX_uT",
-      data: []
-    },
-    {
-      name: "MagY_uT",
-      data: []
-    },
-    {
-      name: "MagZ_uT",
-      data: []
-    },
-    {
-      name: "Roll",
-      data: []
-    },
-    {
-      name: "Pitch",
-      data: []
-    },
-    {
-      name: "Yaw",
-      data: []
-    },
-    {
-      name: "AccelX_Lin",
-      data: []
-    },
-    {
-      name: "AccelY_Lin",
-      data: []
-    },
-    {
-      name: "AccelZ_Lin",
+      name: "idSensor",
       data: []
     }
   ];
@@ -205,24 +213,28 @@ class Sensor extends Vue {
     this.renderRows[13].data = [];
     this.renderRows[14].data = [];
     this.renderRows[15].data = [];
+    this.renderRows[16].data = [];
+    this.renderRows[17].data = [];
     // eslint-disable-next-line no-unused-vars
     data.map((campo, index) => {
       this.sensores[id].data.push(campo);
-      this.renderRows[1].data.push(campo.AccelX_mss);
-      this.renderRows[2].data.push(campo.AccelY_mss);
-      this.renderRows[3].data.push(campo.AccelZ_mss);
-      this.renderRows[4].data.push(campo.GyroX_rads);
-      this.renderRows[5].data.push(campo.GyroY_rads);
-      this.renderRows[6].data.push(campo.GyroZ_rads);
-      this.renderRows[7].data.push(campo.MagX_uT);
-      this.renderRows[8].data.push(campo.MagY_uT);
-      this.renderRows[9].data.push(campo.MagZ_uT);
+      this.renderRows[1].data.push(campo.Acc_X);
+      this.renderRows[2].data.push(campo.Acc_Y);
+      this.renderRows[3].data.push(campo.Acc_Z);
+      this.renderRows[4].data.push(campo.Gyr_X);
+      this.renderRows[5].data.push(campo.Gyr_Y);
+      this.renderRows[6].data.push(campo.Gyr_Z);
+      this.renderRows[7].data.push(campo.Mag_X);
+      this.renderRows[8].data.push(campo.Mag_Y);
+      this.renderRows[9].data.push(campo.Mag_Z);
       this.renderRows[10].data.push(campo.Roll);
       this.renderRows[11].data.push(campo.Pitch);
       this.renderRows[12].data.push(campo.Yaw);
-      this.renderRows[13].data.push(campo.AccelX_Lin);
-      this.renderRows[14].data.push(campo.AccelY_Lin);
-      this.renderRows[15].data.push(campo.AccelZ_Lin);
+      this.renderRows[13].data.push(campo.horaSensor);
+      this.renderRows[14].data.push(campo.AccelX_mss);
+      this.renderRows[15].data.push(campo.AccelY_mss);
+      this.renderRows[16].data.push(campo.AccelZ_mss);
+      this.renderRows[17].data.push(campo.idSensor);
     });
 
     console.log(this.sensores[id].data);
