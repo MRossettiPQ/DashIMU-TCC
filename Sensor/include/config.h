@@ -2,13 +2,14 @@
 #define SENSOR_CONFIG_H
 
 // Identidade Sensor
-#define ID_SENSOR "Sensor_2"
+#define ID_SENSOR "Sensor_1"
+#define ADDR_SENSOR 0x68
 // Time API
 #define NTP_TIME_API "a.st1.ntp.br"
 // Socket Server
 #define WEBSOCKET_SERVER_PORT 8080
 // Socket API
-#define WEBSOCKET_SERVER_API_PORT "192.168.3.13"
+#define WEBSOCKET_SERVER_API_PORT "192.168.16.113"
 #define WEBSOCKET_CLIENT_PORT 8000
 // Roteador - SSID & Password
 #define WIFI_SSID "ROTador"
@@ -36,12 +37,15 @@ int status;
 int numeroLeitura = 0;
 int ultimoEnvio;
 int cmdAtual = 0;
-int optRecebidoCliente;
+int optRecebidoCliente = 0;
+int tentativaConectarWifi = 0;
 
 String horaLeitura;
 String jsonRecebidoCliente;
 String jsonBufferServer;
 String enderecoESP;
+
+DynamicJsonDocument doc(1024);
 
 // Para conexão com sensor
 MPU9250 mpu;
@@ -59,11 +63,15 @@ void ImprimirCalibracaoIMU();
 void SalvarCalibracaoIMU();
 void CarregarCalibracaoIMU();
 void MontaEnviaBuffer();
+void PararMedicao();
+void ReiniciarMedicao();
 String RetornaValoresIMU(int NumeroLeitura);
 //
 void InicializarWiFi();
 //
 void InicializarServidorWebsocket();
 void InicializarClienteWebsocket();
+void onMessageCallback(WebsocketsMessage message);
+void onEventsCallback(WebsocketsEvent event, String data);
 
 #endif //SENSOR_CONFIG_H

@@ -54,4 +54,30 @@ void MontaEnviaBuffer() {
     }
 }
 
+void onMessageCallback(WebsocketsMessage message) {
+    deserializeJson(doc, message.data());
+    Serial.println("[SENSOR] - Evento onMessage");
+    Serial.println(message.data());
+}
+
+void onEventsCallback(WebsocketsEvent event, String data) {
+    switch(event){
+        case WebsocketsEvent::ConnectionOpened:
+            Serial.println("[SENSOR] - Connnection Opened");
+            break;
+        case WebsocketsEvent::ConnectionClosed:
+            Serial.println("[SENSOR] - Connnection Closed");
+            break;
+        case WebsocketsEvent::GotPing:
+            Serial.println("[SENSOR] - Got a Ping!");
+            break;
+        case WebsocketsEvent::GotPong:
+            Serial.println("[SENSOR] - Got a Pong!");
+            break;
+        default:
+            Serial.println("[SENSOR] - Got a Pong!");
+            break;
+    }
+}
+
 #endif //SENSOR_WEBSOCKET_LOCAL_H

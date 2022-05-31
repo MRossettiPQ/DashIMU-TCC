@@ -7,10 +7,9 @@ void InicializarIMU() {
     // Inicialização do IMU
     do {
         Wire.begin();
-        if (!mpu.setup(0x68)) {
+        if (!mpu.setup(ADDR_SENSOR)) {
             Serial.println("[SENSOR] - Não foi inicializada, Confira a ligação da IMU com o ESP32 e reinicie o aparelho");
-            Serial.println("[SENSOR] - Status: ");
-            Serial.print(status);
+            Serial.println("[SENSOR] - Status: " + status);
         } else {
             Serial.println("[SENSOR] - IMU Inicializada");
         }
@@ -153,6 +152,16 @@ String RetornaValoresIMU(int NumeroLeitura) {
     Leitura += "\"}";
 
     return Leitura;
+}
+
+void PararMedicao(){
+    jsonBufferServer = "";
+    numeroLeitura = 0;
+}
+
+void ReiniciarMedicao(){
+    PararMedicao();
+    cmdAtual = 1;
 }
 
 #endif //SENSOR_SENSOR_LOCAL_H

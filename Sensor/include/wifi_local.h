@@ -6,12 +6,20 @@
 void InicializarWiFi() {
     // Inicializa WiFi
     Serial.println("[SENSOR] - Configurando WiFi");
-    do {
-        WiFi.disconnect(true, true);
-        WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-        delay(2500);
-        // Verifica se a conexão foi estabelecida
-    } while (WiFi.status() != WL_CONNECTED);
+
+    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+    while (WiFi.status() != WL_CONNECTED) {
+        tentativaConectarWifi++;
+        // Aguarda até a Wi-Fi conectar
+        delay(500);
+        Serial.print('.');
+        if (tentativaConectarWifi == 25) {
+            Serial.println("Reiniciando WIFI");
+            WiFi.disconnect(true, true);
+            tentativaConectarWifi = 0;
+            WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+        }
+    }
     Serial.println("[SENSOR] - Conexão Wi-Fi estabelecida");
     Serial.println("[SENSOR] - Endereço IP:\t" + WiFi.localIP().toString());
 }

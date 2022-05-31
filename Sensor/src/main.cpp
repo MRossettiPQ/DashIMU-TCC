@@ -28,12 +28,10 @@ void loop() {
     numeroLeitura = 0;
     ultimoEnvio = 0;
     do {
-        DynamicJsonDocument doc(1024);
-        clientsList.onMessage([&](WebsocketsMessage message) {
-            deserializeJson(doc, message.data());
-            Serial.println("[SENSOR] - Evento onMessage");
-            Serial.println(message.data());
-        });
+        if (clientsList.available()) {
+            clientsList.poll();
+        }
+        clientsList.onMessage(onMessageCallback);
         JsonObject obj = doc.as<JsonObject>();
 
         optRecebidoCliente = obj["cmd"].as<int>();
@@ -43,21 +41,39 @@ void loop() {
         }
         switch (cmdAtual) {
             case 1:
+                Serial.println("[SENSOR] - Leitura");
                 MontaEnviaBuffer();
                 break;
 
             case 2:
-                Serial.println("\n OPCAO 2");
-                /* code */
+                Serial.println("[SENSOR] - Pausar");
+                break;
+
+            case 3:
+                Serial.println("[SENSOR] - Reiniciar");
+                ReiniciarMedicao();
+                break;
+
+            case 4:
+                PararMedicao();
+                Serial.println("[SENSOR] - Calibrar Sensor");
+                CalibrarIMU();
+                break;
+
+            case 5:
+                PararMedicao();
+                Serial.println("[SENSOR] - Salvar Calibraçao");
+                SalvarCalibracaoIMU();
+                break;
+
+            case 6:
+                PararMedicao();
+                Serial.println("[SENSOR] - Resgatar Calibraçao");
+                CarregarCalibracaoIMU();
                 break;
 
             default:
-                MontaEnviaBuffer();
                 break;
-        }
-
-        if (clientBackEnd.available()) {
-            clientBackEnd.poll();
         }
 
         delay(8);

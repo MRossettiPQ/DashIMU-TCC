@@ -20,7 +20,7 @@ void writeFloat(int address, float value) {
     EEPROM.put(address, value);
 }
 
-byte readByte(int address) {
+byte readByte(int address, int i) {
     byte valueIn = 0;
     EEPROM.get(address, valueIn);
     return valueIn;
@@ -37,7 +37,7 @@ void clearCalibration() {
 }
 
 bool isCalibrated() {
-    return (readByte(EEP_CALIB_FLAG) == 0x01);
+    return (readByte(EEP_CALIB_FLAG, 0) == 0x01);
 }
 
 void saveCalibration() {
@@ -94,7 +94,7 @@ void loadCalibration() {
 void printCalibration() {
     Serial.println("< calibration parameters >");
     Serial.print("calibrated? : ");
-    Serial.println(readByte(EEP_CALIB_FLAG) ? "YES" : "NO");
+    Serial.println(readByte(EEP_CALIB_FLAG, 0) ? "YES" : "NO");
     Serial.print("acc bias x  : ");
     Serial.println(readFloat(EEP_ACC_BIAS + 0) * 1000.f / MPU9250::CALIB_ACCEL_SENSITIVITY);
     Serial.print("acc bias y  : ");
@@ -123,7 +123,7 @@ void printCalibration() {
 
 void printBytes() {
     for (size_t i = 0; i < EEPROM_SIZE; ++i)
-        Serial.println(readByte(i), HEX);
+        Serial.println(readByte(i, 0), HEX);
 }
 
 void setupEEPROM() {
