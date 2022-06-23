@@ -1,11 +1,10 @@
 <template>
   <q-table
-    v-if="dataTable"
     class="col"
     :fullscreen="openFullscreen"
     :title="label"
     :columns="tabelaColumns"
-    :rows="dataTable"
+    :data="dataTable"
     color="primary"
     bordered
     flat

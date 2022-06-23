@@ -14,18 +14,14 @@ class TabTable extends Vue {
   @Prop()
   label;
 
-  @Prop({type: Array, default: []})
+  @Prop({type: Array, default: [{}]})
   data;
 
-  get dataTable (){
+  get dataTable() {
     return this.data
   }
 
   openFullscreen = false;
-
-  mounted() {
-    console.log(this.dataTable)
-  }
 
   tabelaColumns = [
     {name: "id", label: "id", field: "id", align: "center"},
