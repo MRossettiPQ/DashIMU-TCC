@@ -17,6 +17,12 @@
             narrow-indicator
           >
             <q-tab
+              name="maisSensor"
+              label="+ Sensor"
+              icon="add"
+              @click="addSensor"
+            />
+            <q-tab
               v-for="(sensor, index) in sensores"
               :key="index"
               :name="sensor.tab_name"

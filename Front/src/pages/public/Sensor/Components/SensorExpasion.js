@@ -33,6 +33,10 @@ class SensorExpasion extends Vue {
     this.$emit("desconectarSensor", index);
   }
 
+  addSensor(){
+    this.$emit("addSensor");
+  }
+
 }
 
 export default SensorExpasion;

@@ -1,5 +1,6 @@
 import {Component, Prop, Vue} from "vue-property-decorator";
 import {exportFile} from "quasar";
+import moment from "moment";
 
 // import { exportFile } from "quasar";
 
@@ -7,6 +8,9 @@ import {exportFile} from "quasar";
   name: "tab-table"
 })
 class TabTable extends Vue {
+  @Prop()
+  paciente;
+
   @Prop()
   label;
 
@@ -19,23 +23,27 @@ class TabTable extends Vue {
 
   openFullscreen = false;
 
+  mounted() {
+    console.log(this.dataTable)
+  }
+
   tabelaColumns = [
     {name: "id", label: "id", field: "id", align: "center"},
     {name: "idSensor", label: "idSensor", field: "idSensor", align: "center"},
-    {name: "horaSensor", label: "horaSensor", field: "horaSensor"},
+    {name: "horaLeitura", label: "horaLeitura", field: "horaLeitura"},
     {name: "numLeitura", label: "numLeitura", field: "numLeitura"},
-    {name: "AccelX_Lin", label: "AccelX_Lin", field: "AccelX_Lin"},
-    {name: "AccelY_Lin", label: "AccelY_Lin", field: "AccelY_Lin"},
-    {name: "AccelZ_Lin", label: "AccelZ_Lin", field: "AccelZ_Lin"},
+    {name: "Acc_X", label: "Acc_X", field: "Acc_X"},
+    {name: "Acc_Y", label: "Acc_Y", field: "Acc_Y"},
+    {name: "Acc_Z", label: "Acc_Z", field: "Acc_Z"},
     {name: "AccelX_mss", label: "AccelX_mss", field: "AccelX_mss"},
     {name: "AccelY_mss", label: "AccelY_mss", field: "AccelY_mss"},
     {name: "AccelZ_mss", label: "AccelZ_mss", field: "AccelZ_mss"},
-    {name: "GyroX_rads", label: "GyroX_rads", field: "GyroX_rads"},
-    {name: "GyroY_rads", label: "GyroY_rads", field: "GyroY_rads"},
-    {name: "GyroZ_rads", label: "GyroZ_rads", field: "GyroZ_rads"},
-    {name: "MagX_uT", label: "MagX_uT", field: "MagX_uT"},
-    {name: "MagY_uT", label: "MagY_uT", field: "MagY_uT"},
-    {name: "MagZ_uT", label: "MagZ_uT", field: "MagZ_uT"},
+    {name: "Gyr_X", label: "Gyr_X", field: "Gyr_X"},
+    {name: "Gyr_Y", label: "Gyr_Y", field: "Gyr_Y"},
+    {name: "Gyr_Z", label: "Gyr_Z", field: "Gyr_Z"},
+    {name: "Mag_X", label: "Mag_X", field: "Mag_X"},
+    {name: "Mag_Y", label: "Mag_Y", field: "Mag_Y"},
+    {name: "Mag_Z", label: "Mag_Z", field: "Mag_Z"},
     {name: "Roll", label: "Roll", field: "Roll"},
     {name: "Pitch", label: "Pitch", field: "Pitch"},
     {name: "Yaw", label: "Yaw", field: "Yaw"}
@@ -64,8 +72,8 @@ class TabTable extends Vue {
     }
 
     // naive encoding to csv format
-    const content = [this.columns.map(col => wrapCsvValue(col.label))].concat(
-      this.data.map(row => this.columns.map(col => wrapCsvValue(
+    const content = [this.tabelaColumns.map(col => wrapCsvValue(col.label))].concat(
+      this.data.map(row => this.tabelaColumns.map(col => wrapCsvValue(
         typeof col.field === 'function'
           ? col.field(row)
           : row[col.field === void 0 ? col.name : col.field],
@@ -73,7 +81,7 @@ class TabTable extends Vue {
       )).join(','))
     ).join('\r\n')
     const status = exportFile(
-      'table-export.csv',
+      this.paciente.nomePaciente + moment.now() + '.csv',
       content,
       'text/csv'
     )

@@ -7,12 +7,12 @@ const Axios = axios.create({
 });
 
 Axios.interceptors.response.use((response) => {
-  if (response.config.method.toUpperCase() != 'GET') {
+  if (response.config.method.toUpperCase() !== 'GET') {
     if (response.data && (response.data.message || response.data.msg)) {
       notifySuccess(response.data.message || response.data.msg);
     }
   }
-  if (response.config.method.toUpperCase() != 'POST'){
+  if (response.config.method.toUpperCase() !== 'POST'){
     if (response.data && (response.data.message || response.data.msg)) {
       notifySuccess(response.data.message || response.data.msg);
     }
@@ -20,7 +20,7 @@ Axios.interceptors.response.use((response) => {
 
   return response;
 }, (error) => {
-  if (error.response.status == 404) {
+  if (error.response.status === 404) {
     notifyError("Endpoint não encontrado");
   }
 

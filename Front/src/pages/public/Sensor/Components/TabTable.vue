@@ -1,5 +1,6 @@
 <template>
   <q-table
+    v-if="dataTable"
     class="col"
     :fullscreen="openFullscreen"
     :title="label"

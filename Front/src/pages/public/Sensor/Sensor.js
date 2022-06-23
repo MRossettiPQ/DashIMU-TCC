@@ -20,50 +20,18 @@ class Sensor extends Vue {
   @Prop()
   idPaciente;
 
-  mounted() {
-    const {idPaciente} = this.$route.query;
-    this.dataLoad(idPaciente);
+  async mounted() {
+    try {
+      const {idPaciente} = this.$route.query;
+      await this.dataLoad(idPaciente);
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   renderRows = [
     {
       name: "numLeitura",
-      data: []
-    },
-    {
-      name: "Acc_X",
-      data: []
-    },
-    {
-      name: "Acc_Y",
-      data: []
-    },
-    {
-      name: "Acc_Z",
-      data: []
-    },
-    {
-      name: "Gyr_X",
-      data: []
-    },
-    {
-      name: "Gyr_Y",
-      data: []
-    },
-    {
-      name: "Gyr_Z",
-      data: []
-    },
-    {
-      name: "Mag_X",
-      data: []
-    },
-    {
-      name: "Mag_Y",
-      data: []
-    },
-    {
-      name: "Mag_Z",
       data: []
     },
     {
@@ -76,22 +44,6 @@ class Sensor extends Vue {
     },
     {
       name: "Yaw",
-      data: []
-    },
-    {
-      name: "horaSensor",
-      data: []
-    },
-    {
-      name: "AccelX_mss",
-      data: []
-    },
-    {
-      name: "AccelY_mss",
-      data: []
-    },
-    {
-      name: "AccelZ_mss",
       data: []
     },
     {
@@ -112,25 +64,32 @@ class Sensor extends Vue {
         corBtn: "primary",
         corTab: ""
       },
-      data: []
+      data: [{
+        id: 1,
+        idSensor: 1,
+        horaLeitura: 1,
+        numLeitura: 1,
+        Acc_X: 1,
+        Acc_Y: 1,
+        Acc_Z: 1,
+        AccelX_mss: 1,
+        AccelY_mss: 1,
+        AccelZ_mss: 1,
+        Gyr_X: 1,
+        Gyr_Y: 1,
+        Gyr_Z: 1,
+        Mag_X: 1,
+        Mag_Y: 1,
+        Mag_Z: 1,
+        Roll: 1,
+        Pitch: 1,
+        Yaw: 1
+      }]
     },
     {
       tab_label: "Sensor 2",
       tab_name: "Sensor_2",
       label: "Conectar Sensor 2",
-      dispositivo: {
-        ip: "",
-        ativo: false,
-        connection: null,
-        corBtn: "primary",
-        classTab: ""
-      },
-      data: []
-    },
-    {
-      tab_label: "Sensor 3",
-      tab_name: "Sensor_3",
-      label: "Conectar Sensor 3",
       dispositivo: {
         ip: "",
         ativo: false,
@@ -196,48 +155,23 @@ class Sensor extends Vue {
   }
 
   addLeitura(data, id) {
-    console.log(data, this.sensores[id])
-
+    // Reinicia grafico para ultimo json recebido
     this.renderRows[1].data = [];
     this.renderRows[2].data = [];
     this.renderRows[3].data = [];
     this.renderRows[4].data = [];
     this.renderRows[5].data = [];
-    this.renderRows[6].data = [];
-    this.renderRows[7].data = [];
-    this.renderRows[8].data = [];
-    this.renderRows[9].data = [];
-    this.renderRows[10].data = [];
-    this.renderRows[11].data = [];
-    this.renderRows[12].data = [];
-    this.renderRows[13].data = [];
-    this.renderRows[14].data = [];
-    this.renderRows[15].data = [];
-    this.renderRows[16].data = [];
-    this.renderRows[17].data = [];
     // eslint-disable-next-line no-unused-vars
     data.map((campo, index) => {
+      // adiciona leitura ao sensor recebido
       this.sensores[id].data.push(campo);
-      this.renderRows[1].data.push(campo.Acc_X);
-      this.renderRows[2].data.push(campo.Acc_Y);
-      this.renderRows[3].data.push(campo.Acc_Z);
-      this.renderRows[4].data.push(campo.Gyr_X);
-      this.renderRows[5].data.push(campo.Gyr_Y);
-      this.renderRows[6].data.push(campo.Gyr_Z);
-      this.renderRows[7].data.push(campo.Mag_X);
-      this.renderRows[8].data.push(campo.Mag_Y);
-      this.renderRows[9].data.push(campo.Mag_Z);
-      this.renderRows[10].data.push(campo.Roll);
-      this.renderRows[11].data.push(campo.Pitch);
-      this.renderRows[12].data.push(campo.Yaw);
-      this.renderRows[13].data.push(campo.horaSensor);
-      this.renderRows[14].data.push(campo.AccelX_mss);
-      this.renderRows[15].data.push(campo.AccelY_mss);
-      this.renderRows[16].data.push(campo.AccelZ_mss);
-      this.renderRows[17].data.push(campo.idSensor);
+      // adiciona leitura ao grafico
+      this.renderRows[1].data.push(campo.numLeitura);
+      this.renderRows[2].data.push(campo.Roll);
+      this.renderRows[3].data.push(campo.Pitch);
+      this.renderRows[4].data.push(campo.Yaw);
+      this.renderRows[5].data.push(campo.idSensor);
     });
-
-    console.log(this.sensores[id].data);
   }
 
   setConectado(id) {
@@ -272,12 +206,15 @@ class Sensor extends Vue {
     this.sensores.map((item, index) => {
       if (item.dispositivo.ativo === true) {
         item.dispositivo.connection.send(JSON.stringify({cmd: 3}));
+        item.data = []
       }
     })
   }
 
   sendSave() {
-    console.log(this.sensores[0].data)
+    this.sensores.map((item, index) => {
+      console.log(item)
+    })
   }
 
   options = {
@@ -292,6 +229,23 @@ class Sensor extends Vue {
     } catch (e) {
       console.log(e);
     }
+  }
+
+  addSensor(){
+    const id = (this.sensores.length + 1)
+    this.sensores.push({
+      tab_label: "Sensor " + id,
+      tab_name: "Sensor_" + id,
+      label: "Conectar Sensor " + id,
+      dispositivo: {
+        ip: "",
+        ativo: false,
+        connection: null,
+        corBtn: "primary",
+        classTab: ""
+      },
+      data: []
+    })
   }
 }
 

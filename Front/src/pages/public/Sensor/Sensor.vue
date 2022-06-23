@@ -26,7 +26,11 @@
             </q-tab-panel>
 
             <q-tab-panel name="Tab_2">
-              <tab-table label="Tabela" :data="sensores[0].data"/>
+              <tab-table
+                label="Tabela"
+                :data="sensores[0].data"
+                :paciente="bean"
+              />
             </q-tab-panel>
           </q-tab-panels>
         </div>
@@ -69,19 +73,15 @@
               />
             </div>
           </q-card-section>
-
-          <q-btn
-            color="primary"
-            label="Guardar"
-            class="col"
-            size="md"
-            @click="sendSave"
-            unelevated
-          />
           <q-card-section class="col">
             <q-list bordered class="rounded-borders">
-              <sensor-expasion :tab="tab" :sensores="sensores" @conectarSensor="conectarSensor($event)"
-                               @desconectarSensor="desconectarSensor($event)"/>
+              <sensor-expasion
+                :tab="tab"
+                :sensores="sensores"
+                @conectarSensor="conectarSensor($event)"
+                @desconectarSensor="desconectarSensor($event)"
+                @addSensor="addSensor"
+              />
               <paciente-expasion :bean="bean"/>
             </q-list>
           </q-card-section>
