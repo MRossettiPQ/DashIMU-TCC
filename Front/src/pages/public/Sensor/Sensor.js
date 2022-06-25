@@ -64,27 +64,7 @@ class Sensor extends Vue {
         corBtn: "primary",
         corTab: ""
       },
-      data: [{
-        id: 1,
-        idSensor: 1,
-        horaLeitura: 1,
-        numLeitura: 1,
-        Acc_X: 1,
-        Acc_Y: 1,
-        Acc_Z: 1,
-        AccelX_mss: 1,
-        AccelY_mss: 1,
-        AccelZ_mss: 1,
-        Gyr_X: 1,
-        Gyr_Y: 1,
-        Gyr_Z: 1,
-        Mag_X: 1,
-        Mag_Y: 1,
-        Mag_Z: 1,
-        Roll: 1,
-        Pitch: 1,
-        Yaw: 1
-      }]
+      data: []
     },
     {
       tab_label: "Sensor 2",
@@ -191,6 +171,31 @@ class Sensor extends Vue {
       if (item.dispositivo.ativo === true) {
         item.dispositivo.connection.send(JSON.stringify({cmd: 1}));
       }
+    })
+  }
+
+  addLeituraTeste(){
+    const id = this.sensores[0].data.length + 1
+    this.sensores[0].data.push({
+      id: id,
+      idSensor: 1,
+      horaLeitura: 1,
+      numLeitura: 1,
+      Acc_X: 1,
+      Acc_Y: 1,
+      Acc_Z: 1,
+      AccelX_mss: 1,
+      AccelY_mss: 1,
+      AccelZ_mss: 1,
+      Gyr_X: 1,
+      Gyr_Y: 1,
+      Gyr_Z: 1,
+      Mag_X: 1,
+      Mag_Y: 1,
+      Mag_Z: 1,
+      Roll: 1,
+      Pitch: 1,
+      Yaw: 1
     })
   }
 

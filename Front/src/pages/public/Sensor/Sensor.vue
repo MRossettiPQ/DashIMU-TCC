@@ -34,6 +34,16 @@
             </q-tab-panel>
           </q-tab-panels>
         </div>
+
+        <q-btn
+          color="primary"
+          label="add leitura"
+          class="col"
+          size="md"
+          @click="addLeituraTeste"
+          unelevated
+        />
+
         <div class="col">
           <q-card-section class="col form-column form-column__gap" >
             <div class="col form-lines form-lines__gap form-lines__no-padding">
