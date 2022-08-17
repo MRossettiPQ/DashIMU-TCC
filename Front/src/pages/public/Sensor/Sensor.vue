@@ -44,6 +44,15 @@
           unelevated
         />
 
+        <q-btn
+          color="primary"
+          label="get central ..."
+          class="col"
+          size="md"
+          @click="postCentralVariabilidadeSalto"
+          unelevated
+        />
+
         <div class="col">
           <q-card-section class="col form-column form-column__gap" >
             <div class="col form-lines form-lines__gap form-lines__no-padding">

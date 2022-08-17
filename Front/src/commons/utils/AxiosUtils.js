@@ -1,5 +1,5 @@
 import AutenticacaoUtils from "../../commons/utils/AutenticacaoUtils";
-import {notifyError, notifySuccess} from "../../commons/utils/NotifyUtils";
+import {notifyError, notifySuccess} from "src/commons/utils/NotifyUtils";
 import axios from "axios";
 
 const Axios = axios.create({

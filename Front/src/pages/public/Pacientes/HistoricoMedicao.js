@@ -17,22 +17,22 @@ class HistoricoMedicao extends Vue {
   rowCount = 10;
   columns = [
     {
-      name: "nomePaciente",
+      name: "name",
       align: "left",
       label: "Nome",
-      field: "nomePaciente"
+      field: "name"
     },
     {
-      name: "idPaciente",
+      name: "idPatient",
       align: "left",
       label: "ID Paciente",
-      field: "nomePaciente"
+      field: "idPatient"
     },
     {
-      name: "cpfPaciente",
+      name: "cpf",
       align: "left",
       label: "CPF",
-      field: "cpfPaciente"
+      field: "cpf"
     }
   ];
 
@@ -47,7 +47,8 @@ class HistoricoMedicao extends Vue {
   async mounted() {
     if (this.id !== null) {
       await this.dataLoad(this.id);
-    } else {
+    }
+ else {
       this.bean = {};
     }
   }
@@ -55,7 +56,8 @@ class HistoricoMedicao extends Vue {
   async dataLoad(id) {
     try {
       this.dataTable = await SessaoService.getListaSessao();
-    } catch (e) {
+    }
+ catch (e) {
       console.log(e);
     }
   }
@@ -63,7 +65,8 @@ class HistoricoMedicao extends Vue {
   medicao() {
     try {
       this.$router.push("/sensor");
-    } catch (e) {
+    }
+ catch (e) {
       console.log(e);
     }
   }

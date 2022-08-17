@@ -8,13 +8,11 @@ import AutenticaService from '../../../commons/services/AutenticaService';
 class Registrar extends Vue {
   loading = false;
   bean = {
-    emailUsuario: "",
-    nomeUsuario: "",
-    nascUsuario: "",
-    senhaUsuario: "",
-    senhaConfirmar: "",
-    usernameUsuario: "",
-    telefoneUsuario: ""
+    email: "",
+    name: "",
+    password: "",
+    passwordConfirm: "",
+    username: "",
   };
 
   async onSubmit() {
@@ -24,9 +22,11 @@ class Registrar extends Vue {
 
       await this.$store.dispatch("autenticacao/register", this.bean);
       await this.$router.push("/home");
-    } catch (e) {
+    }
+ catch (e) {
       console.log(e);
-    } finally {
+    }
+ finally {
       this.loading = false;
     }
   }

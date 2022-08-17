@@ -89,9 +89,11 @@ const enumFilter = (value, enums) => {
 
   if (e?.descricao) {
     return e.descricao;
-  } else if (e?.description) {
+  }
+ else if (e?.description) {
     return e.description;
-  } else if (e?.label) {
+  }
+ else if (e?.label) {
     return e.label;
   }
 
@@ -133,7 +135,8 @@ const moneyFilter = value => {
     if (missingDecimalPlaces < 0) {
       value = value.substring(0, value.length + missingDecimalPlaces);
     }
-  } else {
+  }
+ else {
     value = "".concat(value, ",").concat(zeros);
   }
 

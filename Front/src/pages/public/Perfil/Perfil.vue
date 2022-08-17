@@ -2,21 +2,21 @@
   <section class="responsive-height">
     <div class="row responsive-content form-column">
       <div class="col p-16" v-if="bean !== null">
-        <h1>Perfil de {{ bean.nomeUsuario }}</h1>
+        <h1>Perfil de {{ bean.nomeUser }}</h1>
         <q-form greedy ref="mainForm">
           <q-card bordered flat class="form-column">
             <q-card-section class="col form-lines form-lines__gap">
               <q-input
                 class="col"
-                v-model="bean.idUsuario"
+                v-model="bean.idUser"
                 filled
                 stack-label
                 readonly
-                label="Id do usuario"
+                label="Id do User"
               />
               <q-input
                 class="col"
-                v-model="bean.nomeUsuario"
+                v-model="bean.name"
                 filled
                 stack-label
                 readonly
@@ -27,26 +27,18 @@
             <q-card-section class="col form-lines form-lines__gap">
               <q-input
                 class="col"
-                v-model="bean.funcoesUsuario"
+                v-model="bean.role"
                 filled
                 stack-label
                 readonly
-                label="Funções do usuario"
-              />
-              <q-input
-                class="col"
-                v-model="bean.telefoneUsuario"
-                filled
-                stack-label
-                readonly
-                label="Telefone"
+                label="Funções do User"
               />
             </q-card-section>
 
             <q-card-section class="col form-lines form-lines__gap">
               <q-input
                 class="col"
-                v-model="bean.emailUsuario"
+                v-model="bean.email"
                 filled
                 stack-label
                 readonly

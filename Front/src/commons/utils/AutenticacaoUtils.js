@@ -4,7 +4,8 @@ class AutenticacaoUtils {
 
     if(user){
       return user.accessToken;
-    } else {
+    }
+ else {
       return null;
     }
   }
@@ -14,7 +15,8 @@ class AutenticacaoUtils {
 
     if (user && user.accessToken) {
       return {"x-access-token": user.accessToken}; // for Node.js Express back-end
-    } else {
+    }
+ else {
       return null;
     }
   }

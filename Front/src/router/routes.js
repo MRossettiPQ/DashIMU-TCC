@@ -7,32 +7,39 @@ export const routes = [
     redirect: "/home",
     children: [
       {
-        name: "acesso.home",
+        name: "access.home",
         path: "home",
         component: () => import("pages/public/Home/Home.vue"),
       },
       {
-        name: "acesso.login",
-        path: "logar",
+        name: "access.login",
+        path: "login",
         component: () => import("pages/public/Logar/Logar.vue"),
       },
       {
-        name: "acesso.registrar",
-        path: "registrar",
+        name: "access.registrar",
+        path: "register",
         component: () => import("pages/public/Registrar/Registrar.vue"),
       },
+    ],
+  },
+  {
+    path: "/",
+    component: () => import("pages/public/MainApp.vue"),
+    redirect: "/home",
+    children: [
       {
-        name: "acesso.perfil",
+        name: "access.perfil",
         path: "perfil",
         component: () => import("pages/public/Perfil/Perfil.vue"),
       },
       {
-        name: "acesso.pacientes",
+        name: "access.pacientes",
         path: "pacientes",
         component: () => import("pages/public/Pacientes/Pacientes.vue"),
       },
       {
-        name: "acesso.sensor",
+        name: "access.sensor",
         path: "sensor",
         component: () => import("pages/public/Sensor/Sensor.vue"),
       },
@@ -47,20 +54,31 @@ export const routes = [
 ];
 
 export const RouteBeforeGuard = async (to, from, next) => {
-  let acessoLiberado = ['acesso.login', 'acesso.registrar', 'acesso.home']
+  // TODO Access granted without authentication
+  let accessReleased = ["access.login", "access.register", "access.home"];
+  // TODO Hide when logged
+  let hideWhenLogged = ["access.login", "access.register"];
 
   let token = AutenticacaoUtils.getToken();
   let isLoggedIn = !!token;
 
   if(isLoggedIn) {
+    if (hideWhenLogged.includes(to.name)) {
+      next({
+        path: "/",
+      });
+      return;
+    }
     next();
-  } else {
-    if (acessoLiberado.includes(to.name)) {
+  }
+ else {
+    if (accessReleased.includes(to.name)) {
       next();
       return;
-    } else {
+    }
+ else {
       next({
-        path: '/logar'
+        path: '/login'
       });
       return;
     }

@@ -13,22 +13,22 @@ class Pacientes extends Vue {
   bean = {};
   columns = [
     {
-      name: 'idPaciente',
-      align: 'left',
-      label: 'ID Paciente',
-      field: 'idPaciente'
+      name: "idPatient",
+      align: "left",
+      label: "ID Paciente",
+      field: "idPatient"
     },
     {
-      name: 'nomePaciente',
-      align: 'left',
-      label: 'Nome',
-      field: 'nomePaciente'
+      name: "name",
+      align: "left",
+      label: "Nome",
+      field: "name"
     },
     {
-      name: 'cpfPaciente',
-      align: 'left',
-      label: 'CPF',
-      field: 'cpfPaciente'
+      name: "cpf",
+      align: "left",
+      label: "CPF",
+      field: "cpf"
     }
   ];
   dataTable = [];
@@ -36,7 +36,8 @@ class Pacientes extends Vue {
   async mounted() {
     try {
       await this.tableLoad();
-    } catch (e) {
+    }
+ catch (e) {
       console.log(e);
     }
   }
@@ -53,7 +54,8 @@ class Pacientes extends Vue {
       if (data?.save) {
         await this.tableLoad();
       }
-    } catch (e) {
+    }
+ catch (e) {
       console.log(e);
     }
   }
@@ -61,7 +63,8 @@ class Pacientes extends Vue {
   async tableLoad() {
     try {
       this.dataTable = await PacienteService.getListaPaciente();
-    } catch (e) {
+    }
+ catch (e) {
       console.log(e);
     }
   }

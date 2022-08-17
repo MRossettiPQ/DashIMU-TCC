@@ -8,7 +8,7 @@
           </div>
 
           <q-input
-            v-model="bean.usernameUsuario"
+            v-model="bean.username"
             filled
             label="Username"
             type="text"
@@ -17,7 +17,7 @@
           />
 
           <q-input
-            v-model="bean.senhaUsuario"
+            v-model="bean.password"
             filled
             label="Senha"
             type="password"

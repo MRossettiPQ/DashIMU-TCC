@@ -23,7 +23,7 @@ module.exports = {
     // but leave only one uncommented!
     // See https://eslint.vuejs.org/rules/#available-rules
     "plugin:vue/essential", // Priority A: Essential (Error Prevention)
-    // 'plugin:vue/strongly-recommended', // Priority B: Strongly Recommended (Improving Readability)
+    'plugin:vue/strongly-recommended', // Priority B: Strongly Recommended (Improving Readability)
     // 'plugin:vue/recommended', // Priority C: Recommended (Minimizing Arbitrary Choices and Cognitive Overhead)
 
     // https://github.com/prettier/eslint-config-prettier#installation
@@ -54,7 +54,7 @@ module.exports = {
   rules: {
     "prefer-promise-reject-errors": "off",
 
-    'brace-style': [2, '1tbs', {"allowSingleLine": true}],
+    'brace-style': [2, 'stroustrup', {'allowSingleLine': true}],
     'vue/max-attributes-per-line': 0,
     'vue/valid-v-for': 0,
 
@@ -65,14 +65,14 @@ module.exports = {
     'arrow-parens': 0,
     'one-var': 0,
 
-    //'import/first': 0,
-    //'import/named': 2,
-    //'import/namespace': 2,
-    //'import/default': 2,
-    //'import/export': 2,
-    //'import/extensions': 0,
-    //'import/no-unresolved': 0,
-    //'import/no-extraneous-dependencies': 0,
+    'import/first': 0,
+    'import/named': 0,
+    'import/namespace': 0,
+    'import/default': 0,
+    'import/export': 0,
+    'import/extensions': 0,
+    'import/no-unresolved': 0,
+    'import/no-extraneous-dependencies': 0,
 
     // allow debugger during development
     "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",

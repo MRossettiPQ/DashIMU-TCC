@@ -1,6 +1,6 @@
 import {Notify, throttle} from "quasar";
 
-let notifySuccess = throttle((msg) => {
+const notifySuccess = throttle((msg) => {
   Notify.create({
     message: msg,
     textColor: 'white',
@@ -9,7 +9,7 @@ let notifySuccess = throttle((msg) => {
   });
 }, 500);
 
-let notifyError = throttle((msg) => {
+const notifyError = throttle((msg) => {
   Notify.create({
     message: msg,
     textColor: 'white',

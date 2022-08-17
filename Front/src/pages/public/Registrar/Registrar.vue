@@ -10,28 +10,20 @@
           <q-input
             class="row"
             filled
-            v-model="bean.nomeUsuario"
+            v-model="bean.name"
             label="Nome"
             :rules="[$validators.notBlank]"
           />
           <q-input
             class="row"
             filled
-            v-model="bean.usernameUsuario"
+            v-model="bean.username"
             label="Username"
             :rules="[$validators.notBlank]"
           />
           <q-input
             class="row"
-            v-model="bean.telefoneUsuario"
-            filled
-            mask="(##) #####-####"
-            label="Telefone"
-            :rules="[$validators.notBlank, $validators.telefone]"
-          />
-          <q-input
-            class="row"
-            v-model="bean.emailUsuario"
+            v-model="bean.email"
             filled
             label="Email"
             type="email"
@@ -39,7 +31,7 @@
           />
           <q-input
             class="row"
-            v-model="bean.senhaUsuario"
+            v-model="bean.password"
             filled
             label="Senha"
             type="password"
@@ -47,11 +39,11 @@
           />
           <q-input
             class="row"
-            v-model="bean.senhaConfirmar"
+            v-model="bean.passwordConfirm"
             filled
             label="Repetir Senha"
             type="password"
-            :rules="[$validators.notBlank, $validators.equal(bean.senhaUsuario)]"
+            :rules="[$validators.notBlank, $validators.equal(bean.password)]"
           />
           <q-btn
             class="row cadastro-btn"

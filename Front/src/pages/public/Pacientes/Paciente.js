@@ -23,7 +23,8 @@ class Paciente extends Vue {
   async mounted() {
     if (this.id !== null) {
       await this.dataLoad(this.id);
-    } else {
+    }
+ else {
       this.bean = {};
     }
   }
@@ -31,7 +32,8 @@ class Paciente extends Vue {
   async dataLoad(id) {
     try {
       this.bean = await PacienteService.getPaciente(id);
-    } catch (e) {
+    }
+ catch (e) {
       console.log(e);
     }
   }
@@ -40,11 +42,13 @@ class Paciente extends Vue {
     try {
       this.loading = true;
       await FormUtils.validateAsync(this.$refs.mainForm);
-      this.bean = PacienteService.postPaciente({data: this.bean});
+      this.bean = await PacienteService.postPaciente({data: this.bean});
       this.$refs.dialog.hide();
-    } catch (e) {
+    }
+ catch (e) {
       console.log(e);
-    } finally {
+    }
+ finally {
       this.loading = false;
     }
   }

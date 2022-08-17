@@ -124,7 +124,8 @@ const isCpfOrCnpj = s => {
 
   if (s.length <= 14) {
     return isCpf(s);
-  } else {
+  }
+ else {
     return isCnpj(s);
   }
 };

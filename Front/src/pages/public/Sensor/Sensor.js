@@ -5,6 +5,7 @@ import PacienteExpasion from "./Components/PacienteExpasion.vue";
 import SensorExpasion from "./Components/SensorExpasion.vue";
 import {Notify} from "quasar";
 import PacienteService from "src/commons/services/PacienteService";
+import SciLabService from "src/commons/services/SciLabService";
 
 @Component({
   name: "sensor",
@@ -24,7 +25,8 @@ class Sensor extends Vue {
     try {
       const {idPaciente} = this.$route.query;
       await this.dataLoad(idPaciente);
-    } catch (e) {
+    }
+ catch (e) {
       console.log(e)
     }
   }
@@ -228,10 +230,36 @@ class Sensor extends Vue {
     }
   };
 
+  async postCentralVariabilidadeSalto(){
+    try {
+      let sensores = []
+      this.sensores.map((item) => {
+        sensores.push(item.data)
+      })
+
+      sensores = [
+        [{roll: 0}, {roll: 1}],
+        [{roll: 0}, {roll: 1}]
+      ]
+
+      const data = await SciLabService.postCentralVariabilidadeSalto({
+        data: sensores
+      })
+      console.log(data)
+      if(data){
+
+      }
+    }
+ catch (e) {
+      console.log(e)
+    }
+  }
+
   async dataLoad(id) {
     try {
       this.bean = await PacienteService.getPaciente(id);
-    } catch (e) {
+    }
+ catch (e) {
       console.log(e);
     }
   }

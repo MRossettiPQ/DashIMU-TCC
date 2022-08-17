@@ -14,7 +14,8 @@ export default {
       if (login?.accessToken) {
         localStorage.setItem("user", JSON.stringify(login));
         commit("loginSuccess", login);
-      } else {
+      }
+ else {
         commit("loginFailure");
       }
       return login

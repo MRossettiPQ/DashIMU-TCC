@@ -6,7 +6,8 @@ export default new (class FormUtils {
     return form.validate().then(data => {
       if (data) {
         callback();
-      } else {
+      }
+ else {
         this.showFormError();
         callbackError && callbackError();
       }
@@ -21,7 +22,8 @@ export default new (class FormUtils {
         .then(data => {
           if (data) {
             resolve();
-          } else {
+          }
+ else {
             this.showFormError();
             reject();
           }

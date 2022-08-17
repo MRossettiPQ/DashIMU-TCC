@@ -1,14 +1,16 @@
 import {Axios} from '../utils/AxiosUtils';
 
 class AuthService {
-  async login(data) {
-    const request = await Axios.post(`${process.env.SERVER_API}/api/auth/signin`, data);
-    return request?.data
+  async login(bean) {
+    const { data } = await Axios.post(`/api/auth/login`, bean);
+    console.log(data)
+    return data?.content
   }
 
-  async register(data) {
-    const request = await Axios.post(`api/auth/signup`, data);
-    return request?.data
+  async register(bean) {
+    const { data } = await Axios.post(`/api/auth/register`, bean);
+    console.log(data)
+    return data?.content
   }
 }
 

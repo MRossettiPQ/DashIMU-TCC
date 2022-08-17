@@ -31,7 +31,8 @@ class TableSessao extends Vue {
   async mounted() {
     if (this.id !== null) {
       await this.tableLoad();
-    } else {
+    }
+ else {
       this.dataTable = [{}];
     }
   }
@@ -40,7 +41,8 @@ class TableSessao extends Vue {
   async tableLoad() {
     try {
       this.dataTable = await SessaoService.getListaSessao();
-    } catch (e) {
+    }
+ catch (e) {
       console.log(e);
     }
   }
@@ -66,7 +68,8 @@ class TableSessao extends Vue {
           idPaciente: this.id
         }
       });
-    } catch (e) {
+    }
+ catch (e) {
       console.log(e);
     }
   }

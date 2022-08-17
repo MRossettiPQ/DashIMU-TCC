@@ -71,7 +71,8 @@ class MainApp extends Vue {
         try {
           await this.$store.dispatch('autenticacao/logout');
           await this.$router.push('/home');
-        } catch (e) {
+        }
+ catch (e) {
           console.log(e);
         }
       });
@@ -80,7 +81,8 @@ class MainApp extends Vue {
   goPerfil() {
     try {
       this.$router.push('/perfil');
-    } catch (e) {
+    }
+ catch (e) {
       console.log(e);
     }
   }

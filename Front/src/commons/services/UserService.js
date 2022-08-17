@@ -20,6 +20,11 @@ class UserService {
     const request = await Axios.get(`/api/paciente`);
     return request?.data
   }
+
+  async getContext() {
+    const {data} = await Axios.get(`/api/paciente`);
+    return data?.content
+  }
 }
 
 export default new UserService();

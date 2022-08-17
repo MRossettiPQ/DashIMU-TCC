@@ -8,23 +8,9 @@ import FormUtils from "src/commons/utils/FormUtils";
 class Logar extends Vue {
   loading = false;
   bean = {
-    usernameUsuario: "",
-    senhaUsuario: ""
+    username: "",
+    password: ""
   };
-
-  get loggedIn() {
-    return this.$store.state.autenticacao.status.loggedIn;
-  }
-
-  created() {
-    try {
-      if (this.loggedIn) {
-        this.$router.push("/perfil");
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  }
 
   async onSubmit() {
     try {
@@ -32,9 +18,11 @@ class Logar extends Vue {
       await FormUtils.validateAsync(this.$refs.mainForm);
       await this.$store.dispatch("autenticacao/login", this.bean);
       await this.$router.push("/perfil");
-    } catch (e) {
+    }
+ catch (e) {
       console.log(e);
-    } finally {
+    }
+ finally {
       this.loading = false;
     }
   }

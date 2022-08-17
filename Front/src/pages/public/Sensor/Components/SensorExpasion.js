@@ -20,7 +20,8 @@ class SensorExpasion extends Vue {
   async listaSensoresLoad() {
     try {
       this.sensoresDisponiveis = await SocketService.getSensores();
-    } catch (e) {
+    }
+ catch (e) {
       console.log(e);
     }
   }
