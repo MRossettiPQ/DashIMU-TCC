@@ -6,14 +6,6 @@ const Mensuration = require('../../app/Session/Models/Mensuration.js')
 const Patient = require('../../app/Patient/Models/Patient.js')
 const environment = require('../../../environment')
 
-const pool = mysql.createPool({
-  host: environment.database.host,
-  port: environment.database.port,
-  user: environment.database.user,
-  password: environment.database.password,
-})
-pool.query(`CREATE DATABASE IF NOT EXISTS \`${environment.database.name}\`;`)
-
 // TODO Database connection using Sequelize - configure via environment
 const sequelize = new Sequelize(
   environment.database.name,
@@ -33,6 +25,8 @@ const sequelize = new Sequelize(
   }
 )
 /*
+
+
 const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
@@ -61,9 +55,37 @@ fs
   var models = sequelize.models;
 
 */
+const createDatabaseIfNotExists = async () => {
+  const pool = mysql.createPool({
+    host: environment.database.host,
+    port: environment.database.port,
+    user: environment.database.user,
+    password: environment.database.password,
+  })
+  pool.query(
+    `SHOW DATABASES LIKE "${environment.database.name}"`,
+    (err, result) => {
+      if (err !== null) {
+        pool.query(
+          `CREATE DATABASE IF NOT EXISTS \`${environment.database.name}\`;`,
+          (err, result) => {
+            if (err != null) {
+              console.log('[DATABASE] - Error in create database schema')
+              pool.end()
+            }
+            if (result != null) {
+              console.log('[DATABASE] - Database schema create successful')
+            }
+          }
+        )
+      }
+    }
+  )
+}
 
 const initDataBase = async () => {
   try {
+    await createDatabaseIfNotExists()
     // TODO - { force : false } option to drop the data from the database -> if true it will delete the entire database at each startup
     await sequelize.sync({ force: environment.database.wipe_on_start })
     // console.log(sequelize)
