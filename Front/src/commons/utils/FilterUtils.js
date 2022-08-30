@@ -3,7 +3,7 @@ import StringMask from "string-mask";
 import moment$1 from "moment";
 import _$1 from "lodash";
 
-const dateFilter = dateIso => {
+const dateFilter = (dateIso) => {
   const format =
     arguments.length > 1 && arguments[1] !== undefined
       ? arguments[1]
@@ -45,7 +45,7 @@ const yearMonthFilter = function yearMonthFilter(dateIso) {
 };
 Vue.filter("yearMonth", yearMonthFilter);
 
-const timeFilter = dateIso => {
+const timeFilter = (dateIso) => {
   const format =
     arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "HH:mm";
 
@@ -61,7 +61,7 @@ const timeFilter = dateIso => {
 };
 Vue.filter("time", timeFilter);
 
-const secondsToTimeFilter = seconds => {
+const secondsToTimeFilter = (seconds) => {
   const concatHyphen =
     arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
   const toMilliseconds = seconds * 1000;
@@ -84,16 +84,14 @@ const enumFilter = (value, enums) => {
   }
 
   const e = _$1.find(enums, {
-    value: value
+    value: value,
   });
 
   if (e?.descricao) {
     return e.descricao;
-  }
- else if (e?.description) {
+  } else if (e?.description) {
     return e.description;
-  }
- else if (e?.label) {
+  } else if (e?.label) {
     return e.label;
   }
 
@@ -101,7 +99,7 @@ const enumFilter = (value, enums) => {
 };
 Vue.filter("enum", enumFilter);
 
-const moneyFilter = value => {
+const moneyFilter = (value) => {
   const decimalPlaces =
     arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 2;
 
@@ -110,11 +108,9 @@ const moneyFilter = value => {
   }
 
   const isNegative = Number(value) < 0;
-  const zeros = Array(decimalPlaces)
-    .fill("0")
-    .join("");
+  const zeros = Array(decimalPlaces).fill("0").join("");
   const maskMoney = new StringMask("#.##0,".concat(zeros), {
-    reverse: true
+    reverse: true,
   });
 
   if ((value + "").indexOf(".") !== -1) {
@@ -125,18 +121,15 @@ const moneyFilter = value => {
       value.substring(value.indexOf(",") + 1, value.length).length;
 
     if (missingDecimalPlaces > 0) {
-      value = "".concat(value).concat(
-        Array(missingDecimalPlaces)
-          .fill("0")
-          .join("")
-      );
+      value = ""
+        .concat(value)
+        .concat(Array(missingDecimalPlaces).fill("0").join(""));
     }
 
     if (missingDecimalPlaces < 0) {
       value = value.substring(0, value.length + missingDecimalPlaces);
     }
-  }
- else {
+  } else {
     value = "".concat(value, ",").concat(zeros);
   }
 
@@ -163,7 +156,7 @@ const truncateFilter = (value, wordwise, max, tail) => {
 };
 Vue.filter("truncate", truncateFilter);
 
-const formatDecimal = value => {
+const formatDecimal = (value) => {
   return value + "".replace(/\./g, "").replace(",", ".");
 };
 
@@ -182,5 +175,5 @@ export {
   secondsToTimeFilter,
   timeFilter,
   yearMonthFilter,
-  truncateFilter
+  truncateFilter,
 };

@@ -105,3 +105,22 @@
 
 .q-btn
   padding 2.5px
+
+
+.q-dialog__inner
+  & > .q-card
+    display grid
+    grid-template-rows min-content 1fr
+    grid-template-areas\ "dialog-header"\ "dialog-content"\ "dialog-actions"
+
+    .dialog-header
+      grid-area dialog-header
+
+    .q-card
+      &__section
+        grid-area dialog-content
+        overflow hidden
+        overflow-y scroll
+
+      &__actions
+        grid-area dialog-actions

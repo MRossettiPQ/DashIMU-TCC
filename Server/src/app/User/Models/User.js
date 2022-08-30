@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-  const User = sequelize.define('user', {
+  const User = sequelize.define('Users', {
     idUser: {
       type: Sequelize.INTEGER,
       primaryKey: true,
@@ -30,10 +30,11 @@ module.exports = (sequelize, Sequelize) => {
   })
 
   User.associate = (models) => {
-    User.belongsToMany(models.Patient, {
-      through: 'user_patient',
+    User.hasMany(models.Session, {
+      foreignKey: 'idUser',
+      constraints: false,
+      onDelete: 'CASCADE',
     })
-    User.hasMany(models.Session)
     return User
   }
 

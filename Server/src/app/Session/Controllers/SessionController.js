@@ -1,84 +1,132 @@
-const { Mensuration, User, Patient } = require('../../../core/DataBase')
+const { Mensuration, Session } = require('../../../core/DataBase')
 const UserContext = require('../../../core/utils/UserContext')
-const { throwSuccess, throwError } = require('../../../core/Utils/RequestUtil')
+const {
+  throwSuccess,
+  throwNotFoundIf,
+} = require('../../../core/Utils/RequestUtil')
 
-exports.postCreateMensuration = async (req, res) => {
+exports.postSaveSession = async (req, res) => {
   console.log('[POST] - /api/session')
   try {
     const idUserContext = await UserContext.getUserContextId(req, res)
     const { id: idPatient } = req.params
 
-    const mensuration = await Mensuration.create(req.body)
+    let { sessionParams, sensorList } = req.body
 
-    throwSuccess({
-      content: { id: null },
+    const newSession = await Session.create({
+      ...sessionParams,
+      idPatient,
+      idUser: idUserContext,
+    })
+
+    let bulkMensuration = []
+    // Turns data from multiple sensors into one big list
+    sensorList.map((sensor) => bulkMensuration.push(...sensor))
+
+    // Turns data from multiple sensors into one big list
+    bulkMensuration = bulkMensuration.map((mensuration) => {
+      mensuration.idSessao = newSession.idSession
+      return mensuration
+    })
+
+    await Mensuration.bulkCreate(bulkMensuration)
+
+    await throwSuccess({
+      content: newSession,
       message: 'Session save successful',
-      console: '[POST] - /api/session - success save',
+      log: '[POST] - /api/session - success save',
       res,
     })
   } catch (e) {
-    throwError({
-      message: `Session not save - ${e.message}`,
-      console: '[POST] - /api/session - not save',
-      res,
-    })
+    console.error('\x1b[31m', e, '\x1b[0m')
   }
 }
 
-exports.postCreateMensurationTest = async (req, res) => {
-  console.log('[POST] - /api/medicao')
-  // const idUserContext = UserContext.getUserContextId(req, res)
-  // const {id: idPaciente} = req.params;
-
-  const sensores = req.body
-
-  let bulkMedicoes = []
-  sensores.map((sensor) => bulkMedicoes.push(...sensor))
-  bulkMedicoes = bulkMedicoes.map((medicao) => {
-    medicao.idSessao = 1
-    return medicao
-  })
-  Mensuration.bulkCreate(bulkMedicoes)
-    .then((medicao) => {
-      res.json(medicao)
-    })
-    .catch((err) => {
-      res.status(500).send({ message: err.message })
-    })
-}
-
 exports.getMensurationList = async (req, res) => {
-  console.log('[GET] - /api/medicao')
-  User.findByPk(req.idUsuario)
-    .then((contextoUsuario) => {
-      contextoUsuario.getPacientes().then((listaPacientes) => {
-        res.status(200).send(listaPacientes)
-      })
+  try {
+    console.log('[GET] - /api/session/:id/mensuration')
+    const { id: idPatient, limit, page } = req.params
+
+    console.log(limit, page)
+    const mensurationList = await Mensuration.findAll({
+      page: page || 1,
+      limit: limit || 10,
+      where: {
+        idPatient,
+      },
     })
-    .catch((err) => {
-      res.status(500).send({ message: err.message })
+
+    await throwNotFoundIf({
+      cond: mensurationList === null,
+      message: '',
+      log: '',
+      res,
     })
+
+    await throwSuccess({
+      content: mensurationList,
+      message: '',
+      log: '',
+      res,
+    })
+  } catch (e) {
+    console.error('\x1b[31m', e, '\x1b[0m')
+  }
 }
 
-exports.getMensuration = async (req, res) => {
-  console.log('[GET] - /api/medicao/:id')
-  const { id } = req.params
+exports.getSessionList = async (req, res) => {
+  try {
+    console.log('[GET] - /api/session')
+    const { id: idPatient, limit, page, fields } = req.params
 
-  if (id) {
-    User.findByPk(req.idUsuario)
-      .then((contextoUsuario) => {
-        Patient.findByPk(id)
-          .then((paciente) => {
-            res.status(200).send(paciente)
-          })
-          .catch((err) => {
-            res.status(500).send({ message: err.message })
-          })
-      })
-      .catch((err) => {
-        res.status(500).send({ message: err.message })
-      })
-  } else {
-    res.status(500).send({ message: 'id não informado' })
+    const sessionList = await Mensuration.findAll({
+      where: {
+        page,
+        limit,
+        idPatient,
+      },
+      attributes: fields,
+    })
+
+    await throwNotFoundIf({
+      cond: sessionList === null,
+      message: '',
+      log: '',
+      res,
+    })
+
+    await throwSuccess({
+      content: sessionList,
+      message: '',
+      log: '',
+      res,
+    })
+  } catch (e) {
+    console.error('\x1b[31m', e, '\x1b[0m')
+  }
+}
+
+exports.getSession = async (req, res) => {
+  try {
+    console.log('[GET] - /api/session/:id')
+    const { id: idSession } = req.params
+
+    const session = await Session.findByPk(idSession)
+
+    await throwNotFoundIf({
+      cond: session === null,
+      message: '',
+      log: '',
+      res,
+    })
+
+    await throwSuccess({
+      content: session,
+      message: '',
+      log: '',
+      res,
+    })
+  } catch (e) {
+    console.error('\x1b[31m', e, '\x1b[0m')
   }
 }

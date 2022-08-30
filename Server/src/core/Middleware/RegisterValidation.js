@@ -1,50 +1,62 @@
 const { User, Patient } = require('../DataBase')
+const { throwErrorIf } = require('../Utils/RequestUtil')
 
 exports.verifyUserEmailDuplicate = async (req, res, next) => {
-  User.findOne({
-    where: {
-      username: req.body.username,
-    },
-  }).then((userVerified) => {
-    if (userVerified) {
+  try {
+    const userFound = await User.findOne({
+      where: {
+        username: req.body.username,
+      },
+    })
+
+    if (userFound) {
       res.status(400).send({
         message: 'Falhou! Usuario esta em uso!',
       })
       return
     }
 
-    // Email
-    Patient.findOne({
+    const emailFound = await User.findOne({
       where: {
         email: req.body.email,
       },
-    }).then((userVerified) => {
-      if (userVerified) {
-        res.status(400).send({
-          message: 'Falhou! E-Mail esta em uso!',
-        })
-        return
-      }
-
-      next()
     })
-  })
-}
 
-exports.verifyExistsCPF = async (req, res, next) => {
-  Patient.findOne({
-    where: {
-      cpfPaciente: req.body.cpfPaciente,
-    },
-  }).then((usuarioVerifica) => {
-    console.log('Usuario encontrado: ', usuarioVerifica)
-    if (usuarioVerifica) {
+    if (emailFound) {
       res.status(400).send({
-        message: 'Falhou! CPF esta na lista!',
+        message: 'Falhou! E-Mail esta em uso!',
       })
       return
     }
 
     next()
-  })
+  } catch (e) {
+    console.error(`\x1b[33m${e}\x1b[0m`)
+  }
+}
+
+exports.verifyExistsCPFinPatient = async (req, res, next) => {
+  try {
+    const { cpf, idPatient } = req.body
+    if (idPatient) {
+      next()
+      return
+    }
+    const patientFound = await Patient.findAll({
+      where: {
+        cpf: cpf,
+      },
+    })
+
+    await throwErrorIf({
+      cond: patientFound.length,
+      message: 'CPF is already in use',
+      log: '[MIDDLEWARE] - CPF is already in use',
+      res,
+    })
+
+    next()
+  } catch (e) {
+    console.error(`\x1b[33m${e}\x1b[0m`)
+  }
 }

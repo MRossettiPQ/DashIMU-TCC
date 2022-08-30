@@ -61,7 +61,7 @@
 #IGNORE SENSOR
 Sensor/.idea
 Sensor/.vscode
-Sensor/*.iml
+Session/*.iml
 Sensor/.pio
 Sensor/cmake-build-debug
 Sensor/cmake-build-esp32dev

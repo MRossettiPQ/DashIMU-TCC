@@ -1,7 +1,7 @@
 #ifndef SENSOR_CONFIG_H
 #define SENSOR_CONFIG_H
 
-// Identidade Sensor
+// Identidade Session
 #define ID_SENSOR "Sensor_1"
 #define ADDR_SENSOR 0x68
 // Time API
@@ -19,7 +19,7 @@
 #include <WiFi.h>
 #include <NTPClient.h>
 #include <WiFiUdp.h>
-// Sensor
+// Session
 #include <Wire.h>
 #include "MPU9250.h"
 #include "eeprom_utils.h"

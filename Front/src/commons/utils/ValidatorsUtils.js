@@ -1,10 +1,10 @@
 import Vue from "vue";
 import moment$1 from "moment";
 import moment from "moment";
-import {formatDecimal, moneyFilter} from "./FilterUtils";
+import { formatDecimal, moneyFilter } from "./FilterUtils";
 import Big from "big.js";
 
-const isCep = cep => {
+const isCep = (cep) => {
   if (!cep) {
     return true;
   }
@@ -17,7 +17,7 @@ const isCep = cep => {
   return true;
 };
 
-const isCnpj = s => {
+const isCnpj = (s) => {
   if (!s) {
     return true;
   }
@@ -56,7 +56,7 @@ const isCnpj = s => {
   return true;
 };
 
-const isCpf = cpf => {
+const isCpf = (cpf) => {
   if (!cpf) {
     return true;
   }
@@ -117,20 +117,19 @@ const isCpf = cpf => {
   return true;
 };
 
-const isCpfOrCnpj = s => {
+const isCpfOrCnpj = (s) => {
   if (!s) {
     return true;
   }
 
   if (s.length <= 14) {
     return isCpf(s);
-  }
- else {
+  } else {
     return isCnpj(s);
   }
 };
 
-const isDateValidator = format => {
+const isDateValidator = (format) => {
   return function (val) {
     if (!val) {
       return true;
@@ -150,7 +149,7 @@ const isDateValidator = format => {
   };
 };
 
-const isEmail = email => {
+const isEmail = (email) => {
   if (!email) {
     return true;
   }
@@ -171,7 +170,7 @@ const isEmail = email => {
   return true;
 };
 
-const isMaxLengthValidator = maxLength => {
+const isMaxLengthValidator = (maxLength) => {
   return function (val) {
     return (
       !val ||
@@ -181,7 +180,7 @@ const isMaxLengthValidator = maxLength => {
   };
 };
 
-const isNotBlankIfValidator = condition => {
+const isNotBlankIfValidator = (condition) => {
   return function (val) {
     return (
       !condition ||
@@ -192,13 +191,13 @@ const isNotBlankIfValidator = condition => {
   };
 };
 
-const isNotBlankValidator = val => {
+const isNotBlankValidator = (val) => {
   return (
     typeof val == "number" || !_.isEmpty(val) || "Preenchimento obrigatório."
   );
 };
 
-const isValidRg = rg => {
+const isValidRg = (rg) => {
   if (!rg) {
     return true;
   }
@@ -228,7 +227,7 @@ const isValidRg = rg => {
   }
 };
 
-const isTelefone = telefone => {
+const isTelefone = (telefone) => {
   if (!telefone) {
     return true;
   }
@@ -242,7 +241,7 @@ const isTelefone = telefone => {
   return true;
 };
 
-const isMaxValValidator = maxValue => {
+const isMaxValValidator = (maxValue) => {
   return function (value) {
     maxValue = Big(maxValue);
     value = parseFloat(value);
@@ -258,7 +257,7 @@ const isMaxValValidator = maxValue => {
   };
 };
 
-const isMaxMoneyValValidator = maxValue => {
+const isMaxMoneyValValidator = (maxValue) => {
   return function (value) {
     maxValue = Big(maxValue);
     value = reverseFormatNumber(value, "pt-BR");
@@ -275,13 +274,14 @@ const isMaxMoneyValValidator = maxValue => {
 };
 
 const isDataNascimentoValidator = (value, minAge = 18) => {
+  console.log(value);
   return (
-    moment(value, "DD/MM/YYYY").isBefore(moment().subtract(minAge, "years")) ||
+    moment(value, "YYYY/DD/MM").isBefore(moment().subtract(minAge, "years")) ||
     `Deve ser maior de ${minAge} anos.`
   );
 };
 
-const isMinValValidator = minValue => {
+const isMinValValidator = (minValue) => {
   return function (value) {
     value = formatDecimal(value);
     const toNumber = parseFloat(value);
@@ -328,9 +328,9 @@ const ValidatorPlugin = {
       cnpj: isCnpj,
       cpf: isCpf,
       cep: isCep,
-      equal: isEqual
+      equal: isEqual,
     };
-  }
+  },
 };
 
 Vue.use(ValidatorPlugin);
@@ -351,5 +351,5 @@ export default {
   ValidatorDate: isDateValidator,
   ValidatorDateBorn: isDataNascimentoValidator,
   ValidatorRg: isValidRg,
-  ValidatorEmail: isEmail
+  ValidatorEmail: isEmail,
 };

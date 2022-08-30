@@ -1,8 +1,7 @@
-import {Component, Vue} from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 
 @Component({
   name: "home",
-  components: {}
 })
 class Home extends Vue {
   loading = false;

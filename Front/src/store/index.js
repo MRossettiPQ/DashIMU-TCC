@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import autenticacao from "./autenticacao";
+import Authentication from "./Authentication";
 
 Vue.use(Vuex);
 
@@ -15,11 +15,11 @@ Vue.use(Vuex);
 export default function (/* { ssrContext } */) {
   return new Vuex.Store({
     modules: {
-      autenticacao
+      Authentication,
     },
 
     // enable strict mode (adds overhead!)
     // for dev mode only
-    strict: process.env.DEV === "true"
+    strict: process.env.DEV === "true",
   });
 }

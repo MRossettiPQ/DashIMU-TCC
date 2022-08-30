@@ -1,98 +1,125 @@
+// Error 500 -
 exports.throwErrorIf = ({
   cond = true,
   message = 'Error!!',
-  console = null,
+  log = null,
   res,
 }) => {
-  if (console !== null) {
-    console.log(console)
-  }
-  if (cond) {
+  return new Promise((resolve, reject) => {
+    if (cond) {
+      res.status(500).send({
+        message: message,
+      })
+      reject(log)
+    } else {
+      resolve(true)
+    }
+  })
+}
+
+exports.throwError = ({ message = 'Error!!', log = null, res }) => {
+  return new Promise((resolve, reject) => {
     res.status(500).send({
       message: message,
     })
-  }
-}
-
-exports.throwError = ({ message = 'Error!!', console = null, res }) => {
-  if (console !== null) {
-    console.log(console)
-  }
-  res.status(500).send({
-    message: message,
+    reject(log)
   })
 }
 
+// Error 200 -
 exports.throwSuccess = ({
   content = null,
   message = null,
-  console = null,
+  log = null,
   res,
 }) => {
-  if (console !== null) {
-    console.log(console)
-  }
-  res.status(200).send({
-    content: content,
-    message: message,
+  return new Promise((resolve, reject) => {
+    if (log !== null) {
+      console.log(log)
+    }
+    res.status(200).send({
+      content: content,
+      message: message,
+    })
+    resolve(true)
   })
 }
 
-exports.throwForbidden = ({ message = null, console = null, res }) => {
-  if (console !== null) {
-    console.log(console)
-  }
-  res.status(403).send({
-    message: message,
+// Error 403 -
+exports.throwForbidden = ({ message = null, log = null, res }) => {
+  return new Promise((resolve, reject) => {
+    res.status(403).send({
+      message: message,
+    })
+    reject(log)
   })
 }
 
 exports.throwForbiddenIf = ({
   cond = true,
   message = null,
-  console = null,
+  log = null,
   res,
 }) => {
-  if (console !== null) {
-    console.log(console)
-  }
-  if (cond) {
-    res.status(403).send({
-      message: message,
-    })
-  }
-}
-
-exports.throwNotFoundIf = ({
-  cond = true,
-  message = null,
-  console = null,
-  res,
-}) => {
-  if (console !== null) {
-    console.log(console)
-  }
-  if (cond) {
-    res.status(404).send({
-      message: message,
-    })
-  }
-}
-
-exports.throwNotFound = ({ message = null, console = null, res }) => {
-  if (console !== null) {
-    console.log(console)
-  }
-  res.status(404).send({
-    message: message,
+  return new Promise((resolve, reject) => {
+    if (cond) {
+      res.status(403).send({
+        message: message,
+      })
+      reject(log)
+    } else {
+      resolve(true)
+    }
   })
 }
 
-exports.throwUnauthorized = ({ message = null, console = null, res }) => {
-  if (console !== null) {
-    console.log(console)
-  }
-  res.status(404).send({
-    message: message,
+// Error 404 -
+exports.throwNotFoundIf = ({
+  cond = true,
+  message = null,
+  log = null,
+  res,
+}) => {
+  return new Promise((resolve, reject) => {
+    if (cond) {
+      res.status(404).send({
+        message: message,
+      })
+      reject(log)
+    } else {
+      resolve(true)
+    }
+  })
+}
+
+exports.throwNotFound = ({ message = null, log = null, res }) => {
+  return new Promise((resolve, reject) => {
+    res.status(404).send({
+      message: message,
+    })
+    reject(log)
+  })
+}
+
+// Error 401 -
+exports.throwUnauthorized = ({ message = null, log = null, res }) => {
+  return new Promise((resolve, reject) => {
+    res.status(401).send({
+      message: message,
+    })
+    reject(log)
+  })
+}
+
+exports.throwUnauthorizedIf = ({ cond, message = null, log = null, res }) => {
+  return new Promise((resolve, reject) => {
+    if (cond) {
+      res.status(401).send({
+        message: message,
+      })
+      reject(log)
+    } else {
+      resolve(true)
+    }
   })
 }

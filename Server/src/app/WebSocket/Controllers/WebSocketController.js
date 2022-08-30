@@ -1,4 +1,5 @@
 const dayjs = require('dayjs')
+const { throwSuccess } = require('../../../core/Utils/RequestUtil')
 
 const sensorList = []
 exports.sensorConnection = async (client, req) => {
@@ -11,8 +12,9 @@ exports.sensorConnection = async (client, req) => {
       ip: msg,
     }
     sensorList.push(sensorIdentification)
-    console.log(`[SOCKET] - Adicionar o sensor - ${msg} - ${dayjs()}`)
+    console.log(`[SOCKET] - Add sensor - ${msg} - ${dayjs()}`)
   })
+
   client.on('close', (ws, req) => {
     sensorList.splice(sensorIdentification.id, 1)
     console.log(
@@ -26,10 +28,12 @@ exports.sensorConnection = async (client, req) => {
 exports.getSensorList = async (req, res) => {
   try {
     console.log('[GET] - /api/sensor/list')
-    res.status(200).send(sensorList)
+    await throwSuccess({
+      content: sensorList,
+      log: '[GET] - /api/sensor/list - Listed',
+      res,
+    })
   } catch (e) {
-    console.log('[SOCKET] - Error', e)
-  } finally {
-    console.log('[SOCKET] - ')
+    console.error(`\x1b[31m${e}\x1b[0m`)
   }
 }

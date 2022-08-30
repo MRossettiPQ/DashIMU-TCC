@@ -5,7 +5,7 @@ import VueI18n from "vue-i18n";
 import moment from "moment";
 import VueApexCharts from "vue-apexcharts";
 
-import {routes, RouteBeforeGuard} from "./routes";
+import { RouteBeforeGuard, routes } from "./routes";
 
 Vue.use(VueRouter);
 Vue.use(VueI18n);
@@ -23,15 +23,15 @@ moment.locale("pt-br");
 
 export default function (/* { store, ssrContext } */) {
   const Router = new VueRouter({
-    scrollBehavior: () => ({x: 0, y: 0}),
+    scrollBehavior: () => ({ x: 0, y: 0 }),
     routes,
 
     // Leave these as they are and change in quasar.conf.js instead!
     // quasar.conf.js -> build -> vueRouterMode
     // quasar.conf.js -> build -> publicPath
     mode: process.env.VUE_ROUTER_MODE,
-    base: process.env.VUE_ROUTER_BASE
+    base: process.env.VUE_ROUTER_BASE,
   });
-  Router.beforeEach(RouteBeforeGuard)
+  Router.beforeEach(RouteBeforeGuard);
   return Router;
 }

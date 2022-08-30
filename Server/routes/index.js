@@ -16,15 +16,13 @@ module.exports = (app) => {
     res.json({ message: `Server online, current time: ${dayjs()}` })
   })
 
-  app.post('/api/mensuration/test', SessionController.postCreateMensurationTest)
-
-  // TODO Sensor WebSocket
+  // TODO Session WebSocket
   app.ws('/socket', WebSocketController.sensorConnection)
 
   // TODO header
   app.use(header)
 
-  // TODO Sensor
+  // TODO Session
   app.get(
     '/api/sensor/list',
     [AuthorizeJwt.verifyToken, AuthorizeJwt.ifAdminPhysiotherapist],
@@ -44,7 +42,7 @@ module.exports = (app) => {
 
   // TODO Patient
   app.get(
-    '/api/patient',
+    '/api/patient/',
     [AuthorizeJwt.verifyToken, AuthorizeJwt.ifAdminPhysiotherapist],
     PatientController.getPatientList
   )
@@ -60,33 +58,39 @@ module.exports = (app) => {
     [
       AuthorizeJwt.verifyToken,
       AuthorizeJwt.ifAdminPhysiotherapist,
-      RegisterValidation.verifyExistsCPF,
+      RegisterValidation.verifyExistsCPFinPatient,
     ],
     PatientController.postCreatePatient
   )
 
-  // TODO Mensuration
+  // TODO Session
   app.get(
-    '/api/mensuration',
+    '/api/patient/:id/session',
+    [AuthorizeJwt.verifyToken, AuthorizeJwt.ifAdminPhysiotherapist],
+    SessionController.getSessionList
+  )
+
+  app.get(
+    '/api/session/:id',
+    [AuthorizeJwt.verifyToken, AuthorizeJwt.ifAdminPhysiotherapist],
+    SessionController.getSession
+  )
+
+  app.get(
+    '/api/session/:id/mensuration',
     [AuthorizeJwt.verifyToken, AuthorizeJwt.ifAdminPhysiotherapist],
     SessionController.getMensurationList
   )
 
-  app.get(
-    '/api/mensuration/:id',
-    [AuthorizeJwt.verifyToken, AuthorizeJwt.ifAdminPhysiotherapist],
-    SessionController.getMensuration
-  )
-
   app.post(
-    '/api/mensuration',
+    '/api/session',
     [AuthorizeJwt.verifyToken, AuthorizeJwt.ifAdminPhysiotherapist],
-    SessionController.postCreateMensuration
+    SessionController.postSaveSession
   )
 
   // TODO Scilab
   app.get(
-    '/api/mensuration/:id/scilab',
+    '/api/session/:id/scilab',
     [AuthorizeJwt.verifyToken, AuthorizeJwt.ifAdminPhysiotherapist],
     SciLabController.getCalculationVariabilityCenter
   )

@@ -24,25 +24,26 @@ import {
   QSelect,
   QTime,
   QToolbar,
-  QToolbarTitle
+  QToolbarTitle,
+  QAjaxBar,
 } from "quasar";
 import VueApexCharts from "vue-apexcharts";
 import ValidatorPlugin from "../commons/utils/ValidatorsUtils";
 
-export default async ({Vue}) => {
-  console.log("loading components");
+export default async ({ Vue }) => {
+  console.log("[INIT] - Loading components");
   // https://webpack.js.org/guides/dependency-management/#require-context
   const requireComponent = require.context(
     // Look for files in the current directory
     "../components",
     // Look in subdirectories
     true,
-    // Match .vue viles
+    // Match .vue files
     /[\w-]+\.vue$/
   );
 
   // For each matching file name...
-  requireComponent.keys().forEach(fileName => {
+  requireComponent.keys().forEach((fileName) => {
     // Get the component config
     const componentConfig = requireComponent(fileName);
 
@@ -64,30 +65,31 @@ export default async ({Vue}) => {
     );
   });
 
-  Vue.component("q-markup-table", QMarkupTable);
-  Vue.component("q-linear-progress", QLinearProgress);
-  Vue.component("q-btn", QBtn);
-  Vue.component("q-input", QInput);
-  Vue.component("q-icon", QIcon);
-  Vue.component("q-date", QDate);
-  Vue.component("q-popup-proxy", QPopupProxy);
-  Vue.component("q-checkbox", QCheckbox);
-  Vue.component("q-menu", QMenu);
-  Vue.component("q-badge", QBadge);
-  Vue.component("q-select", QSelect);
-  Vue.component("q-item-section", QItemSection);
-  Vue.component("q-item", QItem);
-  Vue.component("q-item-label", QItemLabel);
-  Vue.component("q-img", QImg);
-  Vue.component("q-time", QTime);
-  Vue.component("q-color", QColor);
-  Vue.component("q-card", QCard);
-  Vue.component("q-card-section", QCardSection);
-  Vue.component("q-card-actions", QCardActions);
-  Vue.component("q-toolbar", QToolbar);
-  Vue.component("q-toolbar-title", QToolbarTitle);
-  Vue.component("q-dialog", QDialog);
-  Vue.component("q-field", QField);
-  Vue.component("apexchart", VueApexCharts);
+  Vue.component("QMarkupTable", QMarkupTable);
+  Vue.component("QLinearProgress", QLinearProgress);
+  Vue.component("QBtn", QBtn);
+  Vue.component("QInput", QInput);
+  Vue.component("QIcon", QIcon);
+  Vue.component("QDate", QDate);
+  Vue.component("QPopupProxy", QPopupProxy);
+  Vue.component("QCheckbox", QCheckbox);
+  Vue.component("QMenu", QMenu);
+  Vue.component("QBadge", QBadge);
+  Vue.component("QSelect", QSelect);
+  Vue.component("QItemSection", QItemSection);
+  Vue.component("QItem", QItem);
+  Vue.component("QItemLabel", QItemLabel);
+  Vue.component("QImg", QImg);
+  Vue.component("QTime", QTime);
+  Vue.component("QColor", QColor);
+  Vue.component("QCard", QCard);
+  Vue.component("QCardSection", QCardSection);
+  Vue.component("QCardActions", QCardActions);
+  Vue.component("QToolbar", QToolbar);
+  Vue.component("QToolbarTitle", QToolbarTitle);
+  Vue.component("QDialog", QDialog);
+  Vue.component("QField", QField);
+  Vue.component("QAjaxBar", QAjaxBar);
+  Vue.component("Apexchart", VueApexCharts);
   Vue.use(ValidatorPlugin);
 };

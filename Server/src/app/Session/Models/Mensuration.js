@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-  const Mensuration = sequelize.define('mensuration', {
+  const Mensuration = sequelize.define('Mensurations', {
     idMensuration: {
       type: Sequelize.INTEGER,
       primaryKey: true,
@@ -63,7 +63,10 @@ module.exports = (sequelize, Sequelize) => {
   })
 
   Mensuration.associate = (models) => {
-    Mensuration.belongsTo(models.Session)
+    Mensuration.belongsTo(models.Session, {
+      as: 'Session',
+      foreignKey: 'idSession',
+    })
     return Mensuration
   }
 

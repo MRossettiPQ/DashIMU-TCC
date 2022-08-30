@@ -1,13 +1,12 @@
-import {Notify} from "quasar";
+import { Notify } from "quasar";
 
 export default new (class FormUtils {
   //Validação
   validate(form, callback, callbackError) {
-    return form.validate().then(data => {
+    return form.validate().then((data) => {
       if (data) {
         callback();
-      }
- else {
+      } else {
         this.showFormError();
         callbackError && callbackError();
       }
@@ -19,11 +18,10 @@ export default new (class FormUtils {
     return new Promise((resolve, reject) => {
       form
         .validate()
-        .then(data => {
+        .then((data) => {
           if (data) {
             resolve();
-          }
- else {
+          } else {
             this.showFormError();
             reject();
           }
@@ -36,7 +34,7 @@ export default new (class FormUtils {
   showMessage(message) {
     Notify.create({
       message,
-      textColor: "white"
+      textColor: "white",
     });
   }
 
@@ -46,7 +44,7 @@ export default new (class FormUtils {
       message,
       textColor: "white",
       color: "negative",
-      icon: "priority_high"
+      icon: "priority_high",
     });
   }
 
@@ -56,7 +54,7 @@ export default new (class FormUtils {
       message: message,
       textColor: "white",
       color: "positive",
-      icon: "check"
+      icon: "check",
     });
   }
 

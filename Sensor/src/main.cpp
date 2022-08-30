@@ -56,7 +56,7 @@ void loop() {
 
             case 4:
                 PararMedicao();
-                Serial.println("[SENSOR] - Calibrar Sensor");
+                Serial.println("[SENSOR] - Calibrar Session");
                 CalibrarIMU();
                 break;
 

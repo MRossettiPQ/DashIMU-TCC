@@ -1,6 +1,5 @@
-const { Medicao, Usuario } = require('../../../core/DataBase')
+const { Mensuration } = require('../../../core/DataBase')
 const UserContext = require('../../../core/Utils/UserContext')
-const RequestUtil = require('../../../core/Utils/RequestUtil')
 const {
   getMax,
   getMin,
@@ -10,55 +9,39 @@ const {
   getStDeviation,
   getColumn,
 } = require('../../../core/Utils/SciLab')
+const {
+  throwSuccess,
+  throwErrorIf,
+} = require('../../../core/Utils/RequestUtil')
 
 exports.getCalculationVariabilityCenter = async (req, res) => {
-  console.log('[POST] - /api/scilab/scilab')
-  const idUserContext = await UserContext.getUserContextId(req, res)
-  const { id: idPaciente } = req.params
-
-  RequestUtil.throwError({
-    cond: idUserContext === null,
-    message: 'Necessario estar logado',
-    res,
-  })
-  RequestUtil.throwError({
-    cond: idPaciente === null,
-    message: 'Falta a id do paciente',
-    res,
-  })
-
-  Medicao.create(req.body)
-    .then((medicao) => {
-      res.status(200).send({ message: 'Paciente registrado com sucesso!' })
-    })
-    .catch((err) => {
-      res.status(500).send({ message: err.message })
-    })
-}
-
-exports.postCentralVariabilidadeSalto = async (req, res) => {
   try {
-    console.log('[POST] - /api/scilab/centralvariabilidadesalto')
-    const idUsuario = UserContext.getUserContextId(req, res)
-    /*
-        const {id: idPaciente} = req.params;
+    console.log('[GET] - /api/session/:id/scilab')
+    const idUserContext = await UserContext.getUserContextId(req, res)
+    const { id: idPatient } = req.params
 
-        RequestUtil.throwError({
-            cond: idUsuario === null,
-            message: "Necessario estar logado",
-            res
-        })
-        RequestUtil.throwError({
-            cond: idPaciente === null,
-            message: "Falta a id do paciente",
-            res
-        })
-        */
+    await throwErrorIf({
+      cond: idUserContext === null,
+      message: 'Necessario estar logado',
+      res,
+    })
+    await throwErrorIf({
+      cond: idPatient === null,
+      message: 'Falta a id do paciente',
+      res,
+    })
 
-    const sensores = req.body
-    if (sensores.length) {
-      // Sensor 1
-      const sensor_1 = sensores[0]
+    const mensuration = await Mensuration.findAll()
+
+    await throwErrorIf({
+      cond: mensuration.length === null,
+      message: 'Falta a id do paciente',
+      res,
+    })
+
+    if (mensuration.length) {
+      // Session 1
+      const sensor_1 = mensuration[0]
       const tamanho = sensor_1.length
 
       const pitch_1 = getColumn(sensor_1, 'Pitch')
@@ -71,8 +54,8 @@ exports.postCentralVariabilidadeSalto = async (req, res) => {
       const y_1 = getColumn(sensor_1, 'Acc_Y')
       const z_1 = getColumn(sensor_1, 'Acc_Z')
 
-      // Sensor 2
-      const sensor_2 = sensores[1]
+      // Session 2
+      const sensor_2 = mensuration[1]
 
       const pitch_2 = getColumn(sensor_2, 'Pitch')
       let yaw_2 = getColumn(sensor_2, 'Yaw')
@@ -172,7 +155,7 @@ exports.postCentralVariabilidadeSalto = async (req, res) => {
       tvv.push(mean_rms_r_pitch_1p)
       tvv.push(sd_rms_r_pitch_1p)
 
-      RequestUtil.throwSucess({
+      await throwSuccess({
         content: {
           atorn,
           valor: tvv,
@@ -182,16 +165,13 @@ exports.postCentralVariabilidadeSalto = async (req, res) => {
       })
     }
 
-    RequestUtil.throwSucess({
-      message: 'Não possui dados suficientes!',
+    await throwSuccess({
+      content: mensuration,
+      message: '',
+      log: '[GET] - /api/session/:id/scilab - ',
       res,
     })
   } catch (e) {
-    console.log(e)
-    RequestUtil.throwError({
-      cond: true,
-      message: `Error${e}`,
-      res,
-    })
+    console.error(`\x1b[31m${e}\x1b[0m`)
   }
 }

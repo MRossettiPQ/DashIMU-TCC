@@ -1,13 +1,22 @@
-import {Vue} from 'vue-property-decorator';
+import Vue from "vue";
 
+const { $q } = Vue.prototype;
 class DialogUtils extends Vue {
-  Show = ({options}) => {
+  static async Show({ options }) {
     return new Promise((resolve, reject) => {
-      this.$q
-        .dialog(options)
+      $q.dialog(options)
         .onOk(() => resolve())
-        .onCancel(() => reject())
-    })
+        .onCancel(() => reject());
+    });
+  }
+
+  static async asyncDialog(component, props) {
+    return new Promise((resolve, reject) => {
+      $q.dialog({
+        component: component,
+        ...props,
+      }).onOk((e) => resolve(e));
+    });
   }
 }
 

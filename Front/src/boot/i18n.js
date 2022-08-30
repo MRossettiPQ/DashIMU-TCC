@@ -10,9 +10,9 @@ const i18n = new VueI18n({
   messages,
 });
 
-export default ({app}) => {
+export default ({ app }) => {
   // Set i18n instance on app
   app.i18n = i18n;
 };
 
-export {i18n};
+export { i18n };

@@ -4,10 +4,8 @@ const { User } = require('../../../core/DataBase')
 const environment = require('../../../../environment')
 const {
   throwSuccess,
-  throwError,
-  throwNotFound,
+  throwErrorIf,
 } = require('../../../core/Utils/RequestUtil')
-const { throwNotFoundIf } = require('../../../core/Utils/RequestUtil')
 const UserContext = require('../../../core/Utils/UserContext')
 
 exports.register = async (req, res) => {
@@ -19,7 +17,8 @@ exports.register = async (req, res) => {
       name: req.body.name,
       password: bcrypt.hashSync(req.body.password, 8),
     })
-    throwSuccess({
+
+    await throwSuccess({
       content: {
         username: newUser.username,
         email: newUser.email,
@@ -28,33 +27,29 @@ exports.register = async (req, res) => {
       res,
     })
   } catch (e) {
-    throwError({
-      message: e.message,
-      console: '[POST] - /api/auth/register - User não registrado',
-      res,
-    })
+    console.error('\x1b[31m', e, '\x1b[0m')
   }
 }
 
 exports.login = async (req, res) => {
   console.log('[POST] - /api/auth/login')
   try {
-    const userLogged = await User.findOne({
+    const userFound = await User.findOne({
       where: {
         username: req.body.username,
       },
     })
-    if (userLogged === null) {
-    }
-    throwNotFoundIf({
-      cond: !userLogged,
+
+    await throwErrorIf({
+      cond: userFound === null,
       message: 'User not found',
-      console: '[POST] - /api/auth/login - User not found',
+      log: '[POST] - /api/auth/login - User not found',
       res,
     })
-    const validPassword = bcrypt.compareSync(
+
+    const validPassword = await bcrypt.compareSync(
       req.body.password,
-      userLogged.password
+      userFound.password
     )
 
     if (!validPassword) {
@@ -64,9 +59,9 @@ exports.login = async (req, res) => {
       })
     }
 
-    const token = jwt.sign(
+    const token = await jwt.sign(
       {
-        idUser: userLogged.idUser,
+        idUser: userFound.idUser,
       },
       environment.secret,
       {
@@ -75,35 +70,28 @@ exports.login = async (req, res) => {
       null
     )
 
-    if (token !== null) {
-      throwSuccess({
-        content: {
-          idUser: userLogged.idUser,
-          name: userLogged.name,
-          role: userLogged.role,
-          username: userLogged.username,
-          email: userLogged.email,
-          accessToken: token,
-        },
-        console: '[POST] - /api/auth/login - User verify',
-        message: 'Logged in successfully',
-        res,
-      })
-    } else {
-      throwError({
-        console: '[POST] - /api/auth/login - Unable to authenticate user',
-        message: 'Unable to authenticate user',
-        res,
-      })
-    }
-  } catch (e) {
-    throwNotFound({
-      console: '[POST] - /api/auth/login - User not found',
-      message: `User not found, ${e.message}`,
+    await throwErrorIf({
+      cond: token === null,
+      log: '[POST] - /api/auth/login - Unable to authenticate user',
+      message: 'Unable to authenticate user',
       res,
     })
-  } finally {
-    console.log('[POST] - /api/auth/login - Finally')
+
+    await throwSuccess({
+      content: {
+        idUser: userFound.idUser,
+        name: userFound.name,
+        role: userFound.role,
+        username: userFound.username,
+        email: userFound.email,
+        accessToken: token,
+      },
+      log: '[POST] - /api/auth/login - User verify',
+      message: 'Logged in successfully',
+      res,
+    })
+  } catch (e) {
+    console.error('\x1b[31m', e, '\x1b[0m')
   }
 }
 
@@ -111,16 +99,25 @@ exports.getUserContext = async (req, res) => {
   console.log('[GET] - /api/auth/context')
   try {
     const userContext = UserContext.getUserContext(req, res)
-    throwSuccess({
-      content: userContext,
-      message: 'User context find',
+
+    await throwErrorIf({
+      cond: userContext === null,
+      log: '[GET] - /api/auth/context - User not found',
+      res,
+    })
+
+    await throwSuccess({
+      content: {
+        idUser: userContext.idUser,
+        name: userContext.name,
+        role: userContext.role,
+        username: userContext.username,
+        email: userContext.email,
+      },
+      log: '[GET] - /api/auth/context - User context found',
       res,
     })
   } catch (e) {
-    throwError({
-      message: e.message,
-      console: '[GET] - /api/auth/context - User context',
-      res,
-    })
+    console.error(`\x1b[31m${e}\x1b[0m`)
   }
 }

@@ -1,7 +1,7 @@
-import {Component, Prop, Vue} from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component({
-  name: "dialog-header"
+  name: "dialog-header",
 })
 class DialogHeader extends Vue {
   @Prop()

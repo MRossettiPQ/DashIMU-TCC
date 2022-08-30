@@ -1,106 +1,90 @@
-const { Patient, User } = require('../../../core/DataBase')
-const UserContext = require('../../../core/Utils/UserContext')
+const { Patient } = require('../../../core/DataBase')
 const {
   throwSuccess,
-  throwError,
   throwErrorIf,
-  throwNotFoundIf,
 } = require('../../../core/Utils/RequestUtil')
 
 exports.postCreatePatient = async (req, res) => {
   try {
     console.log('[POST] - /api/patient')
-    const idUserContext = UserContext.getUserContextId(req, res)
-    let newPatient = await Patient.create({
-      name: req.body.name,
-      cpf: req.body.cpf,
-      email: req.body.email,
-      phone: req.body.phone,
-      birthday: req.body.birthday,
-      height: req.body.height,
-    })
+    let patient = await Patient.findByPk(req.body.idPatient)
 
-    throwErrorIf({
-      cond: newPatient === null,
+    if (patient) {
+      // Update registered patient
+      patient = await patient.update({
+        name: req.body.name,
+        cpf: req.body.cpf,
+        email: req.body.email,
+        phone: req.body.phone,
+        birthday: req.body.birthday,
+        height: req.body.height,
+      })
+    } else {
+      patient = await Patient.create(req.body)
+    }
+
+    await throwErrorIf({
+      cond: patient === null,
       message: 'Patient not save',
-      console: '[POST] - /api/patient - not save',
+      log: '[POST] - /api/patient - not save',
       res,
     })
 
-    newPatient = await newPatient.setUsers(idUserContext)
-
-    throwSuccess({
-      content: newPatient,
+    await throwSuccess({
+      content: patient,
       message: 'Patient save successful',
-      console: '[POST] - /api/patient - success save',
+      log: '[POST] - /api/patient - success save',
       res,
     })
   } catch (e) {
-    throwError({
-      message: e.message,
-      console: '[POST] - /api/patient - User not save',
-      res,
-    })
+    console.error(`\x1b[31m${e}\x1b[0m`)
   }
 }
 
 exports.getPatientList = async (req, res) => {
   try {
     console.log('[GET] - /api/patient')
-    const idUserContext = UserContext.getUserContextId(req, res)
-    const patient = await Patient.findAll({
-      where: {
-        fk_idUserContext: idUserContext,
-      },
-    })
 
-    throwNotFoundIf({
-      cond: patient === null,
-      message: 'Patient not save',
-      console: '[POST] - /api/patient - not found',
+    const patient = await Patient.findAll()
+
+    await throwErrorIf({
+      cond: !patient.length,
+      //  message: 'Patient list is empty',
+      log: '[GET] - /api/patient - not found',
       res,
     })
 
-    throwSuccess({
-      content: patient,
-      message: 'Patient founded',
-      console: '[POST] - /api/patient - Patient founded',
+    await throwSuccess({
+      content: { resultList: patient },
+      //  message: 'Patient founded',
+      log: '[GET] - /api/patient - Patient founded',
       res,
     })
   } catch (e) {
-    throwError({
-      message: e.message,
-      console: `[GET] - /api/patient - Error ${e.message}`,
-      res,
-    })
+    console.error(`\x1b[31m${e}\x1b[0m`)
   }
 }
 
 exports.getPatient = async (req, res) => {
   try {
     console.log('[GET] - /api/patient/:id')
-    const idUserContext = UserContext.getUserContextId(req, res)
     const { id: idPatient } = req.params
     const patient = await Patient.findByPk(idPatient)
 
-    throwNotFoundIf({
-      cond: idUserContext !== patient.getIdUser(),
-      message: 'Patient not save',
-      console: '[POST] - /api/patient - not found',
+    await throwErrorIf({
+      cond: patient === null,
+      message: 'Patient not found',
+      log: '[GET] - /api/patient/:id - not found',
       res,
     })
 
-    throwSuccess({
+    await throwSuccess({
       content: patient,
       message: 'Patient founded',
-      console: '[POST] - /api/patient - Patient founded',
+      log: '\x1b[32m[GET] - /api/patient/:id - Patient founded',
       res,
     })
   } catch (e) {
-    throwError({
-      message: e.message,
-      console: '[GET] - /api/patient',
-      res,
-    })
+    console.error(`\x1b[31m${e}\x1b[0m`)
   }
 }

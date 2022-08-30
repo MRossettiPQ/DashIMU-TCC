@@ -1,7 +1,7 @@
 # DashIMU-TCC
 Front:
 
-Sensor:
+Session:
 -Desenvolvido utilizando o PlatformIO no VSCode
 
 Server:

@@ -1,9 +1,12 @@
-import {Axios} from '../utils/AxiosUtils';
+import { Axios } from "../utils/AxiosUtils";
 
 class SciLabService {
-  async postCentralVariabilidadeSalto({ data }) {
-    const request = await Axios.post(`/api/scilab/centralvariabilidadesalto`, data);
-    return request?.data
+  async postCentralVariabilidadeSalto(bean) {
+    const { data } = await Axios.post(
+      `/api/scilab/centralvariabilidadesalto`,
+      bean
+    );
+    return data?.content;
   }
 }
 

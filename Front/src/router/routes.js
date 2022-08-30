@@ -1,9 +1,9 @@
-import AutenticacaoUtils from 'src/commons/utils/AutenticacaoUtils';
+import AuthenticateUtils from "src/commons/utils/AuthenticateUtils";
 
 export const routes = [
   {
     path: "/",
-    component: () => import("pages/public/MainApp.vue"),
+    component: () => import("pages/public/PublicApp.vue"),
     redirect: "/home",
     children: [
       {
@@ -14,34 +14,34 @@ export const routes = [
       {
         name: "access.login",
         path: "login",
-        component: () => import("pages/public/Logar/Logar.vue"),
+        component: () => import("pages/public/Login/Login.vue"),
       },
       {
-        name: "access.registrar",
+        name: "access.register",
         path: "register",
-        component: () => import("pages/public/Registrar/Registrar.vue"),
+        component: () => import("pages/public/Register/Register.vue"),
       },
     ],
   },
   {
     path: "/",
-    component: () => import("pages/public/MainApp.vue"),
+    component: () => import("pages/private/PrivateApp.vue"),
     redirect: "/home",
     children: [
       {
-        name: "access.perfil",
-        path: "perfil",
-        component: () => import("pages/public/Perfil/Perfil.vue"),
+        name: "private.patient",
+        path: "patients",
+        component: () => import("pages/private/Patients/Patients.vue"),
       },
       {
-        name: "access.pacientes",
-        path: "pacientes",
-        component: () => import("pages/public/Pacientes/Pacientes.vue"),
+        name: "private.session",
+        path: "session",
+        component: () => import("pages/private/Session/Session.vue"),
       },
       {
-        name: "access.sensor",
-        path: "sensor",
-        component: () => import("pages/public/Sensor/Sensor.vue"),
+        name: "private.account",
+        path: "account",
+        component: () => import("pages/private/Account/Account.vue"),
       },
     ],
   },
@@ -59,10 +59,10 @@ export const RouteBeforeGuard = async (to, from, next) => {
   // TODO Hide when logged
   let hideWhenLogged = ["access.login", "access.register"];
 
-  let token = AutenticacaoUtils.getToken();
+  let token = AuthenticateUtils.getToken();
   let isLoggedIn = !!token;
 
-  if(isLoggedIn) {
+  if (isLoggedIn) {
     if (hideWhenLogged.includes(to.name)) {
       next({
         path: "/",
@@ -70,15 +70,13 @@ export const RouteBeforeGuard = async (to, from, next) => {
       return;
     }
     next();
-  }
- else {
+  } else {
     if (accessReleased.includes(to.name)) {
       next();
       return;
-    }
- else {
+    } else {
       next({
-        path: '/login'
+        path: "/login",
       });
       return;
     }
@@ -86,4 +84,4 @@ export const RouteBeforeGuard = async (to, from, next) => {
   next();
 };
 
-export default {routes, RouteBeforeGuard};
+export default { routes, RouteBeforeGuard };

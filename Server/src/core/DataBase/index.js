@@ -1,11 +1,11 @@
 const { Sequelize } = require('sequelize')
+const fs = require('fs')
+const path = require('path')
 const mysql = require('mysql2')
-const User = require('../../app/User/Models/User.js')
-const Session = require('../../app/Session/Models/Session.js')
-const Mensuration = require('../../app/Session/Models/Mensuration.js')
-const Patient = require('../../app/Patient/Models/Patient.js')
 const environment = require('../../../environment')
 
+// Declare all models in project
+const models = {}
 // TODO Database connection using Sequelize - configure via environment
 const sequelize = new Sequelize(
   environment.database.name,
@@ -24,37 +24,7 @@ const sequelize = new Sequelize(
     },
   }
 )
-/*
 
-
-const fs = require('fs');
-const path = require('path');
-const Sequelize = require('sequelize');
-const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/config.json')[env];
-const db = {};
-
-fs
-  .readdirSync(__dirname)
-  .filter(file => {
-    return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
-  })
-  .forEach(file => {
-    const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
-    db[model.name] = model;
-  });
-
-  fs.readdirSync(modelsDir)
-    .filter(function(file) {
-      return !file.endsWith('index.js') && file.match(/\.js/);
-    })
-    .forEach(function(file) {
-      sequelize.import(path.join(modelsDir, file));
-    });
-  var models = sequelize.models;
-
-*/
 const createDatabaseIfNotExists = async () => {
   const pool = mysql.createPool({
     host: environment.database.host,
@@ -65,16 +35,21 @@ const createDatabaseIfNotExists = async () => {
   pool.query(
     `SHOW DATABASES LIKE "${environment.database.name}"`,
     (err, result) => {
-      if (err !== null) {
+      if (!result.length) {
         pool.query(
           `CREATE DATABASE IF NOT EXISTS \`${environment.database.name}\`;`,
           (err, result) => {
             if (err != null) {
-              console.log('[DATABASE] - Error in create database schema')
+              console.error(
+                '\x1b[31m',
+                '[DATABASE] - Error in create database schema',
+                '\x1b[0m'
+              )
               pool.end()
             }
             if (result != null) {
               console.log('[DATABASE] - Database schema create successful')
+              pool.end()
             }
           }
         )
@@ -91,27 +66,64 @@ const initDataBase = async () => {
     // console.log(sequelize)
     console.log('[DATABASE] - Drop or Rsync Database')
   } catch (e) {
-    console.log('[DATABASE] - Error in Drop or Rsync Database')
+    console.error('\x1b[31m[DATABASE] - Error in Drop or Rsync Database\x1b[0m')
   }
 }
 
-// Declare all models in project
-const models = {
-  User: User(sequelize, Sequelize),
-  Session: Session(sequelize, Sequelize),
-  Mensuration: Mensuration(sequelize, Sequelize),
-  Patient: Patient(sequelize, Sequelize),
+function loadModels() {
+  const appPath = path.resolve(__dirname, '..\\..\\app')
+
+  fs.readdirSync(appPath, { withFileTypes: true })
+    .filter((dirent) => dirent.isDirectory())
+    .map((dirent) => {
+      const modelsPath = appPath + '\\' + dirent.name + '\\Models'
+      const exist = fs.existsSync(modelsPath)
+      if (exist) {
+        fs.readdirSync(modelsPath)
+          .filter((file) => {
+            return (
+              file.indexOf('.') !== 0 &&
+              file !== appPath &&
+              file.slice(-3) === '.js'
+            )
+          })
+          .map((file) => {
+            const model = require(path.join(modelsPath, file))
+            const modelName = file.substring(0, file.indexOf('.js'))
+            models[modelName] = model(sequelize, Sequelize)
+          })
+      }
+    })
+
+  // Find all associations, Model by Model
+  Object.keys(models).forEach((modelName) => {
+    if (models[modelName].associate) {
+      models[modelName].associate(models)
+    }
+  })
+  /*
+      // Declare all models in project
+      const models = {
+        User: User(sequelize, Sequelize),
+        Session: Session(sequelize, Sequelize),
+        Mensuration: Mensuration(sequelize, Sequelize),
+        Patient: Patient(sequelize, Sequelize),
+      }
+
+      // Find all associations, Model by Model
+      Object.keys(models).forEach((modelName) => {
+        if (models[modelName].associate) {
+          models[modelName].associate(models)
+        }
+      })
+   */
 }
 
-// Find all associations, Model by Model
-Object.keys(models).forEach((modelName) => {
-  if (models[modelName].associate) {
-    models[modelName].associate(models)
-  }
-})
+loadModels()
 
 module.exports = {
   initDataBase,
+  loadModels,
   Sequelize,
   sequelize,
   ...models,

@@ -1,9 +1,9 @@
-import {Axios} from '../utils/AxiosUtils';
+import { Axios } from "../utils/AxiosUtils";
 
 class SocketService {
-  async getSensores() {
-    const request = await Axios.get(`/api/sensor/list`);
-    return request?.data
+  async getSensorsList() {
+    const { data } = await Axios.get(`/api/sensor/list`);
+    return data?.content;
   }
 }
 
