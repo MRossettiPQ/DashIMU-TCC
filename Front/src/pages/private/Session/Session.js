@@ -1,11 +1,12 @@
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Ref, Vue } from "vue-property-decorator";
 import TabGraph from "./Components/TabGraph.vue";
 import TabMeasurementTable from "./Components/TabMeasurementTable.vue";
 import PatientExpansion from "./Components/PatientExpansion.vue";
 import SensorExpansion from "./Components/SensorExpansion.vue";
+import CompleteSessionExpansion from "./Components/CompleteSessionExpansion.vue";
 import { Notify } from "quasar";
 import PatientService from "src/commons/services/PatientService";
-import SciLabService from "src/commons/services/SciLabService";
+import SessionService from "src/commons/services/SessionService";
 
 @Component({
   name: "session",
@@ -14,21 +15,36 @@ import SciLabService from "src/commons/services/SciLabService";
     TabGraph,
     PatientExpansion,
     SensorExpansion,
+    CompleteSessionExpansion,
   },
 })
 class Session extends Vue {
-  cont = 0;
-  tab = "Sensor_1";
-  tabGrande = "Tab_1";
+  tabPanel = "Tab_1";
   bean = {};
-  numeroConexoes = 0;
+  sessionBean = {};
+  numberOfConnections = 0;
+  loadingSave = false;
 
   @Prop()
-  idPaciente;
+  idPatient;
+
+  get numberOfMeasurements() {
+    return this.sensors[0].data.length;
+  }
+
+  async mounted() {
+    try {
+      const { idPatient } = this.$route.query;
+      await this.dataLoad(idPatient);
+      console.log(this.bean);
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   renderRows = [
     {
-      name: "numLeitura",
+      name: "numberMensuration",
       data: [],
     },
     {
@@ -44,19 +60,19 @@ class Session extends Vue {
       data: [],
     },
     {
-      name: "idSensor",
+      name: "sensorName",
       data: [],
     },
   ];
 
-  sensores = [
+  sensors = [
     {
-      tab_label: "Session 1",
+      tab_label: "Sensor 1",
       tab_name: "Sensor_1",
-      label: "Conectar Session 1",
-      dispositivo: {
+      label: "Connect Sensor 1",
+      device: {
         ip: "",
-        ativo: false,
+        active: false,
         connection: null,
         corBtn: "primary",
         corTab: "",
@@ -64,12 +80,12 @@ class Session extends Vue {
       data: [],
     },
     {
-      tab_label: "Session 2",
+      tab_label: "Sensor 2",
       tab_name: "Sensor_2",
-      label: "Conectar Session 2",
-      dispositivo: {
+      label: "Connect Sensor 2",
+      device: {
         ip: "",
-        ativo: false,
+        active: false,
         connection: null,
         corBtn: "primary",
         classTab: "",
@@ -84,29 +100,18 @@ class Session extends Vue {
     },
   };
 
-  async mounted() {
-    try {
-      const { idPatient } = this.$route.query;
-      await this.dataLoad(idPatient);
-    } catch (e) {
-      console.log(e);
-    }
-  }
+  connectSensor(id) {
+    let url = `ws://${this.sensors[id].device.ip}:8080`;
+    this.sensors[id].device.connection = new WebSocket(url);
 
-  conectarSensor(id) {
-    let url = `ws://${this.sensores[id].dispositivo.ip}:8080`;
-    this.sensores[id].dispositivo.connection = new WebSocket(url);
-
-    this.sensores[id].dispositivo.connection.onmessage = (event) => {
+    this.sensors[id].device.connection.onmessage = (event) => {
       const jSonParsed = JSON.parse(event.data);
-      this.addLeitura(jSonParsed, id);
-      // this.closeSocket(id);
+      this.addMensuration(jSonParsed, id);
     };
 
     // eslint-disable-next-line no-unused-vars
-    this.sensores[id].dispositivo.connection.onopen = (event) => {
-      this.setConectado(id);
-      this.numeroConexoes = this.numeroConexoes + 1;
+    this.sensors[id].device.connection.onopen = (event) => {
+      this.setConnected(id);
       const message = "Conexão com o sensor realizada com websocket...";
       Notify.create({
         message,
@@ -116,8 +121,8 @@ class Session extends Vue {
     };
 
     // eslint-disable-next-line no-unused-vars
-    this.sensores[id].dispositivo.connection.onerror = (event) => {
-      this.setDesconectado(id);
+    this.sensors[id].device.connection.onerror = (event) => {
+      this.setDisconnected(id);
       const message = "Error no websocket server...";
 
       Notify.create({
@@ -125,28 +130,26 @@ class Session extends Vue {
         textColor: "white",
         color: "error",
       });
-      console.log(message);
     };
 
     // eslint-disable-next-line no-unused-vars
-    this.sensores[id].dispositivo.connection.onclose = (event) => {
-      this.setDesconectado(id);
+    this.sensors[id].device.connection.onclose = (event) => {
+      this.setDisconnected(id);
       const message = "Websocket desconectado do server...";
       Notify.create({
         message,
         textColor: "white",
         color: "warning",
       });
-      console.log(message);
     };
   }
 
-  desconectarSensor(id) {
-    this.sensores[id].dispositivo.connection.close();
-    this.setDesconectado(id);
+  disconnectSensor(id) {
+    this.sensors[id].device.connection.close();
+    this.setDisconnected(id);
   }
 
-  addLeitura(data, id) {
+  addMensuration(data, id) {
     // Reinicia grafico para ultimo json recebido
     this.renderRows[1].data = [];
     this.renderRows[2].data = [];
@@ -156,104 +159,73 @@ class Session extends Vue {
     // eslint-disable-next-line no-unused-vars
     data.map((campo, index) => {
       // adiciona leitura ao sensor recebido
-      this.sensores[id].data.push(campo);
+      this.sensors[id].data.push(campo);
       // adiciona leitura ao grafico
-      this.renderRows[1].data.push(campo.numLeitura);
+      this.renderRows[1].data.push(campo.numberMensuration);
       this.renderRows[2].data.push(campo.Roll);
       this.renderRows[3].data.push(campo.Pitch);
       this.renderRows[4].data.push(campo.Yaw);
-      this.renderRows[5].data.push(campo.idSensor);
+      this.renderRows[5].data.push(campo.sensorName);
     });
   }
 
-  setConectado(id) {
-    this.sensores[id].dispositivo.corBtn = "positive";
-    this.sensores[id].dispositivo.corTab = "text-green";
-    this.sensores[id].dispositivo.ativo = true;
+  setConnected(id) {
+    this.sensors[id].device.corBtn = "positive";
+    this.sensors[id].device.corTab = "text-green";
+    this.sensors[id].device.active = true;
+    this.numberOfConnections = this.numberOfConnections + 1;
   }
 
-  setDesconectado(id) {
-    this.sensores[id].dispositivo.corBtn = "primary";
-    this.sensores[id].dispositivo.corTab = "";
-    this.sensores[id].dispositivo.ativo = false;
+  setDisconnected(id) {
+    this.sensors[id].device.corBtn = "primary";
+    this.sensors[id].device.corTab = "";
+    this.sensors[id].device.active = false;
+    this.numberOfConnections = this.numberOfConnections - 1;
   }
 
   sendStart() {
-    this.sensores.map((item, index) => {
-      if (item.dispositivo.ativo === true) {
-        item.dispositivo.connection.send(JSON.stringify({ cmd: 1 }));
+    this.sensors.map((item, index) => {
+      if (item.device.active === true) {
+        item.device.connection.send(JSON.stringify({ cmd: 1 }));
       }
     });
   }
 
-  addLeituraTeste() {
-    const id = this.sensores[0].data.length + 1;
-    this.sensores[0].data.push({
-      id: id,
-      idSensor: 1,
-      horaLeitura: 1,
-      numLeitura: 1,
-      Acc_X: 1,
-      Acc_Y: 1,
-      Acc_Z: 1,
-      AccelX_mss: 1,
-      AccelY_mss: 1,
-      AccelZ_mss: 1,
-      Gyr_X: 1,
-      Gyr_Y: 1,
-      Gyr_Z: 1,
-      Mag_X: 1,
-      Mag_Y: 1,
-      Mag_Z: 1,
-      Roll: 1,
-      Pitch: 1,
-      Yaw: 1,
-    });
-  }
-
   sendStop() {
-    this.sensores.map((item, index) => {
-      if (item.dispositivo.ativo === true) {
-        item.dispositivo.connection.send(JSON.stringify({ cmd: 2 }));
+    this.sensors.map((item, index) => {
+      if (item.device.active === true) {
+        item.device.connection.send(JSON.stringify({ cmd: 2 }));
       }
     });
   }
 
   sendRestart() {
-    this.sensores.map((item, index) => {
-      if (item.dispositivo.ativo === true) {
-        item.dispositivo.connection.send(JSON.stringify({ cmd: 3 }));
+    this.sensors.map((item, index) => {
+      if (item.device.active === true) {
+        item.device.connection.send(JSON.stringify({ cmd: 3 }));
         item.data = [];
       }
     });
   }
 
-  sendSave() {
-    this.sensores.map((item, index) => {
-      console.log(item);
-    });
-  }
-
-  async postCentralVariabilidadeSalto() {
+  async saveSession() {
     try {
-      let sensores = [];
-      this.sensores.map((item) => {
-        sensores.push(item.data);
+      this.loadingSave = true;
+      let sensorList = [];
+      this.sensors.map((item) => {
+        sensorList.push(item.data);
       });
-
-      sensores = [
-        [{ roll: 0 }, { roll: 1 }],
-        [{ roll: 0 }, { roll: 1 }],
-      ];
-
-      const data = await SciLabService.postCentralVariabilidadeSalto({
-        data: sensores,
+      const data = await SessionService.postSession({
+        sessionParams: {
+          ...this.sessionBean,
+          patientIdPatient: this.bean.idPatient,
+        },
+        sensorList,
       });
-      console.log(data);
-      if (data) {
-      }
     } catch (e) {
       console.log(e);
+    } finally {
+      this.loadingSave = false;
     }
   }
 
@@ -266,19 +238,44 @@ class Session extends Vue {
   }
 
   addSensor() {
-    const id = this.sensores.length + 1;
-    this.sensores.push({
+    const id = this.sensors.length + 1;
+    this.sensors.push({
       tab_label: "Session " + id,
       tab_name: "Sensor_" + id,
-      label: "Conectar Session " + id,
-      dispositivo: {
+      label: "Connect Sensor " + id,
+      device: {
         ip: "",
-        ativo: false,
+        active: false,
         connection: null,
         corBtn: "primary",
         classTab: "",
       },
       data: [],
+    });
+  }
+
+  addLeituraTeste() {
+    this.sensors.map((sensor, index) => {
+      sensor.data.push({
+        sensorName: index,
+        hourMensuration: index,
+        numberMensuration: index,
+        Acc_X: index,
+        Acc_Y: index,
+        Acc_Z: index,
+        AccelX_mss: index,
+        AccelY_mss: index,
+        AccelZ_mss: index,
+        Gyr_X: index,
+        Gyr_Y: index,
+        Gyr_Z: index,
+        Mag_X: index,
+        Mag_Y: index,
+        Mag_Z: index,
+        Roll: index,
+        Pitch: index,
+        Yaw: index,
+      });
     });
   }
 }

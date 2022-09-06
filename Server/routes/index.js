@@ -16,13 +16,13 @@ module.exports = (app) => {
     res.json({ message: `Server online, current time: ${dayjs()}` })
   })
 
-  // TODO Session WebSocket
+  // TODO WebSocket
   app.ws('/socket', WebSocketController.sensorConnection)
 
   // TODO header
   app.use(header)
 
-  // TODO Session
+  // TODO WebSocket
   app.get(
     '/api/sensor/list',
     [AuthorizeJwt.verifyToken, AuthorizeJwt.ifAdminPhysiotherapist],
@@ -60,7 +60,7 @@ module.exports = (app) => {
       AuthorizeJwt.ifAdminPhysiotherapist,
       RegisterValidation.verifyExistsCPFinPatient,
     ],
-    PatientController.postCreatePatient
+    PatientController.postSavePatient
   )
 
   // TODO Session

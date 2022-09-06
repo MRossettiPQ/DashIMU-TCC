@@ -1,17 +1,17 @@
 <template>
   <q-table
-    :columns="tabelaColumns"
-    :data="dataTable"
-    :fullscreen="openFullscreen"
+    class="panels"
+    :columns="tableColumns"
+    :data="data"
+    :fullscreen="openedFullscreen"
     :title="label"
-    bordered
-    class="col"
     color="primary"
     flat
+    bordered
   >
     <template #top-right class="flex">
       <q-btn
-        :label="!$q.platform.is.mobile ? 'Exportar' : null"
+        :label="!$q.platform.is.mobile ? 'Export' : null"
         class="col-2 m-r-5"
         color="primary"
         dense
@@ -20,19 +20,19 @@
         @click="exportTable"
       />
       <q-btn
-        :icon="openFullscreen ? 'close_fullscreen' : 'width_full'"
+        :icon="openedFullscreen ? 'close_fullscreen' : 'width_full'"
         :label="
           !$q.platform.is.mobile
-            ? openFullscreen
-              ? 'Fechar'
-              : 'Tela cheia'
+            ? openedFullscreen
+              ? 'Close'
+              : 'Fullscreen'
             : null
         "
         class="col-2"
         color="primary"
         dense
         no-caps
-        @click="openFullscren"
+        @click="openFullscreen"
       />
     </template>
   </q-table>
@@ -40,4 +40,10 @@
 
 <script src="./TabMeasurementTable.js" />
 
-<style lang="stylus" scoped></style>
+<style lang="stylus" scoped>
+.panels
+  height 100%
+  display flex
+  flex-grow 1
+  align-items stretch
+</style>

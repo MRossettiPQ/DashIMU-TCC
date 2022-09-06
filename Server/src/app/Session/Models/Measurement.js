@@ -1,11 +1,11 @@
 module.exports = (sequelize, Sequelize) => {
-  const Mensuration = sequelize.define('Mensurations', {
-    idMensuration: {
+  const Measurement = sequelize.define('measurements', {
+    idMeasurement: {
       type: Sequelize.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    idSensor: {
+    sensorName: {
       type: Sequelize.STRING,
     },
     numberMensuration: {
@@ -62,13 +62,12 @@ module.exports = (sequelize, Sequelize) => {
     },
   })
 
-  Mensuration.associate = (models) => {
-    Mensuration.belongsTo(models.Session, {
+  Measurement.associate = (models) => {
+    Measurement.belongsTo(models.Session, {
       as: 'Session',
-      foreignKey: 'idSession',
     })
-    return Mensuration
+    return Measurement
   }
 
-  return Mensuration
+  return Measurement
 }

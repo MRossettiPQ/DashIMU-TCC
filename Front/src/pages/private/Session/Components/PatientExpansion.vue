@@ -1,28 +1,25 @@
 <template>
-  <div class="column">
+  <div class="col">
     <q-expansion-item expand-separator icon="perm_identity" label="Patient">
       <q-card>
-        <q-card-section class="form-lines form-lines__gap">
+        <q-card-section class="form-lines form-lines__gap patient-expansion">
           <q-field color="black" filled label="Nome" stack-label>
-            {{ bean.nomePaciente }}
+            {{ bean.name }}
           </q-field>
           <q-field color="black" filled label="CPF" stack-label>
-            {{ bean.cpfPaciente }}
+            {{ bean.cpf }}
           </q-field>
           <q-field color="black" filled label="Telefone" stack-label>
-            {{ bean.telefonePaciente }}
+            {{ bean.phone }}
           </q-field>
           <q-field color="black" filled label="Data de Nascimento" stack-label>
-            {{ filterDate(bean.nascPaciente) }}
+            {{ filterDate(bean.birthday) }}
           </q-field>
           <q-field color="black" filled label="Email" stack-label>
-            {{ bean.emailPaciente }}
-          </q-field>
-          <q-field color="black" filled label="Telefone" stack-label>
-            {{ bean.telefonePaciente }}
+            {{ bean.email }}
           </q-field>
           <q-field color="black" filled label="Altura" stack-label>
-            {{ bean.alturaPaciente }}
+            {{ bean.stature }}
           </q-field>
         </q-card-section>
       </q-card>
@@ -30,6 +27,9 @@
   </div>
 </template>
 
-<script src="./PatientExpansion.js"/>
+<script src="./PatientExpansion.js" />
 
-<style scoped></style>
+<style lang="stylus" scoped>
+.patient-expansion
+  overflow-x hidden
+</style>

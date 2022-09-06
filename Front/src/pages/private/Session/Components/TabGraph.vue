@@ -1,13 +1,7 @@
 <template>
-  <div class="column">
-    <div class="text-h6">{{ label }}</div>
+  <div class="col">
     <div class="row">
-      <apexchart
-        :options="options"
-        :series="data"
-        class="grafico"
-        type="line"
-      />
+      <apexchart :options="options" :series="data" class="chart" type="line" />
     </div>
   </div>
 </template>
@@ -15,7 +9,7 @@
 <script src="./TabGraph.js" />
 
 <style lang="stylus" scoped>
-.grafico
+.chart
   width 100%
   height 100%
 </style>

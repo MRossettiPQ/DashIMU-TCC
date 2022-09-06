@@ -8,81 +8,64 @@ const {
 } = require('./RequestUtil')
 
 exports.getUserContextId = async (req, res) => {
-  try {
-    let token = req.headers['x-access-token']
+  // eslint-disable-next-line no-async-promise-executor
+  return new Promise(async (resolve, reject) => {
+    try {
+      let token = req.headers['x-access-token']
 
-    await throwForbiddenIf({
-      cond: !token,
-      message: `No token provided`,
-      log: `[CONTEXT] - No token provided`,
-      res,
-    })
+      await throwForbiddenIf({
+        cond: !token,
+        message: `No token provided`,
+        log: `[CONTEXT] - No token provided`,
+        res,
+      })
 
-    return await jwt.verify(
-      token,
-      environment.secret,
-      async (err, decoded) => {
-        try {
-          await throwUnauthorizedIf({
-            cond: err,
-            message: 'No token provided!',
-            log: `[CONTEXT] - No token provided`,
-            res,
-          })
-          req.contextUser = {
-            idUSerContext: decoded.idUser,
+      return await jwt.verify(
+        token,
+        environment.secret,
+        async (err, decoded) => {
+          try {
+            await throwUnauthorizedIf({
+              cond: err,
+              message: 'No token provided!',
+              log: `[CONTEXT] - No token provided`,
+              res,
+            })
+            req.contextUser = {
+              idUSerContext: decoded.idUser,
+            }
+            return resolve(decoded.idUser)
+          } catch (e) {
+            return e
           }
-          return decoded.idUser
-        } catch (e) {
-          return e
-        }
-      },
-      null
-    )
-  } catch (e) {
-    return e
-  }
+        },
+        null
+      )
+    } catch (e) {
+      return reject(e)
+    }
+  })
 }
 
-/*
-
-        async (err, decoded) => {
-          if (err) {
-            return res.status(401).send({
-              message: 'Não Autorizado!',
-            })
-          }
-          idUser = decoded.idUser
-        },
-        async (err, token) => {
-          await throwForbiddenIf({
-            cond: token === null,
-            message: `No token provided`,
-            console: `[CONTEXT] - No token provided`,
-            res,
-          })
-
-          return idUser
-        }
-
- */
-
 exports.getUserContext = async (req, res) => {
-  try {
-    const idUserContext = await this.getUserContextId(req, res)
-    const contextUser = await User.findByPk(idUserContext)
+  // eslint-disable-next-line no-async-promise-executor
+  return new Promise(async (resolve, reject) => {
+    try {
+      const idUserContext = await this.getUserContextId(req, res)
+      const contextUser = await User.findByPk(idUserContext)
 
-    await throwErrorIf({
-      cond: contextUser === null,
-      message: `Need to be logged in`,
-      log: `[CONTEXT] - Need to be logged in`,
-      res,
-    })
+      await throwErrorIf({
+        cond: contextUser === null,
+        message: `Need to be logged in`,
+        log: `[CONTEXT] - Need to be logged in`,
+        res,
+      })
 
-    req.contextUser = contextUser
+      req.contextUser = contextUser
 
-    return contextUser
-  } catch (e) {
-    return e
-  }
+      return resolve(contextUser)
+    } catch (e) {
+      return reject(e)
+    }
+  })
 }

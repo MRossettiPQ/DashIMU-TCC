@@ -77,7 +77,7 @@
       </q-card-section>
       <q-card-actions align="right">
         <q-btn
-          :label="id !== null ? 'atualizar' : 'cadastrar'"
+          :label="id !== null ? 'update' : 'save'"
           color="primary"
           dense
           size="md"

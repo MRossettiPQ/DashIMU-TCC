@@ -2,13 +2,12 @@ import { Component, Vue } from "vue-property-decorator";
 import FormUtils from "src/commons/utils/FormUtils";
 
 @Component({
-  name: "login",
+  name: "configuration",
 })
-class Login extends Vue {
+class Configuration extends Vue {
   loading = false;
   bean = {
-    username: "",
-    password: "",
+    api: "",
   };
 
   async onSubmit() {
@@ -16,7 +15,7 @@ class Login extends Vue {
       this.loading = true;
       await FormUtils.validateAsync(this.$refs.mainForm);
       await this.$store.dispatch("Authentication/login", this.bean);
-      await this.$router.push("/profile");
+      await this.$router.push("/account");
     } catch (e) {
       console.log(e);
     } finally {
@@ -25,4 +24,4 @@ class Login extends Vue {
   }
 }
 
-export default Login;
+export default Configuration;

@@ -3,45 +3,57 @@ import AuthenticateUtils from "src/commons/utils/AuthenticateUtils";
 export const routes = [
   {
     path: "/",
-    component: () => import("pages/public/PublicApp.vue"),
-    redirect: "/home",
+    component: () => import("pages/MainApp.vue"),
     children: [
       {
-        name: "access.home",
-        path: "home",
-        component: () => import("pages/public/Home/Home.vue"),
+        path: "/",
+        component: () => import("pages/public/PublicApp.vue"),
+        redirect: "/home",
+        children: [
+          {
+            name: "access.home",
+            path: "home",
+            component: () => import("pages/public/Home/Home.vue"),
+          },
+          {
+            name: "access.settings",
+            path: "settings",
+            component: () =>
+              import("pages/public/Configuration/Configuration.vue"),
+          },
+          {
+            name: "access.login",
+            path: "login",
+            component: () => import("pages/public/Login/Login.vue"),
+          },
+          {
+            name: "access.register",
+            path: "register",
+            component: () => import("pages/public/Register/Register.vue"),
+          },
+        ],
       },
       {
-        name: "access.login",
-        path: "login",
-        component: () => import("pages/public/Login/Login.vue"),
-      },
-      {
-        name: "access.register",
-        path: "register",
-        component: () => import("pages/public/Register/Register.vue"),
-      },
-    ],
-  },
-  {
-    path: "/",
-    component: () => import("pages/private/PrivateApp.vue"),
-    redirect: "/home",
-    children: [
-      {
-        name: "private.patient",
-        path: "patients",
-        component: () => import("pages/private/Patients/Patients.vue"),
-      },
-      {
-        name: "private.session",
-        path: "session",
-        component: () => import("pages/private/Session/Session.vue"),
-      },
-      {
-        name: "private.account",
-        path: "account",
-        component: () => import("pages/private/Account/Account.vue"),
+        path: "/",
+        component: () => import("pages/private/PrivateApp.vue"),
+        redirect: "/home",
+        children: [
+          {
+            name: "private.patient",
+            path: "patients",
+            component: () => import("pages/private/Patients/Patients.vue"),
+          },
+          {
+            name: "private.session",
+            path: "session",
+            component: () => import("pages/private/Session/Session.vue"),
+          },
+          {
+            name: "private.profile",
+            path: "profile",
+            component: () => import("pages/private/Account/Account.vue"),
+          },
+        ],
       },
     ],
   },
@@ -49,13 +61,18 @@ export const routes = [
   // but you can also remove it
   {
     path: "*",
-    component: () => import("pages/Error404.vue"),
+    component: () => import("pages/public/Error/Error404.vue"),
   },
 ];
 
 export const RouteBeforeGuard = async (to, from, next) => {
   // TODO Access granted without authentication
-  let accessReleased = ["access.login", "access.register", "access.home"];
+  let accessReleased = [
+    "access.login",
+    "access.register",
+    "access.home",
+    "access.configuration",
+  ];
   // TODO Hide when logged
   let hideWhenLogged = ["access.login", "access.register"];
 

@@ -15,7 +15,7 @@ class Pagination {
     // Startup parameters
     this.axiosApi = axiosApi;
     this.url = url;
-    this.params = { ...{ page: 1, rpp: 10 }, ...params }; // Default
+    this.params = { ...{ page: 1, limit: 10, fields: null }, ...params }; // Default
     this.fixedParams = _.cloneDeep(this.params);
 
     this.infinite = infinite;
@@ -129,7 +129,6 @@ class Pagination {
 
       let content = _.get(data, this.listContentAttr);
 
-      console.log(data.content);
       this.list = this.infinite
         ? [...this.list, ...content.resultList]
         : content.resultList;
@@ -155,7 +154,7 @@ class Fetch {
     // Startup parameters
     this.axiosApi = axiosApi;
     this.url = url;
-    this.params = { ...{ page: 1, rpp: 10 }, ...params }; // Default
+    this.params = { ...{ page: 1, limit: 10 }, ...params }; // Default
     this.fixedParams = _.cloneDeep(this.params);
 
     this.loading = false;

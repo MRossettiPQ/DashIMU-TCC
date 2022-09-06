@@ -108,11 +108,11 @@ String RetornaValoresIMU(int NumeroLeitura) {
     double Yaw = mpu.getYaw();
 
     //------------LEITURA DO SENSOR-----------
-    String Leitura = "{\"idSensor\":\"";
+    String Leitura = "{\"sensorName\":\"";
     Leitura += ID_SENSOR;
-    Leitura += "\",\"numLeitura\":\"";
+    Leitura += "\",\"numberMensuration\":\"";
     Leitura += NumeroLeitura;
-    Leitura += "\",\"horaLeitura\":\"";
+    Leitura += "\",\"hourMensuration\":\"";
     Leitura += horaLeitura;
     //--------------Acelerometro--------------
     Leitura += "\",\"AccelX_mss\":\"";

@@ -4,7 +4,7 @@ const {
   throwErrorIf,
 } = require('../../../core/Utils/RequestUtil')
 
-exports.postCreatePatient = async (req, res) => {
+exports.postSavePatient = async (req, res) => {
   try {
     console.log('[POST] - /api/patient')
     let patient = await Patient.findByPk(req.body.idPatient)
@@ -49,14 +49,13 @@ exports.getPatientList = async (req, res) => {
 
     await throwErrorIf({
       cond: !patient.length,
-      //  message: 'Patient list is empty',
+      message: 'Patient list is empty',
       log: '[GET] - /api/patient - not found',
       res,
     })
 
     await throwSuccess({
       content: { resultList: patient },
-      //  message: 'Patient founded',
       log: '[GET] - /api/patient - Patient founded',
       res,
     })
@@ -80,7 +79,6 @@ exports.getPatient = async (req, res) => {
 
     await throwSuccess({
       content: patient,
-      message: 'Patient founded',
       log: '\x1b[32m[GET] - /api/patient/:id - Patient founded',
       res,
     })

@@ -39,7 +39,9 @@ exports.seAdmin = async (req, res, next) => {
     const userContext = await UserContext.getUserContext(req, res)
 
     await throwForbiddenIf({
-      cond: userContext.getRole() !== 'ADMINISTRATOR',
+      cond:
+        userContext === null ||
+        userContext?.getDataValue('role') !== 'ADMINISTRATOR',
       message: 'Requer ser um Fisioterapeuta!',
       console: '[JWT] - Authorization - Usuario não permitido',
       res,
@@ -57,7 +59,8 @@ exports.sePaciente = async (req, res, next) => {
     const userContext = await UserContext.getUserContext(req, res)
 
     await throwForbiddenIf({
-      cond: userContext.getRole() !== 'PATIENT',
+      cond:
+        userContext === null || userContext?.getDataValue('role') !== 'PATIENT',
       message: 'Requer ser um Fisioterapeuta!',
       console: '[JWT] - Authorization - Usuario não permitido',
       res,
@@ -75,7 +78,9 @@ exports.seFisio = async (req, res, next) => {
     const userContext = await UserContext.getUserContext(req, res)
 
     await throwForbiddenIf({
-      cond: userContext.getDataValue('role') !== 'PHYSIOTHERAPIST',
+      cond:
+        userContext === null ||
+        userContext?.getDataValue('role') !== 'PHYSIOTHERAPIST',
       message: 'Requer ser um Fisioterapeuta!',
       console: '[JWT] - Authorization - Usuario não permitido',
       res,
@@ -94,14 +99,14 @@ exports.ifAdminPhysiotherapist = async (req, res, next) => {
 
     await throwForbiddenIf({
       cond:
-        userContext.getDataValue('role') !== 'PHYSIOTHERAPIST' &&
-        userContext.getDataValue('role') !== 'ADMINISTRATOR',
-      message: 'Requer ser um Fisioterapeuta ou Administrador',
-      console: '[JWT] - Authorization - Usuario não permitido',
+        userContext?.getDataValue?.('role') !== 'PHYSIOTHERAPIST' &&
+        userContext?.getDataValue?.('role') !== 'ADMINISTRATOR',
+      message: 'Requires to be a Physiotherapist or Administrator',
+      console: '[JWT] - Authorization - User not allowed',
       res,
     })
 
-    console.log('[JWT] - Permissão verificada - Autorizado')
+    console.log('[JWT] - Permission Verified - Authorized')
     next()
   } catch (e) {
     console.error(e)

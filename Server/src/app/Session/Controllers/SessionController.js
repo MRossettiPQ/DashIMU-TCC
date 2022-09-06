@@ -1,4 +1,4 @@
-const { Mensuration, Session } = require('../../../core/DataBase')
+const { Measurement, Session } = require('../../../core/DataBase')
 const UserContext = require('../../../core/utils/UserContext')
 const {
   throwSuccess,
@@ -9,27 +9,28 @@ exports.postSaveSession = async (req, res) => {
   console.log('[POST] - /api/session')
   try {
     const idUserContext = await UserContext.getUserContextId(req, res)
-    const { id: idPatient } = req.params
 
     let { sessionParams, sensorList } = req.body
 
-    const newSession = await Session.create({
-      ...sessionParams,
-      idPatient,
-      idUser: idUserContext,
-    })
-
-    let bulkMensuration = []
+    let bulkMeasurement = []
     // Turns data from multiple sensors into one big list
-    sensorList.map((sensor) => bulkMensuration.push(...sensor))
+    sensorList.map((sensor) => bulkMeasurement.push(...sensor))
 
-    // Turns data from multiple sensors into one big list
-    bulkMensuration = bulkMensuration.map((mensuration) => {
-      mensuration.idSessao = newSession.idSession
-      return mensuration
-    })
-
-    await Mensuration.bulkCreate(bulkMensuration)
+    const newSession = await Session.create(
+      {
+        ...sessionParams,
+        userIdUser: idUserContext,
+        Measurement: bulkMeasurement,
+      },
+      {
+        include: [
+          {
+            model: Measurement,
+            as: 'Measurement',
+          },
+        ],
+      }
+    )
 
     await throwSuccess({
       content: newSession,
@@ -38,71 +39,71 @@ exports.postSaveSession = async (req, res) => {
       res,
     })
   } catch (e) {
-    console.error('\x1b[31m', e, '\x1b[0m')
+    console.error(`\x1b[31m${e}\x1b[0m`)
   }
 }
 
 exports.getMensurationList = async (req, res) => {
   try {
     console.log('[GET] - /api/session/:id/mensuration')
-    const { id: idPatient, limit, page } = req.params
+    const { id: idSession } = req.params
+    const { limit, page, field } = req.query
 
-    console.log(limit, page)
-    const mensurationList = await Mensuration.findAll({
-      page: page || 1,
-      limit: limit || 10,
+    const mensurationList = await Measurement.findAll({
       where: {
-        idPatient,
+        sessionIdSession: idSession,
       },
+      as: 'Measurement',
     })
 
     await throwNotFoundIf({
       cond: mensurationList === null,
-      message: '',
-      log: '',
+      log: '[GET] - /api/session/:id/mensuration - not founded',
       res,
     })
 
+    console.log(mensurationList)
+
     await throwSuccess({
-      content: mensurationList,
-      message: '',
-      log: '',
+      content: {
+        resultList: mensurationList,
+      },
+      log: '[GET] - /api/session/:id/mensuration - founded',
       res,
     })
   } catch (e) {
-    console.error('\x1b[31m', e, '\x1b[0m')
+    console.error(`\x1b[31m${e}\x1b[0m`)
   }
 }
 
 exports.getSessionList = async (req, res) => {
   try {
     console.log('[GET] - /api/session')
-    const { id: idPatient, limit, page, fields } = req.params
+    const { id: idPatient } = req.params
+    const { limit, page, field } = req.query
 
-    const sessionList = await Mensuration.findAll({
+    const sessionList = await Session.findAll({
       where: {
-        page,
-        limit,
-        idPatient,
+        patientIdPatient: idPatient,
       },
-      attributes: fields,
     })
 
     await throwNotFoundIf({
       cond: sessionList === null,
-      message: '',
-      log: '',
+      message: '[GET] - /api/session - not founded',
+      log: '[GET] - /api/session - not founded',
       res,
     })
 
     await throwSuccess({
-      content: sessionList,
-      message: '',
-      log: '',
+      content: {
+        resultList: sessionList,
+      },
+      log: '[GET] - /api/session - founded',
       res,
     })
   } catch (e) {
-    console.error('\x1b[31m', e, '\x1b[0m')
+    console.error(`\x1b[31m${e}\x1b[0m`)
   }
 }
 
@@ -115,18 +116,17 @@ exports.getSession = async (req, res) => {
 
     await throwNotFoundIf({
       cond: session === null,
-      message: '',
-      log: '',
+      message: '[GET] - /api/session/:id - not founded',
+      log: '[GET] - /api/session/:id - not founded',
       res,
     })
 
     await throwSuccess({
       content: session,
-      message: '',
-      log: '',
+      log: '[GET] - /api/session/:id - founded',
       res,
     })
   } catch (e) {
-    console.error('\x1b[31m', e, '\x1b[0m')
+    console.error(`\x1b[31m${e}\x1b[0m`)
   }
 }

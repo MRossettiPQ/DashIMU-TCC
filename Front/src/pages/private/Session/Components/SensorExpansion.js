@@ -5,32 +5,35 @@ import SocketService from "src/commons/services/SocketService";
   name: "sensor-expansion",
 })
 class SensorExpansion extends Vue {
-  @Prop()
-  tab;
+  loading = false;
+  tab = "Sensor_1";
 
   @Prop()
-  sensores;
+  sensors;
 
-  sensoresDisponiveis = [];
+  sensorsOptions = [];
 
-  mounted() {
-    this.listaSensoresLoad();
+  async mounted() {
+    await this.listSensorsLoad();
   }
 
-  async listaSensoresLoad() {
+  async listSensorsLoad() {
     try {
-      this.sensoresDisponiveis = await SocketService.getSensorsList();
+      this.loading = true;
+      this.sensorsOptions = await SocketService.getSensorsList();
     } catch (e) {
       console.log(e);
+    } finally {
+      this.loading = false;
     }
   }
 
-  conecta(index) {
-    this.$emit("conectarSensor", index);
+  connect(index) {
+    this.$emit("connectSensor", index);
   }
 
-  desconecta(index) {
-    this.$emit("desconectarSensor", index);
+  disconnect(index) {
+    this.$emit("disconnectSensor", index);
   }
 
   addSensor() {

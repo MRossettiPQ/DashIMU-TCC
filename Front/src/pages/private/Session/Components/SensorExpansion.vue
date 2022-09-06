@@ -19,9 +19,9 @@
               @click="addSensor"
             />
             <q-tab
-              v-for="(sensor, index) in sensores"
+              v-for="(sensor, index) in sensors"
               :key="index"
-              :content-class="sensor.dispositivo.corTab"
+              :content-class="sensor.device.corTab"
               :label="sensor.tab_label"
               :name="sensor.tab_name"
               icon="sensors"
@@ -33,48 +33,60 @@
 
         <q-tab-panels v-model="tab" animated>
           <q-tab-panel
-            v-for="(sensor, index) in sensores"
+            v-for="(sensor, index) in sensors"
             :key="index"
             :name="sensor.tab_name"
           >
-            <div class="text-h6">{{ sensor.label }}</div>
+            <div class="title-header">
+              <div class="text-h6">
+                {{ sensor.label }}
+              </div>
+              <q-btn
+                :loading="loading"
+                flat
+                icon="refresh"
+                @click="listSensorsLoad"
+              ></q-btn>
+            </div>
             <q-form>
               <div class="row form-lines form-lines__gap">
                 <q-select
-                  v-model="sensor.dispositivo.ip"
-                  :options="sensoresDisponiveis"
+                  v-show="!sensor.device.active"
+                  v-model="sensor.device.ip"
+                  :options="sensorsOptions"
                   emit-value
                   filled
-                  label="Sensores disponiveis"
+                  label="Sensors available"
                   option-label="ip"
                   option-value="ip"
                 />
                 <q-input
-                  v-model="sensor.dispositivo.ip"
-                  :label="'IP Session ' + sensor.tab_label"
+                  :disable="sensor.device.active"
+                  v-model="sensor.device.ip"
+                  :label="'IP Sensor ' + sensor.tab_label"
                   class="row"
                   filled
                   type="text"
                 />
-
                 <q-btn
-                  v-if="!sensor.dispositivo.ativo"
-                  :color="sensor.dispositivo.corBtn"
+                  :disable="sensor.device.active"
+                  v-if="!sensor.device.active"
+                  :color="sensor.device.corBtn"
                   class="row"
-                  label="Conectar"
+                  label="Connect"
                   size="lg"
                   unelevated
-                  @click="conecta(index)"
+                  @click="connect(index)"
                 />
 
                 <q-btn
-                  v-if="sensor.dispositivo.ativo"
-                  :color="sensor.dispositivo.corBtn"
+                  v-show="sensor.device.active"
+                  :color="sensor.device.corBtn"
                   class="row"
-                  label="Desconectar"
+                  label="Disconnect"
                   size="lg"
                   unelevated
-                  @click="desconecta(index)"
+                  @click="disconnect(index)"
                 />
               </div>
             </q-form>
@@ -91,4 +103,11 @@
 .tabs-style
   overflow hidden
   overflow-x scroll
+
+.title-header
+  display flex
+  align-items center
+  justify-content space-between
+  padding-top 8px
+  padding-bottom 8px
 </style>

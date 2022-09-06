@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-  const Patient = sequelize.define('Patients', {
+  const Patient = sequelize.define('patients', {
     idPatient: {
       type: Sequelize.INTEGER,
       primaryKey: true,
@@ -34,9 +34,6 @@ module.exports = (sequelize, Sequelize) => {
 
   Patient.associate = (models) => {
     Patient.hasMany(models.Session, {
-      as: 'Patient',
-      foreignKey: 'idSession',
-      constraints: false,
       onDelete: 'CASCADE',
     })
     return Patient

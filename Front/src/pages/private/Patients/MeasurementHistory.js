@@ -19,22 +19,34 @@ class MeasurementHistory extends Vue {
 
   columns = [
     {
-      name: "name",
-      align: "left",
-      label: "Nome",
-      field: "name",
+      align: "center",
+      label: "Number Mensuration",
+      field: "numberMensuration",
     },
     {
-      name: "idPatient",
-      align: "left",
-      label: "ID Patient",
-      field: "idPatient",
+      align: "center",
+      label: "Sensor Name",
+      field: "sensorName",
     },
     {
-      name: "cpf",
-      align: "left",
-      label: "CPF",
-      field: "cpf",
+      align: "center",
+      label: "Roll",
+      field: "Roll",
+    },
+    {
+      align: "center",
+      label: "Pitch",
+      field: "Pitch",
+    },
+    {
+      align: "center",
+      label: "Yaw",
+      field: "Yaw",
+    },
+    {
+      align: "center",
+      label: "ID Measurement",
+      field: "idMeasurement",
     },
   ];
 
@@ -53,6 +65,7 @@ class MeasurementHistory extends Vue {
         url: `/api/session/${this.id}/mensuration`,
         infinite: true,
       });
+      await this.pagination.search();
     }
   }
 }

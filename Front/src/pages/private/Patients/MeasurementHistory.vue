@@ -13,7 +13,7 @@
           :columns="columns"
           :data="pagination.list"
           :filter="filter"
-          :loading="loading"
+          :loading="pagination.loading"
           class="col"
           flat
           row-key="id"

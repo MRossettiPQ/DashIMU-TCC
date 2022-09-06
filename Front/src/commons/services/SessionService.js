@@ -16,11 +16,8 @@ class SessionService {
     return data?.content;
   }
 
-  async postSession(id, bean) {
-    const { data } = await Axios.post(
-      `/api/session/${id}/cadastropaciente`,
-      bean
-    );
+  async postSession(bean) {
+    const { data } = await Axios.post(`/api/session`, bean);
     return data?.content;
   }
 }

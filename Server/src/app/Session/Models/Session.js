@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-  const Session = sequelize.define('Sessions', {
+  const Session = sequelize.define('sessions', {
     idSession: {
       type: Sequelize.INTEGER,
       primaryKey: true,
@@ -17,19 +17,12 @@ module.exports = (sequelize, Sequelize) => {
   })
 
   Session.associate = (models) => {
-    Session.hasMany(models.Mensuration, {
-      foreignKey: 'idSession',
-      constraints: false,
+    Session.hasMany(models.Measurement, {
       onDelete: 'CASCADE',
+      as: 'Measurement',
     })
-    Session.belongsTo(models.Patient, {
-      as: 'Patient',
-      foreignKey: 'idPatient',
-    })
-    Session.belongsTo(models.User, {
-      as: 'Monitor',
-      foreignKey: 'idUser',
-    })
+    Session.belongsTo(models.Patient)
+    Session.belongsTo(models.User)
     return Session
   }
 

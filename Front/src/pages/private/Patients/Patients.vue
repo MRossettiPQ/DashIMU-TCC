@@ -1,16 +1,16 @@
 <template>
-  <section ref="telaPacientes" class="responsive-height">
+  <section ref="patientScreen" class="responsive-height">
     <div class="row responsive-content form-column form-column__padding">
       <q-table
         :columns="columns"
         :data="pagination.list"
         :filter="filter"
-        :loading="loading"
+        :loading="pagination.loading"
         bordered
         class="col"
         flat
         row-key="id"
-        title="Treats"
+        title="Patients"
         @row-click="openDialog"
       >
         <template #top class="flex">

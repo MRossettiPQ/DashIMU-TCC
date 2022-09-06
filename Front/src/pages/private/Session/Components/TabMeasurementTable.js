@@ -1,50 +1,51 @@
-import {Component, Prop, Vue} from "vue-property-decorator";
-import {exportFile} from "quasar";
+import { Component, Prop, Vue } from "vue-property-decorator";
+import { exportFile } from "quasar";
 import moment from "moment";
 
 // import { exportFile } from "quasar";
 
 @Component({
-  name: "tab-measurement-table",
+  field: "tab-measurement-table",
 })
 class TabMeasurementTable extends Vue {
   @Prop()
-  paciente;
+  patient;
 
   @Prop()
   label;
 
   @Prop({ type: Array, default: [{}] })
   data;
-  openFullscreen = false;
-  tabelaColumns = [
-    { name: "id", label: "id", field: "id", align: "center" },
-    { name: "idSensor", label: "idSensor", field: "idSensor", align: "center" },
-    { name: "horaLeitura", label: "horaLeitura", field: "horaLeitura" },
-    { name: "numLeitura", label: "numLeitura", field: "numLeitura" },
-    { name: "Acc_X", label: "Acc_X", field: "Acc_X" },
-    { name: "Acc_Y", label: "Acc_Y", field: "Acc_Y" },
-    { name: "Acc_Z", label: "Acc_Z", field: "Acc_Z" },
-    { name: "AccelX_mss", label: "AccelX_mss", field: "AccelX_mss" },
-    { name: "AccelY_mss", label: "AccelY_mss", field: "AccelY_mss" },
-    { name: "AccelZ_mss", label: "AccelZ_mss", field: "AccelZ_mss" },
-    { name: "Gyr_X", label: "Gyr_X", field: "Gyr_X" },
-    { name: "Gyr_Y", label: "Gyr_Y", field: "Gyr_Y" },
-    { name: "Gyr_Z", label: "Gyr_Z", field: "Gyr_Z" },
-    { name: "Mag_X", label: "Mag_X", field: "Mag_X" },
-    { name: "Mag_Y", label: "Mag_Y", field: "Mag_Y" },
-    { name: "Mag_Z", label: "Mag_Z", field: "Mag_Z" },
-    { name: "Roll", label: "Roll", field: "Roll" },
-    { name: "Pitch", label: "Pitch", field: "Pitch" },
-    { name: "Yaw", label: "Yaw", field: "Yaw" },
+
+  openedFullscreen = false;
+
+  tableColumns = [
+    {
+      align: "center",
+      field: "sensorName",
+      label: "sensorName",
+    },
+    { align: "center", field: "hourMensuration", label: "hourMensuration" },
+    { align: "center", field: "numberMensuration", label: "numberMensuration" },
+    { align: "center", field: "Acc_X", label: "Acc_X" },
+    { align: "center", field: "Acc_Y", label: "Acc_Y" },
+    { align: "center", field: "Acc_Z", label: "Acc_Z" },
+    { align: "center", field: "AccelX_mss", label: "AccelX_mss" },
+    { align: "center", field: "AccelY_mss", label: "AccelY_mss" },
+    { align: "center", field: "AccelZ_mss", label: "AccelZ_mss" },
+    { align: "center", field: "Gyr_X", label: "Gyr_X" },
+    { align: "center", field: "Gyr_Y", label: "Gyr_Y" },
+    { align: "center", field: "Gyr_Z", label: "Gyr_Z" },
+    { align: "center", field: "Mag_X", label: "Mag_X" },
+    { align: "center", field: "Mag_Y", label: "Mag_Y" },
+    { align: "center", field: "Mag_Z", label: "Mag_Z" },
+    { align: "center", field: "Roll", label: "Roll" },
+    { align: "center", field: "Pitch", label: "Pitch" },
+    { align: "center", field: "Yaw", label: "Yaw" },
   ];
 
-  get dataTable() {
-    return this.data;
-  }
-
-  openFullscren() {
-    this.openFullscreen = !this.openFullscreen;
+  openFullscreen() {
+    this.openedFullscreen = !this.openedFullscreen;
   }
 
   exportTable() {
@@ -62,16 +63,16 @@ class TabMeasurementTable extends Vue {
       return `"${formatted}"`;
     }
 
-    // naive encoding to csv format
-    const content = [this.tabelaColumns.map((col) => wrapCsvValue(col.label))]
+    // native encoding to csv format
+    const content = [this.tableColumns.map((col) => wrapCsvValue(col.label))]
       .concat(
         this.data.map((row) =>
-          this.tabelaColumns
+          this.tableColumns
             .map((col) =>
               wrapCsvValue(
                 typeof col.field === "function"
                   ? col.field(row)
-                  : row[col.field === void 0 ? col.name : col.field],
+                  : row[col.field === void 0 ? col.field : col.field],
                 col.format
               )
             )
@@ -80,7 +81,12 @@ class TabMeasurementTable extends Vue {
       )
       .join("\r\n");
     const status = exportFile(
-      this.paciente.nomePaciente + moment.now() + ".csv",
+      this.patient.name +
+        "_" +
+        this.label.replace(/\s/g, "") +
+        "_" +
+        moment.now() +
+        ".csv",
       content,
       "text/csv"
     );
