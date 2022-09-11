@@ -23,11 +23,11 @@ exports.register = async (req, res) => {
         username: newUser.username,
         email: newUser.email,
       },
-      message: 'User registrado com sucesso!',
+      message: '\x1b[32mUser registrado com sucesso!\x1b[0m',
       res,
     })
   } catch (e) {
-    console.error('\x1b[31m', e, '\x1b[0m')
+    console.error(`\x1b[31m${e}\x1b[0m`)
   }
 }
 
@@ -86,12 +86,12 @@ exports.login = async (req, res) => {
         email: userFound.email,
         accessToken: token,
       },
-      log: '[POST] - /api/auth/login - User verify',
+      log: '\x1b[32m[POST] - /api/auth/login - User verify\x1b[0m',
       message: 'Logged in successfully',
       res,
     })
   } catch (e) {
-    console.error('\x1b[31m', e, '\x1b[0m')
+    console.error(`\x1b[31m${e}\x1b[0m`)
   }
 }
 
@@ -114,7 +114,7 @@ exports.getUserContext = async (req, res) => {
         username: userContext.username,
         email: userContext.email,
       },
-      log: '[GET] - /api/auth/context - User context found',
+      log: '\x1b[32m[GET] - /api/auth/context - User context found\x1b[0m',
       res,
     })
   } catch (e) {

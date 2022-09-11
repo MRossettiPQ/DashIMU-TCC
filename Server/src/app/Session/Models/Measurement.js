@@ -63,9 +63,7 @@ module.exports = (sequelize, Sequelize) => {
   })
 
   Measurement.associate = (models) => {
-    Measurement.belongsTo(models.Session, {
-      as: 'Session',
-    })
+    Measurement.belongsTo(models.GyroSensor)
     return Measurement
   }
 

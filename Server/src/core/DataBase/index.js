@@ -94,29 +94,12 @@ function loadModels() {
           })
       }
     })
-
   // Find all associations, Model by Model
   Object.keys(models).forEach((modelName) => {
     if (models[modelName].associate) {
       models[modelName].associate(models)
     }
   })
-  /*
-      // Declare all models in project
-      const models = {
-        User: User(sequelize, Sequelize),
-        Session: Session(sequelize, Sequelize),
-        Mensuration: Mensuration(sequelize, Sequelize),
-        Patient: Patient(sequelize, Sequelize),
-      }
-
-      // Find all associations, Model by Model
-      Object.keys(models).forEach((modelName) => {
-        if (models[modelName].associate) {
-          models[modelName].associate(models)
-        }
-      })
-   */
 }
 
 loadModels()

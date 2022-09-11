@@ -1,7 +1,12 @@
 <template>
   <div class="col">
     <div class="row">
-      <apexchart :options="options" :series="data" class="chart" type="line" />
+      <apexchart
+        :options="chartOptions"
+        :series="graphData"
+        class="chart"
+        type="line"
+      />
     </div>
   </div>
 </template>

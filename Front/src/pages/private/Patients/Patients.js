@@ -14,7 +14,6 @@ class Patients extends Vue {
   pagination = PaginationUtils.create({
     url: "/api/patient/",
     infinite: true,
-    method: "get",
   });
 
   columns = [

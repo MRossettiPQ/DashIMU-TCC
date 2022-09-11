@@ -20,7 +20,7 @@ module.exports = (async () => {
     app.use(express.static('public'))
 
     // Parse requests of content-type - application/json
-    app.use(bodyParser.json())
+    app.use(bodyParser.json({ limit: '50mb' }))
 
     // Parse requests of content-type - application/x-www-form-urlencoded
     app.use(bodyParser.urlencoded({ extended: true }))

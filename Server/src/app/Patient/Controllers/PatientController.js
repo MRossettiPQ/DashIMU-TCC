@@ -33,7 +33,7 @@ exports.postSavePatient = async (req, res) => {
     await throwSuccess({
       content: patient,
       message: 'Patient save successful',
-      log: '[POST] - /api/patient - success save',
+      log: '\x1b[32m[POST] - /api/patient - success save\x1b[0m',
       res,
     })
   } catch (e) {
@@ -56,7 +56,7 @@ exports.getPatientList = async (req, res) => {
 
     await throwSuccess({
       content: { resultList: patient },
-      log: '[GET] - /api/patient - Patient founded',
+      log: '\x1b[32m[GET] - /api/patient - Patient founded\x1b[0m',
       res,
     })
   } catch (e) {
@@ -79,7 +79,7 @@ exports.getPatient = async (req, res) => {
 
     await throwSuccess({
       content: patient,
-      log: '\x1b[32m[GET] - /api/patient/:id - Patient founded',
+      log: '\x1b[32m[GET] - /api/patient/:id - Patient founded\x1b[0m',
       res,
     })
   } catch (e) {

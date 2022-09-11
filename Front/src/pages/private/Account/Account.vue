@@ -2,7 +2,7 @@
   <section class="responsive-height">
     <div class="row responsive-content form-column">
       <div v-if="bean !== null" class="col p-16">
-        <h1>Account de {{ bean.nomeUser }}</h1>
+        <h1>Profile {{ bean.name }}</h1>
         <q-form ref="mainForm" greedy>
           <q-card bordered class="form-column" flat>
             <q-card-section class="col form-lines form-lines__gap">

@@ -20,6 +20,11 @@ class SessionService {
     const { data } = await Axios.post(`/api/session`, bean);
     return data?.content;
   }
+
+  async getCalculationVariabilityCenter(id) {
+    const { data } = await Axios.get(`/api/session/${id}/scilab`);
+    return data?.content;
+  }
 }
 
 export default new SessionService();

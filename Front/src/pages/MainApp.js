@@ -44,13 +44,13 @@ class MainApp extends Vue {
       link: "/patients",
       inLogged: false,
     },
-    {
+    /*  {
       title: "Settings",
       caption: "View settings",
       icon: "settings",
       link: "/settings",
       inLogged: false,
-    },
+    }, */
   ];
 
   get logged() {

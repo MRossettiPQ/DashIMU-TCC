@@ -29,7 +29,7 @@ class Session extends Vue {
   idPatient;
 
   get numberOfMeasurements() {
-    return this.sensors[0].data.length;
+    return this.sensors[0].measurements.length;
   }
 
   async mounted() {
@@ -59,15 +59,11 @@ class Session extends Vue {
       name: "Yaw",
       data: [],
     },
-    {
-      name: "sensorName",
-      data: [],
-    },
   ];
 
   sensors = [
     {
-      tab_label: "Sensor 1",
+      sensorName: "Sensor 1",
       tab_name: "Sensor_1",
       label: "Connect Sensor 1",
       device: {
@@ -77,10 +73,10 @@ class Session extends Vue {
         corBtn: "primary",
         corTab: "",
       },
-      data: [],
+      measurements: [],
     },
     {
-      tab_label: "Sensor 2",
+      sensorName: "Sensor 2",
       tab_name: "Sensor_2",
       label: "Connect Sensor 2",
       device: {
@@ -90,15 +86,9 @@ class Session extends Vue {
         corBtn: "primary",
         classTab: "",
       },
-      data: [],
+      measurements: [],
     },
   ];
-
-  options = {
-    chart: {
-      id: "real-time",
-    },
-  };
 
   connectSensor(id) {
     let url = `ws://${this.sensors[id].device.ip}:8080`;
@@ -159,7 +149,7 @@ class Session extends Vue {
     // eslint-disable-next-line no-unused-vars
     data.map((campo, index) => {
       // adiciona leitura ao sensor recebido
-      this.sensors[id].data.push(campo);
+      this.sensors[id].measurements.push(campo);
       // adiciona leitura ao grafico
       this.renderRows[1].data.push(campo.numberMensuration);
       this.renderRows[2].data.push(campo.Roll);
@@ -203,7 +193,7 @@ class Session extends Vue {
     this.sensors.map((item, index) => {
       if (item.device.active === true) {
         item.device.connection.send(JSON.stringify({ cmd: 3 }));
-        item.data = [];
+        item.measurements = [];
       }
     });
   }
@@ -211,16 +201,13 @@ class Session extends Vue {
   async saveSession() {
     try {
       this.loadingSave = true;
-      let sensorList = [];
-      this.sensors.map((item) => {
-        sensorList.push(item.data);
-      });
+
       const data = await SessionService.postSession({
         sessionParams: {
           ...this.sessionBean,
           patientIdPatient: this.bean.idPatient,
         },
-        sensorList,
+        gyro_sensors: this.sensors,
       });
     } catch (e) {
       console.log(e);
@@ -240,7 +227,7 @@ class Session extends Vue {
   addSensor() {
     const id = this.sensors.length + 1;
     this.sensors.push({
-      tab_label: "Session " + id,
+      sensorName: "Session " + id,
       tab_name: "Sensor_" + id,
       label: "Connect Sensor " + id,
       device: {
@@ -250,33 +237,42 @@ class Session extends Vue {
         corBtn: "primary",
         classTab: "",
       },
-      data: [],
+      measurements: [],
     });
   }
 
   addLeituraTeste() {
-    this.sensors.map((sensor, index) => {
-      sensor.data.push({
-        sensorName: index,
-        hourMensuration: index,
-        numberMensuration: index,
-        Acc_X: index,
-        Acc_Y: index,
-        Acc_Z: index,
-        AccelX_mss: index,
-        AccelY_mss: index,
-        AccelZ_mss: index,
-        Gyr_X: index,
-        Gyr_Y: index,
-        Gyr_Z: index,
-        Mag_X: index,
-        Mag_Y: index,
-        Mag_Z: index,
-        Roll: index,
-        Pitch: index,
-        Yaw: index,
+    console.log("addLeituraTeste");
+    let iterator = 0;
+    while (iterator < 1000) {
+      iterator++;
+      this.sensors.map((sensor, index) => {
+        sensor.measurements.push({
+          sensorName: sensor.sensorName,
+          hourMensuration: index,
+          numberMensuration: sensor.measurements.length,
+          Acc_X: index,
+          Acc_Y: index,
+          Acc_Z: index,
+          AccelX_mss: index,
+          AccelY_mss: index,
+          AccelZ_mss: index,
+          Gyr_X: index,
+          Gyr_Y: index,
+          Gyr_Z: index,
+          Mag_X: index,
+          Mag_Y: index,
+          Mag_Z: index,
+          Roll: this.getRandomArbitrary(90, 80),
+          Pitch: this.getRandomArbitrary(90, 70),
+          Yaw: this.getRandomArbitrary(90, 70),
+        });
       });
-    });
+    }
+  }
+
+  getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
   }
 }
 

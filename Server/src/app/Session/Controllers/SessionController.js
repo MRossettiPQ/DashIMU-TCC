@@ -1,39 +1,42 @@
-const { Measurement, Session } = require('../../../core/DataBase')
+const { Measurement, GyroSensor, Session } = require('../../../core/DataBase')
 const UserContext = require('../../../core/utils/UserContext')
 const {
   throwSuccess,
   throwNotFoundIf,
 } = require('../../../core/Utils/RequestUtil')
+const { calculationVariabilityCenter } = require('../Services/SciLabServices')
 
 exports.postSaveSession = async (req, res) => {
   console.log('[POST] - /api/session')
   try {
     const idUserContext = await UserContext.getUserContextId(req, res)
 
-    let { sessionParams, sensorList } = req.body
-
-    let bulkMeasurement = []
-    // Turns data from multiple sensors into one big list
-    sensorList.map((sensor) => bulkMeasurement.push(...sensor))
+    let { sessionParams, gyro_sensors } = req.body
 
     const newSession = await Session.create(
       {
         ...sessionParams,
         userIdUser: idUserContext,
-        Measurement: bulkMeasurement,
+        gyro_sensors,
       },
       {
         include: [
           {
-            model: Measurement,
-            as: 'Measurement',
+            model: GyroSensor,
+            include: [
+              {
+                model: Measurement,
+              },
+            ],
           },
         ],
       }
     )
 
+    const variabilityCenter = await calculationVariabilityCenter(newSession)
+
     await throwSuccess({
-      content: newSession,
+      content: variabilityCenter,
       message: 'Session save successful',
       log: '[POST] - /api/session - success save',
       res,
@@ -50,10 +53,14 @@ exports.getMensurationList = async (req, res) => {
     const { limit, page, field } = req.query
 
     const mensurationList = await Measurement.findAll({
-      where: {
-        sessionIdSession: idSession,
-      },
-      as: 'Measurement',
+      include: [
+        {
+          model: GyroSensor,
+          where: {
+            sessionIdSession: idSession,
+          },
+        },
+      ],
     })
 
     await throwNotFoundIf({
@@ -61,8 +68,6 @@ exports.getMensurationList = async (req, res) => {
       log: '[GET] - /api/session/:id/mensuration - not founded',
       res,
     })
-
-    console.log(mensurationList)
 
     await throwSuccess({
       content: {

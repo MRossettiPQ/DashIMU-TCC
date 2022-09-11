@@ -1,6 +1,8 @@
 import { Component, Prop, Ref, Vue } from "vue-property-decorator";
 import DialogHeader from "components/DialogHeader/DialogHeader.vue";
+import VariabilityCenter from "./VariabilityCenter.vue";
 import { PaginationUtils } from "src/commons/utils/PaginationUtils";
+import DialogUtils from "src/commons/utils/DialogUtils";
 
 @Component({
   name: "measurement-history",
@@ -16,6 +18,7 @@ class MeasurementHistory extends Vue {
   loading = false;
   pagination = [];
   filter = "";
+  variabilityCenter = {};
 
   columns = [
     {
@@ -66,6 +69,16 @@ class MeasurementHistory extends Vue {
         infinite: true,
       });
       await this.pagination.search();
+    }
+  }
+
+  async getCalculationVariabilityCenter() {
+    try {
+      const data = await DialogUtils.asyncDialog(VariabilityCenter, {
+        id: this.id,
+      });
+    } catch (e) {
+      console.log(e);
     }
   }
 }

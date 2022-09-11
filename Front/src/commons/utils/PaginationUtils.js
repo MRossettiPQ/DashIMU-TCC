@@ -1,5 +1,8 @@
 import { Axios } from "../utils/AxiosUtils";
 import _ from "lodash";
+import Vue from "vue";
+
+const { $q } = Vue.prototype;
 
 // Class
 class Pagination {
@@ -10,22 +13,31 @@ class Pagination {
     listContentAttr = "content",
     onNewPage,
     method,
-    axiosApi
+    axiosApi,
+    createPagination,
+    showLoading
   ) {
     // Startup parameters
+    this.createPagination = createPagination;
+    this.showLoading = showLoading;
     this.axiosApi = axiosApi;
     this.url = url;
-    this.params = { ...{ page: 1, limit: 10, fields: null }, ...params }; // Default
-    this.fixedParams = _.cloneDeep(this.params);
+    this.paginationParams = {
+      ...{ page: 1, limit: 10, fields: null },
+      ...params,
+    }; // Default
+    this.params = createPagination ? this.paginationParams : params; // Default
 
     this.infinite = infinite;
     this.list = [];
+    this.data = null;
 
     this.listContentAttr = listContentAttr;
     this.next = false;
     this.prev = false;
     this.more = false;
     this.loading = false;
+    this.dataLoaded = false;
 
     // Callback function
     this.onNewPage = onNewPage;
@@ -61,6 +73,9 @@ class Pagination {
 
   async loadMore() {
     try {
+      if (!this.createPagination) {
+        return;
+      }
       if (!this.more) {
         return;
       }
@@ -73,6 +88,9 @@ class Pagination {
 
   async loadNext() {
     try {
+      if (!this.createPagination) {
+        return;
+      }
       if (!this.more) {
         return;
       }
@@ -85,6 +103,9 @@ class Pagination {
 
   async loadPrev() {
     try {
+      if (!this.createPagination) {
+        return;
+      }
       if (this.params.page < 2) {
         return;
       }
@@ -97,14 +118,17 @@ class Pagination {
 
   async search(params = {}, body = {}) {
     try {
+      if (this.showLoading) {
+        $q.loading.show();
+      }
       this.loading = true;
 
-      if (params) {
-        this.params = Object.assign({}, this.fixedParams, params);
+      if (this.createPagination && params) {
+        this.params = Object.assign({}, this.paginationParams, params);
         this.list = [];
       }
-      let data;
 
+      let data;
       switch (this.method) {
         case "get":
           ({ data } = await this.axiosApi.get(this.url, {
@@ -129,87 +153,31 @@ class Pagination {
 
       let content = _.get(data, this.listContentAttr);
 
-      this.list = this.infinite
-        ? [...this.list, ...content.resultList]
-        : content.resultList;
-      this.params.page = content.page;
-      this.params.rpp = content.rpp;
+      if (this.createPagination) {
+        this.list = this.infinite
+          ? [...this.list, ...content.resultList]
+          : content.resultList;
+        this.params.page = content.page;
+        this.params.rpp = content.rpp;
 
-      this.prev = content.page > 1;
-      this.next = this.more = content.more;
+        this.prev = content.page > 1;
+        this.next = this.more = content.more;
+      } else {
+        this.data = content;
+      }
 
       if (this.onNewPage) {
         this.onNewPage(data.content);
       }
+      this.dataLoaded = true;
+      console.log(this.dataLoaded);
     } catch (e) {
       this.error = true;
     } finally {
       this.loading = false;
-    }
-  }
-}
-
-class Fetch {
-  constructor(url, params, onFetch, method, axiosApi) {
-    // Startup parameters
-    this.axiosApi = axiosApi;
-    this.url = url;
-    this.params = { ...{ page: 1, limit: 10 }, ...params }; // Default
-    this.fixedParams = _.cloneDeep(this.params);
-
-    this.loading = false;
-
-    // Callback function
-    this.onFetch = onFetch;
-
-    // Post or Get
-    this.method = method;
-    this.lastBody = {}; // to Post method
-  }
-
-  isEmpty() {
-    return this.list && this.list.length === 0;
-  }
-
-  async search(params = {}, body = {}) {
-    try {
-      this.loading = true;
-
-      if (params) {
-        this.params = Object.assign({}, this.fixedParams, params);
-        this.list = [];
+      if (this.showLoading) {
+        $q.loading.hide();
       }
-      let data;
-
-      switch (this.method) {
-        case "get":
-          ({ data } = await this.axiosApi.get(this.url, {
-            params: this.params,
-          }));
-          break;
-
-        case "post":
-          if (!body) {
-            body = this.lastBody;
-          }
-          this.lastBody = body;
-          ({ data } = await this.axiosApi.post(this.url, body, {
-            params: this.params,
-          }));
-          break;
-
-        default:
-          console.error("Incorrect pagination method");
-          break;
-      }
-
-      if (this.onFetch) {
-        this.onFetch(data.content);
-      }
-    } catch (e) {
-      this.error = true;
-    } finally {
-      this.loading = false;
     }
   }
 }
@@ -224,6 +192,8 @@ export class PaginationUtils {
     onNewPage,
     method = "get",
     axiosApi = Axios,
+    createPagination = true,
+    showLoading = false,
   }) {
     return new Pagination(
       url,
@@ -232,7 +202,9 @@ export class PaginationUtils {
       listContentAttr,
       onNewPage,
       method,
-      axiosApi
+      axiosApi,
+      createPagination,
+      showLoading
     );
   }
 }
@@ -241,10 +213,24 @@ export class FetchUtils {
   static create({
     url,
     params = {},
-    onFetch,
+    infinite = false,
+    listContentAttr = "content",
+    onNewPage,
     method = "get",
     axiosApi = Axios,
+    createPagination = false,
+    showLoading = true,
   }) {
-    return new Fetch(url, params, onFetch, method, axiosApi);
+    return new Pagination(
+      url,
+      params,
+      infinite,
+      listContentAttr,
+      onNewPage,
+      method,
+      axiosApi,
+      createPagination,
+      showLoading
+    );
   }
 }

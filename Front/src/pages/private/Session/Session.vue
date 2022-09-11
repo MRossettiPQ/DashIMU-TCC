@@ -34,7 +34,7 @@
               v-for="(sensor, index) in sensors"
             >
               <tab-measurement-table
-                :data="sensor.data"
+                :data="sensor.measurements"
                 :patient="bean"
                 :label="'Spreadsheet ' + (index + 1)"
               />

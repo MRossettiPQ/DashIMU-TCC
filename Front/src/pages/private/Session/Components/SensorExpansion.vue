@@ -22,7 +22,7 @@
               v-for="(sensor, index) in sensors"
               :key="index"
               :content-class="sensor.device.corTab"
-              :label="sensor.tab_label"
+              :label="sensor.sensorName"
               :name="sensor.tab_name"
               icon="sensors"
             />

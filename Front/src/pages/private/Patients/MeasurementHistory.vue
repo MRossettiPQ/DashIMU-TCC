@@ -32,6 +32,18 @@
                 <q-icon name="search" />
               </template>
             </q-input>
+            <q-space />
+            <q-btn
+              :disable="loading"
+              :loading="loading"
+              :label="
+                !$q.platform.is.mobile ? 'Calculation Variability Center' : null
+              "
+              color="primary"
+              dense
+              unelevated
+              @click="getCalculationVariabilityCenter"
+            />
           </template>
         </q-table>
       </q-card-section>

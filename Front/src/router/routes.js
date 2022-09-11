@@ -15,12 +15,12 @@ export const routes = [
             path: "home",
             component: () => import("pages/public/Home/Home.vue"),
           },
-          {
+          /*{
             name: "access.settings",
             path: "settings",
             component: () =>
               import("pages/public/Configuration/Configuration.vue"),
-          },
+          },*/
           {
             name: "access.login",
             path: "login",
@@ -71,7 +71,7 @@ export const RouteBeforeGuard = async (to, from, next) => {
     "access.login",
     "access.register",
     "access.home",
-    "access.configuration",
+    //"access.configuration",
   ];
   // TODO Hide when logged
   let hideWhenLogged = ["access.login", "access.register"];
