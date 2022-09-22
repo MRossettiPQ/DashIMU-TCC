@@ -17,7 +17,7 @@ module.exports = (sequelize, Sequelize) => {
   })
 
   Session.associate = (models) => {
-    Session.hasMany(models.GyroSensor, {
+    Session.hasMany(models.Sensor, {
       onDelete: 'CASCADE',
     })
     Session.belongsTo(models.Patient)

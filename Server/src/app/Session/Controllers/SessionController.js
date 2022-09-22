@@ -1,4 +1,4 @@
-const { Measurement, GyroSensor, Session } = require('../../../core/DataBase')
+const { GyroMeasurement, Sensor, Session } = require('../../../core/DataBase')
 const UserContext = require('../../../core/utils/UserContext')
 const {
   throwSuccess,
@@ -11,21 +11,21 @@ exports.postSaveSession = async (req, res) => {
   try {
     const idUserContext = await UserContext.getUserContextId(req, res)
 
-    let { sessionParams, gyro_sensors } = req.body
+    let { sessionParams, sensors } = req.body
 
     const newSession = await Session.create(
       {
         ...sessionParams,
         userIdUser: idUserContext,
-        gyro_sensors,
+        sensors,
       },
       {
         include: [
           {
-            model: GyroSensor,
+            model: Sensor,
             include: [
               {
-                model: Measurement,
+                model: GyroMeasurement,
               },
             ],
           },
@@ -33,12 +33,15 @@ exports.postSaveSession = async (req, res) => {
       }
     )
 
-    const variabilityCenter = await calculationVariabilityCenter(newSession)
+    const variabilityCenter = await calculationVariabilityCenter({
+      sensors: newSession.sensors,
+      session: newSession,
+    })
 
     await throwSuccess({
       content: variabilityCenter,
       message: 'Session save successful',
-      log: '[POST] - /api/session - success save',
+      log: '\x1b[32m[POST] - /api/session - success save\x1b[0m',
       res,
     })
   } catch (e) {
@@ -52,10 +55,10 @@ exports.getMensurationList = async (req, res) => {
     const { id: idSession } = req.params
     const { limit, page, field } = req.query
 
-    const mensurationList = await Measurement.findAll({
+    const mensurationList = await GyroMeasurement.findAll({
       include: [
         {
-          model: GyroSensor,
+          model: Sensor,
           where: {
             sessionIdSession: idSession,
           },
@@ -73,7 +76,7 @@ exports.getMensurationList = async (req, res) => {
       content: {
         resultList: mensurationList,
       },
-      log: '[GET] - /api/session/:id/mensuration - founded',
+      log: '\x1b[32m[GET] - /api/session/:id/mensuration - founded\x1b[0m',
       res,
     })
   } catch (e) {
@@ -104,7 +107,7 @@ exports.getSessionList = async (req, res) => {
       content: {
         resultList: sessionList,
       },
-      log: '[GET] - /api/session - founded',
+      log: '\x1b[32m[GET] - /api/session - founded\x1b[0m',
       res,
     })
   } catch (e) {
@@ -128,7 +131,7 @@ exports.getSession = async (req, res) => {
 
     await throwSuccess({
       content: session,
-      log: '[GET] - /api/session/:id - founded',
+      log: '\x1b[32m[GET] - /api/session/:id - founded\x1b[0m',
       res,
     })
   } catch (e) {

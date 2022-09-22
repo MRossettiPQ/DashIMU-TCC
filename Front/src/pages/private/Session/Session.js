@@ -29,7 +29,11 @@ class Session extends Vue {
   idPatient;
 
   get numberOfMeasurements() {
-    return this.sensors[0].measurements.length;
+    return this.sensors[0].gyro_measurements.length;
+  }
+
+  get inDev() {
+    return process.env.DEV;
   }
 
   async mounted() {
@@ -42,24 +46,9 @@ class Session extends Vue {
     }
   }
 
-  renderRows = [
-    {
-      name: "numberMensuration",
-      data: [],
-    },
-    {
-      name: "Roll",
-      data: [],
-    },
-    {
-      name: "Pitch",
-      data: [],
-    },
-    {
-      name: "Yaw",
-      data: [],
-    },
-  ];
+  get sensorsData() {
+    return this.sensors;
+  }
 
   sensors = [
     {
@@ -73,7 +62,7 @@ class Session extends Vue {
         corBtn: "primary",
         corTab: "",
       },
-      measurements: [],
+      gyro_measurements: [],
     },
     {
       sensorName: "Sensor 2",
@@ -86,7 +75,7 @@ class Session extends Vue {
         corBtn: "primary",
         classTab: "",
       },
-      measurements: [],
+      gyro_measurements: [],
     },
   ];
 
@@ -139,23 +128,13 @@ class Session extends Vue {
     this.setDisconnected(id);
   }
 
+  calibrateSensor(id) {
+    this.sensors[id].device.connection.send(JSON.stringify({ cmd: 4 }));
+  }
+
   addMensuration(data, id) {
-    // Reinicia grafico para ultimo json recebido
-    this.renderRows[1].data = [];
-    this.renderRows[2].data = [];
-    this.renderRows[3].data = [];
-    this.renderRows[4].data = [];
-    this.renderRows[5].data = [];
-    // eslint-disable-next-line no-unused-vars
     data.map((campo, index) => {
-      // adiciona leitura ao sensor recebido
-      this.sensors[id].measurements.push(campo);
-      // adiciona leitura ao grafico
-      this.renderRows[1].data.push(campo.numberMensuration);
-      this.renderRows[2].data.push(campo.Roll);
-      this.renderRows[3].data.push(campo.Pitch);
-      this.renderRows[4].data.push(campo.Yaw);
-      this.renderRows[5].data.push(campo.sensorName);
+      this.sensors[id].gyro_measurements.push(campo);
     });
   }
 
@@ -207,7 +186,7 @@ class Session extends Vue {
           ...this.sessionBean,
           patientIdPatient: this.bean.idPatient,
         },
-        gyro_sensors: this.sensors,
+        sensors: this.sensors,
       });
     } catch (e) {
       console.log(e);
@@ -237,7 +216,7 @@ class Session extends Vue {
         corBtn: "primary",
         classTab: "",
       },
-      measurements: [],
+      gyro_measurements: [],
     });
   }
 
@@ -247,10 +226,13 @@ class Session extends Vue {
     while (iterator < 1000) {
       iterator++;
       this.sensors.map((sensor, index) => {
-        sensor.measurements.push({
+        const number = sensor.gyro_measurements.length
+          ? sensor.gyro_measurements.length
+          : 0;
+        sensor.gyro_measurements.push({
           sensorName: sensor.sensorName,
           hourMensuration: index,
-          numberMensuration: sensor.measurements.length,
+          numberMensuration: number,
           Acc_X: index,
           Acc_Y: index,
           Acc_Z: index,

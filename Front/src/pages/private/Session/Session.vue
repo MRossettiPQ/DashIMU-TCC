@@ -25,7 +25,7 @@
 
           <q-tab-panels v-model="tabPanel" animated>
             <q-tab-panel name="Tab_1">
-              <tab-graph :data="renderRows" :options="options" label="Graph" />
+              <tab-graph :data="sensorsData" label="Graph" />
             </q-tab-panel>
 
             <q-tab-panel
@@ -34,7 +34,7 @@
               v-for="(sensor, index) in sensors"
             >
               <tab-measurement-table
-                :data="sensor.measurements"
+                :data="sensor.gyro_measurements"
                 :patient="bean"
                 :label="'Spreadsheet ' + (index + 1)"
               />
@@ -42,10 +42,7 @@
           </q-tab-panels>
         </div>
         <div class="col">
-          <q-card-section
-            class="col form-column form-column__gap"
-            v-show="numberOfConnections >= 2"
-          >
+          <q-card-section class="col form-column form-column__gap">
             <div class="col form-lines form-lines__gap form-lines__no-padding">
               <q-btn
                 class="col"
@@ -82,6 +79,7 @@
                 @addSensor="addSensor"
                 @connectSensor="connectSensor($event)"
                 @disconnectSensor="disconnectSensor($event)"
+                @calibrateSensor="calibrateSensor($event)"
               />
               <patient-expansion :bean="bean" />
               <complete-session-expansion
@@ -95,18 +93,12 @@
 
           <q-card-section>
             <q-btn
+              v-if="inDev"
               color="primary"
               label="add leitura"
               size="md"
               unelevated
               @click="addLeituraTeste"
-            />
-            <q-btn
-              color="primary"
-              label="Force save  ..."
-              size="md"
-              unelevated
-              @click="saveSession"
             />
           </q-card-section>
         </div>

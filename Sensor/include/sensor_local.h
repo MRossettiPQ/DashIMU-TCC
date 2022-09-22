@@ -3,56 +3,61 @@
 
 #include <config.h>
 
-void InicializarIMU() {
-    // Inicialização do IMU
+void InitIMU() {
+    // IMU initialization
     do {
         Wire.begin();
-        if (!mpu.setup(ADDR_SENSOR)) {
-            Serial.println("[SENSOR] - Não foi inicializada, Confira a ligação da IMU com o ESP32 e reinicie o aparelho");
-            Serial.println("[SENSOR] - Status: " + status);
+        if (!mpu.setup(ADDRESS_SENSOR)) {
+            Serial.println("[SENSOR] - It has not been initialized, Check the connection between the IMU and the ESP32 and restart the device");
+            Serial.println(&"[SENSOR] - Status: " [ status]);
         } else {
-            Serial.println("[SENSOR] - IMU Inicializada");
+            Serial.println("[SENSOR] - IMU Initialized");
         }
         delay(500);
     } while (!mpu.available());
+    digitalWrite(LED_SENSOR_INITIALIZED, HIGH);
 }
 
-void CalibrarIMU() {
+void CalibrateIMU() {
 
     #if defined(ESP_PLATFORM) || defined(ESP32)
         EEPROM.begin(0x80);
     #endif
 
-    Serial.println("[SENSOR] - A calibração do Accel Gyro começará em 5 segundos");
-    Serial.println("[SENSOR] - Por favor, deixe o dispositivo ainda no plano");
+    Serial.println("[SENSOR] - Accel Gyro calibration will start in 5 seconds");
+    Serial.println("[SENSOR] - Please leave the device still on the plan");
     mpu.verbose(true);
     delay(5000);
+    digitalWrite(LED_SENSOR_CALIBRATION_PLAN, HIGH);
     mpu.calibrateAccelGyro();
+    digitalWrite(LED_SENSOR_CALIBRATION_PLAN, LOW);
 
-    Serial.println("[SENSOR] - A calibração magnética começará em 5 segundos");
-    Serial.println("[SENSOR] - Por favor, acene o dispositivo em uma figura oito até terminar");
-    delay(5000);
+    Serial.println("[SENSOR] - Magnetic calibration will start in 5 seconds");
+    Serial.println("[SENSOR] - Please wave the device in a figure eight until finished");
+    delay(5000);;
+    digitalWrite(LED_SENSOR_CALIBRATION_EIGHT, HIGH);
     mpu.calibrateMag();
+    digitalWrite(LED_SENSOR_CALIBRATION_EIGHT, LOW);
 
-    ImprimirCalibracaoIMU();
+    PrintIMUCalibration();
     mpu.verbose(false);
 
-    SalvarCalibracaoIMU();
+    SaveIMUCalibration();
 
-    CarregarCalibracaoIMU();
+    LoadIMUCalibration();
 }
 
-void SalvarCalibracaoIMU() {
-    Serial.println("[SENSOR] - Salvando calibração do sensor na EEPROM");
+void SaveIMUCalibration() {
+    Serial.println("[SENSOR] - Saving sensor operation in EEPROM");
     saveCalibration();
 }
 
-void CarregarCalibracaoIMU() {
-    Serial.println("[SENSOR] - Carregando calibração do sensor na EEPROM");
+void LoadIMUCalibration() {
+    Serial.println("[SENSOR] - Loading sensor calibration into EEPROM");
     loadCalibration();
 }
 
-void ImprimirCalibracaoIMU() {
+void PrintIMUCalibration() {
     Serial.println("< calibration parameters >");
     Serial.println("accel bias [g]: ");
     Serial.print(mpu.getAccBiasX() * 1000.f / (float) MPU9250::CALIB_ACCEL_SENSITIVITY);
@@ -84,21 +89,21 @@ void ImprimirCalibracaoIMU() {
     Serial.println();
 }
 
-String RetornaValoresIMU(int NumeroLeitura) {
+String ReturnsJSONFromMeasurement(int MeasurementNumber) {
     horaLeitura = timeClient.getFormattedTime();
-    // Acelerometro
+    // Accelerometer
     double AccelX_mss = mpu.getAccBiasX() * 1000.f / (float) MPU9250::CALIB_ACCEL_SENSITIVITY;
     double AccelY_mss = mpu.getAccBiasY() * 1000.f / (float) MPU9250::CALIB_ACCEL_SENSITIVITY;
     double AccelZ_mss = mpu.getAccBiasZ() * 1000.f / (float) MPU9250::CALIB_ACCEL_SENSITIVITY;
-    // Aceleração Linear
+    // Accelerometer Linear
     double AccelX_Lin = mpu.getLinearAccX();
     double AccelY_Lin = mpu.getLinearAccY();
     double AccelZ_Lin = mpu.getLinearAccZ();
-    // Giroscopio
+    // Gyroscope
     double GyroX_rads = mpu.getGyroBiasX() / (float) MPU9250::CALIB_GYRO_SENSITIVITY;
     double GyroY_rads = mpu.getGyroBiasY() / (float) MPU9250::CALIB_GYRO_SENSITIVITY;
     double GyroZ_rads = mpu.getGyroBiasZ() / (float) MPU9250::CALIB_GYRO_SENSITIVITY;
-    // Magnetometro
+    // Magnetometer
     double MagX_uT = mpu.getMagBiasX();
     double MagY_uT = mpu.getMagBiasY();
     double MagZ_uT = mpu.getMagBiasZ();
@@ -107,11 +112,11 @@ String RetornaValoresIMU(int NumeroLeitura) {
     double Pitch = mpu.getPitch();
     double Yaw = mpu.getYaw();
 
-    //------------LEITURA DO SENSOR-----------
+    //-----------------Sensor----------------
     String Leitura = "{\"sensorName\":\"";
-    Leitura += ID_SENSOR;
+    Leitura += nameSensor;
     Leitura += "\",\"numberMensuration\":\"";
-    Leitura += NumeroLeitura;
+    Leitura += MeasurementNumber;
     Leitura += "\",\"hourMensuration\":\"";
     Leitura += horaLeitura;
     //--------------Acelerometro--------------
@@ -154,14 +159,14 @@ String RetornaValoresIMU(int NumeroLeitura) {
     return Leitura;
 }
 
-void PararMedicao(){
+void StopMeasurement(){
     jsonBufferServer = "";
-    numeroLeitura = 0;
+    numberMeasurement = 0;
 }
 
-void ReiniciarMedicao(){
-    PararMedicao();
-    cmdAtual = 1;
+void RestartMeasurement(){
+    StopMeasurement();
+    cmdActual = 1;
 }
 
 #endif //SENSOR_SENSOR_LOCAL_H

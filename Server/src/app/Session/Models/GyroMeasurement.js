@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-  const Measurement = sequelize.define('measurements', {
+  const GyroMeasurement = sequelize.define('gyro_measurements', {
     idMeasurement: {
       type: Sequelize.INTEGER,
       primaryKey: true,
@@ -62,10 +62,10 @@ module.exports = (sequelize, Sequelize) => {
     },
   })
 
-  Measurement.associate = (models) => {
-    Measurement.belongsTo(models.GyroSensor)
-    return Measurement
+  GyroMeasurement.associate = (models) => {
+    GyroMeasurement.belongsTo(models.Sensor)
+    return GyroMeasurement
   }
 
-  return Measurement
+  return GyroMeasurement
 }

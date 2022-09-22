@@ -29,6 +29,7 @@
             mask="###.###.###-##"
           />
           <q-input
+            v-if="false"
             filled
             v-model="bean.birthday"
             :rules="[$validators.notBlank, $validators.dateBorn]"

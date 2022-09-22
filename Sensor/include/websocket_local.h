@@ -3,70 +3,72 @@
 
 #include <config.h>
 
-void InicializarClienteWebsocket() {
+void InitWebsocketClient() {
     do {
-        Serial.println("[SENSOR] - Iniciando o cliente Websocket");
-        conectadoWebsocketCliente = clientBackEnd.connect(WEBSOCKET_SERVER_API_PORT, WEBSOCKET_CLIENT_PORT, "/socket");
-        if (conectadoWebsocketCliente) {
-            Serial.println("[SENSOR] - Conectado com o servidor!");
-            clientBackEnd.send(enderecoESP);
+        Serial.println("[SENSOR] - Starting the Websocket Client");
+        connectedWebsocketClient = clientBackEnd.connect(WEBSOCKET_CLIENT_API, WEBSOCKET_CLIENT_PORT, "/socket");
+        if (connectedWebsocketClient) {
+            Serial.println("[SENSOR] - Connected with the server!");
+            clientBackEnd.send(addressESP);
         } else {
-            Serial.println("[SENSOR] - Não conectado com o servidor!");
+            Serial.println("[SENSOR] - Not connected to the server!");
         }
-    } while (!conectadoWebsocketCliente);
+    } while (!connectedWebsocketClient);
+    digitalWrite(LED_CLIENT_CONNECTED, HIGH);
 
     // Callback when messages are received
-    clientBackEnd.onMessage([&](WebsocketsMessage message) {
+    clientBackEnd.onMessage([&](const WebsocketsMessage &message) {
         Serial.print("Got Message: ");
         Serial.println(message.data());
     });
 }
 
-void InicializarServidorWebsocket() {
-    Serial.println("[SENSOR] - Iniciando o servidor Websocket");
+void InitWebsocketServer() {
+    Serial.println("[SENSOR] - Starting the Websocket Server");
     do {
         serverSocket.listen(WEBSOCKET_SERVER_PORT);
-        Serial.println("[SENSOR] - Socket server disponivel? " + serverSocket.available());
+        Serial.println(&"[SENSOR] - Socket server available? "[serverSocket.available()]);
     } while (!serverSocket.available());
 
-    enderecoESP = WiFi.localIP().toString();
-    Serial.print("[SENSOR] - Endereço IP:\t" + enderecoESP + ":" + WEBSOCKET_SERVER_PORT);
+    addressESP = WiFi.localIP().toString();
+    Serial.print("[SENSOR] - IP Address:\t" + addressESP + ":" + WEBSOCKET_SERVER_PORT);
+    digitalWrite(LED_SERVER_CREATED, HIGH);
 }
 
-void MontaEnviaBuffer() {
-    Serial.println("[SENSOR] - Montar buffer de leituras");
-    if(mpu.update()){
-        Serial.println("[SENSOR] - Comando recebido:" + optRecebidoCliente);
-        Serial.println("[SENSOR] - Comando em vigor:" + cmdAtual);
-        jsonBufferServer += RetornaValoresIMU(numeroLeitura);
+void MountBufferToSend() {
+    Serial.println("[SENSOR] - Mount read buffer");
+    if (mpu.update()) {
+        Serial.println(&"[SENSOR] - Command received:"[optReceivedFromCustomer]);
+        Serial.println(&"[SENSOR] - Command in force:"[cmdActual]);
+        jsonBufferServer += ReturnsJSONFromMeasurement(numberMeasurement);
 
-        // Buffer de 320 leituras
-        if (numeroLeitura == (ultimoEnvio + 40)) {
+        // Buffer de 320 Measurement
+        if (numberMeasurement == (lastDispatch + 40)) {
             clientsList.send("[" + jsonBufferServer + "]");
-            ultimoEnvio = numeroLeitura;
+            lastDispatch = numberMeasurement;
             jsonBufferServer = "";
         } else {
-            // Para novo elemento no array
+            // For new element in array
             jsonBufferServer += ",";
         }
 
-        numeroLeitura = numeroLeitura + 1;
+        numberMeasurement = numberMeasurement + 1;
     }
 }
 
 void onMessageCallback(WebsocketsMessage message) {
     deserializeJson(doc, message.data());
-    Serial.println("[SENSOR] - Evento onMessage");
+    Serial.println("[SENSOR] - Event onMessage");
     Serial.println(message.data());
 }
 
 void onEventsCallback(WebsocketsEvent event, String data) {
-    switch(event){
+    switch (event) {
         case WebsocketsEvent::ConnectionOpened:
-            Serial.println("[SENSOR] - Connnection Opened");
+            Serial.println("[SENSOR] - Connection Opened");
             break;
         case WebsocketsEvent::ConnectionClosed:
-            Serial.println("[SENSOR] - Connnection Closed");
+            Serial.println("[SENSOR] - Connection Closed");
             break;
         case WebsocketsEvent::GotPing:
             Serial.println("[SENSOR] - Got a Ping!");
@@ -75,7 +77,7 @@ void onEventsCallback(WebsocketsEvent event, String data) {
             Serial.println("[SENSOR] - Got a Pong!");
             break;
         default:
-            Serial.println("[SENSOR] - Got a Pong!");
+            Serial.println("[SENSOR] - Got a default!");
             break;
     }
 }

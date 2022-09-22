@@ -3,30 +3,33 @@
 #include "sensor_local.h"
 #include "websocket_local.h"
 #include "wifi_local.h"
+#include "notification.h"
 
 void setup() {
     Serial.begin(115200);
-    //
-    InicializarIMU();
-    //
-    InicializarWiFi();
-    //
-    CalibrarIMU();
-    //
-    InicializarServidorWebsocket();
-    // Configurar fuso horario
+    //  Connect sensor
+    InitIMU();
+    //  Initialize notification
+    // InitNotification();
+    //  Wi-Fi
+    InitWiFi();
+    //  Calibrate sensor
+    CalibrateIMU();
+    //  Create server
+    InitWebsocketServer();
+    // Configure time zone
     timeClient.begin();
     timeClient.forceUpdate();
-    //
-    InicializarClienteWebsocket();
+    //  List server on backend
+    InitWebsocketClient();
 }
 
 void loop() {
     clientsList = serverSocket.accept();
-    Serial.println("[SENSOR] - Cliente conectou");
+    Serial.println("[SENSOR] - Customer connected");
     timeClient.update();
-    numeroLeitura = 0;
-    ultimoEnvio = 0;
+    numberMeasurement = 0;
+    lastDispatch = 0;
     do {
         if (clientsList.available()) {
             clientsList.poll();
@@ -34,42 +37,42 @@ void loop() {
         clientsList.onMessage(onMessageCallback);
         JsonObject obj = doc.as<JsonObject>();
 
-        optRecebidoCliente = obj["cmd"].as<int>();
-        Serial.println("[SENSOR] - Evento optRecebidoCliente" + optRecebidoCliente);
-        if (optRecebidoCliente != 0) {
-            cmdAtual = optRecebidoCliente;
+        optReceivedFromCustomer = obj["cmd"].as<int>();
+        Serial.println(&"[SENSOR] - Event optReceivedFromCustomer" [ optReceivedFromCustomer]);
+        if (optReceivedFromCustomer != 0) {
+            cmdActual = optReceivedFromCustomer;
         }
-        switch (cmdAtual) {
+        switch (cmdActual) {
             case 1:
-                Serial.println("[SENSOR] - Leitura");
-                MontaEnviaBuffer();
+                Serial.println("[SENSOR] - Measurement");
+                MountBufferToSend();
                 break;
 
             case 2:
-                Serial.println("[SENSOR] - Pausar");
+                Serial.println("[SENSOR] - Pause");
                 break;
 
             case 3:
-                Serial.println("[SENSOR] - Reiniciar");
-                ReiniciarMedicao();
+                Serial.println("[SENSOR] - Restart");
+                RestartMeasurement();
                 break;
 
             case 4:
-                PararMedicao();
-                Serial.println("[SENSOR] - Calibrar Session");
-                CalibrarIMU();
+                StopMeasurement();
+                Serial.println("[SENSOR] - Calibrate sensor");
+                CalibrateIMU();
                 break;
 
             case 5:
-                PararMedicao();
-                Serial.println("[SENSOR] - Salvar Calibraçao");
-                SalvarCalibracaoIMU();
+                StopMeasurement();
+                Serial.println("[SENSOR] - Save calibration");
+                SaveIMUCalibration();
                 break;
 
             case 6:
-                PararMedicao();
-                Serial.println("[SENSOR] - Resgatar Calibraçao");
-                CarregarCalibracaoIMU();
+                StopMeasurement();
+                Serial.println("[SENSOR] - Load calibration");
+                LoadIMUCalibration();
                 break;
 
             default:
@@ -79,7 +82,7 @@ void loop() {
         delay(8);
     } while (clientsList.available());
 
-    Serial.println("[SENSOR] - Nenhum cliente disponivel");
+    Serial.println("[SENSOR] - No customer available");
     clientsList.close();
 
     delay(100);

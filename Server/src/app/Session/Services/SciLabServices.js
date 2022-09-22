@@ -11,14 +11,20 @@ const {
   getIndexMinMax,
   getArraySqrt,
 } = require('../../../core/Utils/SciLab')
+const dayjs = require('dayjs')
 
-exports.calculationVariabilityCenter = async (sensors) => {
+exports.calculationVariabilityCenter = async ({
+  sensors,
+  session,
+  chartType = 'eChart',
+  rangeStart,
+  rangeEnd,
+}) => {
   console.log('[Service] - /api/session/:id/scilab')
-
   if (sensors?.length) {
     // Sensor 1
-    const sensor_1 = sensors[0].measurements
-    const tamanho = sensor_1?.length
+    const sensor_1 = sensors[0].gyro_measurements
+    const length = sensor_1?.length
 
     const pitch_1 = getColumn(sensor_1, 'Pitch')
     let yaw_1 = getColumn(sensor_1, 'Yaw')
@@ -31,7 +37,7 @@ exports.calculationVariabilityCenter = async (sensors) => {
     const z_1 = getColumn(sensor_1, 'Acc_Z')
 
     // Sensor 2
-    const sensor_2 = sensors[1].measurements
+    const sensor_2 = sensors[1].gyro_measurements
 
     const pitch_2 = getColumn(sensor_2, 'Pitch')
     let yaw_2 = getColumn(sensor_2, 'Yaw')
@@ -77,7 +83,7 @@ exports.calculationVariabilityCenter = async (sensors) => {
 
     //
     const atorn = []
-    for (let index = 0; index < tamanho; index++) {
+    for (let index = 0; index < length; index++) {
       atorn.push(90 - yaw_1[index] - pitch_2[index])
     }
 
@@ -124,10 +130,24 @@ exports.calculationVariabilityCenter = async (sensors) => {
     const mean_rms_r_pitch_1p = getMean(rms_r_pitch_1p)
     const sd_rms_r_pitch_1p = getStDeviation(rms_r_pitch_1p)
 
+    let chartOption = null
+    switch (chartType) {
+      case 'eChart':
+        chartOption = await this.getEChartOptions({
+          session,
+          max_atorn,
+          xAxis: getColumn(sensor_1, 'numberMensuration'),
+        })
+        break
+      default:
+        console.log('[SERVICE] Chart not supported')
+        break
+    }
     // Tempos
     return {
+      chartOption,
       atorn,
-      valor: {
+      values: {
         min_pitch,
         max_pitch,
         var_pitch,
@@ -140,5 +160,29 @@ exports.calculationVariabilityCenter = async (sensors) => {
         sd_rms_r_pitch_1p,
       },
     }
+  }
+}
+
+exports.getEChartOptions = async ({ session, max_atorn, xAxis }) => {
+  // reference -> https://echarts.apache.org/
+
+  return {
+    title: {
+      left: 'center',
+      text: `Session ${session.idSession} - ${dayjs(session.date).format(
+        'DD/MM/YYYY'
+      )}`,
+    },
+    yAxis: {
+      boundaryGap: [0, '100%'],
+      type: 'value',
+      max: max_atorn + 0.1 * max_atorn,
+    },
+    xAxis: {
+      type: 'category',
+      boundaryGap: false,
+      axisLine: { onZero: true },
+      data: xAxis,
+    },
   }
 }

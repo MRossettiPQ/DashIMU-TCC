@@ -51,6 +51,7 @@
             <q-form>
               <div class="row form-lines form-lines__gap">
                 <q-select
+                  v-if="sensorsOptions.length"
                   v-show="!sensor.device.active"
                   v-model="sensor.device.ip"
                   :options="sensorsOptions"
@@ -63,7 +64,7 @@
                 <q-input
                   :disable="sensor.device.active"
                   v-model="sensor.device.ip"
-                  :label="'IP Sensor ' + sensor.tab_label"
+                  :label="'IP ' + sensor.sensorName"
                   class="row"
                   filled
                   type="text"
@@ -77,6 +78,16 @@
                   size="lg"
                   unelevated
                   @click="connect(index)"
+                />
+
+                <q-btn
+                  v-show="sensor.device.active"
+                  :color="sensor.device.corBtn"
+                  class="row"
+                  label="Calibrate"
+                  size="lg"
+                  unelevated
+                  @click="calibrate(index)"
                 />
 
                 <q-btn

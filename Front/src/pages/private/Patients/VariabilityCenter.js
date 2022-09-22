@@ -1,12 +1,13 @@
 import { Component, Prop, Ref, Vue } from "vue-property-decorator";
 import DialogHeader from "components/DialogHeader/DialogHeader.vue";
-import { FetchUtils, PaginationUtils } from "src/commons/utils/PaginationUtils";
-import PatientService from "src/commons/services/PatientService";
-import SessionService from "src/commons/services/SessionService";
+import { FetchUtils } from "src/commons/utils/PaginationUtils";
+import * as echarts from "echarts";
 
 @Component({
   name: "measurement-history",
-  components: { DialogHeader },
+  components: {
+    DialogHeader,
+  },
 })
 class MeasurementHistory extends Vue {
   @Ref("dialog")
@@ -18,14 +19,8 @@ class MeasurementHistory extends Vue {
   @Prop()
   id;
 
+  fetchData = null;
   bean = null;
-  series = [
-    {
-      type: "line",
-      name: "variability-center",
-      data: [],
-    },
-  ];
 
   show() {
     this.dialog.show();
@@ -36,63 +31,98 @@ class MeasurementHistory extends Vue {
     this.dialog.hide();
   }
 
+  get dataLoaded() {
+    return this.fetchData?.dataLoaded;
+  }
+
+  get values() {
+    return this.bean?.values;
+  }
+
   async mounted() {
     try {
-      this.bean = FetchUtils.create({
+      this.fetchData = FetchUtils.create({
         url: `/api/session/${this.id}/scilab`,
       });
-      await this.bean.search();
-      if (this.bean.data !== null) {
-        this.series[0].data = this.bean.data.atorn;
+      await this.fetchData.search();
+      if (this.fetchData.data !== null) {
+        this.bean = this.fetchData.data;
+
+        console.log(this.bean);
+
+        if (this.bean?.chartOption) {
+          this.bean.chartOption.series = [
+            {
+              name: "Gyro Measurement",
+              type: "line",
+              symbol: "none",
+              sampling: "lttb",
+              itemStyle: {
+                color: "#1976D2",
+              },
+              areaStyle: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  {
+                    offset: 0,
+                    color: "#26A69A",
+                  },
+                  {
+                    offset: 1,
+                    color: "#1976D2",
+                  },
+                ]),
+              },
+              data: this.bean.atorn,
+            },
+          ];
+
+          this.makeChart({ options: this.bean?.chartOption });
+        }
       }
     } catch (e) {
       console.log(e);
     }
   }
 
-  get dataLoaded() {
-    return this.bean?.dataLoaded;
+  makeChart({ elementId = "eChart", options }) {
+    // reference -> https://echarts.apache.org/
+    const opts = {
+      toolbox: {
+        feature: {
+          dataZoom: {
+            yAxisIndex: "none",
+          },
+          restore: {},
+          saveAsImage: {},
+          dataView: { readOnly: true },
+          magicType: { type: ["line", "bar"] },
+        },
+      },
+      dataZoom: [
+        {
+          type: "inside",
+          start: 0,
+          end: 10,
+        },
+        {
+          start: 0,
+          end: 10,
+        },
+      ],
+      tooltip: {
+        trigger: "axis",
+        position: function (pt) {
+          return [pt[0], "10%"];
+        },
+      },
+      ...options,
+    };
+    console.log("makeChart", opts);
+    const myChart = echarts.init(document.getElementById(elementId), null, {
+      renderer: "svg",
+    });
+    myChart.setOption(opts);
   }
-
-  get graphData() {
-    return this.series;
-  }
-
-  chartOptions = {
-    chart: {
-      id: "variability-center",
-      type: "line",
-      zoom: {
-        enabled: true,
-      },
-      animations: {
-        enabled: false,
-      },
-      markers: {
-        size: 0,
-      },
-    },
-    stroke: {
-      curve: "straight",
-    },
-    xaxis: {
-      type: "decimal",
-      show: false,
-    },
-    yaxis: {
-      opposite: true,
-    },
-    tooltips: {
-      legend: {
-        display: false,
-      },
-      responsive: true,
-      maintainAspectRatio: false,
-    },
-    legend: {
-      horizontalAlign: "left",
-    },
-  };
 }
 
 export default MeasurementHistory;

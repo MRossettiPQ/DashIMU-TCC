@@ -39,6 +39,10 @@ class SensorExpansion extends Vue {
   addSensor() {
     this.$emit("addSensor");
   }
+
+  calibrate(index) {
+    this.$emit("calibrateSensor");
+  }
 }
 
 export default SensorExpansion;

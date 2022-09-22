@@ -170,7 +170,6 @@ class Pagination {
         this.onNewPage(data.content);
       }
       this.dataLoaded = true;
-      console.log(this.dataLoaded);
     } catch (e) {
       this.error = true;
     } finally {

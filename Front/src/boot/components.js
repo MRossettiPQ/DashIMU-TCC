@@ -46,7 +46,6 @@ export default async ({ Vue }) => {
   requireComponent.keys().forEach((fileName) => {
     // Get the component config
     const componentConfig = requireComponent(fileName);
-
     // Get PascalCase name of component
     const componentName = upperFirst(
       camelCase(
