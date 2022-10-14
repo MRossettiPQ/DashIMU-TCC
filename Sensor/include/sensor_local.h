@@ -3,19 +3,52 @@
 
 #include <config.h>
 
+void ScannerI2C() {
+    int nDevices = 0;
+    do {
+        byte error, address;
+        Serial.println("Scanning...");
+        for (address = 1; address < 127; address++) {
+            Wire.beginTransmission(address);
+            error = Wire.endTransmission();
+            if (error == 0) {
+                Serial.print("I2C device found at address 0x");
+                if (address < 16) {
+                    Serial.print("0");
+                }
+                Serial.println(address, HEX);
+                nDevices++;
+            } else if (error == 4) {
+                Serial.print("Unknow error at address 0x");
+                if (address < 16) {
+                    Serial.print("0");
+                }
+                Serial.println(address, HEX);
+            }
+        }
+        if (nDevices == 0) {
+            Serial.println("No I2C devices found\n");
+        } else {
+            Serial.println("done\n");
+        }
+        delay(5000);
+    } while (nDevices == 0);
+}
+
 void InitIMU() {
     // IMU initialization
     do {
-        Wire.begin();
+        Wire.begin(SDA_PIN, SCL_PIN);
+        delay(2000);
         if (!mpu.setup(ADDRESS_SENSOR)) {
             Serial.println("[SENSOR] - It has not been initialized, Check the connection between the IMU and the ESP32 and restart the device");
-            Serial.println(&"[SENSOR] - Status: " [ status]);
+            Serial.println(&"[SENSOR] - Status: "[status]);
         } else {
             Serial.println("[SENSOR] - IMU Initialized");
         }
         delay(500);
     } while (!mpu.available());
-    digitalWrite(LED_SENSOR_INITIALIZED, HIGH);
+    //digitalWrite(LED_SENSOR_INITIALIZED, HIGH);
 }
 
 void CalibrateIMU() {
@@ -28,16 +61,16 @@ void CalibrateIMU() {
     Serial.println("[SENSOR] - Please leave the device still on the plan");
     mpu.verbose(true);
     delay(5000);
-    digitalWrite(LED_SENSOR_CALIBRATION_PLAN, HIGH);
+    //digitalWrite(LED_SENSOR_CALIBRATION_PLAN, HIGH);
     mpu.calibrateAccelGyro();
-    digitalWrite(LED_SENSOR_CALIBRATION_PLAN, LOW);
+    //digitalWrite(LED_SENSOR_CALIBRATION_PLAN, LOW);
 
     Serial.println("[SENSOR] - Magnetic calibration will start in 5 seconds");
     Serial.println("[SENSOR] - Please wave the device in a figure eight until finished");
     delay(5000);;
-    digitalWrite(LED_SENSOR_CALIBRATION_EIGHT, HIGH);
+    //digitalWrite(LED_SENSOR_CALIBRATION_EIGHT, HIGH);
     mpu.calibrateMag();
-    digitalWrite(LED_SENSOR_CALIBRATION_EIGHT, LOW);
+    //digitalWrite(LED_SENSOR_CALIBRATION_EIGHT, LOW);
 
     PrintIMUCalibration();
     mpu.verbose(false);
@@ -159,12 +192,12 @@ String ReturnsJSONFromMeasurement(int MeasurementNumber) {
     return Leitura;
 }
 
-void StopMeasurement(){
+void StopMeasurement() {
     jsonBufferServer = "";
     numberMeasurement = 0;
 }
 
-void RestartMeasurement(){
+void RestartMeasurement() {
     StopMeasurement();
     cmdActual = 1;
 }

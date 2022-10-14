@@ -6,7 +6,7 @@
 void InitWebsocketClient() {
     do {
         Serial.println("[SENSOR] - Starting the Websocket Client");
-        connectedWebsocketClient = clientBackEnd.connect(WEBSOCKET_CLIENT_API, WEBSOCKET_CLIENT_PORT, "/socket");
+        connectedWebsocketClient = clientBackEnd.connect(backend, backendPort.toInt(), "/socket");
         if (connectedWebsocketClient) {
             Serial.println("[SENSOR] - Connected with the server!");
             clientBackEnd.send(addressESP);
@@ -14,7 +14,7 @@ void InitWebsocketClient() {
             Serial.println("[SENSOR] - Not connected to the server!");
         }
     } while (!connectedWebsocketClient);
-    digitalWrite(LED_CLIENT_CONNECTED, HIGH);
+    // digitalWrite(LED_CLIENT_CONNECTED, HIGH);
 
     // Callback when messages are received
     clientBackEnd.onMessage([&](const WebsocketsMessage &message) {
@@ -32,7 +32,7 @@ void InitWebsocketServer() {
 
     addressESP = WiFi.localIP().toString();
     Serial.print("[SENSOR] - IP Address:\t" + addressESP + ":" + WEBSOCKET_SERVER_PORT);
-    digitalWrite(LED_SERVER_CREATED, HIGH);
+    //digitalWrite(LED_SERVER_CREATED, HIGH);
 }
 
 void MountBufferToSend() {
@@ -56,7 +56,7 @@ void MountBufferToSend() {
     }
 }
 
-void onMessageCallback(WebsocketsMessage message) {
+void onMessageCallback(const WebsocketsMessage& message) {
     deserializeJson(doc, message.data());
     Serial.println("[SENSOR] - Event onMessage");
     Serial.println(message.data());

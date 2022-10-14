@@ -1,26 +1,30 @@
 # DashIMU-TCC
-Front:
 
-Session:
+Prerequisites - Server and Front (#Dev):
+
+* [Node.js](https://nodejs.org/en/) (14.x) - [Download](https://nodejs.org/en/)
+* [Yarn](https://yarnpkg.com/) (Version 1.22.0+) - [Download](https://classic.yarnpkg.com/en/docs/install)
+
+Sensor:
 -Desenvolvido utilizando o PlatformIO no VSCode
 
-Server:
--Primeiro instale as dependencias
-    npm install
-
+Install:
 
 APOS BUILD DO FRONT ADICIONAR OS ARQUIVOS DE DIST->SPA em PUBLIC do server
 
-
 -Primeiro passo: https://github.com/nvm-sh/nvm#install--update-script
 instalar gerenciador de versão para o node
+
 ```sh
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 ```
+
 ou
+
 ```sh
 wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 ```
+
 ```sh
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
@@ -28,38 +32,48 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 
 -Segundo passo:
 instalar node em versão superior a 10
+
 ```sh
 nvm install node
 ```
+
 ou exemplo de direcionamento de versão para o node 16.5.0
+
 ```sh
 nvm install 16.5.0
 ```
 
 -Terceiro passo:
 instalar yarn
+
 ```sh
 npm install -g yarn
 ```
 
 -Quarto passo:
 instalar pacote CLI do quasar, para rodar versão de dev ou para realizar build
+
 ```sh
 yarn global add @quasar/cli
 ```
+
 -Quinto passo:
 instalar banco de dados MySql
+
 ```sh
 sudo apt -y update
 ```
+
 ```sh
 sudo apt -y install curl software-properties-common gnupg2
 ```
+
 ```sh
 sudo apt-get install default-mysql-server
 ```
 
-Configurar banco de dados 
+Configurar banco de dados
+
 ```sh
 sudo mariadb-secure-installation
 
@@ -132,26 +146,27 @@ installation should now be secure.
 
 Thanks for using MariaDB!
 ```
+
 criar DATABASE
+
 ```sh
 mysql
 ```
+
 ```sh
 CREATE DATABASE IF NOT EXISTS database_dashimu;
 ```
+
 criar usuario: ServerOperator, lembrar da senha para utilização posterior no servidor
+
 ```sh
 CREATE USER 'OperatorDash'@localhost IDENTIFIED BY 'OperatorDash1060';
 ```
+
 ```sh
 GRANT ALL PRIVILEGES ON database_dashimu.* TO 'OperatorDash'@localhost;
 ```
+
 ```sh
 FLUSH PRIVILEGES;
-```
-```sh
-INSERT INTO funcao (idFuncao,nomeFuncao) VALUES (1,'FISIO'),(2,'ADMIN');
-```
-```sh
-INSERT INTO funcao (idFuncao,nomeFuncao) VALUES (1,'FISIO'),(2,'ADMIN');
 ```

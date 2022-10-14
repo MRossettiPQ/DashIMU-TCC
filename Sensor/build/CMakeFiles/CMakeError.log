@@ -1,0 +1,84 @@
+Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+Compiler: C:/Compiladores/MSYS2/usr/bin/clang-cl.exe 
+Build flags: 
+Id flags:  
+
+The output was:
+1
+clang-cl: warning: unable to find a Visual Studio installation; try running Clang from a developer command prompt [-Wmsvc-not-found]
+clang-cl: error: unable to execute command: Executable "link.exe" doesn't exist!
+clang-cl: error: linker command failed with exit code 1 (use -v to see invocation)
+
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" failed.
+Compiler: C:/Compiladores/MSYS2/usr/bin/clang-cl.exe 
+Build flags: 
+Id flags:  
+
+The output was:
+1
+clang-cl: warning: unable to find a Visual Studio installation; try running Clang from a developer command prompt [-Wmsvc-not-found]
+clang-cl: error: unable to execute command: Executable "link.exe" doesn't exist!
+clang-cl: error: linker command failed with exit code 1 (use -v to see invocation)
+
+
+Detecting C compiler ABI info failed to compile with the following output:
+Change Dir: c:/TCC/Sensor/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make.exe -f Makefile cmTC_2900c/fast && /usr/bin/make  -f CMakeFiles/cmTC_2900c.dir/build.make CMakeFiles/cmTC_2900c.dir/build
+make[1]: Entering directory '/c/TCC/Sensor/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_2900c.dir/CMakeCCompilerABI.c.obj
+C:/Compiladores/MSYS2/usr/bin/clang-cl.exe    -o CMakeFiles/cmTC_2900c.dir/CMakeCCompilerABI.c.obj -c /usr/share/cmake-3.20.4/Modules/CMakeCCompilerABI.c
+Linking C executable cmTC_2900c
+/usr/bin/cmake.exe -E cmake_link_script CMakeFiles/cmTC_2900c.dir/link.txt --verbose=1
+C:/Compiladores/MSYS2/usr/bin/clang-cl.exe CMakeFiles/cmTC_2900c.dir/CMakeCCompilerABI.c.obj -o cmTC_2900c 
+clang-cl: warning: unable to find a Visual Studio installation; try running Clang from a developer command prompt [-Wmsvc-not-found]
+clang-cl: error: unable to execute command: Executable "link.exe" doesn't exist!
+clang-cl: error: linker command failed with exit code 1 (use -v to see invocation)
+make[1]: *** [CMakeFiles/cmTC_2900c.dir/build.make:99: cmTC_2900c] Error 1
+make[1]: Leaving directory '/c/TCC/Sensor/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:127: cmTC_2900c/fast] Error 2
+
+
+
+
+Detecting CXX compiler ABI info failed to compile with the following output:
+Change Dir: c:/TCC/Sensor/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make.exe -f Makefile cmTC_eccd0/fast && /usr/bin/make  -f CMakeFiles/cmTC_eccd0.dir/build.make CMakeFiles/cmTC_eccd0.dir/build
+make[1]: Entering directory '/c/TCC/Sensor/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_eccd0.dir/CMakeCXXCompilerABI.cpp.obj
+C:/Compiladores/MSYS2/usr/bin/clang-cl.exe    -o CMakeFiles/cmTC_eccd0.dir/CMakeCXXCompilerABI.cpp.obj -c /usr/share/cmake-3.20.4/Modules/CMakeCXXCompilerABI.cpp
+Linking CXX executable cmTC_eccd0
+/usr/bin/cmake.exe -E cmake_link_script CMakeFiles/cmTC_eccd0.dir/link.txt --verbose=1
+C:/Compiladores/MSYS2/usr/bin/clang-cl.exe CMakeFiles/cmTC_eccd0.dir/CMakeCXXCompilerABI.cpp.obj -o cmTC_eccd0 
+clang-cl: warning: unable to find a Visual Studio installation; try running Clang from a developer command prompt [-Wmsvc-not-found]
+clang-cl: error: unable to execute command: Executable "link.exe" doesn't exist!
+clang-cl: error: linker command failed with exit code 1 (use -v to see invocation)
+make[1]: *** [CMakeFiles/cmTC_eccd0.dir/build.make:99: cmTC_eccd0] Error 1
+make[1]: Leaving directory '/c/TCC/Sensor/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:127: cmTC_eccd0/fast] Error 2
+
+
+
+
+Detecting CXX [-std:c++14] compiler features failed to compile with the following output:
+Change Dir: c:/TCC/Sensor/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make.exe -f Makefile cmTC_9b21c/fast && /usr/bin/make  -f CMakeFiles/cmTC_9b21c.dir/build.make CMakeFiles/cmTC_9b21c.dir/build
+make[1]: Entering directory '/c/TCC/Sensor/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_9b21c.dir/feature_tests.cxx.obj
+C:/Compiladores/MSYS2/usr/bin/clang-cl.exe   -std:c++14 -o CMakeFiles/cmTC_9b21c.dir/feature_tests.cxx.obj -c c:/TCC/Sensor/build/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_9b21c
+/usr/bin/cmake.exe -E cmake_link_script CMakeFiles/cmTC_9b21c.dir/link.txt --verbose=1
+C:/Compiladores/MSYS2/usr/bin/clang-cl.exe CMakeFiles/cmTC_9b21c.dir/feature_tests.cxx.obj -o cmTC_9b21c 
+clang-cl: warning: unable to find a Visual Studio installation; try running Clang from a developer command prompt [-Wmsvc-not-found]
+clang-cl: error: unable to execute command: Executable "link.exe" doesn't exist!
+clang-cl: error: linker command failed with exit code 1 (use -v to see invocation)
+make[1]: *** [CMakeFiles/cmTC_9b21c.dir/build.make:99: cmTC_9b21c] Error 1
+make[1]: Leaving directory '/c/TCC/Sensor/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:127: cmTC_9b21c/fast] Error 2
+
+
+
+

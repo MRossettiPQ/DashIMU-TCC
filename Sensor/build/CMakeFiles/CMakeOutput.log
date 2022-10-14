@@ -1,0 +1,28 @@
+The target system is: Generic -  - 
+The host system is: MSYS - 3.2.0-340.x86_64 - x86_64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: C:/Compiladores/MSYS2/usr/bin/clang-cl.exe 
+Build flags: 
+Id flags: -c 
+
+The output was:
+0
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.obj"
+
+The C compiler identification is Clang, found in "c:/TCC/Sensor/build/CMakeFiles/3.20.4/CompilerIdC/CMakeCCompilerId.obj"
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+Compiler: C:/Compiladores/MSYS2/usr/bin/clang-cl.exe 
+Build flags: 
+Id flags: -c 
+
+The output was:
+0
+
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CMakeCXXCompilerId.obj"
+
+The CXX compiler identification is Clang, found in "c:/TCC/Sensor/build/CMakeFiles/3.20.4/CompilerIdCXX/CMakeCXXCompilerId.obj"
+

@@ -25,6 +25,8 @@ class Session extends Vue {
   numberOfConnections = 0;
   loadingSave = false;
 
+  step = "";
+
   @Prop()
   idPatient;
 
@@ -222,6 +224,11 @@ class Session extends Vue {
 
   addLeituraTeste() {
     console.log("addLeituraTeste");
+
+    function getRandomArbitrary(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
     let iterator = 0;
     while (iterator < 1000) {
       iterator++;
@@ -245,16 +252,12 @@ class Session extends Vue {
           Mag_X: index,
           Mag_Y: index,
           Mag_Z: index,
-          Roll: this.getRandomArbitrary(90, 80),
-          Pitch: this.getRandomArbitrary(90, 70),
-          Yaw: this.getRandomArbitrary(90, 70),
+          Roll: getRandomArbitrary(90, 80),
+          Pitch: getRandomArbitrary(90, 70),
+          Yaw: getRandomArbitrary(90, 70),
         });
       });
     }
-  }
-
-  getRandomArbitrary(min, max) {
-    return Math.random() * (max - min) + min;
   }
 }
 

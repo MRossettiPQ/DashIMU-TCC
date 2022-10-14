@@ -1,0 +1,5 @@
+c:/TCC/Sensor/build/CMakeFiles/edit_cache.dir
+c:/TCC/Sensor/build/CMakeFiles/Z_DUMMY_TARGET.dir
+c:/TCC/Sensor/build/CMakeFiles/Debug.dir
+c:/TCC/Sensor/build/CMakeFiles/rebuild_cache.dir
+c:/TCC/Sensor/build/CMakeFiles/Production.dir
