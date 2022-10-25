@@ -19,6 +19,8 @@ module.exports = (app) => {
   // TODO WebSocket
   app.ws('/socket', WebSocketController.sensorConnection)
 
+  app.ws('/v2/socket', WebSocketController.socketSession)
+
   // TODO header
   app.use(header)
 
@@ -68,6 +70,12 @@ module.exports = (app) => {
     '/api/patient/:id/session',
     [AuthorizeJwt.verifyToken, AuthorizeJwt.ifAdminPhysiotherapist],
     SessionController.getSessionList
+  )
+
+  app.get(
+    '/api/session/metadata',
+    [AuthorizeJwt.verifyToken, AuthorizeJwt.ifAdminPhysiotherapist],
+    SessionController.getMetadata
   )
 
   app.get(

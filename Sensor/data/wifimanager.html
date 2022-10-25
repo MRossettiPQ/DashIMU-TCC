@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>IMU Wi-Fi Manager</title>
+    <title>IMU Manager</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="data:,">
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="modules/vue.js"></script>
+    <script src="modules/axios.js"></script>
 </head>
 <body>
 <div id="app">
     <div class="topnav">
-        <h1>Wi-Fi Manager</h1>
+        <h1>IMU Manager</h1>
     </div>
-    <div class="content">
+    <div class="content" :v-if="!saved">
         <div class="card-grid">
             <div class="card">
-                <form class="form" @submit.prevent="checkForm" autocomplete="off" action="/" method="POST">
+                <form class="form" @submit.prevent="checkForm">
                     <div class="form-section" v-for="(section, index) in formSection" :key="index">
                         <p class="card-title">
                             <i class="fas fa-lightbulb"></i>
@@ -39,23 +40,71 @@
             </div>
         </div>
     </div>
+    <div v-else>
+        <p class="card-title">
+            Please wait, sensor reset. will be available soon!
+        </p>
+    </div>
 </div>
 <script>
+    console.log(axios)
+
+    axios.interceptors.response.use(
+        (response) => {
+            if (response.config.method.toUpperCase() !== "GET") {
+                if (response.data && (response.data.message || response.data.msg)) {
+                    notifySuccess(response.data.message || response.data.msg);
+                }
+            }
+            if (response.config.method.toUpperCase() !== "POST") {
+                if (response.data && (response.data.message || response.data.msg)) {
+                    notifySuccess(response.data.message || response.data.msg);
+                }
+            }
+
+            return response;
+        },
+        (error) => {
+            if (error.response.status === 404) {
+                notifyError("Endpoint não encontrado");
+            }
+
+            if (
+                error.response &&
+                error.response.data &&
+                (error.response.data.message || error.response.data.msg)
+            ) {
+                //notifyError(error.response.data.message || error.response.data.msg);
+                console.log("error.resperror.response.data.message", error.response.data.message)
+            }
+
+            if (
+                error.response &&
+                error.response.data &&
+                typeof error.response.data == "string"
+            ) {
+                //notifyError(error.response.data);
+                console.log("error.response.data", error.response.data)
+            }
+            return Promise.reject(error);
+        }
+    );
+
     function checkIp(value) {
         let test = checkNumberAddress(value)
-        if(!test){
+        if (!test) {
             test = checkUrlAddress(value)
         }
 
         return !test ? 'Warning! Ip not valid!' : ''
     }
 
-    function checkNumberAddress(value){
+    function checkNumberAddress(value) {
         let pattern = /^[0-9]\+\.[0-9]\+\.[0-9]\+\.[0-9]\+$/g
         return pattern.test(value)
     }
 
-    function checkUrlAddress(value){
+    function checkUrlAddress(value) {
         let pattern = /^[0-9]\+\.[0-9]\+\.[0-9]\+\.[0-9]\+$/g
         return pattern.test(value)
     }
@@ -67,16 +116,11 @@
 
     function checkSensorName(value) {
         let pattern = /\s/g
-        console.log(pattern.test(value))
         return pattern.test(value) ? "Warning! The name must not have blank spaces!" : ""
     }
 
-    function checkMinFrequency(value, min) {
-        return value >= min  ? `Warning! Value must be greater than ${min}!` : ""
-    }
-
-    function checkMaxFrequency(value, max) {
-        return value <= max  ? `Warning! Value must be less than ${max}!` : ""
+    function checkInFrequency(value, min, max) {
+        return value <= max && value >= min ? "" : `Warning! Value must be less than ${max} and must be greater than ${min}!`
     }
 
     function checkNotNull(value) {
@@ -86,8 +130,11 @@
     const app = new Vue({
         el: "#app",
         data: {
+            loadingSend: false,
             loading: false,
             formValid: true,
+            saved:false,
+            form: {},
             errorsForm: [],
             formSection: [
                 {
@@ -108,22 +155,8 @@
                             name: "password",
                             label: "Password",
                             value: null,
-                            rules: [
-                                checkNotNull,
-                            ],
+                            rules: [],
                             type: "password",
-                            nErrors: 0,
-                            errorMessage: []
-                        },
-                        {
-                            name: "ip",
-                            label: "IP Address",
-                            value: "192.168.1.200",
-                            rules: [
-                                checkNotNull,
-                                checkIp,
-                            ],
-                            type: "text",
                             nErrors: 0,
                             errorMessage: []
                         },
@@ -135,10 +168,9 @@
                         {
                             name: "backend",
                             label: "Server Address",
-                            value: "192.168.1.200",
+                            value: "192.168.16.113",
                             rules: [
                                 checkNotNull,
-                                checkIp,
                             ],
                             type: "text",
                             nErrors: 0,
@@ -173,11 +205,38 @@
                             nErrors: 0,
                             errorMessage: []
                         },
+                        {
+                            name: "frequencySensor",
+                            label: "Frequency (Hz)",
+                            value: "120",
+                            rules: [
+                                checkNotNull,
+                                checkNumber,
+                                (value) => checkInFrequency(value, 1, 480),
+                            ],
+                            type: "text",
+                            nErrors: 0,
+                            errorMessage: []
+                        },
                     ]
                 }
             ],
         },
         methods: {
+            sendForm : async  function (){
+                try {
+                    this.loadingSend = true
+                    const { data } = await axios.post('/', this.form)
+                    console.log(data)
+                    if(data.content){
+                        this.saved = true
+                    }
+                } catch (e) {
+                    console.log(e)
+                } finally {
+                    this.loadingSend = false
+                }
+            },
             checkForm: async function (e) {
                 try {
                     this.loading = true
@@ -191,6 +250,7 @@
 
                     this.formSection.map(senction => {
                         senction.fields.map(field => {
+                            this.form[field?.name] = field.value
                             field.rules.every((rule, index, array) => {
                                 const result = rule(field.value)
                                 if (result?.length > 0) {
@@ -202,15 +262,16 @@
                                 return true
                             })
                         })
-                        console.log(this.formSection)
                     })
 
+                    console.log(this.form)
                     if (this.errorsForm.length > 0) {
                         this.formValid = false
+                        e.preventDefault();
                         return false
                     }
 
-
+                    await this.sendForm()
                 } catch (e) {
                     console.log(e)
                     this.formValid = false
@@ -220,7 +281,6 @@
             },
         },
     })
-    console.log(app)
 </script>
 </body>
 </html>

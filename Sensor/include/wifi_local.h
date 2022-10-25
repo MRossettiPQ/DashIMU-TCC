@@ -7,18 +7,13 @@ bool InitWiFi() {
     // Init WiFi
     Serial.println("[SENSOR] - Configuring WiFi");
 
-    if(ssid == "" || ip == ""){
+    if(ssid == ""){
         Serial.println("Undefined SSID or IP address.");
         return false;
     }
 
     WiFiClass::mode(WIFI_STA);
-    localIP.fromString(ip.c_str());
 
-    if (!WiFi.config(localIP, gateway, subnet)){
-        Serial.println("STA Failed to configure");
-        return false;
-    }
     WiFi.begin(ssid.c_str(), password.c_str());
     Serial.println("Connecting to WiFi...");
 

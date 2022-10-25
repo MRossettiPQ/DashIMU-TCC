@@ -14,6 +14,37 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.FLOAT,
       allowNull: true,
     },
+    procedure: {
+      type: Sequelize.ENUM,
+      values: [
+        'SHOULDER',
+        'ELBOW',
+        'RADIOULNAR',
+        'WRIST',
+        'CARPOMETACARPAL_THUMB',
+        'METACARPOPHALANGEAL',
+        'PROXIMAL_INTERPHALANGEAL',
+        'DISTAL_INTERPHALANGEAL',
+      ],
+    },
+    movement: {
+      type: Sequelize.ENUM,
+      values: [
+        'FLEXION',
+        'EXTENSION',
+        'ADDUCTION',
+        'ABDUCTION',
+        'INTERNAL_ROTATION',
+        'EXTERNAL_ROTATION',
+        'PRONATION',
+        'SUPINATION',
+        'THUMB_INTERNAL_FLEXION',
+        'THUMB_INTERNAL_EXTENSION',
+        'INTERNAL_EXTENSION_FINGERS',
+        'ULNAR_ADDUCTION',
+        'RADIAL_ADDUCTION',
+      ],
+    },
   })
 
   Session.associate = (models) => {

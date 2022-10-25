@@ -46,7 +46,7 @@ bool connectedWiFi = false;
 // -- reference html
 const char *input_ssid = "ssid";
 const char *input_password = "password";
-const char *input_ip = "ip";
+const char *input_sensorFrequency = "sensorFrequency";
 const char *input_backend = "backend";
 const char *input_backendPort = "backendPort";
 const char *input_nameSensor = "nameSensor";
@@ -54,14 +54,14 @@ const char *input_nameSensor = "nameSensor";
 // -- memory in run
 String ssid;
 String password;
-String ip;
+String sensorFrequency;
 String backend;
 String backendPort;
 String nameSensor;
 
 //
 const char *SSID_PATH = "/config/ssid.txt";
-const char *IP_PATH = "/config/ip.txt";
+const char *SENSOR_FREQUENCY_PATH = "/config/sensorFrequency.txt";
 const char *PASSWORD_PATH = "/config/password.txt";
 const char *BACKEND_PATH = "/config/backend.txt";
 const char *BACKEND_PORT_PATH = "/config/backendPort.txt";

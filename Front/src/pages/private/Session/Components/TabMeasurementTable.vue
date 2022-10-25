@@ -8,10 +8,11 @@
     color="primary"
     flat
     bordered
+
   >
     <template #top-right class="flex">
       <q-btn
-        :label="!$q.platform.is.mobile ? 'Export' : null"
+        :label="!$q.platform.is.mobile ? $t('session.export') : null"
         class="col-2 m-r-5"
         color="primary"
         dense
@@ -24,8 +25,8 @@
         :label="
           !$q.platform.is.mobile
             ? openedFullscreen
-              ? 'Close'
-              : 'Fullscreen'
+              ? $t('session.close')
+              : $t('session.fullscreen')
             : null
         "
         class="col-2"

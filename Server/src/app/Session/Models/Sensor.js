@@ -13,6 +13,10 @@ module.exports = (sequelize, Sequelize) => {
       values: ['GYROSCOPE', 'HUMIDITY'],
       defaultValue: 'GYROSCOPE',
     },
+    position: {
+      type: Sequelize.ENUM,
+      values: ['ONE', 'TWO'],
+    },
   })
 
   Sensor.associate = (models) => {

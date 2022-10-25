@@ -3,6 +3,7 @@ import camelCase from "lodash/camelCase";
 import {
   QBadge,
   QBtn,
+  QBtnGroup,
   QCard,
   QCardActions,
   QCardSection,
@@ -67,6 +68,7 @@ export default async ({ Vue }) => {
   Vue.component("QMarkupTable", QMarkupTable);
   Vue.component("QLinearProgress", QLinearProgress);
   Vue.component("QBtn", QBtn);
+  Vue.component("QBtnGroup", QBtnGroup);
   Vue.component("QInput", QInput);
   Vue.component("QIcon", QIcon);
   Vue.component("QDate", QDate);

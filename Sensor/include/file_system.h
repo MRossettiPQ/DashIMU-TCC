@@ -10,12 +10,12 @@ void InitFileSystem() {
     Serial.println("SPIFFS mounted successfully");
     ssid = ReadFile(SPIFFS, SSID_PATH);
     password = ReadFile(SPIFFS, PASSWORD_PATH);
-    ip = ReadFile(SPIFFS, IP_PATH);
+    sensorFrequency = ReadFile(SPIFFS, SENSOR_FREQUENCY_PATH);
     backend = ReadFile(SPIFFS, BACKEND_PATH);
     backendPort = ReadFile(SPIFFS, BACKEND_PORT_PATH);
     nameSensor = ReadFile(SPIFFS, NAME_SENSOR_PATH);
 
-    Serial.println("SSID: " + ssid + ",Password: " + password + ",IP: " + ip);
+    Serial.println("SSID: " + ssid + ",Password: " + password + ",Sensor Frequency: " + sensorFrequency);
     Serial.println("Backend url: " + backend + ",Backend port: " + backendPort + ",Sensor name: " + nameSensor);
 
     if (InitWiFi()) {
@@ -40,6 +40,7 @@ void InitFileSystem() {
             int params = request->params();
             for(int i=0;i<params;i++){
                 AsyncWebParameter* p = request->getParam(i);
+
                 if(p->isPost()){
                     // HTTP POST ssid value
                     if (p->name() == input_ssid) {
@@ -53,11 +54,11 @@ void InitFileSystem() {
                         Serial.print("Password set to: " + password);
                         WriteFile(SPIFFS, PASSWORD_PATH, password.c_str());
                     }
-                    // HTTP POST ip value
-                    if (p->name() == input_ip) {
-                        ip = p->value().c_str();
-                        Serial.print("IP Address set to: " + ip);
-                        WriteFile(SPIFFS, IP_PATH, ip.c_str());
+                    // HTTP POST Sensor frequency value
+                    if (p->name() == input_sensorFrequency) {
+                        sensorFrequency = p->value().c_str();
+                        Serial.print("Sensor frequenct set to: " + sensorFrequency);
+                        WriteFile(SPIFFS, SENSOR_FREQUENCY_PATH, sensorFrequency.c_str());
                     }
                     // HTTP POST ip value
                     if (p->name() == input_backend) {
@@ -73,11 +74,11 @@ void InitFileSystem() {
                     if (p->name() == input_nameSensor) {
                         nameSensor = p->value().c_str();
                         Serial.print("Name sensor set to: " + nameSensor);
-                        WriteFile(SPIFFS, IP_PATH, nameSensor.c_str());
+                        WriteFile(SPIFFS, NAME_SENSOR_PATH, nameSensor.c_str());
                     }
                 }
             }
-            request->send(200, "text/plain", "Success. ESP32 will now restart. Connect to your router and go to IP address: " + ip);
+            request->send(200, "text/plain", "Success. ESP32 will now restart. Connect to your router and go to IP address: " + WiFi.localIP().toString());
             delay(3000);
             ESP.restart();
         });
@@ -113,7 +114,7 @@ void WriteFile(fs::FS &fs, const char *path, const char *message) {
     if (file.print(message)) {
         Serial.println("- file written");
     } else {
-        Serial.println("- frite failed");
+        Serial.println("- file write failed");
     }
 }
 

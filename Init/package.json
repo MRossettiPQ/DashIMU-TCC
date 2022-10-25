@@ -1,14 +1,15 @@
 {
   "type": "module",
   "scripts": {
-    "start": "cross-env NODE_INIT_ENV=start node init.js",
-    "inicialize-dev": "cross-env NODE_INIT_ENV=inicialize node init.js",
-    "inicialize-build": "cross-env NODE_INIT_ENV=inicialize node init.js"
+    "start": "cross-env NODE_INIT_ENV=start node init.js -l pt-br",
+    "inicialize-dev": "cross-env NODE_INIT_ENV=inicialize node init.js -l pt-br",
+    "inicialize-build": "cross-env NODE_INIT_ENV=inicialize node init.js -l pt-br"
   },
   "dependencies": {
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.1",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "quick-local-ip": "^1.0.7"
   },
   "license": "ISC"
 }

@@ -2,9 +2,11 @@ import AuthenticateUtils from "./AuthenticateUtils";
 import { notifyError, notifySuccess } from "src/commons/utils/NotifyUtils";
 import axios from "axios";
 
-const Axios = axios.create({
-  baseURL: process.env.SERVER_API,
-});
+const Axios = axios.create(
+  process.env.ENV !== "homolog" && {
+    baseURL: process.env.SERVER_API,
+  }
+);
 
 Axios.interceptors.response.use(
   (response) => {
@@ -23,7 +25,7 @@ Axios.interceptors.response.use(
   },
   (error) => {
     if (error.response.status === 404) {
-      notifyError("Endpoint não encontrado");
+      notifyError(this.$t("axios.404"));
     }
 
     if (

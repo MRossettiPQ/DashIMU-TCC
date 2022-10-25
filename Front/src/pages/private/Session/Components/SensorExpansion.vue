@@ -1,6 +1,10 @@
 <template>
   <div class="col">
-    <q-expansion-item expand-separator icon="sensor_window" label="Session">
+    <q-expansion-item
+      expand-separator
+      icon="sensor_window"
+      :label="$t('session.sensors')"
+    >
       <q-card>
         <q-card-section>
           <q-tabs
@@ -61,6 +65,19 @@
                   option-label="ip"
                   option-value="ip"
                 />
+                <span v-else>Nenhum sensor disponivel</span>
+
+                <q-select
+                  v-if="positions.length"
+                  v-model="sensor.position"
+                  :options="positions"
+                  emit-value
+                  filled
+                  label="Position"
+                  option-label="local"
+                  option-value="local"
+                />
+
                 <q-input
                   :disable="sensor.device.active"
                   v-model="sensor.device.ip"
@@ -69,8 +86,9 @@
                   filled
                   type="text"
                 />
+
                 <q-btn
-                  :disable="sensor.device.active"
+                  :disable="sensor.device.active || sensor.position === null"
                   v-if="!sensor.device.active"
                   :color="sensor.device.corBtn"
                   class="row"
@@ -98,6 +116,15 @@
                   size="lg"
                   unelevated
                   @click="disconnect(index)"
+                />
+
+                <q-btn
+                  :color="sensor.device.corBtn"
+                  class="row"
+                  label="Remove"
+                  size="lg"
+                  unelevated
+                  @click="removeSensor(index)"
                 />
               </div>
             </q-form>

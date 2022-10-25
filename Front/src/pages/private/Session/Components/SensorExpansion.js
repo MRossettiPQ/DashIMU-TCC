@@ -1,5 +1,6 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import SocketService from "src/commons/services/SocketService";
+import SessionService from "src/commons/services/SessionService";
 
 @Component({
   name: "sensor-expansion",
@@ -10,6 +11,12 @@ class SensorExpansion extends Vue {
 
   @Prop()
   sensors;
+
+  @Prop()
+  metadata;
+
+  @Prop({ type: Array, default: [] })
+  positions;
 
   sensorsOptions = [];
 
@@ -38,6 +45,10 @@ class SensorExpansion extends Vue {
 
   addSensor() {
     this.$emit("addSensor");
+  }
+
+  removeSensor(index) {
+    this.$emit("removeSensor", index);
   }
 
   calibrate(index) {

@@ -4,8 +4,10 @@
   "description": "DashBoard IMU - Analise de Marcha - NodeJS 16.5",
   "main": "server.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=production node server.js",
-    "dev": "cross-env NODE_ENV=development nodemon server.js",
+    "start:prod": "cross-env NODE_ENV=production node server.js --l pt-br",
+    "start:dev": "cross-env NODE_ENV=development nodemon server.js --l pt-br",
+    "build:hml": "nexe nexe.js",
+    "build:prod": "nexe nexe.js",
     "lint": "npx eslint src test",
     "lint:fix": "npm run lint -- --fix",
     "prettier": "npx prettier src test --check",
@@ -22,6 +24,8 @@
     "express": "^4.18.1",
     "express-ws": "^5.0.2",
     "foo-bar": "^0.0.1",
+    "i18n": "^0.15.1",
+    "ip": "^1.1.8",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "mariadb": "^3.0.1",
@@ -30,7 +34,10 @@
     "morgan": "^1.10.0",
     "mysql2": "^2.3.3",
     "path": "^0.12.7",
-    "sequelize": "^6.21.3"
+    "quick-local-ip": "^1.0.7",
+    "sequelize": "^6.21.3",
+    "uuid": "^9.0.0",
+    "yargs": "^17.6.0"
   },
   "devDependencies": {
     "eslint": "^8.22.0",

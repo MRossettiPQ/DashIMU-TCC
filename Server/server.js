@@ -5,10 +5,23 @@ const cors = require('cors')
 const environment = require('./environment')
 const { initDataBase } = require('./src/core/DataBase')
 const routes = require('./routes')
+const { i18n } = require('./src/core/Utils/i18nUtil')
+const yargs = require('yargs')
+  .alias('l', 'locale')
+  .alias('f', 'filename')
+  .alias('c', 'content')
+  .demandOption('locale').argv
 
 module.exports = (async () => {
   try {
+    // Set locale
+    i18n.setLocale(yargs.locale)
+
+    // Instance express
     const app = express()
+
+    // Internationalization
+    app.use(i18n.init)
 
     // Database initialization
     await initDataBase()
@@ -37,11 +50,11 @@ module.exports = (async () => {
     // Set port, listen for requests
     app.listen(environment.host.port, () =>
       console.log(
-        `[SERVER] - Server está rodando na Port: ${environment.host.port}`
+        `[SERVER] - ${i18n.__('main.initialized')} ${environment.host.port}`
       )
     )
   } catch (e) {
-    console.log('[SERVER] - Error occurred in server')
+    console.log(`[SERVER] - ${i18n.__('main.error')}  `)
     console.log(e)
   }
 })()

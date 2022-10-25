@@ -7,6 +7,7 @@ const {
   throwErrorIf,
 } = require('../../../core/Utils/RequestUtil')
 const UserContext = require('../../../core/Utils/UserContext')
+const { i18n } = require('../../../core/Utils/i18nUtil')
 
 exports.register = async (req, res) => {
   console.log('[POST] - /api/auth/register')
@@ -23,7 +24,10 @@ exports.register = async (req, res) => {
         username: newUser.username,
         email: newUser.email,
       },
-      message: '\x1b[32mUser registrado com sucesso!\x1b[0m',
+      message: i18n.__('authentication.created'),
+      log: `\x1b[32m[POST] - /api/auth/register - ${i18n.__(
+        'authentication.created'
+      )}\x1b[0m`,
       res,
     })
   } catch (e) {
@@ -42,8 +46,8 @@ exports.login = async (req, res) => {
 
     await throwErrorIf({
       cond: userFound === null,
-      message: 'User not found',
-      log: '[POST] - /api/auth/login - User not found',
+      message: i18n.__('database.not_found'),
+      log: `[POST] - /api/auth/login - ${i18n.__('database.not_found')}`,
       res,
     })
 
@@ -55,7 +59,7 @@ exports.login = async (req, res) => {
     if (!validPassword) {
       return res.status(401).send({
         accessToken: null,
-        message: 'Invalid password!',
+        message: i18n.__('invalid_password'),
       })
     }
 

@@ -3,6 +3,7 @@ const fs = require('fs')
 const path = require('path')
 const mysql = require('mysql2')
 const environment = require('../../../environment')
+const { i18n } = require('../Utils/i18nUtil')
 
 // Declare all models in project
 const models = {}
@@ -42,13 +43,13 @@ const createDatabaseIfNotExists = async () => {
             if (err != null) {
               console.error(
                 '\x1b[31m',
-                '[DATABASE] - Error in create database schema',
+                `[DATABASE] - ${i18n.__('database.error')}`,
                 '\x1b[0m'
               )
               pool.end()
             }
             if (result != null) {
-              console.log('[DATABASE] - Database schema create successful')
+              console.log(`[DATABASE] - ${i18n.__('database.init')}`)
               pool.end()
             }
           }
@@ -64,9 +65,11 @@ const initDataBase = async () => {
     // TODO - { force : false } option to drop the data from the database -> if true it will delete the entire database at each startup
     await sequelize.sync({ force: environment.database.wipe_on_start })
     // console.log(sequelize)
-    console.log('[DATABASE] - Drop or Rsync Database')
+    console.log(`[DATABASE] - ${i18n.__('database.rsync')}`)
   } catch (e) {
-    console.error('\x1b[31m[DATABASE] - Error in Drop or Rsync Database\x1b[0m')
+    console.error(
+      `\x1b[31m[DATABASE] - ${i18n.__('database.rsync_error')}\x1b[0m`
+    )
   }
 }
 

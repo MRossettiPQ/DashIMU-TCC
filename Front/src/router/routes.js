@@ -53,6 +53,13 @@ export const routes = [
             path: "profile",
             component: () => import("pages/private/Account/Account.vue"),
           },
+          /*
+            {
+              name: "private.session_v2",
+              path: "session_v2",
+              component: () => import("pages/private/SessionV2/Session.vue"),
+            },
+          */
         ],
       },
     ],

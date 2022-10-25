@@ -5,6 +5,9 @@ const {
   throwNotFoundIf,
 } = require('../../../core/Utils/RequestUtil')
 const { calculationVariabilityCenter } = require('../Services/SciLabServices')
+const myip = require('quick-local-ip')
+const environment = require('../../../../environment')
+const Procedure = require('./Procedure')
 
 exports.postSaveSession = async (req, res) => {
   console.log('[POST] - /api/session')
@@ -132,6 +135,23 @@ exports.getSession = async (req, res) => {
     await throwSuccess({
       content: session,
       log: '\x1b[32m[GET] - /api/session/:id - founded\x1b[0m',
+      res,
+    })
+  } catch (e) {
+    console.error(`\x1b[31m${e}\x1b[0m`)
+  }
+}
+
+exports.getMetadata = async (req, res) => {
+  try {
+    console.log('[GET] - /api/session/metadata')
+
+    await throwSuccess({
+      content: {
+        procedures: Procedure.getProcedures(),
+        socket_url: `${myip.getLocalIP4()}:${environment.host.port}`,
+      },
+      log: `\x1b[32m[GET] - ${myip.getLocalIP4()} - /api/session/metadata\x1b[0m`,
       res,
     })
   } catch (e) {

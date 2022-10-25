@@ -1,6 +1,11 @@
 import { Axios } from "../utils/AxiosUtils";
 
 class SessionService {
+  async getMetadata(id) {
+    const { data } = await Axios.get(`/api/session/metadata`);
+    return data?.content;
+  }
+
   async getSession(id) {
     const { data } = await Axios.get(`/api/session/${id}`);
     return data?.content;
