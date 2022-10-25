@@ -21,14 +21,14 @@ class TableSession extends Vue {
       align: "left",
       label: "Session nª",
       field: "idSession",
-      sortable: true
+      sortable: true,
     },
     {
       name: "date",
       align: "left",
       label: "Date Session",
       field: "date",
-      sortable: true
+      sortable: true,
     },
     {
       name: "weight",
@@ -41,14 +41,14 @@ class TableSession extends Vue {
       align: "left",
       label: "Procedure",
       field: "procedure",
-      sortable: true
+      sortable: true,
     },
     {
       name: "movement",
       align: "left",
       label: "Movement",
       field: "movement",
-      sortable: true
+      sortable: true,
     },
   ];
 

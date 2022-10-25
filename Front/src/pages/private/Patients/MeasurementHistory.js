@@ -25,31 +25,37 @@ class MeasurementHistory extends Vue {
       align: "center",
       label: "Number Mensuration",
       field: "numberMensuration",
+      style: "width: 50px",
     },
     {
       align: "center",
       label: "Sensor Name",
       field: "sensorName",
+      style: "width: 50px",
     },
     {
       align: "center",
       label: "Roll",
       field: "Roll",
+      style: "width: 50px",
     },
     {
       align: "center",
       label: "Pitch",
       field: "Pitch",
+      style: "width: 50px",
     },
     {
       align: "center",
       label: "Yaw",
       field: "Yaw",
+      style: "width: 50px",
     },
     {
       align: "center",
       label: "ID Measurement",
       field: "idMeasurement",
+      style: "width: 50px",
     },
   ];
 

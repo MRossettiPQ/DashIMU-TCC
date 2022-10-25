@@ -40,7 +40,7 @@
             </div>
         </div>
     </div>
-    <div v-else>
+    <div :v-if="saved">
         <p class="card-title">
             Please wait, sensor reset. will be available soon!
         </p>
@@ -129,6 +129,11 @@
 
     const app = new Vue({
         el: "#app",
+        computed: {
+            getSaved: () => {
+                return this.saved
+            }
+        },
         data: {
             loadingSend: false,
             loading: false,
@@ -205,7 +210,7 @@
                             nErrors: 0,
                             errorMessage: []
                         },
-                        {
+/*                        {
                             name: "frequencySensor",
                             label: "Frequency (Hz)",
                             value: "120",
@@ -217,7 +222,7 @@
                             type: "text",
                             nErrors: 0,
                             errorMessage: []
-                        },
+                        }, */
                     ]
                 }
             ],
@@ -226,11 +231,11 @@
             sendForm : async  function (){
                 try {
                     this.loadingSend = true
-                    const { data } = await axios.post('/', this.form)
-                    console.log(data)
-                    if(data.content){
-                        this.saved = true
-                    }
+                    console.log('sendForm')
+                    const { data } = await axios.post('/', {}, { params: {
+                        ...this.form
+                    }})
+                    this.saved = true
                 } catch (e) {
                     console.log(e)
                 } finally {
@@ -264,13 +269,12 @@
                         })
                     })
 
-                    console.log(this.form)
                     if (this.errorsForm.length > 0) {
                         this.formValid = false
                         e.preventDefault();
                         return false
                     }
-
+                    console.log('aqui')
                     await this.sendForm()
                 } catch (e) {
                     console.log(e)

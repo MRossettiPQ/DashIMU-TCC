@@ -14,6 +14,11 @@ bool InitWiFi() {
 
     WiFiClass::mode(WIFI_STA);
 
+    if (!WiFi.config(localIP, gateway, subnet)){
+        Serial.println("STA Failed to configure");
+        return false;
+    }
+
     WiFi.begin(ssid.c_str(), password.c_str());
     Serial.println("Connecting to WiFi...");
 

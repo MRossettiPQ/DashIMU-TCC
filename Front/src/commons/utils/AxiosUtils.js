@@ -3,7 +3,7 @@ import { notifyError, notifySuccess } from "src/commons/utils/NotifyUtils";
 import axios from "axios";
 
 const Axios = axios.create(
-  process.env.ENV !== "homolog" && {
+  process.env.ENV !== "development" && {
     baseURL: process.env.SERVER_API,
   }
 );
