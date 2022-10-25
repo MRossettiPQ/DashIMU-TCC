@@ -10,38 +10,92 @@
       <q-card-section class="div-vc" v-if="dataLoaded">
         <div class="col chart" ref="eChart" id="eChart"></div>
         <div class="column div-values" v-if="values">
-          <span>min_pitch:{{ values.min_pitch }}</span>
-          <span>max_pitch:{{ values.max_pitch }}</span>
-          <span>var_pitch:{{ values.var_pitch }}</span>
-          <span>min_atorn:{{ values.min_atorn }}</span>
-          <span>max_atorn:{{ values.max_atorn }}</span>
-          <span>var_atorn:{{ values.var_atorn }}</span>
-          <span>mean_rms_r_atorn:{{ values.mean_rms_r_atorn }}</span>
-          <span>sd_rms_r_atorn:{{ values.sd_rms_r_atorn }}</span>
-          <span>mean_rms_r_pitch_1p:{{ values.mean_rms_r_pitch_1p }}</span>
-          <span>sd_rms_r_pitch_1p:{{ values.sd_rms_r_pitch_1p }}</span>
+          <div class="info-div">
+            <span class="info-title">min_pitch:</span>
+            <span class="info-value">{{ values.min_pitch }}</span>
+          </div>
+          <div class="info-div">
+            <span class="info-title">max_pitch:</span>
+            <span class="info-value">{{ values.max_pitch }}</span>
+          </div>
+          <div class="info-div">
+            <span class="info-title">var_pitch:</span>
+            <span class="info-value">{{ values.var_pitch }}</span>
+          </div>
+          <div class="info-div">
+            <span class="info-title">var_pitch:</span>
+            <span class="info-value">{{ values.var_pitch }}</span>
+          </div>
+          <div class="info-div">
+            <span class="info-title">min_atorn:</span>
+            <span class="info-value">{{ values.min_atorn }}</span>
+          </div>
+          <div class="info-div">
+            <span class="info-title">max_atorn:</span>
+            <span class="info-value">{{ values.max_atorn }}</span>
+          </div>
+          <div class="info-div">
+            <span class="info-title">var_atorn:</span>
+            <span class="info-value">{{ values.var_atorn }}</span>
+          </div>
+          <div class="info-div">
+            <span class="info-title">mean_rms_r_atorn:</span>
+            <span class="info-value">{{ values.mean_rms_r_atorn }}</span>
+          </div>
+          <div class="info-div">
+            <span class="info-title">sd_rms_r_atorn:</span>
+            <span class="info-value">{{ values.sd_rms_r_atorn }}</span>
+          </div>
+          <div class="info-div">
+            <span class="info-title">mean_rms_r_pitch_1p:</span>
+            <span class="info-value">{{ values.mean_rms_r_pitch_1p }}</span>
+          </div>
+          <div class="info-div">
+            <span class="info-title">sd_rms_r_pitch_1p:</span>
+            <span class="info-value">{{ values.sd_rms_r_pitch_1p }}</span>
+          </div>
         </div>
       </q-card-section>
     </q-card>
   </q-dialog>
 </template>
 
-<script src="./VariabilityCenter.js"/>
+<script src="./VariabilityCenter.js" />
 
 <style lang="stylus" scoped>
-.div-header
-  width 100%
-  display flex
-  justify-content space-between
+.info-div {
+  display: flex;
+  font-size 1rem;
+  gap: 8px;
+  padding: 8px 0 8px 0px;
+}
 
-.div-vc
-  display grid
-  grid-template-columns 70% 30%
+.info-title {
+  font-weight: 600;
+}
 
-.div-values
-  padding 0 8px 0 8px
+.info-value {
+  font-weight: 400;
+}
 
-.chart
-  width 100%
-  height auto
+.div-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.div-vc {
+  display: grid;
+  grid-template-columns: 70% 30%;
+  gap: 12px;
+}
+
+.div-values {
+  padding: 0 8px 0 8px;
+}
+
+.chart {
+  width: 100%;
+  height: auto;
+}
 </style>
