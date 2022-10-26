@@ -136,7 +136,6 @@ exports.calculationVariabilityCenter = async ({
         chartOption = await this.getEChartOptions({
           session,
           max_atorn,
-          xAxis: getColumn(sensor_1, 'numberMensuration'),
         })
         break
       default:
@@ -163,7 +162,7 @@ exports.calculationVariabilityCenter = async ({
   }
 }
 
-exports.getEChartOptions = async ({ session, max_atorn, xAxis }) => {
+exports.getEChartOptions = async ({ session, max_atorn }) => {
   // reference -> https://echarts.apache.org/
 
   return {
@@ -182,7 +181,6 @@ exports.getEChartOptions = async ({ session, max_atorn, xAxis }) => {
       type: 'category',
       boundaryGap: false,
       axisLine: { onZero: true },
-      data: xAxis,
     },
   }
 }

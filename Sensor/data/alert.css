@@ -1,0 +1,26 @@
+.alert {
+    width: 400px;
+    padding: 20px;
+    background-color: #21BA45;
+    color: white;
+    position: absolute;
+    z-index: 99;
+    top: 100px;
+    left: calc(100vw/2 - 200px);
+    border-radius: 10px;
+}
+
+.close-btn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.close-btn:hover {
+    color: black;
+}

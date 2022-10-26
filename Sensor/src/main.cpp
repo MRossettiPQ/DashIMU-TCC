@@ -59,24 +59,28 @@ void loop() {
                 case 3:
                     Serial.println("[SENSOR] - Restart");
                     RestartMeasurement();
+                    cmdActual = 7;
                     break;
 
                 case 4:
                     StopMeasurement();
                     Serial.println("[SENSOR] - Calibrate sensor");
                     CalibrateIMU();
+                    cmdActual = 7;
                     break;
 
                 case 5:
                     StopMeasurement();
                     Serial.println("[SENSOR] - Save calibration");
                     SaveIMUCalibration();
+                    cmdActual = 7;
                     break;
 
                 case 6:
                     StopMeasurement();
                     Serial.println("[SENSOR] - Load calibration");
                     LoadIMUCalibration();
+                    cmdActual = 7;
                     break;
 
                 default:
@@ -88,6 +92,8 @@ void loop() {
 
         Serial.println("[SENSOR] - No customer available");
         clientsList.close();
+        delay(100);
+    } else {
+        delay(500);
     }
-    delay(100);
 }

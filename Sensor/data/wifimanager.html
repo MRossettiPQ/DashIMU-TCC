@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <title>IMU Manager</title>
+    <meta charset ="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="data:,">
     <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="alert.css">
     <script src="modules/vue.js"></script>
     <script src="modules/axios.js"></script>
 </head>
@@ -13,13 +15,12 @@
     <div class="topnav">
         <h1>IMU Manager</h1>
     </div>
-    <div class="content" :v-if="!saved">
+    <div class="content" v-if="!saved">
         <div class="card-grid">
             <div class="card">
                 <form class="form" @submit.prevent="checkForm">
                     <div class="form-section" v-for="(section, index) in formSection" :key="index">
                         <p class="card-title">
-                            <i class="fas fa-lightbulb"></i>
                             {{section.title}}
                         </p>
                         <div v-for="(field, index) in section.fields" class="form-column" :key="index">
@@ -40,15 +41,17 @@
             </div>
         </div>
     </div>
-    <div :v-if="saved">
+    <div v-else>
         <p class="card-title">
-            Please wait, sensor reset. will be available soon!
+            Aguarde, redefinição das configurações do modulo. estará disponível em breve!
         </p>
+    </div>
+    <div class="alert" v-if="saved">
+        <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <strong>Atenção!</strong> Modulo será reiniciado e ficara temporariamente indisponível.
     </div>
 </div>
 <script>
-    console.log(axios)
-
     axios.interceptors.response.use(
         (response) => {
             if (response.config.method.toUpperCase() !== "GET") {
@@ -182,7 +185,7 @@
                             errorMessage: []
                         },
                         {
-                            name: "backend",
+                            name: "backendPort",
                             label: "Server Port",
                             value: "8000",
                             rules: [

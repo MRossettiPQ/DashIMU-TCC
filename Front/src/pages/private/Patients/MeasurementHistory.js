@@ -26,6 +26,7 @@ class MeasurementHistory extends Vue {
       label: "Number Mensuration",
       field: "numberMensuration",
       style: "width: 50px",
+      sortable: true,
     },
     {
       align: "center",
@@ -56,6 +57,7 @@ class MeasurementHistory extends Vue {
       label: "ID Measurement",
       field: "idMeasurement",
       style: "width: 50px",
+      sortable: true,
     },
   ];
 
@@ -69,12 +71,14 @@ class MeasurementHistory extends Vue {
   }
 
   async mounted() {
+    console.log("mounted");
     if (this.id !== null) {
       this.pagination = PaginationUtils.create({
         url: `/api/session/${this.id}/mensuration`,
         infinite: true,
       });
       await this.pagination.search();
+      console.log(this.pagination.list);
     }
   }
 

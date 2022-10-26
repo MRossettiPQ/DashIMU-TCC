@@ -42,6 +42,7 @@ void MountBufferToSend() {
         Serial.println(&"[SENSOR] - Command in force:"[cmdActual]);
         jsonBufferServer += ReturnsJSONFromMeasurement(numberMeasurement);
 
+        Serial.println(jsonBufferServer);
         // Buffer de 320 Measurement
         if (numberMeasurement == (lastDispatch + 40)) {
             clientsList.send("[" + jsonBufferServer + "]");

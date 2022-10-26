@@ -1,7 +1,9 @@
 <template>
   <q-page class="home">
     <div class="column">Home</div>
-    <div class="column"></div>
+    <div class="column" v-if="metadata !== null">
+      <span>{{ metadata.socket_url }}</span>
+    </div>
   </q-page>
 </template>
 

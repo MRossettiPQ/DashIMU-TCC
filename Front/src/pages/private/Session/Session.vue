@@ -125,10 +125,7 @@
               >
                 <span class="timer">Tempo de execução: {{ timerRunning }}</span>
               </q-card-section>
-              <q-card-section
-                class="col form-column form-column__gap"
-                v-if="numberOfConnections > 0"
-              >
+              <q-card-section class="col form-column form-column__gap">
                 <q-btn-group class="col">
                   <q-btn
                     class="col"

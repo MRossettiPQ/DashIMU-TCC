@@ -3,10 +3,8 @@
 
 #include <config.h>
 
-void InitFileSystem()
-{
-    if (!SPIFFS.begin(true))
-    {
+void InitFileSystem(){
+    if (!SPIFFS.begin(true)){
         Serial.println("An error has occurred while mounting SPIFFS");
     }
     Serial.println("SPIFFS mounted successfully");
@@ -20,80 +18,79 @@ void InitFileSystem()
     Serial.println("SSID: " + ssid + ",Password: " + password + ",Sensor Frequency: " + sensorFrequency);
     Serial.println("Backend url: " + backend + ",Backend port: " + backendPort + ",Sensor name: " + nameSensor);
 
-    if (InitWiFi())
-    {
-        configurationServer.on("/", HTTP_GET, [](AsyncWebServerRequest *request)
-                               { request->send(SPIFFS, "/index.html", "text/html", false, Processor); });
-        configurationServer.serveStatic("/", SPIFFS, "/");
-        configurationServer.begin();
-    }
-    else
-    {
-        Serial.println("Setting Access Point");
-        WiFi.softAP("ESP32-WIFI-MANAGER", nullptr);
+    configurationServer.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+        Serial.println("wifimanager.html enviado para usuario");
+        request->send(SPIFFS, "/wifimanager.html", "text/html");
+    });
+
+    configurationServer.serveStatic("/", SPIFFS, "/");
+    configurationServer.on("/", HTTP_POST, [](AsyncWebServerRequest *request){
+        int params = request->params();
+
+        Serial.println("request->params()");
+        for(int i=0;i<params;i++){
+            AsyncWebParameter* p = request->getParam(i);
+
+            Serial.println(p->isPost());
+            Serial.println(p->name() + "" + p->value().c_str());
+            // HTTP POST ssid value
+            if (p->name() == input_ssid) {
+                ssid = p->value().c_str();
+                Serial.print("SSID set to: " + ssid);
+                WriteFile(SPIFFS, SSID_PATH, ssid.c_str());
+            }
+            // HTTP POST password value
+            if (p->name() == input_password) {
+                password = p->value().c_str();
+                Serial.print("Password set to: " + password);
+                WriteFile(SPIFFS, PASSWORD_PATH, password.c_str());
+            }
+            // HTTP POST Sensor frequency value
+            if (p->name() == input_sensorFrequency) {
+                sensorFrequency = p->value().c_str();
+                Serial.print("Sensor frequenct set to: " + sensorFrequency);
+                WriteFile(SPIFFS, SENSOR_FREQUENCY_PATH, sensorFrequency.c_str());
+            }
+            // HTTP POST ip value
+            if (p->name() == input_backend) {
+                backend = p->value().c_str();
+                Serial.print("IP Backend set to: " + backend);
+                WriteFile(SPIFFS, BACKEND_PATH, backend.c_str());
+            }
+            // HTTP POST port value
+            if (p->name() == input_backendPort) {
+                backendPort = p->value().c_str();
+                Serial.print("IP Backend Port set to: " + backendPort);
+                WriteFile(SPIFFS, BACKEND_PORT_PATH, backendPort.c_str());
+            }
+            // HTTP POST sensor name value
+            if (p->name() == input_nameSensor) {
+                nameSensor = p->value().c_str();
+                Serial.print("Name sensor set to: " + nameSensor);
+                WriteFile(SPIFFS, NAME_SENSOR_PATH, nameSensor.c_str());
+            }
+        }
+        request->send(200, "text/plain", "Success. ESP32 will now restart. Connect to your router and go to IP address: " + WiFi.localIP().toString());
+        delay(3000);
+        ESP.restart();
+    });
+
+    if (!InitWiFi()) {
+        int numRandom = getRandom(0, 100, 1);
+        char* ssidAP = "ESP32-WIFI-MANAGER-";
+        Serial.println("Setting Access Point:");
+        ssidAP = strcpy(ssidAP, (char*) numRandom);
+        Serial.print(ssidAP);
+        WiFi.softAP(ssidAP, nullptr);
 
         IPAddress IP = WiFi.softAPIP();
         Serial.println("AP IP address: " + IP.toString());
-
-        configurationServer.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
-            Serial.println("wifimanager.html enviado para usuario");
-            request->send(SPIFFS, "/wifimanager.html", "text/html"); 
-        });
-
-        configurationServer.serveStatic("/", SPIFFS, "/");
-        configurationServer.on("/", HTTP_POST, [](AsyncWebServerRequest *request){
-            int params = request->params();
-            Serial.println("AsyncWebServerRequest recebido");
-            
-            for(int i=0;i<params;i++){
-                AsyncWebParameter* p = request->getParam(i);
-
-                Serial.println(p->isPost());
-                Serial.println(p->name() + "" + p->value().c_str());
-                // HTTP POST ssid value
-                if (p->name() == input_ssid) {
-                    ssid = p->value().c_str();
-                    Serial.print("SSID set to: " + ssid);
-                    WriteFile(SPIFFS, SSID_PATH, ssid.c_str());
-                }
-                // HTTP POST password value
-                if (p->name() == input_password) {
-                    password = p->value().c_str();
-                    Serial.print("Password set to: " + password);
-                    WriteFile(SPIFFS, PASSWORD_PATH, password.c_str());
-                }
-                // HTTP POST Sensor frequency value
-                if (p->name() == input_sensorFrequency) {
-                    sensorFrequency = p->value().c_str();
-                    Serial.print("Sensor frequenct set to: " + sensorFrequency);
-                    WriteFile(SPIFFS, SENSOR_FREQUENCY_PATH, sensorFrequency.c_str());
-                }
-                // HTTP POST ip value
-                if (p->name() == input_backend) {
-                    backend = p->value().c_str();
-                    Serial.print("IP Backend set to: " + backend);
-                    WriteFile(SPIFFS, BACKEND_PATH, backend.c_str());
-                }
-                if (p->name() == input_backendPort) {
-                    backendPort = p->value().c_str();
-                    Serial.print("IP Backend Port set to: " + backendPort);
-                    WriteFile(SPIFFS, BACKEND_PORT_PATH, backendPort.c_str());
-                }
-                if (p->name() == input_nameSensor) {
-                    nameSensor = p->value().c_str();
-                    Serial.print("Name sensor set to: " + nameSensor);
-                    WriteFile(SPIFFS, NAME_SENSOR_PATH, nameSensor.c_str());
-                }
-            }
-            request->send(200, "text/plain", "Success. ESP32 will now restart. Connect to your router and go to IP address: " + WiFi.localIP().toString());
-            delay(3000);
-            ESP.restart(); });
-        configurationServer.begin();
     }
+
+    configurationServer.begin();
 }
 
-String ReadFile(fs::FS &fs, const char *path)
-{
+String ReadFile(fs::FS &fs, const char *path) {
     Serial.printf("Reading file: %s\r\n", path);
 
     File file = fs.open(path);
@@ -112,8 +109,7 @@ String ReadFile(fs::FS &fs, const char *path)
     return fileContent;
 }
 
-void WriteFile(fs::FS &fs, const char *path, const char *message)
-{
+void WriteFile(fs::FS &fs, const char *path, const char *message) {
     Serial.printf("Writing file: %s\r\n", path);
 
     File file = fs.open(path, FILE_WRITE);
@@ -132,13 +128,14 @@ void WriteFile(fs::FS &fs, const char *path, const char *message)
     }
 }
 
-String Processor(const String &var)
-{
-    if (var == "GPIO_STATE")
-    {
-        return var;
+int getRandom(int lower, int upper, int count){
+    int i;
+    int num = 0;
+    for (i = 0; i < count; i++) {
+        num = (rand() % (upper - lower + 1)) + lower;
+        Serial.println(num);
     }
-    return {};
+    return num;
 }
 
 #endif // SENSOR_FILE_SYSTEM_H

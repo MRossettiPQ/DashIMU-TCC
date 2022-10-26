@@ -140,6 +140,6 @@ String ReadFile(fs::FS &fs, const char *path);
 
 void WriteFile(fs::FS &fs, const char *path, const char *message);
 
-String Processor(const String &var);
+int getRandom(int lower, int upper, int count);
 
 #endif //SENSOR_CONFIG_H

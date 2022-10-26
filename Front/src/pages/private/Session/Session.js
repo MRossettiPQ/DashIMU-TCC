@@ -181,7 +181,9 @@ class Session extends Vue {
   }
 
   addMensuration(data, id) {
-    this.sensors[id].gyro_measurements.concat(data);
+    data.map((campo, index) => {
+      this.sensors[id].gyro_measurements.push(campo);
+    });
   }
 
   setConnected(id) {

@@ -61,6 +61,10 @@ exports.getMensurationList = async (req, res) => {
     const mensurationList = await GyroMeasurement.findAll({
       include: [
         {
+          order: [
+            ['sensorIdGyroSensor', 'ASC'],
+            ['numberMensuration', 'ASC'],
+          ],
           model: Sensor,
           where: {
             sessionIdSession: idSession,
@@ -68,6 +72,8 @@ exports.getMensurationList = async (req, res) => {
         },
       ],
     })
+
+    console.log(mensurationList)
 
     await throwNotFoundIf({
       cond: mensurationList === null,
