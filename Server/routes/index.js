@@ -19,7 +19,7 @@ module.exports = (app) => {
   // TODO WebSocket
   app.ws('/socket', WebSocketController.sensorConnection)
 
-  app.ws('/v2/socket', WebSocketController.socketSession)
+  //app.ws('/v2/socket', WebSocketController.socketSession)
 
   // TODO header
   app.use(header)

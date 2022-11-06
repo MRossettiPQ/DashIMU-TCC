@@ -28,7 +28,6 @@ import {
   QToolbarTitle,
   QAjaxBar,
 } from "quasar";
-import VueApexCharts from "vue-apexcharts";
 import ValidatorPlugin from "../commons/utils/ValidatorsUtils";
 
 export default async ({ Vue }) => {
@@ -91,6 +90,5 @@ export default async ({ Vue }) => {
   Vue.component("QDialog", QDialog);
   Vue.component("QField", QField);
   Vue.component("QAjaxBar", QAjaxBar);
-  Vue.component("Apexchart", VueApexCharts);
   Vue.use(ValidatorPlugin);
 };

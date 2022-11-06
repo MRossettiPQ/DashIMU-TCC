@@ -1,4 +1,11 @@
-import { Component, Prop, PropSync, Vue, Watch } from "vue-property-decorator";
+import {
+  Component,
+  Prop,
+  PropSync,
+  Ref,
+  Vue,
+  Watch,
+} from "vue-property-decorator";
 import * as echarts from "echarts";
 
 @Component({
@@ -10,6 +17,9 @@ class TabGraph extends Vue {
 
   @Prop({ type: Array, default: [] })
   data;
+
+  @Ref("eChart")
+  eChart;
 
   myChart = null;
 
@@ -24,10 +34,6 @@ class TabGraph extends Vue {
   makeChart({ elementId = "eChart", options }) {
     // reference -> https://echarts.apache.org/
     const opts = {
-      title: {
-        left: "center",
-        text: "New Session",
-      },
       yAxis: {
         boundaryGap: [0, "100%"],
         type: "value",
@@ -36,17 +42,6 @@ class TabGraph extends Vue {
         type: "category",
         boundaryGap: false,
         axisLine: { onZero: true },
-      },
-      toolbox: {
-        feature: {
-          dataZoom: {
-            yAxisIndex: "none",
-          },
-          restore: {},
-          saveAsImage: {},
-          dataView: { readOnly: true },
-          magicType: { type: ["line", "bar"] },
-        },
       },
       dataZoom: [
         {
@@ -59,16 +54,10 @@ class TabGraph extends Vue {
           end: 10,
         },
       ],
-      tooltip: {
-        trigger: "axis",
-        position: function (pt) {
-          return [pt[0], "10%"];
-        },
-      },
       ...options,
     };
     const myChart = echarts.init(document.getElementById(elementId), null, {
-      renderer: "svg",
+      renderer: "canvas",
     });
     myChart.setOption(opts);
     this.myChart = myChart;
@@ -88,9 +77,7 @@ class TabGraph extends Vue {
         opt.push(Yaw);
         opt.push(Pitch);
       });
-      this.myChart.setOption({
-        series: opt,
-      });
+      console.log(this.myChart, this.eChart);
     }
   }
 
@@ -105,18 +92,6 @@ class TabGraph extends Vue {
           type: "line",
           symbol: "none",
           sampling: "lttb",
-          // areaStyle: {
-          //   color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-          //     {
-          //       offset: 0,
-          //       color: "#26A69A",
-          //     },
-          //     {
-          //       offset: 1,
-          //       color: "#1976D2",
-          //     },
-          //   ]),
-          // },
         };
         const Roll = this.getColumn(sensorData.gyro_measurements, "Roll");
         const Yaw = this.getColumn(sensorData.gyro_measurements, "Yaw");

@@ -73,9 +73,7 @@
         </q-list>
       </q-drawer>
 
-      <div>
-        <router-view />
-      </div>
+      <router-view />
     </q-page-container>
   </q-layout>
 </template>
@@ -84,19 +82,22 @@
 
 <style lang="stylus" scoped>
 
-.conteudo-toolbar
-  display flex
-  flex-wrap nowrap
-  align-items center
+.conteudo-toolbar {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+}
 
-a
-  padding-left 5px
-  color hsl(240, 9%, 89%)
-  text-decoration none
-  font-size 14px
+a {
+  padding-left: 5px;
+  color: hsl(240, 9%, 89%);
+  text-decoration: none;
+  font-size: 14px;
+}
 
-.conteudo
-  display flex
-  flex-wrap nowrap
-  align-items center
+.conteudo {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+}
 </style>

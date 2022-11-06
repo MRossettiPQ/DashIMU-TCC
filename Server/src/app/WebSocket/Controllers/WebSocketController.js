@@ -16,18 +16,30 @@ exports.getSensorList = async (req, res) => {
   }
 }
 
-exports.sensorConnection = async (client, req) => {
+exports.sensorConnection = (client, req) => {
   console.log(`[SOCKET] - /socket`)
   let connectionInfo = null
 
   client.on('message', (msg) => {
+    const data = JSON.parse(msg)
     connectionInfo = {
       id: uuidv4(null, null, null),
-      ip: msg,
+      ...data,
     }
     sensorList.push(connectionInfo)
     console.log(sensorList)
     console.log(`[SOCKET] - Add sensor - ${msg} - ${dayjs()}`)
+  })
+
+  client.on('disconnect', () => {
+    console.log('event:disconnect')
+    removeClient(connectionInfo)
+    console.log(
+      `[SOCKET] - Sensor ${
+        connectionInfo?.ip
+      } removed from network! - ${dayjs()}`
+    )
+    console.log(sensorList)
   })
 
   client.on('close', () => {
@@ -41,7 +53,7 @@ exports.sensorConnection = async (client, req) => {
     console.log(sensorList)
   })
 
-  client.on('data', function (data) {
+  client.on('data', (data) => {
     console.log('event:data')
     console.log(data)
   })
@@ -57,7 +69,7 @@ exports.sensorConnection = async (client, req) => {
     console.log(sensorList)
   })
 
-  client.on('', () => {
+  client.on('connection', () => {
     console.log(`[SOCKET] - Client connected in network! - ${dayjs()}`)
   })
 }

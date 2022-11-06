@@ -37,6 +37,7 @@
     "quick-local-ip": "^1.0.7",
     "sequelize": "^6.21.3",
     "uuid": "^9.0.0",
+    "ws": "^8.10.0",
     "yargs": "^17.6.0"
   },
   "devDependencies": {

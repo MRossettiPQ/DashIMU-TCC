@@ -67,7 +67,7 @@
   display: flex;
   font-size 1rem;
   gap: 8px;
-  padding: 8px 0 8px 0px;
+  padding: 8px 0 8px 0;
 }
 
 .info-title {

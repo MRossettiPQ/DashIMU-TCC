@@ -46,9 +46,10 @@
 <script src="./Patients.js" />
 
 <style lang="stylus" scoped>
-.dialog-card
-  width 100vw
-  height 100vh
+.dialog-card {
+  width: 100vw;
+  height: 100vh;
+}
 
 .grid-cadastro
   padding 16px
@@ -71,11 +72,13 @@
   gap 16px
   flex-direction column
 
-h1
-  font-size 2rem
-  padding 0
-  margin 0
+h1 {
+  font-size: 2rem;
+  padding: 0;
+  margin: 0;
+}
 
-strong, p
-  font-size 1.5em
+strong, p {
+  font-size: 1.5em;
+}
 </style>

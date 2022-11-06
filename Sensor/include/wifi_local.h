@@ -8,7 +8,7 @@ bool InitWiFi() {
     Serial.println("[SENSOR] - Configuring WiFi");
 
     if(ssid == ""){
-        Serial.println("Undefined SSID or IP address.");
+        Serial.println("Undefined SSID");
         return false;
     }
 

@@ -14,8 +14,8 @@
 
 // Pin led
 #define LED_I2C_SCAN 12
-#define LED_WIFI_CONNECTED 12
-#define LED_WIFI_AP 12
+#define LED_WIFI_CONNECTED 2
+#define LED_WIFI_AP 2
 #define LED_SENSOR_INITIALIZED 12
 #define LED_SENSOR_CALIBRATION_PLAN 12
 #define LED_SENSOR_CALIBRATION_EIGHT 12
@@ -70,14 +70,13 @@ const char *NAME_SENSOR_PATH = "/config/nameSensor.txt";
 // variables
 int status;
 int numberMeasurement = 0;
-int lastDispatch;
+int lastDispatch = 0;
 int cmdActual = 0;
 int optReceivedFromCustomer = 0;
 int tryConnectWifi = 0;
 
 // output
 String horaLeitura;
-String jsonReceivedFromClient;
 String jsonBufferServer;
 String addressESP;
 
@@ -141,5 +140,7 @@ String ReadFile(fs::FS &fs, const char *path);
 void WriteFile(fs::FS &fs, const char *path, const char *message);
 
 int getRandom(int lower, int upper, int count);
+
+String processor(const String& var);
 
 #endif //SENSOR_CONFIG_H

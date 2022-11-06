@@ -66,11 +66,12 @@
 <script src="./Register.js" />
 
 <style lang="stylus" scoped>
-.title
-  text-align center
-  font-weight bold
-  font-size 32px
-  color $dark
+.title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 32px;
+  color: $dark;
+}
 
 .possui-conta
   color $faded

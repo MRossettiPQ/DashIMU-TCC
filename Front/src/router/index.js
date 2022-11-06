@@ -3,13 +3,11 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import VueI18n from "vue-i18n";
 import moment from "moment";
-import VueApexCharts from "vue-apexcharts";
 
 import { RouteBeforeGuard, routes } from "./routes";
 
 Vue.use(VueRouter);
 Vue.use(VueI18n);
-Vue.use(VueApexCharts);
 
 /*
  * If not building with SSR mode, you can

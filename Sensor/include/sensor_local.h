@@ -194,12 +194,12 @@ String ReturnsJSONFromMeasurement(int MeasurementNumber) {
 
 void StopMeasurement() {
     jsonBufferServer = "";
-    numberMeasurement = 0;
+    cmdActual = 7;
 }
 
 void RestartMeasurement() {
     StopMeasurement();
-    cmdActual = 1;
+    numberMeasurement = 0;
 }
 
 #endif //SENSOR_SENSOR_LOCAL_H

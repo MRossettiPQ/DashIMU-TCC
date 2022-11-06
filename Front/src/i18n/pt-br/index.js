@@ -63,6 +63,10 @@ export default {
     fullscreen: "Tela cheia",
     connect_sensor: "Conectar ao sensor",
     next_error: "Existem erros no formulário, revise-o e tente novamente.",
+    no_sensor_available: "Nenhum sensor disponível.",
+    number_of_measurements: "Numero de medições",
+    runtime: "Tempo de execução",
+    graphic_temporarily_unavailable: "Gráfico temporarimente indisponivel.",
   },
   validation: {
     cep: "CEP inválido",

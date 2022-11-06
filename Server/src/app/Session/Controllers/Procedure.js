@@ -132,7 +132,7 @@ exports.getProcedures = () => {
         {
           movement_name: i18n.__('procedures.radioulnar.pronation'),
           value: 'PRONATION',
-          description: i18n.__('procedures.elbow.pronation.description'),
+          description: i18n.__('procedures.radioulnar.pronation.description'),
           image: 'radioulnar_-_pronation.jpg',
           angle: {
             min: 0,
@@ -142,7 +142,7 @@ exports.getProcedures = () => {
         {
           movement_name: i18n.__('procedures.radioulnar.supnation'),
           value: 'SUPINATION',
-          description: i18n.__('procedures.elbow.supnation.description'),
+          description: i18n.__('procedures.radioulnar.supnation.description'),
           image: 'radioulnar_-_supnation.jpg',
           angle: {
             min: 0,

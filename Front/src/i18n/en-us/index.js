@@ -63,6 +63,10 @@ export default {
     fullscreen: "Fullscreen",
     connect_sensor: "Connect sensor",
     next_error: "There are errors in the form, please review it and try again",
+    no_sensor_available: "No sensor available.",
+    number_of_measurements: "Number of measurements",
+    runtime: "Runtime",
+    graphic_temporarily_unavailable: "Graphic temporarily unavailable.",
   },
   validation: {
     cep: "CEP inválido",

@@ -1,16 +1,13 @@
 <template>
   <q-table
-    class="panels"
     :columns="tableColumns"
     :data="data"
     :fullscreen="openedFullscreen"
-    :title="label"
     color="primary"
     flat
     bordered
-
   >
-    <template #top-right class="flex">
+    <template #top-right>
       <q-btn
         :label="!$q.platform.is.mobile ? $t('session.export') : null"
         class="col-2 m-r-5"
@@ -42,9 +39,7 @@
 <script src="./TabMeasurementTable.js" />
 
 <style lang="stylus" scoped>
-.panels
-  height 100%
-  display flex
-  flex-grow 1
-  align-items stretch
+.custom-table >>> .q-table, .q-table__card {
+  overflow-x: auto;
+}
 </style>

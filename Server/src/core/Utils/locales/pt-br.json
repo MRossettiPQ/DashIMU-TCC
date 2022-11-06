@@ -72,5 +72,6 @@
 	"procedures.distal_interphalangeal.internal_extension_fingers": "Extensão interna do polegar",
 	"procedures.distal_interphalangeal.internal_extension_fingers.description": "(0 a 20º)",
 	"procedures.elbow.pronation.description": "procedures.elbow.pronation.description",
-	"procedures.elbow.supnation.description": "procedures.elbow.supnation.description"
+	"procedures.elbow.supnation.description": "procedures.elbow.supnation.description",
+	"invalid_password": "invalid_password"
 }

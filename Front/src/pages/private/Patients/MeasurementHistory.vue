@@ -7,43 +7,46 @@
         else-msg="Sem sessão"
         id-msg="Medição nº"
       />
-      <q-card-section class="col content-column">
+      <q-card-section class="column">
         <q-table
+          class="col w-100"
           v-if="id"
           :columns="columns"
           :data="pagination.list"
           :filter="filter"
           :loading="pagination.loading"
-          class="col"
           flat
           row-key="id"
           title="Treats"
         >
           <template #top>
-            <q-input
-              v-model="filter"
-              borderless
-              color="primary"
-              debounce="300"
-              dense
-              outlined
-            >
-              <template #append>
-                <q-icon name="search" />
-              </template>
-            </q-input>
-            <q-space />
-            <q-btn
-              :disable="loading"
-              :loading="loading"
-              :label="
-                !$q.platform.is.mobile ? 'Calculation Variability Center' : null
-              "
-              color="primary"
-              dense
-              unelevated
-              @click="getCalculationVariabilityCenter"
-            />
+            <div class="search-div w-100">
+              <q-input
+                v-model="filter"
+                borderless
+                color="primary"
+                debounce="300"
+                dense
+                outlined
+              >
+                <template #append>
+                  <q-icon name="search" />
+                </template>
+              </q-input>
+              <q-btn
+                :disable="loading"
+                :loading="loading"
+                :label="
+                  !$q.platform.is.mobile
+                    ? 'Calculation Variability Center'
+                    : null
+                "
+                color="primary"
+                dense
+                unelevated
+                @click="getCalculationVariabilityCenter"
+              />
+            </div>
           </template>
         </q-table>
       </q-card-section>
@@ -54,8 +57,8 @@
 <script src="./MeasurementHistory.js" />
 
 <style lang="stylus" scoped>
-.div-header
-  width 100%
-  display flex
-  justify-content space-between
+.search-div {
+  display: flex;
+  justify-content: space-between;
+}
 </style>

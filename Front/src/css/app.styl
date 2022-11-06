@@ -1,36 +1,42 @@
 @import 'utils.styl'
 @import 'mixins.styl'
 // app global css in Stylus form
-*
-  box-sizing border-box
-  scrollbar-width thin
-  scrollbar-color $lightgrey
+* {
+  box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: $lightgrey;
+}
 
-::-webkit-scrollbar
-  width 7px
-  height 7px
-  background-color #f5f5f5
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+  background-color: #f5f5f5;
+}
 
-::-webkit-scrollbar-thumb
-  background-color $lightgrey
-  border none
-  border-radius 5px
+::-webkit-scrollbar-thumb {
+  background-color: $lightgrey;
+  border: none;
+  border-radius: 5px;
+}
 
-.responsive-height
-  width 100%
-  height calc(100vh - 50px)
-  max-height 1080px
+.responsive-height {
+  width: 100%;
+  height: calc(100vh - 50px);
+  max-height: 1080px;
+}
 
-.responsive-content
-  height 100%
-  max-width 1920px
-  margin auto
-  overflow-x hidden
+.responsive-content {
+  height: 100%;
+  max-width: 1920px;
+  margin: auto;
+  overflow-x: hidden;
+}
 
-.grid-tela
-  display grid
-  flex-direction column
-  padding 10px
+.grid-tela {
+  display: grid;
+  flex-direction: column;
+  padding: 10px;
+}
 
 .form-column //colunas
   display flex
@@ -94,33 +100,43 @@
   &__no-padding
     padding 0
 
-.content-column //colunas
-  display flex
-  gap 16px
-  flex-direction row
-
-.content-component
-  display grid
-  height 100%
-
-.q-btn
-  padding 2.5px
+//colunas
+.content-column {
+  display: flex;
+  gap: 16px;
+  flex-direction: row;
+}
 
 
-.q-dialog__inner
-  & > .q-card
-    display grid
-    grid-template-rows min-content 1fr
-    grid-template-areas\ "dialog-header"\ "dialog-content"\ "dialog-actions"
+.content-component {
+  display: grid;
+  height: 100%;
+}
 
-    .dialog-header
-      grid-area dialog-header
+.q-btn {
+  padding: 2.5px;
+}
 
-    .q-card
-      &__section
-        grid-area dialog-content
-        overflow hidden
-        overflow-y scroll
+.q-dialog__inner {
+  & > .q-card {
+    display: grid;
+    grid-template-rows: min-content 1fr;
+    grid-template-areas\  "dialog-header" \  "dialog-content" \  "dialog-actions";
 
-      &__actions
-        grid-area dialog-actions
+    .dialog-header {
+      grid-area: dialog-header;
+    }
+
+    .q-card {
+      &__section {
+        grid-area: dialog-content;
+        overflow: hidden;
+        overflow-y: auto;
+      }
+
+      &__actions {
+        grid-area: dialog-actions;
+      }
+    }
+  }
+}

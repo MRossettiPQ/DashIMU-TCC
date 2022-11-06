@@ -2,12 +2,14 @@
 #define SENSOR_FILE_SYSTEM_H
 
 #include <config.h>
+#include <string.h>
 
 void InitFileSystem(){
     if (!SPIFFS.begin(true)){
         Serial.println("An error has occurred while mounting SPIFFS");
     }
     Serial.println("SPIFFS mounted successfully");
+    
     ssid = ReadFile(SPIFFS, SSID_PATH);
     password = ReadFile(SPIFFS, PASSWORD_PATH);
     sensorFrequency = ReadFile(SPIFFS, SENSOR_FREQUENCY_PATH);
@@ -19,8 +21,14 @@ void InitFileSystem(){
     Serial.println("Backend url: " + backend + ",Backend port: " + backendPort + ",Sensor name: " + nameSensor);
 
     configurationServer.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
-        Serial.println("wifimanager.html enviado para usuario");
-        request->send(SPIFFS, "/wifimanager.html", "text/html");
+        Serial.println("index.html enviado para usuario");
+        request->send(SPIFFS, "/index.html", "text/html");
+    });
+
+    configurationServer.on("/memo", HTTP_GET, [](AsyncWebServerRequest *request){
+        String content = R"({"ssid":")" + ssid + R"(","password":")" + password + R"(","sensorFrequency":")" + sensorFrequency + "\"";
+        content = content + R"(,"backend":")" + backend + + R"(","backendPort":")" + backendPort + R"(","nameSensor":")" + nameSensor + "\"}";
+        request->send(200, "text/json", content);
     });
 
     configurationServer.serveStatic("/", SPIFFS, "/");
@@ -77,11 +85,9 @@ void InitFileSystem(){
 
     if (!InitWiFi()) {
         int numRandom = getRandom(0, 100, 1);
-        char* ssidAP = "ESP32-WIFI-MANAGER-";
-        Serial.println("Setting Access Point:");
-        ssidAP = strcpy(ssidAP, (char*) numRandom);
-        Serial.print(ssidAP);
-        WiFi.softAP(ssidAP, nullptr);
+        //char *ssidName = ;
+        //strcpy(ssidName, toUpperCase(numRandom));
+        WiFi.softAP("ESP32-WIFI-MANAGER-", nullptr);
 
         IPAddress IP = WiFi.softAPIP();
         Serial.println("AP IP address: " + IP.toString());
@@ -136,6 +142,28 @@ int getRandom(int lower, int upper, int count){
         Serial.println(num);
     }
     return num;
+}
+
+String processor(const String& var){
+    if(var == "STATE") {
+        return ssid;
+    }
+    if(var == "STATE") {
+        return password;
+    }
+    if(var == "STATE") {
+        return sensorFrequency;
+    }
+    if(var == "STATE") {
+        return backend;
+    }
+    if(var == "STATE") {
+        return backendPort;
+    }
+    if(var == "STATE") {
+        return nameSensor;
+    }
+    return String();
 }
 
 #endif // SENSOR_FILE_SYSTEM_H

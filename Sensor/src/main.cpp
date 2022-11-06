@@ -42,8 +42,8 @@ void loop() {
             clientsList.onMessage(onMessageCallback);
             JsonObject obj = doc.as<JsonObject>();
             optReceivedFromCustomer = obj["cmd"].as<int>();
-            Serial.println(&"[SENSOR] - Event optReceivedFromCustomer"[optReceivedFromCustomer]);
             if (optReceivedFromCustomer != 0) {
+                Serial.println(&"[SENSOR] - Event optReceivedFromCustomer"[optReceivedFromCustomer]);
                 cmdActual = optReceivedFromCustomer;
             }
             switch (cmdActual) {
@@ -59,30 +59,27 @@ void loop() {
                 case 3:
                     Serial.println("[SENSOR] - Restart");
                     RestartMeasurement();
-                    cmdActual = 7;
                     break;
 
                 case 4:
                     StopMeasurement();
                     Serial.println("[SENSOR] - Calibrate sensor");
                     CalibrateIMU();
-                    cmdActual = 7;
                     break;
 
-                case 5:
-                    StopMeasurement();
-                    Serial.println("[SENSOR] - Save calibration");
-                    SaveIMUCalibration();
-                    cmdActual = 7;
-                    break;
+                /*
+                    case 5:
+                        StopMeasurement();
+                        Serial.println("[SENSOR] - Save calibration");
+                        SaveIMUCalibration();
+                        break;
 
-                case 6:
-                    StopMeasurement();
-                    Serial.println("[SENSOR] - Load calibration");
-                    LoadIMUCalibration();
-                    cmdActual = 7;
-                    break;
-
+                    case 6:
+                        StopMeasurement();
+                        Serial.println("[SENSOR] - Load calibration");
+                        LoadIMUCalibration();
+                        break;
+                */
                 default:
                     break;
             }
@@ -95,5 +92,8 @@ void loop() {
         delay(100);
     } else {
         delay(500);
+        digitalWrite(LED_WIFI_CONNECTED, HIGH);
+        delay(500);
+        digitalWrite(LED_WIFI_CONNECTED, LOW);
     }
 }

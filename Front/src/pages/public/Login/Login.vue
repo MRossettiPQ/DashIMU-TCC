@@ -34,9 +34,9 @@
             :loading="loading"
           />
 
-          <p class="cadastre-se">
+          <p class="register">
             Não possui conta?
-            <router-link to="register">Cadastre-se</router-link>
+            <router-link to="register">register</router-link>
           </p>
         </q-card-section>
       </q-form>
@@ -47,37 +47,28 @@
 <script src="./Login.js" />
 
 <style lang="stylus" scoped>
-.title
-  text-align center
-  font-weight bold
-  font-size 32px
-  color $dark
+.title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 32px;
+  color: $dark;
+}
 
-.lembrar-senha
-  color $faded
-  width 100%
-  display flex
-  justify-content flex-start
+.register {
+  color: $faded;
+  width: 100%;
+  text-align: center;
+  margin-top: 8px;
+  margin-bottom: 0;
 
-.recuperacao-senha
-  color $faded
-  width 100%
-  display flex
-  justify-content flex-end
+  a {
+    font-weight: bold;
+    color: $dark;
+  }
+}
 
-
-.cadastre-se
-  color $faded
-  width 100%
-  text-align center
-  margin-top 8px
-  margin-bottom 0
-
-  a
-    font-weight bold
-    color $dark
-
-.login-card
-  width 470px
-  padding 46px 46px
+.login-card {
+  width: 470px;
+  padding: 46px 46px;
+}
 </style>
