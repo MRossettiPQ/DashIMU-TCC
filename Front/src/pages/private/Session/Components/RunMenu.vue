@@ -2,7 +2,7 @@
   <div class="col menu">
     <q-list>
       <q-card-section
-        v-if="numberOfConnections > 0 || syncedNumberOfMeasurements > 0"
+        v-if="syncedNumberOfConnections > 0 || syncedNumberOfMeasurements > 0"
         class="column"
       >
         <span class="timer-title">
@@ -15,7 +15,7 @@
         </span>
       </q-card-section>
 
-      <q-btn-group v-if="numberOfConnections > 0">
+      <q-btn-group flat v-if="getNumberOfConnections > 0">
         <q-btn
           color="primary"
           :label="$t('session.start')"
@@ -92,6 +92,9 @@
   width: 100%;
   max-width: 313px;
   margin-right: 10px;
+  +mobile-portrait() {
+    max-width: none;
+  }
 }
 
 .q-btn-group {

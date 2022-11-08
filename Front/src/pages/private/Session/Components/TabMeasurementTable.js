@@ -19,68 +19,8 @@ class TabMeasurementTable extends Vue {
 
   openedFullscreen = false;
 
-  tableColumns = [
-    {
-      align: "center",
-      field: "sensorName",
-      label: "sensorName",
-    },
-    { align: "center", field: "numberMensuration", label: "numberMensuration" },
-    {
-      align: "center",
-      field: "Acc_X",
-      label: "Acc_X",
-      format: (val, row) => `${Math.ceil(val)}`,
-    },
-    {
-      align: "center",
-      field: "Acc_Y",
-      label: "Acc_Y",
-      format: (val, row) => `${Math.ceil(val)}`,
-    },
-    {
-      align: "center",
-      field: "Acc_Z",
-      label: "Acc_Z",
-      format: (val, row) => `${Math.ceil(val)}`,
-    },
-    {
-      align: "center",
-      field: "Gyr_X",
-      label: "Gyr_X",
-      format: (val, row) => `${Math.ceil(val)}`,
-    },
-    {
-      align: "center",
-      field: "Gyr_Y",
-      label: "Gyr_Y",
-      format: (val, row) => `${Math.ceil(val)}`,
-    },
-    {
-      align: "center",
-      field: "Gyr_Z",
-      label: "Gyr_Z",
-      format: (val, row) => `${Math.ceil(val)}`,
-    },
-    {
-      align: "center",
-      field: "Roll",
-      label: "Roll",
-      format: (val, row) => `${Math.ceil(val)}`,
-    },
-    {
-      align: "center",
-      field: "Pitch",
-      label: "Pitch",
-      format: (val, row) => `${Math.ceil(val)}`,
-    },
-    {
-      align: "center",
-      field: "Yaw",
-      label: "Yaw",
-      format: (val, row) => `${Math.ceil(val)}`,
-    },
-  ];
+  @Prop({ type: Array, default: [] })
+  tableColumns;
 
   openFullscreen() {
     this.openedFullscreen = !this.openedFullscreen;

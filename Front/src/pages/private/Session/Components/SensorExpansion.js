@@ -25,6 +25,7 @@ class SensorExpansion extends Vue {
   positions;
 
   sensorsOptions = [];
+  numberOfConnections = 0;
 
   async mounted() {
     await this.listSensorsLoad();
@@ -34,6 +35,7 @@ class SensorExpansion extends Vue {
     try {
       this.loading = true;
       this.sensorsOptions = await SocketService.getSensorsList();
+      console.log(this.sensorsOptions);
     } catch (e) {
       console.log(e);
     } finally {
@@ -42,17 +44,17 @@ class SensorExpansion extends Vue {
   }
 
   connect(id) {
-    if (id) {
+    if (this.syncedSensors[id].device.ip.length) {
       let url = `ws://${this.syncedSensors[id].device.ip}:8080`;
       this.syncedSensors[id].device.connection = new WebSocket(url);
 
       this.syncedSensors[id].device.connection.onmessage = (event) => {
+        console.log("message", event);
         const jSonParsed = JSON.parse(event.data);
         console.log(jSonParsed);
         this.addMensuration(jSonParsed, id);
       };
 
-      // eslint-disable-next-line no-unused-vars
       this.syncedSensors[id].device.connection.onopen = (event) => {
         this.setConnected(id);
         Notify.create({
@@ -62,7 +64,6 @@ class SensorExpansion extends Vue {
         });
       };
 
-      // eslint-disable-next-line no-unused-vars
       this.syncedSensors[id].device.connection.onerror = (event) => {
         this.setDisconnected(id);
 
@@ -73,7 +74,6 @@ class SensorExpansion extends Vue {
         });
       };
 
-      // eslint-disable-next-line no-unused-vars
       this.syncedSensors[id].device.connection.onclose = (event) => {
         this.setDisconnected(id);
         Notify.create({

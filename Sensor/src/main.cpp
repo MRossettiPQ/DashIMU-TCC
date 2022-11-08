@@ -10,9 +10,10 @@ void setup() {
     Serial.begin(115200);
 
     InitFileSystem();
-    //  Connect sensor
+
+    InitWiFi();
     //  ScannerI2C();
-    if (connectedWiFi) {
+    if (WiFiClass::status() == WL_CONNECTED) {
         InitIMU();
         //  Initialize notification
         InitNotification();
@@ -25,30 +26,31 @@ void setup() {
         timeClient.forceUpdate();
         //  List server on backend
         InitWebsocketClient();
+        
+        digitalWrite(LED_READY, HIGH);
     }
 }
 
 void loop() {
-    if (connectedWiFi) {
-        clientsList = serverSocket.accept();
+    if (WiFiClass::status() == WL_CONNECTED) {
+        serverSocketClientList = serverSocket.accept();
+        clientBackEnd.send(R"({"available":"false"})");
         Serial.println("[SENSOR] - Customer connected");
         timeClient.update();
-        numberMeasurement = 0;
-        lastDispatch = 0;
-        do {
-            if (clientsList.available()) {
-                clientsList.poll();
-            }
-            clientsList.onMessage(onMessageCallback);
+
+        while (serverSocketClientList.available()) {
+            serverSocketClientList.poll();
+
+            serverSocketClientList.onMessage(onMessageCallback);
             JsonObject obj = doc.as<JsonObject>();
             optReceivedFromCustomer = obj["cmd"].as<int>();
             if (optReceivedFromCustomer != 0) {
-                Serial.println(&"[SENSOR] - Event optReceivedFromCustomer"[optReceivedFromCustomer]);
                 cmdActual = optReceivedFromCustomer;
+                optReceivedFromCustomer = 0;
             }
             switch (cmdActual) {
                 case 1:
-                    Serial.println("[SENSOR] - Measurement");
+                    //Serial.println("[SENSOR] - Mount/Send buffer");
                     MountBufferToSend();
                     break;
 
@@ -67,33 +69,37 @@ void loop() {
                     CalibrateIMU();
                     break;
 
-                /*
-                    case 5:
-                        StopMeasurement();
-                        Serial.println("[SENSOR] - Save calibration");
-                        SaveIMUCalibration();
-                        break;
+                    /*
+                        case 5:
+                            StopMeasurement();
+                            Serial.println("[SENSOR] - Save calibration");
+                            SaveIMUCalibration();
+                            break;
 
-                    case 6:
-                        StopMeasurement();
-                        Serial.println("[SENSOR] - Load calibration");
-                        LoadIMUCalibration();
-                        break;
-                */
+                        case 6:
+                            StopMeasurement();
+                            Serial.println("[SENSOR] - Load calibration");
+                            LoadIMUCalibration();
+                            break;
+                    */
                 default:
                     break;
             }
 
             delay(8);
-        } while (clientsList.available());
-
+        }
         Serial.println("[SENSOR] - No customer available");
-        clientsList.close();
+        clientBackEnd.send(R"({"available":"true"})");
+        serverSocketClientList.close();
+        numberMeasurement = 0;
+        lastDispatch = 0;
+        cmdActual = 0;
+        jsonBufferServer = "";
         delay(100);
     } else {
         delay(500);
-        digitalWrite(LED_WIFI_CONNECTED, HIGH);
+        digitalWrite(LED_READY, HIGH);
         delay(500);
-        digitalWrite(LED_WIFI_CONNECTED, LOW);
+        digitalWrite(LED_READY, LOW);
     }
 }

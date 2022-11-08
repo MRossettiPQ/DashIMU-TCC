@@ -74,8 +74,7 @@ class InitSession extends Vue {
       ({ value }) => value === this.getMovement
     );
     this.movement = actualMovement;
-
-    console.log("actualMovement", actualMovement);
+  
     if (actualMovement?.image) {
       this.movementImg = require(`src/assets/procedures/${actualMovement.image}`);
     }

@@ -23,7 +23,6 @@
     "dayjs": "^1.11.5",
     "express": "^4.18.1",
     "express-ws": "^5.0.2",
-    "foo-bar": "^0.0.1",
     "i18n": "^0.15.1",
     "ip": "^1.1.8",
     "jsonwebtoken": "^8.5.1",
@@ -37,7 +36,6 @@
     "quick-local-ip": "^1.0.7",
     "sequelize": "^6.21.3",
     "uuid": "^9.0.0",
-    "ws": "^8.10.0",
     "yargs": "^17.6.0"
   },
   "devDependencies": {

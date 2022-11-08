@@ -20,18 +20,27 @@ exports.sensorConnection = (client, req) => {
   console.log(`[SOCKET] - /socket`)
   let connectionInfo = null
 
+  client.isAlive = true
+
   client.on('message', (msg) => {
     const data = JSON.parse(msg)
-    connectionInfo = {
-      id: uuidv4(null, null, null),
-      ...data,
+    if (connectionInfo === null) {
+      connectionInfo = {
+        id: uuidv4(null, null, null),
+        ...data,
+      }
+    } else {
+      connectionInfo = {
+        ...connectionInfo,
+        ...data,
+      }
     }
     sensorList.push(connectionInfo)
     console.log(sensorList)
     console.log(`[SOCKET] - Add sensor - ${msg} - ${dayjs()}`)
   })
 
-  client.on('disconnect', () => {
+  client.once('disconnect', () => {
     console.log('event:disconnect')
     removeClient(connectionInfo)
     console.log(
@@ -40,9 +49,10 @@ exports.sensorConnection = (client, req) => {
       } removed from network! - ${dayjs()}`
     )
     console.log(sensorList)
+    clearInterval(interval)
   })
 
-  client.on('close', () => {
+  client.once('close', () => {
     console.log('event:close')
     removeClient(connectionInfo)
     console.log(
@@ -51,14 +61,15 @@ exports.sensorConnection = (client, req) => {
       } removed from network! - ${dayjs()}`
     )
     console.log(sensorList)
+    clearInterval(interval)
   })
 
-  client.on('data', (data) => {
-    console.log('event:data')
-    console.log(data)
+  client.on('pong', (data) => {
+    console.log('event:pong')
+    client.isAlive = true
   })
 
-  client.on('error', () => {
+  client.once('error', () => {
     console.log('event:error')
     removeClient(connectionInfo)
     console.log(
@@ -67,11 +78,19 @@ exports.sensorConnection = (client, req) => {
       } removed from network! - ${dayjs()}`
     )
     console.log(sensorList)
+    clearInterval(interval)
   })
 
   client.on('connection', () => {
     console.log(`[SOCKET] - Client connected in network! - ${dayjs()}`)
   })
+
+  let interval = setInterval(() => {
+    if (!client.isAlive) return client.terminate()
+
+    client.isAlive = false
+    client.ping(null, false, true)
+  }, 10000)
 }
 
 function removeClient(connectionInfo) {

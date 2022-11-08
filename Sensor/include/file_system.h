@@ -17,17 +17,43 @@ void InitFileSystem(){
     backendPort = ReadFile(SPIFFS, BACKEND_PORT_PATH);
     nameSensor = ReadFile(SPIFFS, NAME_SENSOR_PATH);
 
-    Serial.println("SSID: " + ssid + ",Password: " + password + ",Sensor Frequency: " + sensorFrequency);
-    Serial.println("Backend url: " + backend + ",Backend port: " + backendPort + ",Sensor name: " + nameSensor);
+    Serial.println("SSID: " + ssid);
+    Serial.println("Password: " + password);
+    Serial.println("Backend url: " + backend);
+    Serial.println("Backend port: " + backendPort);
+    Serial.println("Sensor name: " + nameSensor);
 
     configurationServer.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
-        Serial.println("index.html enviado para usuario");
+        Serial.println("index.html enviado para usuário");
         request->send(SPIFFS, "/index.html", "text/html");
     });
 
     configurationServer.on("/memo", HTTP_GET, [](AsyncWebServerRequest *request){
-        String content = R"({"ssid":")" + ssid + R"(","password":")" + password + R"(","sensorFrequency":")" + sensorFrequency + "\"";
-        content = content + R"(,"backend":")" + backend + + R"(","backendPort":")" + backendPort + R"(","nameSensor":")" + nameSensor + "\"}";
+        String wifiList = "[";
+        int n = WiFi.scanComplete();
+        if(n == -2){
+            WiFi.scanNetworks(true);
+        } else if(n){
+            for (int i = 0; i < n; ++i){
+                if(i) wifiList += ",";
+                wifiList += "{";
+                wifiList += "\"rssi\":" + String(WiFi.RSSI(i));
+                wifiList += R"(,"ssid":")" + WiFi.SSID(i)+"\"";
+                wifiList += R"(,"bssid":")" + WiFi.BSSIDstr(i)+"\"";
+                wifiList += ",\"channel\":" + String(WiFi.channel(i));
+                wifiList += ",\"secure\":" + String(WiFi.encryptionType(i));
+                wifiList += "}";
+            }
+            WiFi.scanDelete();
+            if(WiFi.scanComplete() == -2){
+                WiFi.scanNetworks(true);
+            }
+        }
+        wifiList += "]";
+        
+        String content = R"({"ssid":")" + ssid + R"(","password":")" + password + "\"";
+        content = content + R"(,"backend":")" + backend + + R"(","backendPort":")" + backendPort + R"(","nameSensor":")" + nameSensor + "\",\"wifiList\":" + wifiList + "}";
+        
         request->send(200, "text/json", content);
     });
 
@@ -82,33 +108,19 @@ void InitFileSystem(){
         delay(3000);
         ESP.restart();
     });
-
-    if (!InitWiFi()) {
-        int numRandom = getRandom(0, 100, 1);
-        //char *ssidName = ;
-        //strcpy(ssidName, toUpperCase(numRandom));
-        WiFi.softAP("ESP32-WIFI-MANAGER-", nullptr);
-
-        IPAddress IP = WiFi.softAPIP();
-        Serial.println("AP IP address: " + IP.toString());
-    }
-
-    configurationServer.begin();
 }
 
 String ReadFile(fs::FS &fs, const char *path) {
     Serial.printf("Reading file: %s\r\n", path);
 
     File file = fs.open(path);
-    if (!file || file.isDirectory())
-    {
+    if (!file || file.isDirectory()) {
         Serial.println("- failed to open file for reading");
         return {};
     }
 
     String fileContent;
-    while (file.available())
-    {
+    while (file.available()) {
         fileContent = file.readStringUntil('\n');
         break;
     }
@@ -119,22 +131,19 @@ void WriteFile(fs::FS &fs, const char *path, const char *message) {
     Serial.printf("Writing file: %s\r\n", path);
 
     File file = fs.open(path, FILE_WRITE);
-    if (!file)
-    {
+    if (!file) {
         Serial.println("- failed to open file for writing");
         return;
     }
-    if (file.print(message))
-    {
+    if (file.print(message)) {
         Serial.println("- file written");
     }
-    else
-    {
+    else {
         Serial.println("- file write failed");
     }
 }
 
-int getRandom(int lower, int upper, int count){
+int getRandom(int lower, int upper, int count) {
     int i;
     int num = 0;
     for (i = 0; i < count; i++) {
@@ -142,28 +151,6 @@ int getRandom(int lower, int upper, int count){
         Serial.println(num);
     }
     return num;
-}
-
-String processor(const String& var){
-    if(var == "STATE") {
-        return ssid;
-    }
-    if(var == "STATE") {
-        return password;
-    }
-    if(var == "STATE") {
-        return sensorFrequency;
-    }
-    if(var == "STATE") {
-        return backend;
-    }
-    if(var == "STATE") {
-        return backendPort;
-    }
-    if(var == "STATE") {
-        return nameSensor;
-    }
-    return String();
 }
 
 #endif // SENSOR_FILE_SYSTEM_H

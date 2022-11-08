@@ -21,6 +21,7 @@
 #define LED_SENSOR_CALIBRATION_EIGHT 12
 #define LED_SERVER_CREATED 12
 #define LED_CLIENT_CONNECTED 12
+#define LED_READY 2
 
 // imports and dependency
 #include "eeprom_utils.h"
@@ -40,7 +41,6 @@ WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, NTP_TIME_API, -3 * 3600, 60000);
 
 bool connectedWebsocketClient;
-bool connectedWiFi = false;
 
 // Filesystem inputs and paths
 // -- reference html
@@ -70,6 +70,7 @@ const char *NAME_SENSOR_PATH = "/config/nameSensor.txt";
 // variables
 int status;
 int numberMeasurement = 0;
+int numberSended = 0;
 int lastDispatch = 0;
 int cmdActual = 0;
 int optReceivedFromCustomer = 0;
@@ -89,8 +90,9 @@ MPU9250 mpu;
 using namespace websockets;
 WebsocketsServer serverSocket;                  // Websocket object to create websocket servert
 WebsocketsClient clientBackEnd;                 // Websocket object to connect to backend and list ip
-WebsocketsClient clientsList;                   // List of websocket server clients
+WebsocketsClient serverSocketClientList;                   // List of websocket server
 AsyncWebServer configurationServer(WEB_PORT);
+AsyncWebSocket ws("/ws");
 
 IPAddress localIP;
 IPAddress gateway(192, 168, 1, 1);
@@ -122,6 +124,8 @@ void InitNotification();
 
 //  Wi-Fi
 bool InitWiFi();
+bool StartWiFi();
+void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info);
 
 //  Websocket
 void InitWebsocketServer();
@@ -140,7 +144,5 @@ String ReadFile(fs::FS &fs, const char *path);
 void WriteFile(fs::FS &fs, const char *path, const char *message);
 
 int getRandom(int lower, int upper, int count);
-
-String processor(const String& var);
 
 #endif //SENSOR_CONFIG_H

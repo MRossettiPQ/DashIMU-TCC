@@ -63,7 +63,14 @@
                 emit-value
                 filled
                 label="Sensors available"
-                option-label="ip"
+                :option-label="
+                  (i) =>
+                    i?.ip
+                      ? `${i?.nameSensor} - ${i?.ip} - ${
+                          i.available ? ' - disponível' : ' - indisponível'
+                        }`
+                      : ''
+                "
                 option-value="ip"
               />
               <span v-else>{{ $t("session.no_sensor_available") }}</span>
@@ -100,6 +107,7 @@
               />
 
               <q-btn
+                v-if="false"
                 v-show="sensor.device.active"
                 :color="sensor.device.corBtn"
                 class="row"

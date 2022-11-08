@@ -9,7 +9,7 @@ void InitWebsocketClient() {
         connectedWebsocketClient = clientBackEnd.connect(backend, backendPort.toInt(), "/socket");
         if (connectedWebsocketClient) {
             Serial.println("[SENSOR] - Connected with the server!");
-            clientBackEnd.send("{\"ip\":\"" + addressESP +"\",\"nameSensor\":\"" + nameSensor + "\"}");
+            clientBackEnd.send(R"({"ip":")" + addressESP + R"(","nameSensor":")" + nameSensor + R"(","available":true})");
         } else {
             Serial.println("[SENSOR] - Not connected to the server!");
         }
@@ -17,10 +17,7 @@ void InitWebsocketClient() {
     // digitalWrite(LED_CLIENT_CONNECTED, HIGH);
 
     // Callback when messages are received
-    clientBackEnd.onMessage([&](const WebsocketsMessage &message) {
-        Serial.print("Got Message: ");
-        Serial.println(message.data());
-    });
+    clientBackEnd.onEvent(onEventsCallback);
 }
 
 void InitWebsocketServer() {
@@ -36,32 +33,27 @@ void InitWebsocketServer() {
 }
 
 void MountBufferToSend() {
-    Serial.println("[SENSOR] - Mount/Send buffer");
     if (mpu.update()) {
-        //Serial.println(&"[SENSOR] - Command received:"[optReceivedFromCustomer]);
-        //Serial.println(&"[SENSOR] - Command in force:"[cmdActual]);
         jsonBufferServer += ReturnsJSONFromMeasurement(numberMeasurement);
 
-        Serial.println(jsonBufferServer);
+        numberMeasurement = numberMeasurement + 1;
         // Buffer de 320 Measurement
         if (numberMeasurement == (lastDispatch + 40)) {
+            Serial.println(jsonBufferServer);
             Serial.println("[SENSOR] - Send buffer");
-            clientsList.send("[" + jsonBufferServer + "]");
+            serverSocketClientList.send("[" + jsonBufferServer + "]");
             lastDispatch = numberMeasurement;
+            numberSended = numberSended + 1;
             jsonBufferServer = "";
         } else {
             // For new element in array
             jsonBufferServer += ",";
         }
-
-        numberMeasurement = numberMeasurement + 1;
     }
 }
 
 void onMessageCallback(const WebsocketsMessage& message) {
     deserializeJson(doc, message.data());
-    //Serial.println("[SENSOR] - Event onMessage");
-    //Serial.println(message.data());
 }
 
 void onEventsCallback(WebsocketsEvent event, String data) {
@@ -74,9 +66,11 @@ void onEventsCallback(WebsocketsEvent event, String data) {
             break;
         case WebsocketsEvent::GotPing:
             //Serial.println("[SENSOR] - Got a Ping!");
+            clientBackEnd.pong();
             break;
         case WebsocketsEvent::GotPong:
             //Serial.println("[SENSOR] - Got a Pong!");
+            clientBackEnd.ping();
             break;
         default:
             //Serial.println("[SENSOR] - Got a default!");

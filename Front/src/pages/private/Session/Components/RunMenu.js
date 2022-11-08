@@ -1,6 +1,7 @@
 import { Component, Prop, PropSync, Vue } from "vue-property-decorator";
 import PatientExpansion from "pages/private/Session/Components/PatientExpansion.vue";
 import SensorExpansion from "pages/private/Session/Components/SensorExpansion.vue";
+import CSVUtils from "src/commons/utils/CSVUtils";
 
 @Component({
   name: "run-menu",
@@ -34,11 +35,11 @@ class RunMenu extends Vue {
   @PropSync("numberOfMeasurements")
   syncedNumberOfMeasurements;
 
-  @Prop()
-  numberOfConnections;
+  @PropSync("numberOfConnections")
+  syncedNumberOfConnections;
 
-  @Prop()
-  timerRunning;
+  @Prop({ type: Array, default: [] })
+  tableColumns;
 
   @Prop()
   metadata;
@@ -52,6 +53,9 @@ class RunMenu extends Vue {
 
   exportAll() {
     console.log("exportar tudo");
+    this.syncedSensors.map((item) => {
+      CSVUtils.ExportCSV(item.gyro_measurements, this.tableColumns);
+    });
   }
 
   addTestReading() {
@@ -143,6 +147,10 @@ class RunMenu extends Vue {
 
   endTimer() {
     clearTimeout();
+  }
+
+  get getNumberOfConnections() {
+    return this.syncedNumberOfConnections;
   }
 }
 

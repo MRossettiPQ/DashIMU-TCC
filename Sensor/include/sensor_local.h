@@ -146,46 +146,46 @@ String ReturnsJSONFromMeasurement(int MeasurementNumber) {
     double Yaw = mpu.getYaw();
 
     //-----------------Sensor----------------
-    String Leitura = "{\"sensorName\":\"";
+    String Leitura = R"({"sensorName":")";
     Leitura += nameSensor;
-    Leitura += "\",\"numberMensuration\":\"";
+    Leitura += R"(","numberMensuration":")";
     Leitura += MeasurementNumber;
-    Leitura += "\",\"hourMensuration\":\"";
+    Leitura += R"(","hourMensuration":")";
     Leitura += horaLeitura;
     //--------------Acelerometro--------------
-    Leitura += "\",\"AccelX_mss\":\"";
+    Leitura += R"(","AccelX_mss":")";
     Leitura += AccelX_mss;
-    Leitura += "\",\"AccelY_mss\":\"";
+    Leitura += R"(","AccelY_mss":")";
     Leitura += AccelY_mss;
-    Leitura += "\",\"AccelZ_mss\":\"";
+    Leitura += R"(","AccelZ_mss":")";
     Leitura += AccelZ_mss;
     //--------------Acel. Liner---------------
-    Leitura += "\",\"Acc_X\":\"";
+    Leitura += R"(","Acc_X":")";
     Leitura += AccelX_Lin;
-    Leitura += "\",\"Acc_Y\":\"";
+    Leitura += R"(","Acc_Y":")";
     Leitura += AccelY_Lin;
-    Leitura += "\",\"Acc_Z\":\"";
+    Leitura += R"(","Acc_Z":")";
     Leitura += AccelZ_Lin;
-    //---------------Giroscopio---------------
-    Leitura += "\",\"Gyr_X\":\"";
+    //---------------Giroscópio---------------
+    Leitura += R"(","Gyr_X":")";
     Leitura += GyroX_rads;
-    Leitura += "\",\"Gyr_Y\":\"";
+    Leitura += R"(","Gyr_Y":")";
     Leitura += GyroY_rads;
-    Leitura += "\",\"Gyr_Z\":\"";
+    Leitura += R"(","Gyr_Z":")";
     Leitura += GyroZ_rads;
     //--------------Magnetometro--------------
-    Leitura += "\",\"Mag_X\":\"";
+    Leitura += R"(","Mag_X":")";
     Leitura += MagX_uT;
-    Leitura += "\",\"Mag_Y\":\"";
+    Leitura += R"(","Mag_Y":")";
     Leitura += MagY_uT;
-    Leitura += "\",\"Mag_Z\":\"";
+    Leitura += R"(","Mag_Z":")";
     Leitura += MagZ_uT;
     //----------Roll, Pitch e Yaw-------------
-    Leitura += "\",\"Roll\":\"";
+    Leitura += R"(","Roll":")";
     Leitura += Roll;
-    Leitura += "\",\"Pitch\":\"";
+    Leitura += R"(","Pitch":")";
     Leitura += Pitch;
-    Leitura += "\",\"Yaw\":\"";
+    Leitura += R"(","Yaw":")";
     Leitura += Yaw;
     Leitura += "\"}";
 
@@ -194,7 +194,7 @@ String ReturnsJSONFromMeasurement(int MeasurementNumber) {
 
 void StopMeasurement() {
     jsonBufferServer = "";
-    cmdActual = 7;
+    cmdActual = 0;
 }
 
 void RestartMeasurement() {

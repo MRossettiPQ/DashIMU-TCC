@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"name": "Sensor",
+			"path": ".."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"bitset": "cpp",
+			"algorithm": "cpp"
+		}
+	}
+}

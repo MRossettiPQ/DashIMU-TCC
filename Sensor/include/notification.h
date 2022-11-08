@@ -12,6 +12,7 @@ void InitNotification(){
     pinMode(LED_SENSOR_CALIBRATION_EIGHT, OUTPUT);
     pinMode(LED_SERVER_CREATED, OUTPUT);
     pinMode(LED_CLIENT_CONNECTED, OUTPUT);
+    pinMode(LED_READY, OUTPUT);
 }
 
 #endif //NOTIFICATION_LOCAL_H

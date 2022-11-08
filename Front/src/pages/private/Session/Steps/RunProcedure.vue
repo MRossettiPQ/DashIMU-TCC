@@ -41,23 +41,25 @@
               :data="sensor.gyro_measurements"
               :patient="patient"
               :label="`${$t('session.spreadsheet')} ${sensor.id}`"
+              :table-columns="tableColumns"
             />
           </q-tab-panel>
         </q-tab-panels>
       </div>
     </div>
     <run-menu
-      class="col-all"
+      class="col"
       :session.sync="syncedSession"
       :sensors.sync="syncedSensors"
       :positions.sync="syncedPositions"
       :registred-sensor-id.sync="syncedRegistredSensorId"
       :measurement-in-progress.sync="syncedMeasurementInProgress"
       :measurement-in-pause.sync="syncedMeasurementInPause"
-      :number-of-connections="numberOfConnections"
+      :number-of-connections.sync="syncedNumberOfConnections"
       :metadata="metadata"
       :patient="patient"
       :number-of-measurements.sync="syncedNumberOfMeasurements"
+      :table-columns="tableColumns"
     />
   </div>
 </template>
