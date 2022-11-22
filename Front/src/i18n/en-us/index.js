@@ -47,6 +47,7 @@ export default {
     session: "Session",
     movement: "Movement",
     weight: "Weight",
+    select_sensor: "Select sensors",
     select_procedure: "Select procedure",
     run_procedure: "Run procedure",
     next: "Next",
@@ -62,7 +63,10 @@ export default {
     close: "Close",
     fullscreen: "Fullscreen",
     connect_sensor: "Connect sensor",
-    next_error: "There are errors in the form, please review it and try again",
+    procedure_next_error:
+      "There are errors in the form, please review it and try again",
+    sensor_next_error:
+      "Number of sensors lower than the minimum required for the procedure.",
     no_sensor_available: "No sensor available.",
     number_of_measurements: "Number of measurements",
     runtime: "Runtime",

@@ -1,7 +1,7 @@
 <template>
   <q-form
     v-if="!!metadata.procedures"
-    class="column form-lines form-lines__gap-md"
+    class="column w-100 form-lines form-lines__gap-md"
   >
     <q-select
       class="row"
@@ -30,18 +30,10 @@
         <span v-if="movement">{{ movement.description }}</span>
       </div>
 
-      <div class="row img-center" v-if="!!getMovementImg">
+      <div class="col img-center" v-if="!!getMovementImg">
         <q-img class="img-div" :src="getMovementImg" />
       </div>
     </div>
-
-    <q-input
-      class="row"
-      v-model="syncedSession.weight"
-      filled
-      :label="$t('session.weight')"
-      type="text"
-    />
   </q-form>
 </template>
 

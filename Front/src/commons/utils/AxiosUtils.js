@@ -1,6 +1,7 @@
 import AuthenticateUtils from "./AuthenticateUtils";
 import { notifyError, notifySuccess } from "src/commons/utils/NotifyUtils";
 import axios from "axios";
+import Vue from "vue";
 
 const Axios = axios.create(
   process.env.ENV === "development" && {
@@ -23,7 +24,12 @@ Axios.interceptors.response.use(
 
     return response;
   },
-  (error) => {
+  async (error) => {
+    if (error.response.status === 401) {
+      notifyError(error.response.data.message || error.response.data.msg);
+      await Vue.prototype.$store.dispatch("Authentication/logout");
+    }
+
     if (error.response.status === 404) {
       notifyError(this.$t("axios.404"));
     }

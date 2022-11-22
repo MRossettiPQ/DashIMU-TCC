@@ -1,13 +1,11 @@
 import { Component, Prop, PropSync, Vue } from "vue-property-decorator";
 import PatientExpansion from "pages/private/Session/Components/PatientExpansion.vue";
-import SensorExpansion from "pages/private/Session/Components/SensorExpansion.vue";
 import CSVUtils from "src/commons/utils/CSVUtils";
 
 @Component({
   name: "run-menu",
   components: {
     PatientExpansion,
-    SensorExpansion,
   },
 })
 class RunMenu extends Vue {
@@ -122,6 +120,9 @@ class RunMenu extends Vue {
     this.syncedSensors.map((item, index) => {
       if (item.device.active === true) {
         item.device.connection.send(JSON.stringify({ cmd: 3 }));
+        item.device.measurement_in_progress = false;
+        this.syncedMeasurementInProgress = false;
+        this.syncedMeasurementInPause = true;
         item.measurements = [];
       }
     });
@@ -131,14 +132,10 @@ class RunMenu extends Vue {
   runTime = null;
 
   startTimer() {
-    /*
-      this.runTimer = 0;
-      this.timeout = setInterval(() => {
-        this.runTimer = this.runTimer + 1;
-        console.log("interval", this.runTimer, this.timeout);
-      }, 1000);
-
-     */
+    this.runTimer = 0;
+    this.timeout = setInterval(() => {
+      this.runTimer = this.runTimer + 1;
+    }, 1000);
   }
 
   get timerRunning() {
@@ -146,7 +143,7 @@ class RunMenu extends Vue {
   }
 
   endTimer() {
-    clearTimeout();
+    clearTimeout(this.runTimer);
   }
 
   get getNumberOfConnections() {

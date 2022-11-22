@@ -16,85 +16,95 @@ exports.getSensorList = async (req, res) => {
   }
 }
 
-exports.sensorConnection = (client, req) => {
-  console.log(`[SOCKET] - /socket`)
-  let connectionInfo = null
+exports.sensorConnection = (client, req, expressWs) => {
+  console.log(`[SOCKET] - Client connected in network! - ${dayjs()}`)
+
+  client.connectionInfo = null
 
   client.isAlive = true
 
   client.on('message', (msg) => {
-    const data = JSON.parse(msg)
-    if (connectionInfo === null) {
-      connectionInfo = {
-        id: uuidv4(null, null, null),
-        ...data,
+    try {
+      console.log(`[SOCKET] - message`)
+      const data = JSON.parse(msg)
+      client.origin = data.origin
+      if (client.origin === 'SENSOR') {
+        if (client.connectionInfo === null) {
+          client.connectionInfo = {
+            id: uuidv4(null, null, null),
+            ...data,
+          }
+          sensorList.push(client.connectionInfo)
+          console.log(`[SOCKET] - Add sensor - ${msg} - ${dayjs()}`)
+        } else {
+          // Update sensor info
+          client.connectionInfo = {
+            ...client.connectionInfo,
+            ...data,
+          }
+          const index = sensorList.findIndex(
+            (sensor) => sensor.uuid === client.connectionInfo.uuid
+          )
+          sensorList[index] = { ...sensorList[index], ...data }
+          console.log(`[SOCKET] - Update sensor - ${msg} - ${dayjs()}`)
+        }
       }
-    } else {
-      connectionInfo = {
-        ...connectionInfo,
-        ...data,
-      }
-    }
-    sensorList.push(connectionInfo)
-    console.log(sensorList)
-    console.log(`[SOCKET] - Add sensor - ${msg} - ${dayjs()}`)
-  })
 
-  client.once('disconnect', () => {
-    console.log('event:disconnect')
-    removeClient(connectionInfo)
-    console.log(
-      `[SOCKET] - Sensor ${
-        connectionInfo?.ip
-      } removed from network! - ${dayjs()}`
-    )
-    console.log(sensorList)
-    clearInterval(interval)
+      updateSensorList(expressWs)
+    } catch (e) {
+      console.log(e)
+    }
   })
 
   client.once('close', () => {
     console.log('event:close')
-    removeClient(connectionInfo)
-    console.log(
-      `[SOCKET] - Sensor ${
-        connectionInfo?.ip
-      } removed from network! - ${dayjs()}`
-    )
-    console.log(sensorList)
-    clearInterval(interval)
+    if (client.origin === 'SENSOR') {
+      removeClient(client.connectionInfo)
+      updateSensorList(expressWs)
+    }
+    clearInterval(client.interval)
   })
 
   client.on('pong', (data) => {
-    console.log('event:pong')
     client.isAlive = true
   })
 
-  client.once('error', () => {
-    console.log('event:error')
-    removeClient(connectionInfo)
-    console.log(
-      `[SOCKET] - Sensor ${
-        connectionInfo?.ip
-      } removed from network! - ${dayjs()}`
-    )
-    console.log(sensorList)
-    clearInterval(interval)
-  })
-
-  client.on('connection', () => {
-    console.log(`[SOCKET] - Client connected in network! - ${dayjs()}`)
-  })
-
-  let interval = setInterval(() => {
-    if (!client.isAlive) return client.terminate()
+  client.interval = setInterval(() => {
+    if (!client.isAlive) {
+      return client.terminate()
+    }
 
     client.isAlive = false
-    client.ping(null, false, true)
+    client.ping()
   }, 10000)
 }
 
+function updateSensorList(expressWs) {
+  function getClients() {
+    return expressWs.getWss('/').clients || []
+  }
+  try {
+    const clients = getClients()
+    clients.forEach((client) => {
+      client.send(
+        JSON.stringify({
+          origin: 'SERVER',
+          sensorList,
+        })
+      )
+    })
+    console.log(`[SOCKET] - Update sensor list - ${dayjs()}`)
+  } catch (e) {
+    console.log(e)
+  }
+}
+
 function removeClient(connectionInfo) {
-  sensorList = sensorList.filter((sensor) => {
-    return sensor.uuid !== connectionInfo.uuid
+  let ip = connectionInfo.connectionInfo?.ip
+  let index = sensorList.findIndex((sensor) => {
+    return sensor.id !== connectionInfo.id
   })
+
+  sensorList.splice(index, 1)
+  console.log(`[SOCKET] - Sensor ${ip} removed from network! - ${dayjs()}`)
 }

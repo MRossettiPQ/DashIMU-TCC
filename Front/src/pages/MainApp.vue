@@ -9,7 +9,7 @@
             flat
             icon="menu"
             round
-            @click="leftDrawerOpen = !leftDrawerOpen"
+            @click="() => (leftDrawerOpen = !leftDrawerOpen)"
           />
 
           <q-toolbar-title> Dashi-IMU</q-toolbar-title>
@@ -81,13 +81,6 @@
 <script src="./MainApp.js" />
 
 <style lang="stylus" scoped>
-
-.conteudo-toolbar {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-}
-
 a {
   padding-left: 5px;
   color: hsl(240, 9%, 89%);

@@ -19,6 +19,20 @@ export default {
       }
       return login;
     },
+    async context({ commit }) {
+      let context = null;
+      try {
+        if (initialState.user != null) {
+          context = await Authentication.context();
+          commit("loadingSuccess");
+        }
+      } catch (e) {
+        console.log(e);
+        commit("loadingFailure");
+      }
+
+      return context;
+    },
     logout({ commit }) {
       localStorage.removeItem("user");
       commit("logout");
@@ -43,9 +57,12 @@ export default {
       state.status.loggedIn = false;
       state.user = null;
     },
-    logout(state) {
+    loadingSuccess(state, user) {},
+    loadingFailure(state) {},
+    async logout(state) {
       state.status.loggedIn = false;
       state.user = null;
+      await this.$router.push("/");
     },
     registerSuccess(state) {
       state.status.loggedIn = false;

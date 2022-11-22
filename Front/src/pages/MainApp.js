@@ -1,4 +1,4 @@
-import { Component, Vue, Watch } from "vue-property-decorator";
+import { Component, Ref, Vue, Watch } from "vue-property-decorator";
 import EssentialLink from "components/EssentialLink/EssentialLink.vue";
 import { Axios } from "src/commons/utils/AxiosUtils";
 
@@ -8,43 +8,59 @@ import { Axios } from "src/commons/utils/AxiosUtils";
 })
 class MainApp extends Vue {
   loading = false;
+  loaded = false;
   leftDrawerOpen = false;
-  essentialLinks = [
-    {
-      title: this.$t("menu.home.title"),
-      caption: this.$t("menu.home.caption"),
-      icon: "home",
-      link: "/home",
-    },
-    {
-      title: this.$t("menu.login.title"),
-      caption: this.$t("menu.login.caption"),
-      icon: "login",
-      link: "/logar",
-      inLogged: true,
-    },
-    {
-      title: this.$t("menu.register.title"),
-      caption: this.$t("menu.register.caption"),
-      icon: "app_registration",
-      link: "/register",
-      inLogged: true,
-    },
-    {
-      title: this.$t("menu.profile.title"),
-      caption: this.$t("menu.profile.caption"),
-      icon: "account_circle",
-      link: "/profile",
-      inLogged: false,
-    },
-    {
-      title: this.$t("menu.patient.title"),
-      caption: this.$t("menu.patient.caption"),
-      icon: "local_hospital",
-      link: "/patients",
-      inLogged: false,
-    },
-  ];
+
+  get essentialLinks() {
+    const essentialLinks = [
+      {
+        title: this.$t("menu.home.title"),
+        caption: this.$t("menu.home.caption"),
+        icon: "home",
+        link: "/home",
+      },
+      {
+        title: this.$t("menu.login.title"),
+        caption: this.$t("menu.login.caption"),
+        icon: "login",
+        link: "/logar",
+        inLogged: true,
+      },
+      {
+        title: this.$t("menu.register.title"),
+        caption: this.$t("menu.register.caption"),
+        icon: "app_registration",
+        link: "/register",
+        inLogged: true,
+      },
+      {
+        title: this.$t("menu.profile.title"),
+        caption: this.$t("menu.profile.caption"),
+        icon: "account_circle",
+        link: "/profile",
+        inLogged: false,
+      },
+      {
+        title: this.$t("menu.patient.title"),
+        caption: this.$t("menu.patient.caption"),
+        icon: "local_hospital",
+        link: "/patients",
+        inLogged: false,
+      },
+    ];
+    return {
+      ...essentialLinks,
+      ...() => [
+        {
+          title: "socket test",
+          caption: "socket test",
+          icon: "local_hospital",
+          link: "/socket",
+          inLogged: false,
+        },
+      ],
+    };
+  }
 
   get logged() {
     return !!this.$store.state.Authentication.user;
@@ -93,27 +109,41 @@ class MainApp extends Vue {
   @Watch("loading")
   watchLoading(isLoading) {
     if (isLoading) {
-      this.$refs.loadingBar.start();
+      this.$refs?.loadingBar?.start();
     } else {
-      this.$refs.loadingBar.stop();
+      this.$refs?.loadingBar?.stop();
     }
   }
 
   async mounted() {
-    Axios.interceptors.request.use((config) => {
-      this.loading = true;
-      return config;
-    });
-    Axios.interceptors.response.use(
-      (response) => {
-        this.loading = false;
-        return response;
-      },
-      (error) => {
-        this.loading = false;
-        return Promise.reject(error);
-      }
-    );
+    try {
+      Axios.interceptors.request.use((config) => {
+        this.loading = true;
+        return config;
+      });
+
+      Axios.interceptors.response.use(
+        (response) => {
+          this.loading = false;
+          return response;
+        },
+        (error) => {
+          this.loading = false;
+          return Promise.reject(error);
+        }
+      );
+
+      await this.$store.dispatch("Authentication/context");
+    } catch (e) {
+      console.log(e);
+      await this.$store.dispatch("Authentication/logout");
+    } finally {
+      this.loaded = true;
+    }
+  }
+
+  get loadedPage() {
+    return this.loaded;
   }
 }
 

@@ -1,52 +1,64 @@
 <template>
-  <section class="column responsive-height">
-    <div class="navigation-stepper" v-if="metadata">
-      <div class="row step-header">
-        <span class="step-header__label">{{ actualStep.label }}</span>
-      </div>
+  <section ref="patientScreen" class="responsive-height">
+    <div class="row responsive-content" v-if="metadata">
+      <div class="navigation-stepper">
+        <div class="row w-100">
+          <span class="step-header__label">{{ actualStep.label }}</span>
+        </div>
 
-      <transition class="col" name="slide-fade" mode="out-in">
-        <Component
-          :is="step"
-          :session.sync="sessionBean"
-          :positions.sync="positions"
-          :sensors.sync="sensors"
-          :metadata="metadata"
-          :patient="bean"
-          :number-of-connections.sync="numberOfConnections"
-          :registred-sensor-id.sync="registredSensorId"
-          :measurement-in-progress.sync="measurement_in_progress"
-          :measurement-in-pause.sync="measurement_in_pause"
-          :number-of-measurements.sync="numberOfMeasurements"
-        />
-      </transition>
+        <div class="row w-100">
+          <transition name="slide-fade" mode="out-in">
+            <Component
+              :is="step"
+              :actual-procedure="actualProcedure"
+              :sensor-list.sync="listOfSensors"
+              :session.sync="sessionBean"
+              :positions.sync="positions"
+              :sensors.sync="sensors"
+              :metadata="metadata"
+              :patient="bean"
+              :tiny-screen="isTinyScreen"
+              :connected-sensors="connectedSensors"
+              :registered-sensor-id.sync="registeredSensorId"
+              :measurement-in-progress.sync="measurement_in_progress"
+              :measurement-in-pause.sync="measurement_in_pause"
+              :number-of-measurements.sync="numberOfMeasurements"
+              :number-of-valid-connection.sync="numberOfValidConnection"
+            />
+          </transition>
+        </div>
 
-      <div class="row navigation-options" v-if="!loading">
-        <q-btn
-          class="row"
-          v-if="step !== 'init-session'"
-          flat
-          color="primary"
-          @click="prev"
-          :label="$t('session.previous')"
-        />
-        <q-btn
-          class="row"
-          v-if="step === 'init-session'"
-          @click="next"
-          color="primary"
-          :label="$t('session.next')"
-        />
-        <q-btn
-          class="row"
-          v-else
-          :disable="numberOfMeasurements === 0"
-          @click="saveSession"
-          color="primary"
-          :label="$t('session.save')"
-        />
+        <div class="w-100 row navigation-options" v-if="!loading">
+          <q-btn
+            class="row"
+            v-if="step !== 'init-session'"
+            flat
+            dense
+            color="primary"
+            @click="prev"
+            :label="$t('session.previous')"
+          />
+          <q-btn
+            class="row"
+            dense
+            v-if="step !== 'run-procedure'"
+            @click="next"
+            color="primary"
+            :label="$t('session.next')"
+          />
+          <q-btn
+            class="row"
+            v-else
+            dense
+            :disable="numberOfMeasurements === 0"
+            @click="saveSession"
+            color="primary"
+            :label="$t('session.save')"
+          />
+        </div>
       </div>
     </div>
+    <div v-else />
   </section>
 </template>
 
@@ -69,10 +81,13 @@
   justify-content: space-between;
 }
 
+
 .navigation-stepper {
-  height: 100%;
   display: grid;
-  grid-template-rows: min-content 1fr max-content;
-  padding: 12px;
+  grid-template-rows: min-content 1fr min-content;
+  height: 100%;
+  padding: 24px;
+  width: 100%;
+  max-width: 100%
 }
 </style>

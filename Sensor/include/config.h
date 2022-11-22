@@ -41,6 +41,7 @@ WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, NTP_TIME_API, -3 * 3600, 60000);
 
 bool connectedWebsocketClient;
+bool available = true;
 
 // Filesystem inputs and paths
 // -- reference html
@@ -100,23 +101,14 @@ IPAddress subnet(255, 255, 0, 0);
 
 // Sensor
 void InitIMU();
-
 void CalibrateIMU();
-
 void PrintIMUCalibration();
-
 void SaveIMUCalibration();
-
 void LoadIMUCalibration();
-
 void MountBufferToSend();
-
 void StopMeasurement();
-
 void RestartMeasurement();
-
 void ScannerI2C();
-
 String ReturnsJSONFromMeasurement(int MeasurementNumber);
 
 //  Notification
@@ -129,20 +121,15 @@ void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info);
 
 //  Websocket
 void InitWebsocketServer();
-
 void InitWebsocketClient();
-
 void onMessageCallback(const WebsocketsMessage& message);
-
 void onEventsCallback(WebsocketsEvent event, String data);
+void SendStatusSensor();
 
 //  File system
 void InitFileSystem();
-
 String ReadFile(fs::FS &fs, const char *path);
-
 void WriteFile(fs::FS &fs, const char *path, const char *message);
-
 int getRandom(int lower, int upper, int count);
 
 #endif //SENSOR_CONFIG_H

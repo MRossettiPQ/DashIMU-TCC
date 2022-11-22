@@ -10,10 +10,6 @@ module.exports = (sequelize, Sequelize) => {
       allowNull: true,
       defaultValue: Sequelize.NOW,
     },
-    weight: {
-      type: Sequelize.FLOAT,
-      allowNull: true,
-    },
     procedure: {
       type: Sequelize.ENUM,
       values: [

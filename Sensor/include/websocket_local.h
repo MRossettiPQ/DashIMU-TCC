@@ -9,7 +9,7 @@ void InitWebsocketClient() {
         connectedWebsocketClient = clientBackEnd.connect(backend, backendPort.toInt(), "/socket");
         if (connectedWebsocketClient) {
             Serial.println("[SENSOR] - Connected with the server!");
-            clientBackEnd.send(R"({"ip":")" + addressESP + R"(","nameSensor":")" + nameSensor + R"(","available":true})");
+            SendStatusSensor();
         } else {
             Serial.println("[SENSOR] - Not connected to the server!");
         }
@@ -18,6 +18,10 @@ void InitWebsocketClient() {
 
     // Callback when messages are received
     clientBackEnd.onEvent(onEventsCallback);
+}
+
+void SendStatusSensor() {
+    clientBackEnd.send(R"({"ip":")" + addressESP + R"(","nameSensor":")" + nameSensor + R"(","available":")" + available + R"("})");
 }
 
 void InitWebsocketServer() {

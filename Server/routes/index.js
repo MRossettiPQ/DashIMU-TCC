@@ -3,8 +3,8 @@ const ExpressRoutes = require('./ExpressRoutes.js')
 const header = require('./header')
 const dayjs = require('dayjs')
 
-module.exports = (app) => {
-  SocketRoutes(app)
+module.exports = (app, expressWs) => {
+  SocketRoutes(app, expressWs)
 
   // TODO ping
   app.get('/ping', (req, res) => {

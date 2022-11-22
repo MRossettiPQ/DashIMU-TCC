@@ -14,8 +14,7 @@ class Home extends Vue {
     try {
       this.loadingMetadata = true;
       this.metadata = await SessionService.getMetadata();
-      this.listSensor = this.sensorsOptions =
-        await SocketService.getSensorsList();
+      this.listSensor = await SocketService.getSensorsList();
     } catch (e) {
       console.log(e);
     } finally {

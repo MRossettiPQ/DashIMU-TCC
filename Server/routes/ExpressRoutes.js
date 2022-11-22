@@ -7,18 +7,13 @@ const AuthenticationController = require('../src/app/User/Controllers/Authentica
 const WebSocketController = require('../src/app/WebSocket/Controllers/WebSocketController.js')
 const UserController = require('../src/app/User/Controllers/UserController.js')
 const header = require('./header')
-const dayjs = require('dayjs')
 
 module.exports = (app) => {
   // TODO header
   app.use(header)
 
   // TODO WebSocket
-  app.get(
-    '/api/sensor/list',
-    [AuthorizeJwt.verifyToken, AuthorizeJwt.ifAdminPhysiotherapist],
-    WebSocketController.getSensorList
-  )
+  app.get('/api/sensor/list', WebSocketController.getSensorList)
 
   // TODO Authentication
   app.post(
@@ -61,11 +56,7 @@ module.exports = (app) => {
     SessionController.getSessionList
   )
 
-  app.get(
-    '/api/session/metadata',
-    [AuthorizeJwt.verifyToken, AuthorizeJwt.ifAdminPhysiotherapist],
-    SessionController.getMetadata
-  )
+  app.get('/api/session/metadata', SessionController.getMetadata)
 
   app.get(
     '/api/session/:id',

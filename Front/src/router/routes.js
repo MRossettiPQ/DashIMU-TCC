@@ -31,6 +31,11 @@ export const routes = [
             path: "register",
             component: () => import("pages/public/Register/Register.vue"),
           },
+          {
+            name: "access.socket",
+            path: "socket",
+            component: () => import("pages/public/SocketTest/SocketTest.vue"),
+          },
         ],
       },
       {
@@ -78,6 +83,7 @@ export const RouteBeforeGuard = async (to, from, next) => {
     "access.login",
     "access.register",
     "access.home",
+    "access.socket",
     //"access.configuration",
   ];
   // TODO Hide when logged

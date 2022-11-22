@@ -1,3 +1,5 @@
 .pio
 .idea
 *.iml
+./build
+./cmake-build-debug

@@ -15,7 +15,7 @@
         </span>
       </q-card-section>
 
-      <q-btn-group flat v-if="getNumberOfConnections > 0">
+      <q-btn-group flat>
         <q-btn
           color="primary"
           :label="$t('session.start')"
@@ -48,13 +48,6 @@
         />
       </q-btn-group>
 
-      <sensor-expansion
-        :positions.sync="syncedPositions"
-        :sensors.sync="syncedSensors"
-        :registred-sensor-id.sync="syncedRegistredSensorId"
-        :measurement-in-progress.sync="syncedMeasurementInProgress"
-        :metadata="metadata"
-      />
       <patient-expansion :bean="patient" />
 
       <q-btn

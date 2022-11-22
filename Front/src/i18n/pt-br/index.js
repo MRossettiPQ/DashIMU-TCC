@@ -47,6 +47,7 @@ export default {
     movement: "Movimento",
     session: "Sessão",
     weight: "Peso",
+    select_sensor: "Selecionar sensores",
     select_procedure: "Selecionar procedimento",
     run_procedure: "Captar medições",
     next: "Próxima",
@@ -62,7 +63,10 @@ export default {
     close: "Fechar",
     fullscreen: "Tela cheia",
     connect_sensor: "Conectar ao sensor",
-    next_error: "Existem erros no formulário, revise-o e tente novamente.",
+    procedure_next_error:
+      "Existem erros no formulário, revise-o e tente novamente.",
+    sensor_next_error:
+      "Numero de sensores inferior ao mínimo requerido para o procedimento.",
     no_sensor_available: "Nenhum sensor disponível.",
     number_of_measurements: "Numero de medições",
     runtime: "Tempo de execução",

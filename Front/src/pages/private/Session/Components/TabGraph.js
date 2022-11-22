@@ -54,6 +54,12 @@ class TabGraph extends Vue {
           end: 10,
         },
       ],
+      tooltip: {
+        trigger: "axis",
+        position: function (pt) {
+          return [pt[0], "10%"];
+        },
+      },
       ...options,
     };
     const myChart = echarts.init(document.getElementById(elementId), null, {

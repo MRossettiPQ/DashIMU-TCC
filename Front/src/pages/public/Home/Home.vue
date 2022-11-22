@@ -2,9 +2,9 @@
   <q-page class="home">
     <div class="column justify-center content-center" v-if="metadata !== null">
       <span class="col text-center">
-        Para configurar os sensorer para realizar as medições é necessario
+        Para configurar os sensores para realizar as medições é necessário
         configurá los para sua rede wi-fi, conecte a rede wi-fi aberta geradas
-        pelos sensorer e no navegador siga para o endereço a seguir.
+        pelos sensores e no navegador siga para o endereço a seguir.
         <a href="http://192.168.4.1" target="_blank">Sensor manager</a>
       </span>
       <div class="ip">
@@ -24,6 +24,7 @@
           class="col text-black text-center"
           style="font-size: 36px; font-weight: bolder"
         >
+          {{ sensor.nameSensor }} -
           <a :href="`http://${sensor.ip}`" target="_blank">{{ sensor.ip }}</a>
         </span>
       </div>
