@@ -23,34 +23,35 @@ exports.sensorConnection = (client, req, expressWs) => {
 
   client.isAlive = true
 
-  client.on('message', (msg) => {
+  client.on('message', async (msg) => {
     try {
-      console.log(`[SOCKET] - message`)
-      const data = JSON.parse(msg)
-      client.origin = data.origin
-      if (client.origin === 'SENSOR') {
-        if (client.connectionInfo === null) {
-          client.connectionInfo = {
-            id: uuidv4(null, null, null),
-            ...data,
+      console.log(`[SOCKET] - message - `, msg)
+      const data = await JSON.parse(msg)
+      if (data != null) {
+        client.origin = data.origin
+        if (client.origin === 'SENSOR') {
+          if (client.connectionInfo === null) {
+            client.connectionInfo = {
+              id: uuidv4(null, null, null),
+              ...data,
+            }
+            sensorList.push(client.connectionInfo)
+            console.log(`[SOCKET] - Add sensor - ${msg} - ${dayjs()}`)
+          } else {
+            // Update sensor info
+            client.connectionInfo = {
+              ...client.connectionInfo,
+              ...data,
+            }
+            const index = sensorList.findIndex(
+              (sensor) => sensor.uuid === client.connectionInfo.uuid
+            )
+            sensorList[index] = { ...sensorList[index], ...data }
+            console.log(`[SOCKET] - Update sensor - ${msg} - ${dayjs()}`)
           }
-          sensorList.push(client.connectionInfo)
-          console.log(`[SOCKET] - Add sensor - ${msg} - ${dayjs()}`)
-        } else {
-          // Update sensor info
-          client.connectionInfo = {
-            ...client.connectionInfo,
-            ...data,
-          }
-          const index = sensorList.findIndex(
-            (sensor) => sensor.uuid === client.connectionInfo.uuid
-          )
-          sensorList[index] = { ...sensorList[index], ...data }
-          console.log(`[SOCKET] - Update sensor - ${msg} - ${dayjs()}`)
         }
+        updateSensorList(expressWs, 'UPDATE_CLIENT_LIST', sensorList)
       }
-
-      updateSensorList(expressWs)
     } catch (e) {
       console.log(e)
     }
@@ -60,13 +61,18 @@ exports.sensorConnection = (client, req, expressWs) => {
     console.log('event:close')
     if (client.origin === 'SENSOR') {
       removeClient(client.connectionInfo)
-      updateSensorList(expressWs)
+      updateSensorList(expressWs, 'UPDATE_CLIENT_LIST', sensorList)
+      updateSensorList(expressWs, 'SENSOR_DISCONNECTED', sensorList)
     }
     clearInterval(client.interval)
   })
 
   client.on('pong', (data) => {
     client.isAlive = true
+  })
+
+  client.on('error', (data) => {
+    client.close()
   })
 
   client.interval = setInterval(() => {
@@ -79,7 +85,7 @@ exports.sensorConnection = (client, req, expressWs) => {
   }, 10000)
 }
 
-function updateSensorList(expressWs) {
+function updateSensorList(expressWs, type, message) {
   function getClients() {
     return expressWs.getWss('/').clients || []
   }
@@ -89,7 +95,8 @@ function updateSensorList(expressWs) {
       client.send(
         JSON.stringify({
           origin: 'SERVER',
-          sensorList,
+          type,
+          message,
         })
       )
     })
@@ -108,3 +115,12 @@ function removeClient(connectionInfo) {
   sensorList.splice(index, 1)
   console.log(`[SOCKET] - Sensor ${ip} removed from network! - ${dayjs()}`)
 }
+
+const events = [
+  {
+    value: '',
+    code: 1000,
+    description: '',
+    info: '',
+  },
+]

@@ -12,7 +12,7 @@ const yargs = require('yargs')
   .alias('f', 'filename')
   .alias('c', 'content')
   .demandOption('locale').argv
-var expressWs = null
+let expressWs = null
 
 module.exports = (async () => {
   try {

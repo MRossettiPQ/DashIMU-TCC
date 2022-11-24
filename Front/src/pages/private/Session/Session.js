@@ -78,12 +78,19 @@ class Session extends Vue {
   connectSessionSocket() {
     // Receive update sensor available list
     let url = `ws://${this.metadata?.socket_url}/socket`;
-    this.sessionSocket = new WebSocket(url);
+    this.sessionSocket = new WebSocket(url, ["websocket"]);
 
     this.sessionSocket.onmessage = (event) => {
       const jSonParsed = JSON.parse(event.data);
       if (jSonParsed.origin === "SERVER") {
-        this.sensorList = jSonParsed?.sensorList;
+        switch (jSonParsed.type) {
+          case "UPDATE_CLIENT_LIST":
+            console.log(jSonParsed);
+            this.sensorList = jSonParsed?.message;
+            break;
+          case "CLIENT_DISCONNECTED":
+            break;
+        }
       }
       console.log(jSonParsed);
     };
@@ -117,6 +124,8 @@ class Session extends Vue {
       });
     };
   }
+
+  findSensorToDisconnect() {}
 
   async saveSession() {
     try {

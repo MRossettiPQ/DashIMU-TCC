@@ -23,6 +23,8 @@
     "core-js": "^3.6.5",
     "dayjs": "^1.11.5",
     "echarts": "^5.3.3",
+    "engine.io": "^6.2.1",
+    "engine.io-client": "^6.2.3",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "quasar": "^1.0.0",

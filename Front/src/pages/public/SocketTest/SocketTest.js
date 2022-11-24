@@ -1,6 +1,5 @@
 import { Component, Vue } from "vue-property-decorator";
-import { Notify } from "quasar";
-import dayjs from "dayjs";
+import { Socket } from "engine.io-client";
 
 @Component({
   name: "login",
@@ -10,31 +9,58 @@ class Login extends Vue {
   sensors = [];
   connection = null;
   event = null;
+  message = "";
+
+  async initEngineIo() {
+    try {
+      this.connection = await new Socket("ws://192.168.16.158:8080", {
+        transports: ["websocket", "polling"],
+        protocols: ["websocket", "soap", "wamp"],
+        upgrade: true,
+        closeOnBeforeunload: true,
+      });
+
+      this.initEvents();
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  sendMessage() {
+    console.log("enviando message");
+    this.connection.send("message");
+  }
+
+  initEvents() {
+    this.connection.on("open", (event) => {
+      this.connection.on("message", (data) => {
+        console.log("message", data);
+      });
+
+      this.connection.on("close", (event) => {
+        console.log("close", event);
+      });
+
+      this.connection.on("error", (event) => {
+        console.log("error", event);
+      });
+      this.connection.send("message");
+    });
+
+    console.log(this.connection);
+  }
+
+  initEngineIo2() {
+    this.connection = new Socket("ws://192.168.16.113:8000", {
+      transports: ["websocket"],
+      path: "/socket",
+    });
+
+    this.initEvents();
+  }
 
   mounted() {
-    let connection = new WebSocket(`ws://192.168.16.158:80/socket/session`);
-
-    connection.addEventListener("error", (event) => {
-      console.log(event);
-      clearInterval(connection.interval);
-    });
-
-    connection.addEventListener("open", (event) => {
-      connection.interval = setInterval(async () => {
-        console.log("ping", dayjs());
-        connection.send(JSON.stringify({ origin: "FRONT", type: "PING" }));
-        console.log(connection.readyState);
-      }, 5000);
-    });
-
-    connection.addEventListener("close", (event) => {
-      console.log("close", dayjs());
-      clearInterval(connection.interval);
-    });
-
-    connection.addEventListener("message", (event) => {
-      console.log(event);
-    });
+    this.initEngineIo();
   }
 }
 

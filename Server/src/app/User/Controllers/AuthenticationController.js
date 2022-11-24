@@ -69,7 +69,7 @@ exports.login = async (req, res) => {
       },
       environment.secret,
       {
-        expiresIn: 86400,
+        expiresIn: 3 * 86400,
       },
       null
     )

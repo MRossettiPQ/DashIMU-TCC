@@ -1,8 +1,10 @@
 <template>
-  <div v-if="loading">
+  <div>
     <span>Loading</span>
+    <q-btn @click="initEngineIo" label="initEngineIo"></q-btn>
+    <q-btn @click="sendMessage" label="sendMessage"></q-btn>
+    <span>{{ message }}</span>
   </div>
-  <div v-else></div>
 </template>
 
 <script src="./SocketTest.js" />

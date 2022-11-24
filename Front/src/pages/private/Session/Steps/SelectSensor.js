@@ -66,7 +66,6 @@ class SelectSensor extends Vue {
       const index = this.getSensorIndexConnectedList(indexSensorList);
 
       let url = `ws://${this.syncedSensors[index].device.ip}:80/socket/session`;
-      this.syncedSensors[index].device.connection = new WebSocket(url);
 
       this.syncedSensors[index].device.connection.onmessage = (event) => {
         const jSonParsed = JSON.parse(event.data);
@@ -77,41 +76,32 @@ class SelectSensor extends Vue {
       this.syncedSensors[index].device.connection.onclose = (event) => {
         this.setConnected(index);
         Notify.create({
-          message: this.$t("socket.success"),
-          textColor: "white",
-          color: "positive",
-        });
-        clearInterval(this.syncedSensors[index].device.connection.interval);
-      };
-
-      this.syncedSensors[index].device.connection.onerror = (event) => {
-        console.log("onerror");
-        this.setDisconnected(index);
-
-        Notify.create({
-          message: this.$t("socket.error"),
-          textColor: "white",
-          color: "error",
-        });
-
-        clearInterval(this.syncedSensors[index].device.connection.interval);
-      };
-
-      this.syncedSensors[index].device.connection.onopen = (event) => {
-        console.log("onopen");
-        this.setDisconnected(index);
-        Notify.create({
           message: this.$t("socket.close"),
           textColor: "white",
           color: "warning",
         });
       };
 
-      this.syncedSensors[index].device.connection.interval = setInterval(() => {
-        this.syncedSensors[index].device.connection.send(
-          JSON.stringify({ origin: "FRONT", type: "PING" })
-        );
-      }, 1000);
+      this.syncedSensors[index].device.connection.onerror = (event) => {
+        console.log("onerror");
+        this.setDisconnected(index);
+        //this.syncedSensors[index].device.connection.close();
+
+        Notify.create({
+          message: this.$t("socket.error"),
+          textColor: "white",
+          color: "error",
+        });
+      };
+
+      this.syncedSensors[index].device.connection.onopen = (event) => {
+        console.log("onopen");
+        Notify.create({
+          message: this.$t("socket.success"),
+          textColor: "white",
+          color: "positive",
+        });
+      };
     }
   }
 
