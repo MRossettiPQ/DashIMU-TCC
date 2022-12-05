@@ -3,11 +3,16 @@
     <q-card class="column">
       <dialog-header
         :id="id"
-        :label-right-button="!$q.platform.is.mobile ? 'Close' : null"
+        :label-right-button="!isMobile ? 'Close' : null"
         id-msg="Patient nº"
         else-msg="New patient"
       />
-      <q-card-section class="card-section">
+      <loading-screen v-if="fetchData.loading"></loading-screen>
+      <error-screen v-else-if="fetchData.hasError"></error-screen>
+      <q-card-section
+        v-else-if="fetchData.result !== null"
+        class="card-section"
+      >
         <q-form ref="mainForm" class="col form-lines form-lines__gap-sm" greedy>
           <q-input
             v-model="bean.name"
@@ -24,8 +29,8 @@
           />
           <q-input
             v-if="false"
-            filled
             v-model="bean.birthday"
+            filled
             :rules="[$validators.notBlank, $validators.dateBorn]"
             fill-mask="DD-MM-YYYY"
           >
@@ -68,12 +73,13 @@
             suffix="metros"
           />
         </q-form>
-        <table-session class="col" :id="id" />
+        <table-session v-if="id !== null" :id="id" class="col" />
       </q-card-section>
       <q-card-actions align="right">
         <q-btn
           :label="id !== null ? 'update' : 'save'"
           color="primary"
+          unelevated
           dense
           size="md"
           @click="save"
@@ -85,23 +91,16 @@
 
 <script src="./Patient.js" />
 
-<style lang="stylus" scoped>
-@import "~src/css/mixins.styl"
-
+<style lang="scss" scoped>
+@import "~src/css/mixins.scss";
 .card-section {
-  display: grid;
-  grid-template-columns: max-content 1fr;
-  gap: 12px
-  +mobile-portrait() {
-    display: flex;
-    flex-direction: column;
-  }
-}
+  display: flex;
+  flex-direction: row !important;
+  gap: 12px;
 
-a {
-  padding-left: 5px;
-  color: hsl(240, 9%, 89%);
-  text-decoration: none;
-  font-size: 14px;
+  @include mobile-portrait() {
+    display: flex !important;
+    flex-direction: column !important;
+  }
 }
 </style>

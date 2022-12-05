@@ -1,5 +1,13 @@
 <template>
-  <q-item v-if="renderLink" clickable tag="a" v-bind="attrs">
+  <q-item
+    v-if="renderLink"
+    class="inactive"
+    active-class="active"
+    exact-active-class="active"
+    clickable
+    tag="a"
+    v-bind="attrs"
+  >
     <q-item-section v-if="icon" avatar>
       <q-icon :name="icon" />
     </q-item-section>
@@ -14,3 +22,11 @@
 </template>
 
 <script src="./EssentialLink.js" />
+<style lang="stylus" scoped>
+.inactive {
+  color: $primary
+}
+.active {
+  color: $secondary
+}
+</style>

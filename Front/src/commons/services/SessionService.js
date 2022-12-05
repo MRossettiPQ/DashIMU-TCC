@@ -1,7 +1,7 @@
 import { Axios } from "../utils/AxiosUtils";
 
 class SessionService {
-  async getMetadata(id) {
+  async getMetadata() {
     const { data } = await Axios.get(`/api/session/metadata`);
     return data?.content;
   }
@@ -26,7 +26,7 @@ class SessionService {
     return data?.content;
   }
 
-  async getCalculationVariabilityCenter(id) {
+  async getCalculationVariabilityCenter({ id }) {
     const { data } = await Axios.get(`/api/session/${id}/scilab`);
     return data?.content;
   }

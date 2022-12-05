@@ -1,6 +1,7 @@
 import upperFirst from "lodash/upperFirst";
 import camelCase from "lodash/camelCase";
 import {
+  QAjaxBar,
   QBadge,
   QBtn,
   QBtnGroup,
@@ -12,6 +13,7 @@ import {
   QDate,
   QDialog,
   QField,
+  QFile,
   QIcon,
   QImg,
   QInput,
@@ -26,14 +28,15 @@ import {
   QTime,
   QToolbar,
   QToolbarTitle,
-  QAjaxBar,
+  QTooltip,
 } from "quasar";
-import ValidatorPlugin from "../commons/utils/ValidatorsUtils";
+import { installFilters, ValidatorPlugin } from "../commons/UseUtils";
 
 export default async ({ Vue }) => {
   console.log("[INIT] - Loading components");
+
   // https://webpack.js.org/guides/dependency-management/#require-context
-  const requireComponent = require.context(
+  let requireComponent = require.context(
     // Look for files in the current directory
     "../components",
     // Look in subdirectories
@@ -64,8 +67,12 @@ export default async ({ Vue }) => {
     );
   });
 
+  installFilters(Vue);
+
   Vue.component("QMarkupTable", QMarkupTable);
   Vue.component("QLinearProgress", QLinearProgress);
+  Vue.component("QFile", QFile);
+  Vue.component("QTooltip", QTooltip);
   Vue.component("QBtn", QBtn);
   Vue.component("QBtnGroup", QBtnGroup);
   Vue.component("QInput", QInput);

@@ -72,4 +72,9 @@ Sensor/cmake-build-esp32dev
 /Init/.idea
 /Init/yarn.lock
 /Init/.vscode
-/Init/*.iml
+/Init/*.iml!/Sensor/.vscode/
+!/Sensor/build/
+!/Sensor/cmake-build-debug-mingw/
+!/Sensor/CMakeLists.txt
+
+!/Sensor/CMakeListsPrivate.txt

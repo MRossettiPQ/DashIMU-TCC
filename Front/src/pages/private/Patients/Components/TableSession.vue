@@ -1,6 +1,5 @@
 <template>
   <q-table
-    v-if="id"
     :columns="columns"
     :data="pagination.list"
     :filter="filter"
@@ -9,34 +8,62 @@
     flat
     row-key="id"
     title="Treats"
+    table-header-class="header"
     @row-click="openDialog"
   >
-    <template #top class="form-column form-column__no-padding">
-      <q-btn
-        :disable="loading"
-        :label="!$q.platform.is.mobile ? 'Session' : null"
-        color="primary"
-        icon="add"
-        @click="toMeasurement"
-      />
-      <q-space />
-      <q-input
-        v-model="filter"
-        borderless
-        class="col-5"
-        color="primary"
-        debounce="300"
-        dense
-        outlined
-      >
-        <template #append>
-          <q-icon name="search" />
-        </template>
-      </q-input>
+    <template #top>
+      <div class="table-header">
+        <q-btn
+          :disable="loading"
+          :label="!isMobile ? 'Session' : null"
+          color="primary"
+          dense
+          icon="add"
+          unelevated
+          @click="toMeasurement"
+        />
+        <q-btn
+          :disable="loading"
+          :label="!isMobile ? 'Importar' : null"
+          color="primary"
+          dense
+          unelevated
+          icon="publish"
+          @click="openImportExample"
+        />
+        <q-space />
+        <q-input
+          v-model="filter"
+          borderless
+          class="col-5"
+          color="primary"
+          debounce="300"
+          unelevated
+          dense
+          outlined
+        >
+          <template #append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+      </div>
     </template>
   </q-table>
 </template>
 
 <script src="./TableSession.js" />
 
-<style scoped></style>
+<style lang="scss" scoped>
+.table-header {
+  gap: 12px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+::v-deep .q-table__top,
+.relative-position,
+.row,
+.items-center {
+  padding: 0 !important;
+}
+</style>

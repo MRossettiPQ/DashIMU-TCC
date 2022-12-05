@@ -5,7 +5,7 @@ import { Component, Vue } from "vue-property-decorator";
 })
 class Account extends Vue {
   get bean() {
-    return this.$store.state.Authentication.user;
+    return this.$store.state.Authentication?.user;
   }
 }
 

@@ -5,9 +5,9 @@
         <h1>Profile {{ bean.name }}</h1>
         <q-form ref="mainForm" greedy>
           <q-card bordered class="form-column" flat>
-            <q-card-section class="col form-lines form-lines__gap">
+            <q-card-section class="col form-lines form-lines__gap-sm">
               <q-input
-                v-model="bean.idUser"
+                v-model="bean.id"
                 class="col"
                 filled
                 label="Id do User"
@@ -24,7 +24,7 @@
               />
             </q-card-section>
 
-            <q-card-section class="col form-lines form-lines__gap">
+            <q-card-section class="col form-lines form-lines__gap-sm">
               <q-input
                 v-model="bean.email"
                 class="col"
@@ -43,7 +43,7 @@
               />
             </q-card-section>
 
-            <q-card-section class="col form-lines form-lines__gap">
+            <q-card-section class="col form-lines form-lines__gap-sm">
               <q-input
                 v-model="bean.role"
                 class="col"
@@ -62,27 +62,35 @@
 
 <script src="./Account.js" />
 
-<style lang="stylus" scoped>
-@import "~src/css/mixins.styl"
-h1
-  font-size 2rem
-  padding 0
-  margin 0
+<style lang="scss" scoped>
+@import "~src/css/mixins.scss";
 
-.grid-conteudo
-  padding 16px
-  display flex
-  gap 16px
-  flex-direction column
+h1 {
+  font-size: 2rem;
+  padding: 0;
+  margin: 0;
+}
 
-.form-column
-  flex-direction row
-  +mobile-portrait()
-    padding 16px
-    gap 16px
-    flex-direction column
+.grid-conteudo {
+  padding: 16px;
+  display: flex;
+  gap: 16px;
+  flex-direction: column;
+}
 
-.form-lines
-  +mobile-portrait()
-    padding 0
+.form-column {
+  flex-direction: row;
+
+  @include mobile-portrait() {
+    padding: 16px;
+    gap: 16px;
+    flex-direction: column;
+  }
+}
+
+.form-lines {
+  @include mobile-portrait() {
+    padding: 0;
+  }
+}
 </style>

@@ -31,10 +31,9 @@ yarn-error.log*
 *.ntvs*
 *.njsproj
 *.sln
-
+!/yarn.lock
+!/yarn-error.log
 .quasar-ide-helper
-
 webpack.config.js
-
 dev.env
 prod.env

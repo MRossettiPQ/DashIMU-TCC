@@ -1,26 +1,53 @@
 import { Component, Vue } from "vue-property-decorator";
-import { Socket } from "engine.io-client";
+import WebSocket from "isomorphic-ws";
 
 @Component({
   name: "login",
 })
 class Login extends Vue {
-  loading = false;
-  sensors = [];
-  connection = null;
-  event = null;
   message = "";
-
+  connection = null;
+  server = [
+    {
+      url: "ws://192.168.16.158:8080",
+      path: "",
+    },
+    {
+      url: "ws://192.168.16.158:80",
+      path: "/socket/session",
+    },
+    {
+      url: "ws://192.168.16.113:8000",
+      path: "/socket",
+    },
+  ];
   async initEngineIo() {
+    const id = 1;
+
     try {
-      this.connection = await new Socket("ws://192.168.16.158:8080", {
-        transports: ["websocket", "polling"],
-        protocols: ["websocket", "soap", "wamp"],
-        upgrade: true,
-        closeOnBeforeunload: true,
+      this.connection = new WebSocket(this.server[id]?.url, ["websocket"]);
+
+      this.connection.addEventListener("open", (event) => {
+        console.log("open", event);
+
+        this.connection.interval = setInterval(() => {
+          console.log(this.connection.readyState);
+          console.log(this.connection);
+        }, 6000);
+
+        this.connection.addEventListener("message", (data) => {
+          console.log("message", data);
+        });
       });
 
-      this.initEvents();
+      this.connection.addEventListener("close", (event) => {
+        console.log("FECHADO", event);
+        clearInterval(this.connection.interval);
+      });
+
+      this.connection.addEventListener("error", (event) => {
+        console.log("error", event);
+      });
     } catch (e) {
       console.log(e);
     }
@@ -28,35 +55,14 @@ class Login extends Vue {
 
   sendMessage() {
     console.log("enviando message");
-    this.connection.send("message");
-  }
-
-  initEvents() {
-    this.connection.on("open", (event) => {
-      this.connection.on("message", (data) => {
-        console.log("message", data);
-      });
-
-      this.connection.on("close", (event) => {
-        console.log("close", event);
-      });
-
-      this.connection.on("error", (event) => {
-        console.log("error", event);
-      });
-      this.connection.send("message");
-    });
-
-    console.log(this.connection);
-  }
-
-  initEngineIo2() {
-    this.connection = new Socket("ws://192.168.16.113:8000", {
-      transports: ["websocket"],
-      path: "/socket",
-    });
-
-    this.initEvents();
+    this.connection.send(
+      JSON.stringify({
+        event: "ADD_SENSOR_IN_SESSION",
+        sensor: {
+          ip: `${this.server[1].url}${this.server[1].path}`,
+        },
+      })
+    );
   }
 
   mounted() {

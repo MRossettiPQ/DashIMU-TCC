@@ -7,17 +7,12 @@ const {
 exports.postSavePatient = async (req, res) => {
   try {
     console.log('[POST] - /api/patient')
-    let patient = await Patient.findByPk(req.body.idPatient)
+    let patient = await Patient.findByPk(req.body.id)
 
     if (patient) {
       // Update registered patient
       patient = await patient.update({
-        name: req.body.name,
-        cpf: req.body.cpf,
-        email: req.body.email,
-        phone: req.body.phone,
-        birthday: req.body.birthday,
-        height: req.body.height,
+        ...req.body,
       })
     } else {
       patient = await Patient.create(req.body)
@@ -46,13 +41,6 @@ exports.getPatientList = async (req, res) => {
     console.log('[GET] - /api/patient')
 
     const patient = await Patient.findAll()
-
-    await throwErrorIf({
-      cond: !patient.length,
-      message: 'Patient list is empty',
-      log: '[GET] - /api/patient - not found',
-      res,
-    })
 
     await throwSuccess({
       content: { resultList: patient },

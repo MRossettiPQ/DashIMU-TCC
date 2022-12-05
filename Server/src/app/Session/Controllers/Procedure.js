@@ -8,10 +8,12 @@ exports.getProcedures = () => {
       min_sensor: 2,
       sensor_positions: [
         {
-          local: 'ONE',
+          label: 'ONE',
+          value: 'ONE',
         },
         {
-          local: 'TWO',
+          label: 'TWO',
+          value: 'TWO',
         },
       ],
       rules: [
@@ -87,10 +89,12 @@ exports.getProcedures = () => {
       min_sensor: 2,
       sensor_positions: [
         {
-          local: 'ONE',
+          label: 'ONE',
+          value: 'ONE',
         },
         {
-          local: 'TWO',
+          label: 'TWO',
+          value: 'TWO',
         },
       ],
       rules: [
@@ -122,10 +126,12 @@ exports.getProcedures = () => {
       min_sensor: 2,
       sensor_positions: [
         {
-          local: 'ONE',
+          label: 'ONE',
+          value: 'ONE',
         },
         {
-          local: 'TWO',
+          label: 'TWO',
+          value: 'TWO',
         },
       ],
       rules: [
@@ -157,10 +163,12 @@ exports.getProcedures = () => {
       min_sensor: 2,
       sensor_positions: [
         {
-          local: 'ONE',
+          label: 'ONE',
+          value: 'ONE',
         },
         {
-          local: 'TWO',
+          label: 'TWO',
+          value: 'TWO',
         },
       ],
       rules: [
@@ -212,10 +220,12 @@ exports.getProcedures = () => {
       min_sensor: 2,
       sensor_positions: [
         {
-          local: 'ONE',
+          label: 'ONE',
+          value: 'ONE',
         },
         {
-          local: 'TWO',
+          label: 'TWO',
+          value: 'TWO',
         },
       ],
       rules: [
@@ -263,10 +273,12 @@ exports.getProcedures = () => {
       min_sensor: 2,
       sensor_positions: [
         {
-          local: 'ONE',
+          label: 'ONE',
+          value: 'ONE',
         },
         {
-          local: 'TWO',
+          label: 'TWO',
+          value: 'TWO',
         },
       ],
       rules: [
@@ -326,10 +338,12 @@ exports.getProcedures = () => {
       min_sensor: 2,
       sensor_positions: [
         {
-          local: 'ONE',
+          label: 'ONE',
+          value: 'ONE',
         },
         {
-          local: 'TWO',
+          label: 'TWO',
+          value: 'TWO',
         },
       ],
       rules: [
@@ -367,10 +381,12 @@ exports.getProcedures = () => {
       min_sensor: 2,
       sensor_positions: [
         {
-          local: 'ONE',
+          label: 'ONE',
+          value: 'ONE',
         },
         {
-          local: 'TWO',
+          label: 'TWO',
+          value: 'TWO',
         },
       ],
       rules: [

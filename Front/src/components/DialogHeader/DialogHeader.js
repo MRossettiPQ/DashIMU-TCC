@@ -13,10 +13,10 @@ class DialogHeader extends Vue {
   @Prop()
   icon;
 
-  @Prop()
+  @Prop({ default: "" })
   idMsg;
 
-  @Prop()
+  @Prop({ default: "" })
   elseMsg;
 }
 

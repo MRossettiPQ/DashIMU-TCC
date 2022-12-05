@@ -1,4 +1,4 @@
-import AuthenticateUtils from "src/commons/utils/AuthenticateUtils";
+import AuthenticationUtils from "src/commons/utils/AuthenticationUtils";
 
 export const routes = [
   {
@@ -41,7 +41,7 @@ export const routes = [
       {
         path: "/",
         component: () => import("pages/private/PrivateApp.vue"),
-        redirect: "/home",
+        redirect: "/profile",
         children: [
           {
             name: "private.patient",
@@ -49,22 +49,15 @@ export const routes = [
             component: () => import("pages/private/Patients/Patients.vue"),
           },
           {
-            name: "private.session",
-            path: "session",
-            component: () => import("pages/private/Session/Session.vue"),
-          },
-          {
             name: "private.profile",
             path: "profile",
             component: () => import("pages/private/Account/Account.vue"),
           },
-          /*
-            {
-              name: "private.session_v2",
-              path: "session_v2",
-              component: () => import("pages/private/SessionV2/Session.vue"),
-            },
-          */
+          {
+            name: "private.session",
+            path: "session",
+            component: () => import("pages/private/Session/Session.vue"),
+          },
         ],
       },
     ],
@@ -84,34 +77,31 @@ export const RouteBeforeGuard = async (to, from, next) => {
     "access.register",
     "access.home",
     "access.socket",
-    //"access.configuration",
   ];
   // TODO Hide when logged
   let hideWhenLogged = ["access.login", "access.register"];
-
-  let token = AuthenticateUtils.getToken();
+  let token = AuthenticationUtils.getToken();
   let isLoggedIn = !!token;
+
+  if (to.name === from.name) {
+    return;
+  }
 
   if (isLoggedIn) {
     if (hideWhenLogged.includes(to.name)) {
       next({
         path: "/",
       });
-      return;
+    } else {
+      next();
     }
-    next();
   } else {
     if (accessReleased.includes(to.name)) {
       next();
-      return;
     } else {
       next({
         path: "/login",
       });
-      return;
     }
   }
-  next();
 };
-
-export default { routes, RouteBeforeGuard };

@@ -10,10 +10,10 @@
         class="col"
         flat
         row-key="id"
-        title="Patients"
+        title="NPatients"
         @row-click="openDialog"
       >
-        <template #top class="flex">
+        <template #top>
           <q-btn
             :disable="loading"
             :label="!$q.platform.is.mobile ? 'Paciente' : null"
@@ -45,40 +45,4 @@
 
 <script src="./Patients.js" />
 
-<style lang="stylus" scoped>
-.dialog-card {
-  width: 100vw;
-  height: 100vh;
-}
-
-.grid-cadastro
-  padding 16px
-  height 100%
-  width 100%
-  display grid
-
-.grid-conteudo
-  padding 16px
-  height 100%
-  width 100%
-  display grid
-  grid-template-columns 20% 80%
-
-.grid-medicao
-  padding 16px
-  height 100%
-  width 100%
-  display flex
-  gap 16px
-  flex-direction column
-
-h1 {
-  font-size: 2rem;
-  padding: 0;
-  margin: 0;
-}
-
-strong, p {
-  font-size: 1.5em;
-}
-</style>
+<style lang="scss" scoped></style>

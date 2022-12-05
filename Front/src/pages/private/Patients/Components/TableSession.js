@@ -1,5 +1,6 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import MeasurementHistory from "../MeasurementHistory.vue";
+import ImportExample from "./ImportExample.vue";
 import DialogUtils from "src/commons/utils/DialogUtils";
 import { PaginationUtils } from "src/commons/utils/PaginationUtils";
 
@@ -17,10 +18,10 @@ class TableSession extends Vue {
 
   columns = [
     {
-      name: "idSession",
+      name: "id",
       align: "left",
       label: "Session nª",
-      field: "idSession",
+      field: "id",
       sortable: true,
     },
     {
@@ -29,12 +30,6 @@ class TableSession extends Vue {
       label: "Date Session",
       field: "date",
       sortable: true,
-    },
-    {
-      name: "weight",
-      align: "left",
-      label: "Weight",
-      field: "weight",
     },
     {
       name: "procedure",
@@ -68,23 +63,41 @@ class TableSession extends Vue {
 
   async openDialog(evt, row) {
     try {
-      const data = await DialogUtils.asyncDialog(MeasurementHistory, {
-        id: row.idSession || null,
+      await DialogUtils.asyncDialog(MeasurementHistory, {
+        id: row.id || null,
       });
     } catch (e) {
       console.log(e);
     }
   }
 
+  async openImportExample() {
+    try {
+      const data = await DialogUtils.asyncDialog(ImportExample, {
+        id: this.id || null,
+      });
+      if (data?.save) {
+        await this.pagination.search();
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  get isMobile() {
+    return this.$q.platform.is.mobile;
+  }
+
   async toMeasurement() {
     try {
+      console.log("toMeasurement", this.id);
       await this.$router.push({
         path: "session/",
         query: {
-          idPatient: this.id,
+          id: this.id,
         },
         params: {
-          idPatient: this.id,
+          id: this.id,
         },
       });
     } catch (e) {

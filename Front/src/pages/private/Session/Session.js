@@ -1,243 +1,123 @@
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
-import { Notify } from "quasar";
+import { Component, Prop, Vue } from "vue-property-decorator";
+import _ from "lodash";
+import StepperFooter from "./Components/StepperFooter/StepperFooter.vue";
+import StepperHeader from "./Components/StepperHeader/StepperHeader.vue";
+import SelectSensor from "./Steps/SelectSensor/SelectSensor.vue";
+import RunProcedure from "./Steps/RunProcedure/RunProcedure.vue";
+import InitSession from "./Steps/InitSession/InitSession.vue";
+import OnSave from "./Steps/OnSave/OnSave.vue";
 import PatientService from "src/commons/services/PatientService";
 import SessionService from "src/commons/services/SessionService";
-import InitSession from "./Steps/InitSession.vue";
-import RunProcedure from "./Steps/RunProcedure.vue";
-import SelectSensor from "./Steps/SelectSensor.vue";
+import { WebSocketSensorsUtils } from "src/commons/utils/WebSocketSensorsUtils";
+import { Notify } from "quasar";
+import { SessionUtils } from "src/commons/utils/SessionStepUtils";
+import { SessionInitUtils } from "src/commons/utils/SessionInitUtils";
+import { LoadDataUtils } from "src/commons/utils/LoadDataUtils";
 
 @Component({
-  name: "old-session",
+  name: "new-session",
   components: {
-    InitSession,
-    RunProcedure,
+    StepperFooter,
+    StepperHeader,
     SelectSensor,
+    RunProcedure,
+    InitSession,
+    OnSave,
   },
 })
 class Session extends Vue {
-  sessionSocket = null;
-  sensorList = [];
-  // Auxiliares
-  registeredSensorId = 0;
-  numberOfValidConnection = 0;
-  // Se esta sendo realizada a medição
-  measurement_in_progress = false;
-  measurement_in_pause = false;
-  // Basicamente o paciente
-  bean = {};
-  // Os sensores conectados
-  sensors = [];
-
-  // Dados sobre a sessão
-  sessionBean = {
-    procedure: null,
-    movement: null,
-  };
-
-  // Quantidade de sensores conectados
-  loading = false;
-  loadingSave = false;
-  loadingMetadata = false;
-
-  metadata = null;
-  // Posições para o sensor, para cada procedimento tera uma lista diferente
-  positions = [];
-
   @Prop()
-  idPatient;
-  step = "init-session";
+  id;
+  // loading
+  loadingSave = false;
+  navigation = SessionUtils.createNavigation({
+    onCheckProcedures: this.saveSession,
+  });
+  sessionConnection = WebSocketSensorsUtils.createSession();
+  session = SessionInitUtils.create();
+  fetchResult = null;
+  saveResult = null;
 
-  get numberOfMeasurements() {
-    // Quantidade de medições realizadas
-    if (this.sensors.length) {
-      return this.sensors[0]?.gyro_measurements?.length;
-    }
-    return 0;
+  get inDev() {
+    return process.env.DEV;
   }
+  fetchData = LoadDataUtils.loadList({
+    loadList: {
+      metadata: SessionService.getMetadata,
+      patient: PatientService.getPatient,
+    },
+    onLoad: ({ result }) => {
+      console.log(result);
+      this.fetchResult = result;
+      this.sessionConnection.connectSession(
+        this.fetchResult?.metadata?.socket_url
+      );
+      this.session.load({
+        metadata: result.metadata,
+      });
+    },
+  });
 
-  get listOfSensors() {
-    return this.sensorList;
-  }
-
-  async mounted() {
+  async beforeMount() {
     try {
-      this.loadingMetadata = true;
-      this.loading = true;
-      const { idPatient } = this.$route.query;
-      this.bean = await PatientService.getPatient(idPatient);
-      this.metadata = await SessionService.getMetadata();
-      await this.connectSessionSocket();
+      const { id } = this.$route.query;
+      if (!_.isNil(id)) {
+        await this.fetchData.loadAll({
+          patient: {
+            options: {
+              id,
+            },
+          },
+        });
+      } else {
+        Notify.create({
+          message: "Sessões são criadas com um link do paciente",
+          textColor: "white",
+          color: "error",
+        });
+        await this.$router.push({
+          path: "home",
+        });
+      }
     } catch (e) {
       console.log(e);
-    } finally {
-      this.loading = false;
-      this.loadingMetadata = false;
     }
   }
 
-  connectSessionSocket() {
-    // Receive update sensor available list
-    let url = `ws://${this.metadata?.socket_url}/socket`;
-    this.sessionSocket = new WebSocket(url, ["websocket"]);
-
-    this.sessionSocket.onmessage = (event) => {
-      const jSonParsed = JSON.parse(event.data);
-      if (jSonParsed.origin === "SERVER") {
-        switch (jSonParsed.type) {
-          case "UPDATE_CLIENT_LIST":
-            console.log(jSonParsed);
-            this.sensorList = jSonParsed?.message;
-            break;
-          case "CLIENT_DISCONNECTED":
-            break;
-        }
-      }
-      console.log(jSonParsed);
-    };
-
-    this.sessionSocket.onopen = (event) => {
-      Notify.create({
-        message: this.$t("socket.success"),
-        textColor: "white",
-        color: "positive",
-      });
-      this.sessionSocket.send(
-        JSON.stringify({
-          origin: "FRONT",
-        })
-      );
-    };
-
-    this.sessionSocket.onerror = (event) => {
-      Notify.create({
-        message: this.$t("socket.error"),
-        textColor: "white",
-        color: "error",
-      });
-    };
-
-    this.sessionSocket.onclose = (event) => {
-      Notify.create({
-        message: this.$t("socket.close"),
-        textColor: "white",
-        color: "warning",
-      });
-    };
+  beforeDestroy() {
+    this.sessionConnection.closeAll();
   }
-
-  findSensorToDisconnect() {}
 
   async saveSession() {
     try {
       this.loadingSave = true;
-      if (!this.sensors[0].gyro_measurements.length) {
+      if (this.session.checkMovementsMeasurements) {
         Notify.create({
-          message: "No measurement to be saved",
+          message:
+            "Você deve ter captado alguma medição para completar esse procedimento!",
           textColor: "white",
-          color: "warning",
+          color: "error",
         });
         return false;
       }
-      const data = await SessionService.postSession({
-        sessionParams: {
-          ...this.sessionBean,
-          patientIdPatient: this.bean.idPatient,
+      const bean = {
+        session: {
+          ...this.session.values,
+          patientId: this.fetchResult.patient.id,
         },
-        sensors: this.sensors,
-      });
+      };
+      const data = await SessionService.postSession(bean);
+      if (data != null) {
+        this.saveResult = data;
+        this.session.restart();
+        this.sessionConnection.restart();
+        this.navigation.onSave();
+      }
     } catch (e) {
       console.log(e);
     } finally {
       this.loadingSave = false;
     }
-  }
-
-  prev() {
-    if (this.actualStep?.order > 0) {
-      const prevStep = this.steps.find(
-        ({ order }) => order === this.actualStep?.order - 1
-      );
-      this.step = prevStep.value;
-    }
-  }
-
-  next() {
-    switch (this.actualStep?.order) {
-      case 1:
-        if (
-          this.sessionBean?.procedure === null &&
-          this.sessionBean?.movement === null
-        ) {
-          Notify.create({
-            message: this.$t("session.procedure_next_error"),
-            textColor: "white",
-            color: "warning",
-          });
-          return;
-        }
-        this.nextStep();
-        break;
-      case 2:
-        if (
-          this.numberOfValidConnection < this.sessionBean.procedure?.min_sensor
-        ) {
-          Notify.create({
-            message: this.$t("session.sensor_next_error"),
-            textColor: "white",
-            color: "warning",
-          });
-          return;
-        }
-        this.nextStep();
-        break;
-      case 3:
-        break;
-    }
-  }
-
-  nextStep() {
-    if (this.actualStep?.order < this.step.length) {
-      const nextStep = this.steps.find(
-        ({ order }) => order === this.actualStep?.order + 1
-      );
-      this.step = nextStep.value;
-    }
-  }
-
-  get connectedSensors() {
-    console.log(this.sensors?.filter((sensor) => !sensor.active));
-    return this.sensors?.filter((sensor) => !sensor.active);
-  }
-
-  steps = [
-    {
-      order: 1,
-      value: "init-session",
-      label: this.$t("session.select_procedure"),
-    },
-    {
-      order: 2,
-      value: "select-sensor",
-      label: this.$t("session.select_sensor"),
-    },
-    {
-      order: 3,
-      value: "run-procedure",
-      label: this.$t("session.run_procedure"),
-    },
-  ];
-
-  get actualStep() {
-    return this.steps.find(({ value }) => value === this.step);
-  }
-
-  get actualProcedure() {
-    if (this.metadata === null) {
-      return {};
-    }
-    return this.metadata?.procedures.find(
-      (procedure) => procedure.value === this.sessionBean?.procedure
-    );
   }
 
   get isMobile() {
@@ -252,5 +132,4 @@ class Session extends Vue {
     return this.isMdpi || this.isMobile;
   }
 }
-
 export default Session;

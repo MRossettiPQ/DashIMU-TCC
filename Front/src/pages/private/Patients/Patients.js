@@ -18,10 +18,10 @@ class Patients extends Vue {
 
   columns = [
     {
-      name: "idPatient",
+      name: "id",
       align: "left",
-      label: "ID Patient",
-      field: "idPatient",
+      label: "ID",
+      field: "id",
     },
     {
       name: "name",
@@ -48,7 +48,7 @@ class Patients extends Vue {
   async openDialog(evt, row) {
     try {
       const data = await DialogUtils.asyncDialog(Patient, {
-        id: row.idPatient || null,
+        id: row?.id || null,
       });
 
       if (data?.save) {

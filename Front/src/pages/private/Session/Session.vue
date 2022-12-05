@@ -1,93 +1,60 @@
 <template>
-  <section ref="patientScreen" class="responsive-height">
-    <div class="row responsive-content" v-if="metadata">
-      <div class="navigation-stepper">
-        <div class="row w-100">
-          <span class="step-header__label">{{ actualStep.label }}</span>
-        </div>
+  <section class="responsive-height">
+    <loading-screen v-if="fetchData.loading" />
+    <error-screen v-else-if="fetchData.hasError" />
+    <div
+      v-else-if="fetchData.result !== null"
+      class="column responsive-content div-session h-100 w-100"
+    >
+      <stepper-header
+        :navigation="navigation"
+        :session.sync="session"
+        :session-connection="sessionConnection"
+        :is-tiny-screen="isTinyScreen"
+        :fetch-result="fetchResult"
+        :in-dev="inDev"
+        class="row"
+      />
 
-        <div class="row w-100">
-          <transition name="slide-fade" mode="out-in">
-            <Component
-              :is="step"
-              :actual-procedure="actualProcedure"
-              :sensor-list.sync="listOfSensors"
-              :session.sync="sessionBean"
-              :positions.sync="positions"
-              :sensors.sync="sensors"
-              :metadata="metadata"
-              :patient="bean"
-              :tiny-screen="isTinyScreen"
-              :connected-sensors="connectedSensors"
-              :registered-sensor-id.sync="registeredSensorId"
-              :measurement-in-progress.sync="measurement_in_progress"
-              :measurement-in-pause.sync="measurement_in_pause"
-              :number-of-measurements.sync="numberOfMeasurements"
-              :number-of-valid-connection.sync="numberOfValidConnection"
-            />
-          </transition>
-        </div>
+      <transition class="row" name="slide-fade" mode="out-in">
+        <Component
+          :is="navigation.actualStepValue"
+          :session-connection="sessionConnection"
+          :fetch-result="fetchResult"
+          :session.sync="session"
+          :is-tiny-screen="isTinyScreen"
+          :loading-save="loadingSave"
+          :save-result="saveResult"
+          :in-dev="inDev"
+        />
+      </transition>
 
-        <div class="w-100 row navigation-options" v-if="!loading">
-          <q-btn
-            class="row"
-            v-if="step !== 'init-session'"
-            flat
-            dense
-            color="primary"
-            @click="prev"
-            :label="$t('session.previous')"
-          />
-          <q-btn
-            class="row"
-            dense
-            v-if="step !== 'run-procedure'"
-            @click="next"
-            color="primary"
-            :label="$t('session.next')"
-          />
-          <q-btn
-            class="row"
-            v-else
-            dense
-            :disable="numberOfMeasurements === 0"
-            @click="saveSession"
-            color="primary"
-            :label="$t('session.save')"
-          />
-        </div>
-      </div>
+      <stepper-footer
+        :navigation="navigation"
+        :session-connection="sessionConnection"
+        :session.sync="session"
+        :loading-save="loadingSave"
+        :is-tiny-screen="isTinyScreen"
+        class="row"
+        @save="saveSession"
+      />
     </div>
-    <div v-else />
   </section>
 </template>
 
 <script src="./Session.js" />
 
-<style lang="stylus" scoped>
-@import "~src/css/mixins.styl"
-.step-header {
-  padding-bottom: 12px;
+<style lang="scss" scoped>
+@import "~src/css/mixins.scss";
 
-  &__label {
-    font-weight: 600;
-    font-size: 16px
-  }
-}
-
-.navigation-options {
-  display: flex;
-  padding-top: 12px;
-  justify-content: space-between;
-}
-
-
-.navigation-stepper {
+.div-session {
   display: grid;
   grid-template-rows: min-content 1fr min-content;
-  height: 100%;
-  padding: 24px;
-  width: 100%;
-  max-width: 100%
+  padding: 16px;
+  max-height: 100%;
+  gap: 8px;
+  @include mobile-portrait() {
+    padding: 8px;
+  }
 }
 </style>

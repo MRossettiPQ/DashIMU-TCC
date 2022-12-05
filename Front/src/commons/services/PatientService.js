@@ -1,7 +1,7 @@
 import { Axios } from "../utils/AxiosUtils";
 
 class PatientService {
-  async getPatient(id) {
+  async getPatient({ id }) {
     const { data } = await Axios.get(`/api/patient/${id}`);
     return data?.content;
   }

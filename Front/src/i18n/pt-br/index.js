@@ -2,6 +2,26 @@
 // so you can safely delete all default props below
 
 export default {
+  register: {
+    page_tile: "Cadastrar",
+    name: "Nome",
+    user_name: "Username",
+    email: "E-mail",
+    password: "Senha",
+    repeat_password: "Repetir senha",
+    register: "Cadastrar-se",
+    already_have_an_account: "Já possui uma conta?",
+    to_login: "Entrar",
+    send: "Cadastrar",
+  },
+  login: {
+    page_tile: "Login",
+    name: "Nome",
+    password: "Senha",
+    login: "Login",
+    dont_have_an_account: "Não possui conta?",
+    to_register: "Registrar",
+  },
   failed: "Ação falhada",
   success: "Ação realizada com sucesso",
   form: {
@@ -43,6 +63,7 @@ export default {
     no: "Não",
   },
   session: {
+    graph: "Gráfico",
     procedure: "Procedimento",
     movement: "Movimento",
     session: "Sessão",
@@ -60,6 +81,7 @@ export default {
     sensors: "Sensores",
     spreadsheet: "Planilha",
     export: "Exportar",
+    export_all: "Exportar tudo",
     close: "Fechar",
     fullscreen: "Tela cheia",
     connect_sensor: "Conectar ao sensor",
@@ -71,8 +93,12 @@ export default {
     number_of_measurements: "Numero de medições",
     runtime: "Tempo de execução",
     graphic_temporarily_unavailable: "Gráfico temporarimente indisponivel.",
+    movement_column: "Movimento",
+    measurement_quantity_column: "Coletas",
+    no_number_of_measurements: "Nenhuma medição salva para esse movimento",
+    positions: "Posição",
   },
-  validation: {
+  validators: {
     cep: "CEP inválido",
     cnpj: "CNPJ inválido",
     cpf: "CPF inválido",
@@ -95,5 +121,13 @@ export default {
     variability_center: {},
     measurement_history: {},
     patient: {},
+  },
+  import_example: {
+    procedure: "Procedimento",
+    movement: "Movimento",
+    sensor_name: "Nome do sensor",
+    select_file: "Selecionar arquivo",
+    add_movement: "Adicionar movimento",
+    positions: "Posições",
   },
 };
