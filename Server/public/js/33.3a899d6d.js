@@ -1,0 +1,1 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([[33],{d34e:function(d,p,i){d.exports=i.p+"img/wrist_-_radial_adduction.d1cfd016.jpg"}}]);

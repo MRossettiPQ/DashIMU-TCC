@@ -27,6 +27,12 @@ import {
   QSelect,
   QTime,
   QToolbar,
+  QTab,
+  QTable,
+  QTabPanel,
+  QTabs,
+  QTabPanels,
+  QSplitter,
   QToolbarTitle,
   QTooltip,
 } from "quasar";
@@ -97,5 +103,11 @@ export default async ({ Vue }) => {
   Vue.component("QDialog", QDialog);
   Vue.component("QField", QField);
   Vue.component("QAjaxBar", QAjaxBar);
+  Vue.component("QTab", QTab);
+  Vue.component("QTable", QTable);
+  Vue.component("QTabPanel", QTabPanel);
+  Vue.component("QTabs", QTabs);
+  Vue.component("QTabPanels", QTabPanels);
+  Vue.component("QSplitter", QSplitter);
   Vue.use(ValidatorPlugin);
 };

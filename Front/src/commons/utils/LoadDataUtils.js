@@ -119,21 +119,20 @@ export class LoadDataUtils {
       try {
         this.loading = true;
 
-        let params = {};
+        let options = {};
         if (manualParams !== null) {
-          params = { ...params, ...manualParams };
+          options = { ...options, ...manualParams };
         }
-
         switch (typeof this.toLoad) {
           case "function":
-            this.result = await this.toLoad({ ...params });
+            this.result = await this.toLoad({ ...options });
             break;
           case "object":
             if (Object.prototype.hasOwnProperty.call(this.toLoad, "options")) {
-              params = { ...this.toLoad["options"], ...params };
+              options = { ...this.toLoad["options"], ...options };
             }
             if (Object.prototype.hasOwnProperty.call(this.toLoad, "load")) {
-              this.result = await this.toLoad["load"]({ ...params });
+              this.result = await this.toLoad["load"]({ ...options });
             }
             break;
           default:

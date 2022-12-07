@@ -1,7 +1,8 @@
 const { i18n } = require('../../../core/Utils/i18nUtil')
+const environment = require('../../../../environment')
 
 exports.getProcedures = () => {
-  return [
+  const procedures = [
     {
       articulation_name: i18n.__('procedures.shoulder'),
       value: 'SHOULDER',
@@ -447,4 +448,33 @@ exports.getProcedures = () => {
       ],
     },
   ]
+
+  if (environment?.development) {
+    procedures.unshift({
+      articulation_name: i18n.__('procedures.shoulder') + ' EM DEV',
+      value: 'SHOULDER',
+      min_sensor: 1,
+      sensor_positions: [
+        {
+          label: 'ONE',
+          value: 'ONE',
+        },
+      ],
+      rules: [
+        {
+          movement_name: i18n.__('procedures.shoulder.internal_rotation'),
+          value: 'INTERNAL_ROTATION',
+          description: i18n.__(
+            'procedures.shoulder.internal_rotation.description'
+          ),
+          image: 'shoulder_-_internal_rotation.jpg',
+          angle: {
+            min: 0,
+            max: 90,
+          },
+        },
+      ],
+    })
+  }
+  return procedures
 }

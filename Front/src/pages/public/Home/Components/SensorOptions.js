@@ -1,7 +1,7 @@
-import { Component, Prop, Vue } from "vue-property-decorator";
+import {Component, Prop, Vue} from "vue-property-decorator";
 import axios from "axios";
 import FormUtils from "src/commons/utils/FormUtils";
-import { Notify } from "quasar";
+import {Notify} from "quasar";
 
 @Component({
   name: "sensor-options",
@@ -31,7 +31,10 @@ class SensorOptions extends Vue {
   @Prop()
   sensor;
 
-  @Prop({ type: Boolean, default: false })
+  @Prop()
+  suggestion;
+
+  @Prop({type: Boolean, default: false})
   connectToSensor;
 
   get showCard() {
@@ -41,46 +44,32 @@ class SensorOptions extends Vue {
     return true;
   }
 
-  async mounted() {
-    if (this.connectToSensor) {
-      this.sensor.ip = "192.168.4.1";
-    } else {
-      this.sensor.ip = this.sensor.ip.replace(/['"!@#$%^&*]/g, "");
+  async created() {
+    try {
+      if (this.connectToSensor) {
+        this.sensor['ip'] = "192.168.4.1";
+      } else {
+        this.sensor.ip = this.sensor.ip.replace(/['"!@#$%^&*]/g, "");
+      }
+      if (this.sensor !== null) {
+        this.Axios = axios.create({
+          baseURL: `http://${this.sensor.ip}:80`,
+        });
+        await this.getSensorInfo();
+      }
+    } catch (e) {
+      console.log(e)
     }
-    if (this.sensor !== null) {
-      this.Axios = axios.create({
-        baseURL: `http://${this.sensor.ip}:80`,
-      });
-      await this.getSensorInfo();
-    }
-    console.log(this.sensor);
   }
 
   async getSensorInfo() {
     try {
-      this.loadingMeasurement = true;
-      const result = await this.Axios.get("/api/measurement");
-      const parsed = JSON.parse(result?.data);
+      this.loading = true;
+      const { data } = await this.Axios.get("/api/configuration");
       this.config = {
-        ...parsed,
+        ...data,
       };
       this.loaded = true;
-      console.log(parsed);
-    } catch (e) {
-      console.log(e);
-    } finally {
-      this.loadingMeasurement = false;
-    }
-  }
-
-  async getSensorMeasurement() {
-    try {
-      this.loading = true;
-      const result = await this.Axios.get("/api/configuration");
-      const parsed = JSON.parse(result?.data);
-      this.measurement = {
-        ...parsed,
-      };
     } catch (e) {
       console.log(e);
     } finally {
@@ -88,13 +77,39 @@ class SensorOptions extends Vue {
     }
   }
 
+  async getSensorMeasurement() {
+    try {
+      this.loadingMeasurement = true;
+      const { data } = await this.Axios.get("/api/measurement");
+      if(data?.type === "UNIQUE_MEASUREMENT"){
+        this.measurement = {
+          ...data.message,
+        };
+      }
+    } catch (e) {
+      console.log(e);
+    } finally {
+      this.loadingMeasurement = false;
+    }
+  }
+
   async postSensorConfig() {
     try {
       this.loadingSave = true;
       await FormUtils.validateAsync(this.$refs.mainForm);
+      const form = {
+        ssid: this.config.ssid,
+        password: this.config.password,
+        backend: this.config.backend,
+        backendPort: this.config.backendPort,
+        nameSensor: this.config.nameSensor,
+      };
       const result = await this.Axios.post(
-        "/api/configuration",
-        JSON.stringify(this.config)
+        "/api/configuration", {}, {
+          params: {
+            ...form
+          }
+        }
       );
       Notify.create({
         message:
@@ -108,6 +123,9 @@ class SensorOptions extends Vue {
     } finally {
       this.loadingSave = false;
     }
+  }
+  changeSSID(){
+    this.config.password = ""
   }
 }
 

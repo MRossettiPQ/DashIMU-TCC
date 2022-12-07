@@ -43,7 +43,7 @@ module.exports = (app) => {
   )
 
   app.get(
-    '/api/session/:id/mensuration',
+    '/api/session/:sessionId/movement/mensuration',
     [AuthorizeJwt.verifyToken, AuthorizeJwt.ifAdminPhysiotherapist],
     SessionController.getMensurationList
   )

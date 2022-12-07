@@ -3,62 +3,29 @@
     <q-card class="column full-height dialog-card">
       <dialog-header
         :id="id"
-        :label-right-button="!$q.platform.is.mobile ? 'Fechar' : null"
+        :label-right-button="!isMobile ? 'Fechar' : null"
         else-msg="Sem sessão"
         id-msg="Medição nº"
       />
-      <q-card-section class="column">
-        <q-table
-          class="col w-100"
-          v-if="id"
-          :columns="columns"
-          :data="pagination.list"
-          :filter="filter"
-          :loading="pagination.loading"
-          flat
-          row-key="id"
-          title="Treats"
-        >
-          <template #top>
-            <div class="search-div w-100">
-              <q-input
-                v-model="filter"
-                borderless
-                color="primary"
-                debounce="300"
-                dense
-                outlined
-              >
-                <template #append>
-                  <q-icon name="search" />
-                </template>
-              </q-input>
-              <q-btn
-                :disable="loading"
-                :loading="loading"
-                :label="
-                  !$q.platform.is.mobile
-                    ? 'Calculation Variability Center'
-                    : null
-                "
-                color="primary"
-                dense
-                unelevated
-                @click="getCalculationVariabilityCenter"
-              />
-            </div>
-          </template>
-        </q-table>
+      <loading-screen v-if="fetchData.loading"/>
+      <error-screen v-else-if="fetchData.hasError"/>
+      <q-card-section
+        v-else-if="fetchData.result !== null"
+        style="padding: 0 12px 12px 12px !important;"
+      >
+        <result-chart-screen :result="fetchData.result.procedure" :loading="fetchData.loading" :session-id="id" />
       </q-card-section>
     </q-card>
   </q-dialog>
 </template>
 
-<script src="./MeasurementHistory.js" />
+<script src="./MeasurementHistory.js"/>
 
-<style lang="stylus" scoped>
-.search-div {
-  display: flex;
-  justify-content: space-between;
+<style lang="scss" scoped>
+.run-procedure {
+  display: grid;
+  grid-template-columns: min-content 1fr;
+  height: 100%;
+  width: 100%;
 }
 </style>

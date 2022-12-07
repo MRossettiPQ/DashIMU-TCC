@@ -1,0 +1,1 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([[17],{b40d:function(n,o,p){n.exports=p.p+"img/elbow_-_extension-flexion.c671ba2d.jpg"}}]);

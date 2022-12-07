@@ -47,7 +47,6 @@ class Session extends Vue {
       patient: PatientService.getPatient,
     },
     onLoad: ({ result }) => {
-      console.log(result);
       this.fetchResult = result;
       this.sessionConnection.connectSession(
         this.fetchResult?.metadata?.socket_url
@@ -103,10 +102,11 @@ class Session extends Vue {
       const bean = {
         session: {
           ...this.session.values,
-          patientId: this.fetchResult.patient.id,
+          patientId: this.fetchData.result.patient.id,
         },
       };
       const data = await SessionService.postSession(bean);
+      console.log(data)
       if (data != null) {
         this.saveResult = data;
         this.session.restart();

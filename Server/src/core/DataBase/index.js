@@ -122,9 +122,9 @@ function loadModels() {
 loadModels()
 
 module.exports = {
-  initDataBase,
-  loadModels,
-  Sequelize,
-  sequelize,
-  ...models,
+    initDataBase,
+    loadModels,
+    Sequelize,
+    sequelize,
+    ...models,
 }

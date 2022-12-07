@@ -11,7 +11,9 @@
         :session.sync="session"
         :session-connection="sessionConnection"
         :is-tiny-screen="isTinyScreen"
+        :patient="fetchData.result.patient"
         :fetch-result="fetchResult"
+        :save-result="saveResult"
         :in-dev="inDev"
         class="row"
       />
@@ -49,7 +51,8 @@
 
 .div-session {
   display: grid;
-  grid-template-rows: min-content 1fr min-content;
+  grid-template-rows: minmax(62px, min-content) 1fr minmax(39px, min-content);
+  height: 100%;
   padding: 16px;
   max-height: 100%;
   gap: 8px;

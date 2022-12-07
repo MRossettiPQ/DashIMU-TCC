@@ -1,34 +1,42 @@
-const { GyroMeasurement, Sensor, Session } = require('../../../core/DataBase')
+const {
+  GyroMeasurement,
+  Sensor,
+  Session,
+  Movement,
+} = require('../../../core/DataBase')
 const UserContext = require('../../../core/utils/UserContext')
 const {
   throwSuccess,
   throwNotFoundIf,
 } = require('../../../core/Utils/RequestUtil')
-const { calculationVariabilityCenter } = require('../Services/SciLabServices')
-const environment = require('../../../../environment')
+const { getAllCalc } = require('../Services/SciLabServices')
+const { PaginationUtil } = require('../../../core/Utils/FetchUtil')
 const Procedure = require('./Procedure')
-const network = require('network')
 
 exports.postSaveSession = async (req, res) => {
   console.log('[POST] - /api/session')
   try {
     const idUserContext = await UserContext.getUserContextId(req, res)
 
-    let { sessionParams, sensors } = req.body
+    let { session } = req.body
 
     const newSession = await Session.create(
       {
-        ...sessionParams,
-        userIdUser: idUserContext,
-        sensors,
+        ...session,
+        userId: idUserContext,
       },
       {
         include: [
           {
-            model: Sensor,
+            model: Movement,
             include: [
               {
-                model: GyroMeasurement,
+                model: Sensor,
+                include: [
+                  {
+                    model: GyroMeasurement,
+                  },
+                ],
               },
             ],
           },
@@ -36,13 +44,13 @@ exports.postSaveSession = async (req, res) => {
       }
     )
 
-    const variabilityCenter = await calculationVariabilityCenter({
-      sensors: newSession.sensors,
-      session: newSession,
-    })
+    let result = await getAllCalc(newSession.movements, newSession)
 
     await throwSuccess({
-      content: variabilityCenter,
+      content: {
+        session: newSession,
+        result,
+      },
       message: 'Session save successful',
       log: '\x1b[32m[POST] - /api/session - success save\x1b[0m',
       res,
@@ -55,25 +63,24 @@ exports.postSaveSession = async (req, res) => {
 exports.getMensurationList = async (req, res) => {
   try {
     console.log('[GET] - /api/session/:id/mensuration')
-    const { id: idSession } = req.params
-    const { limit, page, field } = req.query
+    const { sessionId: idSession } = req.params
+    const { limit, page, field, movementId } = req.query
+    console.log(movementId, req.query)
 
     const mensurationList = await GyroMeasurement.findAll({
+      order: [
+        ['numberMensuration', 'ASC'],
+        ['sensorId', 'ASC'],
+      ],
       include: [
         {
-          order: [
-            ['sensorIdGyroSensor', 'ASC'],
-            ['numberMensuration', 'ASC'],
-          ],
           model: Sensor,
           where: {
-            sessionIdSession: idSession,
+            movementId,
           },
         },
       ],
     })
-
-    console.log(mensurationList)
 
     await throwNotFoundIf({
       cond: mensurationList === null,
@@ -101,7 +108,7 @@ exports.getSessionList = async (req, res) => {
 
     const sessionList = await Session.findAll({
       where: {
-        patientIdPatient: idPatient,
+        patientId: idPatient,
       },
     })
 
@@ -127,9 +134,9 @@ exports.getSessionList = async (req, res) => {
 exports.getSession = async (req, res) => {
   try {
     console.log('[GET] - /api/session/:id')
-    const { id: idSession } = req.params
+    const { id } = req.params
 
-    const session = await Session.findByPk(idSession)
+    const session = await Session.findByPk(id)
 
     await throwNotFoundIf({
       cond: session === null,
@@ -149,24 +156,13 @@ exports.getSession = async (req, res) => {
 }
 
 exports.getMetadata = async (req, res) => {
-  function getIP() {
-    return new Promise((resolve) => {
-      network.get_private_ip((err, ip) => {
-        resolve(ip || '0.0.0.0')
-      })
-    })
-  }
-
   try {
     console.log('[GET] - /api/session/metadata')
-    let server_ip = await getIP()
-
     await throwSuccess({
       content: {
         procedures: Procedure.getProcedures(),
-        socket_url: `${server_ip}:${environment.host.port}`,
       },
-      log: `\x1b[32m[GET] - ${server_ip} - /api/session/metadata\x1b[0m`,
+      log: `\x1b[32m[GET] - /api/session/metadata\x1b[0m`,
       res,
     })
   } catch (e) {

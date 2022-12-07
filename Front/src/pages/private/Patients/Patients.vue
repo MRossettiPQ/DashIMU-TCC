@@ -10,8 +10,9 @@
         class="col"
         flat
         row-key="id"
-        title="NPatients"
         @row-click="openDialog"
+        :rows-per-page-options="[0]"
+        virtual-scroll
       >
         <template #top>
           <q-btn

@@ -155,9 +155,11 @@ class FetchData {
       let content = _.get(data, this.listContentAttr);
 
       if (this.createPagination) {
-        this.list = this.infinite
-          ? [...this.list, ...content.resultList]
-          : content.resultList;
+        if(this.infinite) {
+          this.list = [...this.list, ...content.resultList]
+        } else {
+          this.list = content.resultList
+        }
         this.params.page = content.page;
         this.params.rpp = content.rpp;
 

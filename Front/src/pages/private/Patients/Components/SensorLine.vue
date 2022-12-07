@@ -24,7 +24,7 @@
       v-model="syncedSensor.file"
       :label="$t('import_example.select_file')"
       filled
-      accept=".csv"
+      accept=".csv,.json,.txt"
       :rules="[$validators.notBlank]"
     />
   </div>

@@ -21,16 +21,16 @@
       />
       <div
         v-if="syncedSession.procedureSelected"
-        class="column"
+        class="row column w-100"
         style="display: flex; gap: 8px"
       >
         <div
           v-for="(m, index) in syncedSession.values.movements"
           :key="index"
-          class="info-card"
+          class="column info-card w-100"
         >
           <div
-            class="column items-center"
+            class="col items-center"
             style="display: flex; flex-direction: row"
           >
             <div class="col">

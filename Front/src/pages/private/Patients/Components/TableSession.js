@@ -38,13 +38,6 @@ class TableSession extends Vue {
       field: "procedure",
       sortable: true,
     },
-    {
-      name: "movement",
-      align: "left",
-      label: "Movement",
-      field: "movement",
-      sortable: true,
-    },
   ];
 
   async mounted() {

@@ -1,0 +1,1 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([[34],{5998:function(n,p,o){n.exports=o.p+"img/wrist_-_ulnar_adduction.510d5118.jpg"}}]);

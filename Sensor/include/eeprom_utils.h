@@ -1,3 +1,6 @@
+#ifndef MPU_SOCKET_SERVER_EEPROM_UTILS_H
+#define MPU_SOCKET_SERVER_EEPROM_UTILS_H
+
 #include <EEPROM.h>
 #include "MPU9250.h"
 
@@ -137,3 +140,5 @@ void setupEEPROM() {
     Serial.println("Loaded calibration value is : ");
     loadCalibration();
 }
+
+#endif //MPU_SOCKET_SERVER_EEPROM_UTILS_H

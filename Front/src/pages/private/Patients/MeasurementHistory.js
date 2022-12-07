@@ -1,12 +1,11 @@
-import { Component, Prop, Ref, Vue } from "vue-property-decorator";
+import {Component, Prop, Ref, Vue} from "vue-property-decorator";
 import DialogHeader from "components/DialogHeader/DialogHeader.vue";
-import VariabilityCenter from "./VariabilityCenter.vue";
-import { PaginationUtils } from "src/commons/utils/PaginationUtils";
-import DialogUtils from "src/commons/utils/DialogUtils";
+import {LoadDataUtils} from "src/commons/utils/LoadDataUtils";
+import SessionService from "src/commons/services/SessionService";
 
 @Component({
   name: "measurement-history",
-  components: { DialogHeader },
+  components: {DialogHeader},
 })
 class MeasurementHistory extends Vue {
   @Ref("dialog")
@@ -15,51 +14,12 @@ class MeasurementHistory extends Vue {
   @Prop()
   id;
 
-  loading = false;
-  pagination = [];
-  filter = "";
-  variabilityCenter = {};
-
-  columns = [
-    {
-      align: "center",
-      label: "Number Mensuration",
-      field: "numberMensuration",
-      style: "width: 50px",
-      sortable: true,
+  fetchData = LoadDataUtils.loadList({
+    loadList: {
+      session: SessionService.getSession,
+      procedure: SessionService.getCalculationVariabilityCenter,
     },
-    {
-      align: "center",
-      label: "Sensor Name",
-      field: "sensorName",
-      style: "width: 50px",
-    },
-    {
-      align: "center",
-      label: "Roll",
-      field: "Roll",
-      style: "width: 50px",
-    },
-    {
-      align: "center",
-      label: "Pitch",
-      field: "Pitch",
-      style: "width: 50px",
-    },
-    {
-      align: "center",
-      label: "Yaw",
-      field: "Yaw",
-      style: "width: 50px",
-    },
-    {
-      align: "center",
-      label: "ID Measurement",
-      field: "idMeasurement",
-      style: "width: 50px",
-      sortable: true,
-    },
-  ];
+  });
 
   show() {
     this.dialog.show();
@@ -71,26 +31,29 @@ class MeasurementHistory extends Vue {
   }
 
   async mounted() {
-    console.log("mounted");
     if (this.id !== null) {
-      this.pagination = PaginationUtils.create({
-        url: `/api/session/${this.id}/mensuration`,
-        infinite: true,
-      });
-      await this.pagination.search();
-      console.log(this.pagination.list);
+      await this.fetchData.loadAll({
+        session: {
+          options: {
+            id: this.id
+          }
+        },
+        procedure: {
+          options: {
+            sessionId: this.id
+          }
+        },
+      })
     }
   }
 
-  async getCalculationVariabilityCenter() {
-    try {
-      const data = await DialogUtils.asyncDialog(VariabilityCenter, {
-        id: this.id,
-      });
-    } catch (e) {
-      console.log(e);
-    }
+
+  tabPanel = "Tab_0";
+
+  get isMobile() {
+    return this.$q.platform.is.mobile;
   }
+
 }
 
 export default MeasurementHistory;

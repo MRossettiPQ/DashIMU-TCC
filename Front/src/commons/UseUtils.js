@@ -16,5 +16,4 @@ export function installFilters(Vue) {
   for (const key of names) {
     Vue.filter(key, filters[key]);
   }
-  console.log(Vue.prototype.filters);
 }

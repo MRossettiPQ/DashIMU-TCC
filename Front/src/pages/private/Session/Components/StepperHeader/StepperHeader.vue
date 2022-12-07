@@ -23,7 +23,7 @@
           unelevated
           class="row icon-primary"
           icon="archive"
-          :disable="checkMovementsMeasurements"
+          :disable="checkMovementsMeasurements && navigation.actualStepValue !== 'on-save'"
           no-caps
           @click="exportAll"
         />

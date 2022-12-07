@@ -185,6 +185,18 @@ class ImportExample extends Vue {
       this.loadingSave = false;
     }
   }
+
+  importCSV() {
+    console.log('csv')
+  }
+
+  importTXT() {
+    console.log('txt')
+  }
+
+  importJSON(){
+    console.log('json')
+  }
 }
 
 export default ImportExample;

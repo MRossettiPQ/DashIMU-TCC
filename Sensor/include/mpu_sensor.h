@@ -1,5 +1,5 @@
-#ifndef SENSOR_SENSOR_LOCAL_H
-#define SENSOR_SENSOR_LOCAL_H
+#ifndef MPU_SOCKET_SERVER_MPU_SENSOR_H
+#define MPU_SOCKET_SERVER_MPU_SENSOR_H
 
 #include <config.h>
 
@@ -39,20 +39,31 @@ void InitIMU() {
     // IMU initialization
     do {
         Wire.begin(SDA_PIN, SCL_PIN);
-        delay(2000);
-        if (!mpu.setup(ADDRESS_SENSOR)) {
+        // delay(50);
+        vTaskDelay(50 / portTICK_PERIOD_MS);
+
+        MPU9250Setting setting;
+        setting.accel_fs_sel = ACCEL_FS_SEL::A16G;
+        setting.gyro_fs_sel = GYRO_FS_SEL::G2000DPS;
+        setting.mag_output_bits = MAG_OUTPUT_BITS::M16BITS;
+        setting.fifo_sample_rate = FIFO_SAMPLE_RATE::SMPL_200HZ;
+        setting.gyro_fchoice = 0x03;
+        setting.gyro_dlpf_cfg = GYRO_DLPF_CFG::DLPF_41HZ;
+        setting.accel_fchoice = 0x01;
+        setting.accel_dlpf_cfg = ACCEL_DLPF_CFG::DLPF_45HZ;
+
+        if (!mpu.setup(ADDRESS_SENSOR, setting)) {
             Serial.println("[SENSOR] - It has not been initialized, Check the connection between the IMU and the ESP32 and restart the device");
             Serial.println(&"[SENSOR] - Status: "[status]);
         } else {
             Serial.println("[SENSOR] - IMU Initialized");
         }
-        delay(500);
+        // delay(500);
+        vTaskDelay(500 / portTICK_PERIOD_MS);
     } while (!mpu.available());
-    //digitalWrite(LED_SENSOR_INITIALIZED, HIGH);
 }
 
 void CalibrateIMU() {
-
     #if defined(ESP_PLATFORM) || defined(ESP32)
         EEPROM.begin(0x80);
     #endif
@@ -60,16 +71,19 @@ void CalibrateIMU() {
     Serial.println("[SENSOR] - Accel Gyro calibration will start in 5 seconds");
     Serial.println("[SENSOR] - Please leave the device still on the plan");
     mpu.verbose(true);
-    delay(5000);
+    // delay(5000);
+    vTaskDelay(5000 / portTICK_PERIOD_MS);
     //digitalWrite(LED_SENSOR_CALIBRATION_PLAN, HIGH);
     mpu.calibrateAccelGyro();
     //digitalWrite(LED_SENSOR_CALIBRATION_PLAN, LOW);
 
     Serial.println("[SENSOR] - Magnetic calibration will start in 5 seconds");
     Serial.println("[SENSOR] - Please wave the device in a figure eight until finished");
-    delay(5000);;
+    // delay(5000);;
+    vTaskDelay(5000 / portTICK_PERIOD_MS);
     //digitalWrite(LED_SENSOR_CALIBRATION_EIGHT, HIGH);
     mpu.calibrateMag();
+
     //digitalWrite(LED_SENSOR_CALIBRATION_EIGHT, LOW);
 
     PrintIMUCalibration();
@@ -193,13 +207,41 @@ String ReturnsJSONFromMeasurement(int MeasurementNumber) {
 }
 
 void StopMeasurement() {
-    jsonBufferServer = "";
+    if(!measurementArray.isEmpty() && confServerSocket.availableForWriteAll()) {
+        String content = R"({"type":"MEASUREMENT_LIST","message":[)" + measurementArray + "null]}";
+        confServerSocket.textAll(content);
+    }
     cmdActual = 0;
+    measurementArray = "";
 }
 
 void RestartMeasurement() {
     StopMeasurement();
     numberMeasurement = 0;
+    lastDispatch = 0;
 }
 
-#endif //SENSOR_SENSOR_LOCAL_H
+void MountBufferToSend() {
+        measurementArray += ReturnsJSONFromMeasurement(numberMeasurement);
+
+        Serial.println("\n");
+        Serial.print(numberMeasurement);
+        Serial.print(" - ");
+        Serial.print(lastDispatch + BUFFER_LENGTH);
+        numberMeasurement = numberMeasurement + 1;
+        // Buffer de 320 Measurement = BUFFER_LENGTH /  = 120Hz, default BUFFER_LENGTH = 320
+        if (numberMeasurement == (lastDispatch + BUFFER_LENGTH)) {
+            Serial.println("[SENSOR] - Send buffer");
+
+            String content = R"({"origin":"SENSOR","type":"MEASUREMENT_LIST","message":[)" + measurementArray + "]}";
+            confServerSocket.textAll(content);
+            lastDispatch = numberMeasurement;
+            numberSended = numberSended + 1;
+            measurementArray = "";
+        } else {
+            // For new element in array
+            measurementArray += ",";
+        }
+}
+
+#endif //MPU_SOCKET_SERVER_MPU_SENSOR_H

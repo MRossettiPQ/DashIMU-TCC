@@ -1,8 +1,8 @@
-import { Component, Prop, PropSync, Vue } from "vue-property-decorator";
+import {Component, Prop, PropSync, Vue} from "vue-property-decorator";
 import RunningInfo from "../RunningInfo/RunningInfo.vue";
 import moment from "moment/moment";
-import { CSVUtils } from "src/commons/utils/CSVUtils";
-import { Notify } from "quasar";
+import {CSVUtils} from "src/commons/utils/CSVUtils";
+import {Notify} from "quasar";
 import DialogUtils from "src/commons/utils/DialogUtils";
 import CheckMeasurementsDialog from "../CheckMeasurementsDialog/CheckMeasurementsDialog.vue";
 
@@ -13,7 +13,7 @@ import CheckMeasurementsDialog from "../CheckMeasurementsDialog/CheckMeasurement
   },
 })
 class StepperHeader extends Vue {
-  @Prop({ type: Boolean })
+  @Prop({type: Boolean})
   tinyScreen;
 
   @Prop()
@@ -31,8 +31,11 @@ class StepperHeader extends Vue {
   @Prop()
   fetchResult;
 
-  @Prop({ type: Boolean })
+  @Prop({type: Boolean})
   isTinyScreen;
+
+  @Prop()
+  patient;
 
   get connected() {
     return this.sessionConnection?.isConnectedBackend;
@@ -55,6 +58,10 @@ class StepperHeader extends Vue {
     });
   }
 
+  @Prop()
+  saveResult;
+
+
   mounted() {
     this.exportFile = CSVUtils.create({
       tableColumns: this.tableColumns,
@@ -63,9 +70,32 @@ class StepperHeader extends Vue {
     });
   }
 
-  exportAll() {
+  exportOnSave() {
     try {
-      console.log(this.checkMovementsMeasurements);
+      if (this.saveResult) {
+        console.log(this.saveResult)
+
+        this.saveResult.result.forEach((r) => {
+          console.log(r);
+          r.movement.sensors.forEach(async (s) => {
+            try {
+              let fileName = `${this.patient.name}_${
+                r.movement.type
+              }_${s.sensorName.replace(/\s/g, "")}_${moment.now()}`;
+              await this.exportFile.export(s.gyro_measurements, fileName);
+            } catch (e) {
+              console.log(e);
+            }
+          });
+        });
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  exportOnScreen() {
+    try {
       if (this.checkMovementsMeasurements) {
         Notify.create({
           message: "Não foram adicionadas medições aos movimentos selecionados",
@@ -78,7 +108,7 @@ class StepperHeader extends Vue {
         console.log(am);
         am.sensors.forEach(async (s) => {
           try {
-            let fileName = `${this.fetchResult.patient.name}_${
+            let fileName = `${this.patient.name}_${
               am.type
             }_${s.sensorName.replace(/\s/g, "")}_${moment.now()}`;
             await this.exportFile.export(s.gyro_measurements, fileName);
@@ -89,6 +119,14 @@ class StepperHeader extends Vue {
       });
     } catch (e) {
       console.log(e);
+    }
+  }
+
+  exportAll() {
+    if (this.navigation.actualStepValue === "on-save") {
+      this.exportOnSave()
+    } else {
+      this.exportOnScreen()
     }
   }
 

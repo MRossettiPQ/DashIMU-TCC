@@ -19,16 +19,8 @@ class OnSave extends Vue {
   @Prop({ type: Object })
   patient;
 
-  @Prop()
-  inDev;
-
-  tabPanel = "Tab_1";
-
-  @Prop({ type: Boolean })
-  isTinyScreen;
-
-  get dataLoaded() {
-    return this.saveResult;
+  mounted() {
+    console.log(this.saveResult)
   }
 }
 

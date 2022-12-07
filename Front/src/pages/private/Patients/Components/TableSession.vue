@@ -10,6 +10,7 @@
     title="Treats"
     table-header-class="header"
     @row-click="openDialog"
+    :rows-per-page-options="[15]"
   >
     <template #top>
       <div class="table-header">

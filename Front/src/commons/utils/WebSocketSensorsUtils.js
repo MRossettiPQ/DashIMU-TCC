@@ -1,5 +1,4 @@
 import { Notify } from "quasar";
-import WebSocket from "isomorphic-ws";
 import dayjs from "dayjs";
 
 const openMessage = "[WebSocket] Conexão com o sensor feita com websocket";
@@ -181,6 +180,11 @@ class SessionWebSocket {
   checkIfConnectedSession(sensor) {
     const result = this.getIndexSensorInConnectedList(sensor);
     if (result !== -1) {
+      Notify.create({
+        message: "Um sensor conectado a está sessão foi desconectado inesperadamente",
+        textColor: "white",
+        color: "error",
+      });
       this.stop();
     }
   }
@@ -232,12 +236,13 @@ class SessionWebSocket {
     ]);
     // Event listener
     this.registeredSensorsList[index].device.connection.onmessage = (event) => {
-      this.handlerSensorMessage(JSON.parse(event.data), index);
+      this.handlerSensorMessage(JSON.parse(event?.data), index);
     };
 
     this.registeredSensorsList[index].device.connection.onclose = () => {
       this.notify(closeMessage + " do sensor", "warning");
       this.setDisconnected(index);
+      this.stop();
       this.onSensorDisconnect?.({
         index,
         sensor: this.registeredSensorsList[index].device,
@@ -246,8 +251,9 @@ class SessionWebSocket {
 
     this.registeredSensorsList[index].device.connection.onerror = () => {
       this.notify(errorMessage + " do sensor", "error");
-      this.registeredSensorsList[index].device.connection.close();
       this.setDisconnected(index);
+      this.stop();
+      this.registeredSensorsList[index].device.connection.close();
       this.onSensorError?.({
         index,
         sensor: this.registeredSensorsList[index].device,
@@ -285,8 +291,10 @@ class SessionWebSocket {
       this.registeredSensorsList
         .filter((s) => s?.device?.active)
         ?.forEach((s) => {
-          s?.device?.connection?.stop();
-          s?.device?.connection?.close();
+          if(s?.device?.connection) {
+            s?.device?.connection?.stop();
+            s?.device?.connection?.close();
+          }
         });
     }
     if (this.timeout !== null) {
@@ -305,20 +313,18 @@ class SessionWebSocket {
   }
 
   handlerSensorMessage(json, index) {
-    if (json?.origin === "SENSOR") {
-      switch (json?.type) {
-        case "MEASUREMENT_LIST":
-          this.addMensuration(json?.message, index);
-          break;
-        default:
-          break;
-      }
+    switch (json?.type) {
+      case "MEASUREMENT_LIST":
+        this.addMensuration(json?.message, index);
+        break;
+      default:
+        break;
     }
   }
 
   addMensuration(json, index) {
-    if (json?.message?.length) {
-      this.registeredSensorsList[index]?.gyro_measurements?.push(...json);
+    if (json?.length) {
+      this.registeredSensorsList[index]?.gyro_measurements?.push(...json.filter(r => r !== null));
     }
   }
 
@@ -378,11 +384,11 @@ class SessionWebSocket {
             cmd: 3,
           }
         );
-        this.registeredSensorsList[index].device.measurementInProgress = false;
-        this.measurementInProgress = false;
-        this.registeredSensorsList[index].gyro_measurements = [];
-        changed = true;
       }
+      this.registeredSensorsList[index].device.measurementInProgress = false;
+      this.measurementInProgress = false;
+      this.registeredSensorsList[index].gyro_measurements = [];
+      changed = true;
     });
     if (changed) {
       this.endTimer();
@@ -399,15 +405,15 @@ class SessionWebSocket {
       if (this.registeredSensorsList[index].device.active === true) {
         this.sendSocketMessage(
           this.registeredSensorsList[index]?.device?.connection,
-          "START",
+          "STOP",
           {
             cmd: 2,
           }
         );
-        this.registeredSensorsList[index].device.measurementInProgress = false;
-        this.measurementInProgress = false;
-        changed = true;
       }
+      this.registeredSensorsList[index].device.measurementInProgress = false;
+      this.measurementInProgress = false;
+      changed = true;
     });
     if (changed) {
       this.endTimer();
