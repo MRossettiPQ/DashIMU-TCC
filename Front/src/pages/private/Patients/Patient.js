@@ -1,10 +1,10 @@
-import { Component, Prop, Vue, Ref } from "vue-property-decorator";
+import { Component, Prop, Ref, Vue } from "vue-property-decorator";
 import PatientService from "src/commons/services/PatientService";
 import FormUtils from "src/commons/utils/FormUtils";
 import MeasurementHistory from "./MeasurementHistory.vue";
 import TableSession from "./Components/TableSession.vue";
 import DateUtils from "src/commons/utils/DateUtils";
-import PaginationUtils from "src/commons/utils/PaginationUtils";
+import { LoadDataUtils } from "src/commons/utils/LoadDataUtils";
 
 @Component({
   name: "patient",
@@ -31,19 +31,15 @@ class Patient extends Vue {
 
   async mounted() {
     if (this.id !== null) {
-      await this.dataLoad(this.id);
+      this.bean = await this.fetchData.load({ id: this.id });
     } else {
       this.bean = {};
     }
   }
 
-  async dataLoad(id) {
-    try {
-      this.bean = await PatientService.getPatient(id);
-    } catch (e) {
-      console.log(e);
-    }
-  }
+  fetchData = LoadDataUtils.load({
+    toLoad: PatientService.getPatient,
+  });
 
   async save() {
     try {
@@ -60,6 +56,10 @@ class Patient extends Vue {
 
   filterDate(date) {
     return DateUtils.getDateFormated(date);
+  }
+
+  get isMobile() {
+    return this.$q.platform.is.mobile;
   }
 }
 

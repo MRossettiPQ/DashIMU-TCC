@@ -20,8 +20,8 @@
             label="Save"
             size="lg"
             unelevated
-            @click="onSubmit"
             :loading="loading"
+            @click="onSubmit"
           />
         </q-card-section>
       </q-form>

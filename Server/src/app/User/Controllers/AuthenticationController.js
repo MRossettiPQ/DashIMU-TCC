@@ -65,11 +65,11 @@ exports.login = async (req, res) => {
 
     const token = await jwt.sign(
       {
-        idUser: userFound.idUser,
+        id: userFound.id,
       },
       environment.secret,
       {
-        expiresIn: 86400,
+        expiresIn: 3 * 86400,
       },
       null
     )
@@ -83,7 +83,7 @@ exports.login = async (req, res) => {
 
     await throwSuccess({
       content: {
-        idUser: userFound.idUser,
+        id: userFound.id,
         name: userFound.name,
         role: userFound.role,
         username: userFound.username,
@@ -102,7 +102,7 @@ exports.login = async (req, res) => {
 exports.getUserContext = async (req, res) => {
   console.log('[GET] - /api/auth/context')
   try {
-    const userContext = UserContext.getUserContext(req, res)
+    const userContext = await UserContext.getUserContext(req, res)
 
     await throwErrorIf({
       cond: userContext === null,
@@ -112,7 +112,7 @@ exports.getUserContext = async (req, res) => {
 
     await throwSuccess({
       content: {
-        idUser: userContext.idUser,
+        id: userContext.id,
         name: userContext.name,
         role: userContext.role,
         username: userContext.username,

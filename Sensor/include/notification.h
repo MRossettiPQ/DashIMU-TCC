@@ -1,5 +1,5 @@
-#ifndef NOTIFICATION_LOCAL_H
-#define NOTIFICATION_LOCAL_H
+#ifndef MPU_SOCKET_SERVER_NOTIFICATION_H
+#define MPU_SOCKET_SERVER_NOTIFICATION_H
 
 #include <config.h>
 
@@ -15,4 +15,4 @@ void InitNotification(){
     pinMode(LED_READY, OUTPUT);
 }
 
-#endif //NOTIFICATION_LOCAL_H
+#endif //MPU_SOCKET_SERVER_NOTIFICATION_H

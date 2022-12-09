@@ -1,13 +1,9 @@
 {
-  "ide-helper": {
-    "addToGitIgnore": true
-  },
   "@quasar/dotenv": {
     "env_development": ".env.development",
     "env_production": ".env.production",
-    "common_root_object": "none",
-    "create_env_files": true,
+    "common_root_object": ".env",
+    "create_env_files": false,
     "add_env_to_gitignore": false
-  },
-  "@quasar/qmediaplayer": {}
+  }
 }

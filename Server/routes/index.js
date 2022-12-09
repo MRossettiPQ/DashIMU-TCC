@@ -1,10 +1,14 @@
 const SocketRoutes = require('./SocketRoutes.js')
-const ExpressRoutes = require('./ExpressRoutes.js')
+const PrivateRoutes = require('./PrivateRoutes.js')
+const PublicRoutes = require('./PublicRoutes.js')
 const header = require('./header')
 const dayjs = require('dayjs')
 
-module.exports = (app) => {
-  SocketRoutes(app)
+module.exports = (app, expressWs) => {
+  SocketRoutes(app, expressWs)
+
+  // TODO header
+  app.use(header)
 
   // TODO ping
   app.get('/ping', (req, res) => {
@@ -12,8 +16,7 @@ module.exports = (app) => {
     res.json({ message: `Server online, current time: ${dayjs()}` })
   })
 
-  // TODO header
-  app.use(header)
+  PublicRoutes(app)
 
-  ExpressRoutes(app)
+  PrivateRoutes(app)
 }

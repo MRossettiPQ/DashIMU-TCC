@@ -1,12 +1,12 @@
 import { Axios } from "../utils/AxiosUtils";
 
 class AuthService {
-  async login(bean) {
+  async login({ bean }) {
     const { data } = await Axios.post(`/api/auth/login`, bean);
     return data?.content;
   }
 
-  async register(bean) {
+  async register({ bean }) {
     const { data } = await Axios.post(`/api/auth/register`, bean);
     return data?.content;
   }

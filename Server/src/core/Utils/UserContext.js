@@ -12,7 +12,6 @@ exports.getUserContextId = async (req, res) => {
   return new Promise(async (resolve, reject) => {
     try {
       let token = req.headers['x-access-token']
-
       await throwForbiddenIf({
         cond: !token,
         message: `No token provided`,
@@ -32,9 +31,9 @@ exports.getUserContextId = async (req, res) => {
               res,
             })
             req.contextUser = {
-              idUSerContext: decoded.idUser,
+              idUSerContext: decoded.id,
             }
-            return resolve(decoded.idUser)
+            return resolve(decoded.id)
           } catch (e) {
             return e
           }

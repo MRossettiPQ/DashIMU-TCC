@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize) => {
   const GyroMeasurement = sequelize.define('gyro_measurements', {
-    idMeasurement: {
+    id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
       autoIncrement: true,

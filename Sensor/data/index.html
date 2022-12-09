@@ -14,43 +14,45 @@
 
 <body>
     <div id="app">
-        <div class="topnav">
-            <h1>IMU Manager</h1>
-        </div>
-        <div class="content" v-if="!saved">
-            <div class="card-grid">
-                <div class="card">
-                    <form class="form" @submit.prevent="checkForm">
-                        <div class="form-section" v-for="(section, index) in formSection" :key="index">
-                            <p class="card-title">
-                                {{section.title}}
-                            </p>
-                            <div v-for="(field, index) in section.fields" class="form-column" :key="index">
-                                <label :for="field.name">
-                                    {{field.label}}
-                                </label>
-                                <div class="div-input-validate">
-                                    <input v-model="field.value" :type="field.type" :id="field.name" :name="field.name">
-                                    <span class="field-error" v-if="field.errorMessage.length">
+        <div v-if="dataLoaded">
+            <div class="topnav">
+                <h1>IMU Manager</h1>
+            </div>
+            <div class="content" v-if="!saved">
+                <div class="card-grid">
+                    <div class="card">
+                        <form class="form" @submit.prevent="checkForm">
+                            <div class="form-section" v-for="(section, index) in formSection" :key="index">
+                                <p class="card-title">
+                                    {{section.title}}
+                                </p>
+                                <div v-for="(field, index) in section.fields" class="form-column" :key="index">
+                                    <label :for="field.name">
+                                        {{field.label}}
+                                    </label>
+                                    <div class="div-input-validate">
+                                        <input v-model="field.value" :type="field.type" :id="field.name" :name="field.name" :placeholder="field.placeholder">
+                                        <span class="field-error" v-if="field.errorMessage.length">
                                         {{field.errorMessage[0]}}
                                     </span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <input type="submit" value="Configure">
-                    </form>
+                            <input type="submit" value="Configure">
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div v-else>
-            <p class="card-title">
-                Aguarde, redefinição das configurações do modulo. estará disponível em breve!
-            </p>
-        </div>
-        <div class="alert" v-if="saved">
-            <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
-            <strong>Atenção!</strong> Modulo será reiniciado e ficara temporariamente indisponível.
+            <div v-else>
+                <p class="card-title">
+                    Aguarde, redefinição das configurações do modulo. estará disponível em breve!
+                </p>
+            </div>
+            <div class="alert" v-if="saved">
+                <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+                <strong>Atenção!</strong> Modulo será reiniciado e ficara temporariamente indisponível.
+            </div>
         </div>
     </div>
     <script>
@@ -135,18 +137,25 @@
             computed: {
                 getSaved: () => {
                     return this.saved
+                },
+                getLoaded: () => {
+                    return this.dataLoaded
                 }
             },
             async beforeMount() {
-                const { data } = await axios.get('/memo')
-                this.memoSensor = data
-                this.formSection.map((section, indexSection) => {
-                    section.fields.map((field, indexField) => {
-                        this.formSection[indexSection].fields[indexField].value = this.memoSensor[`${field.name}`]
+                try {
+                    const { data } = await axios.get('/api/configuration')
+                    this.memoSensor = data
+                    this.formSection.map((section, indexSection) => {
+                        section.fields.map((field, indexField) => {
+                            this.formSection[indexSection].fields[indexField].value = this.memoSensor[`${field.name}`]
+                        })
                     })
-                })
-                this.wifiList = this.memoSensor.wifiList
-                console.log(data, this.memoSensor)
+                    this.wifiList = this.memoSensor.wifiList
+                    this.dataLoaded = true
+                } catch (e) {
+                    console.log(e)
+                }
             },
             data: {
                 loadingSend: false,
@@ -154,6 +163,7 @@
                 loading: false,
                 formValid: true,
                 saved: false,
+                dataLoaded: false,
                 wifiList: [],
                 form: {},
                 errorsForm: [],
@@ -164,7 +174,8 @@
                             {
                                 name: "ssid",
                                 label: "SSID",
-                                value: null,
+                                value: "",
+                                placeholder: "",
                                 rules: [
                                     checkNotNull,
                                 ],
@@ -175,7 +186,8 @@
                             {
                                 name: "password",
                                 label: "Password",
-                                value: null,
+                                placeholder: "",
+                                value: "",
                                 rules: [],
                                 type: "password",
                                 nErrors: 0,
@@ -189,7 +201,8 @@
                             {
                                 name: "backend",
                                 label: "Server Address",
-                                value: "192.168.16.113",
+                                value: "",
+                                placeholder: "192.168.16.113",
                                 rules: [
                                     checkNotNull,
                                 ],
@@ -200,7 +213,8 @@
                             {
                                 name: "backendPort",
                                 label: "Server Port",
-                                value: "8000",
+                                value: "",
+                                placeholder: "8000",
                                 rules: [
                                     checkNotNull,
                                     checkNumber,
@@ -217,7 +231,8 @@
                             {
                                 name: "nameSensor",
                                 label: "Sensor Name",
-                                value: "SENSOR_1",
+                                value: "",
+                                placeholder: "SENSOR_1",
                                 rules: [
                                     checkNotNull,
                                     checkSensorName,
@@ -235,7 +250,7 @@
                     try {
                         this.loadingSend = true
                         console.log('sendForm')
-                        const { data } = await axios.post('/', {}, {
+                        const { data } = await axios.post('/api/configuration', {}, {
                             params: {
                                 ...this.form
                             }
@@ -250,13 +265,13 @@
                 checkForm: async function (e) {
                     try {
                         this.loading = true
+
                         this.formSection.map(section => {
                             section.fields.map(field => {
                                 field.errorMessage = []
                                 field.nErrors = 0
                             })
                         })
-
 
                         this.formSection.map(section => {
                             section.fields.map(field => {

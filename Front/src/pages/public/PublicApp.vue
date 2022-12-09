@@ -3,5 +3,3 @@
 </template>
 
 <script src="./PublicApp.js" />
-
-<style lang="stylus" scoped></style>

@@ -3,5 +3,3 @@
 </template>
 
 <script src="./PrivateApp.js" />
-
-<style lang="stylus" scoped></style>

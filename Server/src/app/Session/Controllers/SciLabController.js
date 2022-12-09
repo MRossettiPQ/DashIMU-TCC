@@ -1,16 +1,24 @@
-const { GyroMeasurement, Sensor, Session } = require('../../../core/DataBase')
+const {
+  GyroMeasurement,
+  Movement,
+  Sensor,
+  Session,
+} = require('../../../core/DataBase')
 const UserContext = require('../../../core/Utils/UserContext')
 const {
   throwSuccess,
   throwErrorIf,
 } = require('../../../core/Utils/RequestUtil')
-const { calculationVariabilityCenter } = require('../Services/SciLabServices')
+const {
+  calculationVariabilityCenter,
+  getAllCalc,
+} = require('../Services/SciLabServices')
 
 exports.getCalculationVariabilityCenter = async (req, res) => {
   try {
     console.log('[GET] - /api/session/:id/scilab')
     const idUserContext = await UserContext.getUserContextId(req, res)
-    const { id: idSession } = req.params
+    const { id } = req.params
     const body = req.body
 
     await throwErrorIf({
@@ -19,60 +27,39 @@ exports.getCalculationVariabilityCenter = async (req, res) => {
       res,
     })
     await throwErrorIf({
-      cond: idSession === null,
+      cond: id === null,
       message: 'Patient ID is missing',
       res,
     })
-    const session = await Session.findByPk(idSession)
+    const session = await Session.findByPk(id)
 
-    const sessionSensors = await Sensor.findAll({
+    const movements = await Movement.findAll({
+      where: {
+        sessionId: id,
+      },
       include: [
         {
-          model: GyroMeasurement,
+          model: Sensor,
+          include: [
+            {
+              model: GyroMeasurement,
+            },
+          ],
         },
       ],
-      where: {
-        sessionIdSession: idSession,
-      },
     })
 
+    console.log(movements)
+
     await throwErrorIf({
-      cond: sessionSensors?.length === null,
+      cond: movements?.length === null,
       message: 'Does not have measurements',
       res,
     })
-
-    const variabilityCenter = await calculationVariabilityCenter({
-      sensors: sessionSensors,
-      session,
-      chartType: body?.chartType,
-    })
+    let result = await getAllCalc(movements, session)
 
     await throwSuccess({
-      content: variabilityCenter,
-      log: '\x1b[32m[GET] - /api/session/:id/scilab - Calculation performed successfully\x1b[0m',
-      res,
-    })
-  } catch (e) {
-    console.error(`\x1b[31m${e}\x1b[0m`)
-  }
-}
-exports.getCalculationVariabilityCenterExemple = async (req, res) => {
-  try {
-    console.log('[GET] - /api/session/:id/scilab')
-    const sensor1 = require('example-sensor-1.txt')
-    const sensor2 = require('example-sensor-2.txt')
-
-    const variabilityCenter = await calculationVariabilityCenter({
-      sensors: [sensor1, sensor2],
-      session: {
-        idSession: 'teste',
-        date: null,
-      },
-    })
-
-    await throwSuccess({
-      content: variabilityCenter,
+      content: result,
       log: '\x1b[32m[GET] - /api/session/:id/scilab - Calculation performed successfully\x1b[0m',
       res,
     })

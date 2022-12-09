@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize) => {
   const Session = sequelize.define('sessions', {
-    idSession: {
+    id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
       autoIncrement: true,
@@ -10,9 +10,10 @@ module.exports = (sequelize, Sequelize) => {
       allowNull: true,
       defaultValue: Sequelize.NOW,
     },
-    weight: {
-      type: Sequelize.FLOAT,
-      allowNull: true,
+    type: {
+      type: Sequelize.ENUM,
+      values: ['EXAMPLE', 'REAL'],
+      defaultValue: 'REAL',
     },
     procedure: {
       type: Sequelize.ENUM,
@@ -27,28 +28,10 @@ module.exports = (sequelize, Sequelize) => {
         'DISTAL_INTERPHALANGEAL',
       ],
     },
-    movement: {
-      type: Sequelize.ENUM,
-      values: [
-        'FLEXION',
-        'EXTENSION',
-        'ADDUCTION',
-        'ABDUCTION',
-        'INTERNAL_ROTATION',
-        'EXTERNAL_ROTATION',
-        'PRONATION',
-        'SUPINATION',
-        'THUMB_INTERNAL_FLEXION',
-        'THUMB_INTERNAL_EXTENSION',
-        'INTERNAL_EXTENSION_FINGERS',
-        'ULNAR_ADDUCTION',
-        'RADIAL_ADDUCTION',
-      ],
-    },
   })
 
   Session.associate = (models) => {
-    Session.hasMany(models.Sensor, {
+    Session.hasMany(models.Movement, {
       onDelete: 'CASCADE',
     })
     Session.belongsTo(models.Patient)

@@ -26,42 +26,56 @@ const sequelize = new Sequelize(
   }
 )
 
-const createDatabaseIfNotExists = async () => {
-  const pool = mysql.createPool({
-    host: environment.database.host,
-    port: environment.database.port,
-    user: environment.database.user,
-    password: environment.database.password,
-  })
-  pool.query(
-    `SHOW DATABASES LIKE "${environment.database.name}"`,
-    (err, result) => {
-      if (!result.length) {
-        pool.query(
-          `CREATE DATABASE IF NOT EXISTS \`${environment.database.name}\`;`,
-          (err, result) => {
-            if (err != null) {
-              console.error(
-                '\x1b[31m',
-                `[DATABASE] - ${i18n.__('database.error')}`,
-                '\x1b[0m'
-              )
-              pool.end()
-            }
-            if (result != null) {
-              console.log(`[DATABASE] - ${i18n.__('database.init')}`)
-              pool.end()
-            }
-          }
+const createDatabase = async (pool) => {
+  return new Promise((resolve) => {
+    const sql = `CREATE DATABASE IF NOT EXISTS ${environment.database.name};`
+    console.log(`[DATABASE] ${sql}`)
+    pool.query(sql, (err, result) => {
+      if (err != null) {
+        console.error(
+          '\x1b[31m',
+          `[DATABASE] - ${i18n.__('database.error')}`,
+          '\x1b[0m'
         )
       }
-    }
-  )
+      if (result != null) {
+        console.log(`[DATABASE] - ${i18n.__('database.init')}`)
+      }
+      pool.end()
+      resolve(err || result)
+    })
+  })
+}
+
+const createDatabaseIfNotExists = async () => {
+  return new Promise((resolve) => {
+    const pool = mysql.createPool({
+      host: environment.database.host,
+      port: environment.database.port,
+      user: environment.database.user,
+      password: environment.database.password,
+    })
+    const sql = `SHOW DATABASES LIKE "${environment.database.name}"`
+    console.log(`[DATABASE] ${sql}`)
+    pool.query(sql, (err, result) => {
+      try {
+        if (!result.length) {
+          createDatabase(pool)
+        } else {
+          pool.end()
+        }
+      } catch (e) {
+        console.log(e)
+      } finally {
+        resolve(result)
+      }
+    })
+  })
 }
 
 const initDataBase = async () => {
   try {
-    await createDatabaseIfNotExists()
+    const result = await createDatabaseIfNotExists()
     // TODO - { force : false } option to drop the data from the database -> if true it will delete the entire database at each startup
     await sequelize.sync({ force: environment.database.wipe_on_start })
     // console.log(sequelize)
@@ -108,9 +122,9 @@ function loadModels() {
 loadModels()
 
 module.exports = {
-  initDataBase,
-  loadModels,
-  Sequelize,
-  sequelize,
-  ...models,
+    initDataBase,
+    loadModels,
+    Sequelize,
+    sequelize,
+    ...models,
 }

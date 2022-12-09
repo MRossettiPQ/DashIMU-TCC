@@ -1,6 +1,7 @@
 const express = require('express')
 const enableWs = require('express-ws')
 const bodyParser = require('body-parser')
+const morgan = require('morgan')
 const cors = require('cors')
 const environment = require('./environment')
 const { initDataBase } = require('./src/core/DataBase')
@@ -11,6 +12,7 @@ const yargs = require('yargs')
   .alias('f', 'filename')
   .alias('c', 'content')
   .demandOption('locale').argv
+let expressWs = null
 
 module.exports = (async () => {
   try {
@@ -39,13 +41,13 @@ module.exports = (async () => {
     app.use(bodyParser.urlencoded({ extended: true }))
 
     // Active web-socket on app express
-    enableWs(app)
+    expressWs = enableWs(app)
 
     // Morgan logging
-    //app.use(morgan('combined'))
+    app.use(morgan('combined'))
 
     // Routes
-    routes(app)
+    routes(app, expressWs)
 
     // Set port, listen for requests
     app.listen(environment.host.port, () =>

@@ -19,8 +19,11 @@ class EssentialLink extends Vue {
   @Prop({ type: Function, default: null })
   action;
 
-  @Prop({ type: Boolean, default: null })
+  @Prop({ type: Boolean, default: false })
   inLogged;
+
+  @Prop({ type: Boolean, default: false })
+  logged;
 
   get attrs() {
     if (this.link) {
@@ -29,12 +32,12 @@ class EssentialLink extends Vue {
     return "";
   }
 
-  get logged() {
-    return !!this.$store.state.Authentication.user;
-  }
-
   get renderLink() {
     return this.inLogged !== null ? this.logged === !this.inLogged : true;
+  }
+
+  get active() {
+    return true;
   }
 }
 

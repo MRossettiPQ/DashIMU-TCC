@@ -10,28 +10,30 @@ export default {
   state: initialState,
   actions: {
     async login({ commit }, user) {
-      const login = await Authentication.login(user);
-      if (login?.accessToken) {
-        localStorage.setItem("user", JSON.stringify(login));
-        commit("loginSuccess", login);
+      if (user?.accessToken) {
+        localStorage.setItem("user", JSON.stringify(user));
+        commit("loginSuccess", user);
       } else {
         commit("loginFailure");
       }
-      return login;
+      return user;
+    },
+    async context({ commit }) {
+      let context = null;
+      try {
+        if (initialState.user != null) {
+          context = await Authentication.context();
+          commit("loginSuccess", context);
+        }
+      } catch (e) {
+        console.log(e);
+        commit("logout");
+      }
+      return context;
     },
     logout({ commit }) {
       localStorage.removeItem("user");
       commit("logout");
-    },
-    register({ commit }, user) {
-      const register = Authentication.register(user);
-      if (register) {
-        commit("registerSuccess");
-        return register;
-      } else {
-        commit("registerFailure");
-        return false;
-      }
     },
   },
   mutations: {
@@ -43,15 +45,10 @@ export default {
       state.status.loggedIn = false;
       state.user = null;
     },
-    logout(state) {
+    async logout(state) {
       state.status.loggedIn = false;
       state.user = null;
-    },
-    registerSuccess(state) {
-      state.status.loggedIn = false;
-    },
-    registerFailure(state) {
-      state.status.loggedIn = false;
+      await this.$router.push("/");
     },
   },
 };

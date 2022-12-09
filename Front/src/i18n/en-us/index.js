@@ -2,6 +2,26 @@
 // so you can safely delete all default props below
 
 export default {
+  register: {
+    page_tile: "Register",
+    name: "Name",
+    user_name: "Username",
+    email: "E-mail",
+    password: "Password",
+    repeat_password: "Repeat password",
+    register: "Register",
+    already_have_an_account: "Already have an account?",
+    to_login: "Login",
+    send: "Register",
+  },
+  login: {
+    page_tile: "Login",
+    user_name: "Username",
+    password: "Password",
+    login: "Login",
+    dont_have_an_account: "Don't have an account?",
+    to_register: "Register",
+  },
   failed: "Action failed",
   success: "Action was successful",
   form: {
@@ -43,10 +63,12 @@ export default {
     no: "No",
   },
   session: {
+    graph: "Chart",
     procedure: "Procedure",
     session: "Session",
     movement: "Movement",
     weight: "Weight",
+    select_sensor: "Select sensors",
     select_procedure: "Select procedure",
     run_procedure: "Run procedure",
     next: "Next",
@@ -59,14 +81,22 @@ export default {
     sensors: "Sensors",
     spreadsheet: "Spreadsheet",
     export: "Export",
+    export_all: "Export All",
     close: "Close",
     fullscreen: "Fullscreen",
     connect_sensor: "Connect sensor",
-    next_error: "There are errors in the form, please review it and try again",
+    procedure_next_error:
+      "There are errors in the form, please review it and try again",
+    sensor_next_error:
+      "Number of sensors lower than the minimum required for the procedure.",
     no_sensor_available: "No sensor available.",
     number_of_measurements: "Number of measurements",
     runtime: "Runtime",
     graphic_temporarily_unavailable: "Graphic temporarily unavailable.",
+    movement_column: "Movement",
+    measurement_quantity_column: "Quantity",
+    no_number_of_measurements: "No measurements saved for this move",
+    positions: "Position",
   },
   validation: {
     cep: "CEP inválido",
@@ -91,5 +121,13 @@ export default {
     variability_center: {},
     measurement_history: {},
     patient: {},
+  },
+  import_example: {
+    procedure: "Procedure",
+    movement: "Movement",
+    sensor_name: "Sensor name",
+    select_file: "Select file",
+    add_movement: "Add movement",
+    positions: "Positions",
   },
 };

@@ -2,10 +2,10 @@ import { Axios } from "../utils/AxiosUtils";
 import _ from "lodash";
 import Vue from "vue";
 
+// TODO criar paginação propria
 const { $q } = Vue.prototype;
-
 // Class
-class Pagination {
+class FetchData {
   constructor(
     url,
     params,
@@ -23,7 +23,7 @@ class Pagination {
     this.axiosApi = axiosApi;
     this.url = url;
     this.paginationParams = {
-      ...{ page: 1, limit: 10, fields: null },
+      ...{ page: 1, rpp: 10, fields: null },
       ...params,
     }; // Default
     this.params = createPagination ? this.paginationParams : params; // Default
@@ -47,6 +47,7 @@ class Pagination {
     this.lastBody = {}; // to Post method
 
     // Extra data
+    this.count = null;
     this.totalPages = null;
     this.currentPage = null;
   }
@@ -154,9 +155,11 @@ class Pagination {
       let content = _.get(data, this.listContentAttr);
 
       if (this.createPagination) {
-        this.list = this.infinite
-          ? [...this.list, ...content.resultList]
-          : content.resultList;
+        if(this.infinite) {
+          this.list = [...this.list, ...content.resultList]
+        } else {
+          this.list = content.resultList
+        }
         this.params.page = content.page;
         this.params.rpp = content.rpp;
 
@@ -194,33 +197,7 @@ export class PaginationUtils {
     createPagination = true,
     showLoading = false,
   }) {
-    return new Pagination(
-      url,
-      params,
-      infinite,
-      listContentAttr,
-      onNewPage,
-      method,
-      axiosApi,
-      createPagination,
-      showLoading
-    );
-  }
-}
-
-export class FetchUtils {
-  static create({
-    url,
-    params = {},
-    infinite = false,
-    listContentAttr = "content",
-    onNewPage,
-    method = "get",
-    axiosApi = Axios,
-    createPagination = false,
-    showLoading = true,
-  }) {
-    return new Pagination(
+    return new FetchData(
       url,
       params,
       infinite,

@@ -1,5 +1,30 @@
-#ifndef SENSOR_CONFIG_H
-#define SENSOR_CONFIG_H
+#ifndef MPU_SOCKET_SERVER_CONFIG_H
+#define MPU_SOCKET_SERVER_CONFIG_H
+
+// OS
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
+#include "freertos/timers.h"
+#include "freertos/event_groups.h"
+#include <esp_system.h>
+#include "sdkconfig.h"
+#include "esp_heap_caps.h"
+#include <cstring>
+// Sensor
+#include "eeprom_utils.h"
+#include "MPU9250.h"
+#include <Wire.h>
+// Fs
+#include "SPIFFS.h"
+// WiFi
+#include <WiFi.h>
+#include <WiFiUdp.h>
+#include <NTPClient.h>
+// Server
+#include <ArduinoWebsockets.h>
+#include "ArduinoJson.h"
+#include <AsyncTCP.h>
+#include <ESPAsyncWebServer.h>
 
 // Time API
 #define NTP_TIME_API "a.st1.ntp.br"
@@ -9,8 +34,7 @@
 #define SCL_PIN 22
 // Server sensor config
 #define WEB_PORT 80
-// Socket Server - generated in esp
-#define WEBSOCKET_SERVER_PORT 8080
+#define HTML_FILE "index.html"
 
 // Pin led
 #define LED_I2C_SCAN 12
@@ -23,24 +47,27 @@
 #define LED_CLIENT_CONNECTED 12
 #define LED_READY 2
 
-// imports and dependency
-#include "eeprom_utils.h"
-#include "SPIFFS.h"
-#include <WiFi.h>
-#include <NTPClient.h>
-#include <WiFiUdp.h>
-#include <Wire.h>
-#include "MPU9250.h"
-#include <ArduinoWebsockets.h>
-#include <ArduinoJson.h>
-#include <AsyncTCP.h>
-#include <ESPAsyncWebServer.h>
+// Stacks
+#define STACK_CORE 100
+#define STACK_CHECK_EVENT 100
+
+// LOOP
+#define SEND_DELAY 150                                                  // in s, example = 15s,
+#define MEASUREMENT_FREQUENCY 120                                       // in Hz, MEASUREMENT_FREQUENCY > 0
+#define TIME_BETWEEN_MEASUREMENT_MILIS 8
+#define BUFFER_LENGTH 80
+//long TIME_BETWEEN_MEASUREMENT = 1/MEASUREMENT_FREQUENCY;                // = 0,00... seconds 
+//#define TIME_BETWEEN_MEASUREMENT_MILIS TIME_BETWEEN_MEASUREMENT*1000    // Example: 1/120 = 0,00833, 0,0083 * 1000 (ms)= 8,3 ms
+
+//long  TIME_MATH = SEND_DELAY/TIME_BETWEEN_MEASUREMENT_MILIS;            // 
+//#define BUFFER_LENGTH TIME_MATH                                         // 
 
 // NTP Time Servers
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, NTP_TIME_API, -3 * 3600, 60000);
 
-bool connectedWebsocketClient;
+bool connectedWebsocketClient = false;
+bool available = true;
 
 // Filesystem inputs and paths
 // -- reference html
@@ -73,76 +100,89 @@ int numberMeasurement = 0;
 int numberSended = 0;
 int lastDispatch = 0;
 int cmdActual = 0;
-int optReceivedFromCustomer = 0;
 int tryConnectWifi = 0;
 
 // output
 String horaLeitura;
-String jsonBufferServer;
 String addressESP;
-
-DynamicJsonDocument doc(1024);
+String measurementArray = "";
+DynamicJsonDocument jsonReceveidFromClient(1024);
 
 // Sensor connection
 MPU9250 mpu;
 
-// We use the websocket namespace, so we can use the WebsocketsClient class
-using namespace websockets;
-WebsocketsServer serverSocket;                  // Websocket object to create websocket servert
-WebsocketsClient clientBackEnd;                 // Websocket object to connect to backend and list ip
-WebsocketsClient serverSocketClientList;                   // List of websocket server
-AsyncWebServer configurationServer(WEB_PORT);
-AsyncWebSocket ws("/ws");
+// Websocket object to connect to backend and list ip
+using namespace websockets;                                             // We use the websocket namespace, so we can use the WebsocketsClient class
+WebsocketsClient clientBackEnd;                                         // Socket client
+AsyncWebServer confServer(WEB_PORT);                                    // AsyncWebServer                                               //
+AsyncWebSocket confServerSocket("/socket/session");                     // Socket of AsyncWebServer
+AsyncEventSource confServerevents("/events/session");                   // Events of AsyncWebServer
 
-IPAddress localIP;
-IPAddress gateway(192, 168, 1, 1);
-IPAddress subnet(255, 255, 0, 0);
+IPAddress localIP;                                                      //
+IPAddress gateway(192, 168, 1, 1);                                      //
+IPAddress subnet(255, 255, 0, 0);                                       //
+
+TaskHandle_t TaskCheckEventLoop;                                        //
+TaskHandle_t TaskCoreLoop;                                              //
+TaskHandle_t TaskSyncSocketLoop;                                        //
+TaskHandle_t TaskInit;
+
+//  Tasks
+[[noreturn]] void CoreLoop(void *pvParameter);                          //      
 
 // Sensor
-void InitIMU();
-
-void CalibrateIMU();
-
-void PrintIMUCalibration();
-
-void SaveIMUCalibration();
-
-void LoadIMUCalibration();
-
-void MountBufferToSend();
-
-void StopMeasurement();
-
-void RestartMeasurement();
-
-void ScannerI2C();
-
-String ReturnsJSONFromMeasurement(int MeasurementNumber);
-
-//  Notification
-void InitNotification();
-
-//  Wi-Fi
-bool InitWiFi();
-bool StartWiFi();
-void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info);
-
-//  Websocket
-void InitWebsocketServer();
-
-void InitWebsocketClient();
-
-void onMessageCallback(const WebsocketsMessage& message);
-
-void onEventsCallback(WebsocketsEvent event, String data);
+void InitIMU();                                                         //
+void CalibrateIMU();                                                    //
+void PrintIMUCalibration();                                             //
+void SaveIMUCalibration();                                              //
+void LoadIMUCalibration();                                              //
+void MountBufferToSend();                                               //
+void StopMeasurement();                                                 //
+void RestartMeasurement();                                              //
+void ScannerI2C();                                                      //
+String ReturnsJSONFromMeasurement(int MeasurementNumber);               //
 
 //  File system
-void InitFileSystem();
+void InitFileSystem();                                                  //
+String ReadFile(fs::FS &fs, const char *path);                          //
+void WriteFile(fs::FS &fs, const char *path, const char *message);      //
+int getRandom(int lower, int upper, int count);                         //
+void PrintFileSystem();                                                 //
 
-String ReadFile(fs::FS &fs, const char *path);
+//  WiFi
+void SetWiFi();                                                         //
+void StartWiFi();                                                       //
+String ScanWiFi();                                                      //
+void EventsWiFi(WiFiEvent_t event);                                     //
 
-void WriteFile(fs::FS &fs, const char *path, const char *message);
+//  Websocket
+void SetWebsocketClient();                                              //
+void SendStatusSensor();                                                //
+void ConnectBackend();
 
-int getRandom(int lower, int upper, int count);
+//  Notification
+void InitNotification();                                                //
 
-#endif //SENSOR_CONFIG_H
+//  Server
+void NotFoundController(AsyncWebServerRequest *request);                //
+void SendAppController(AsyncWebServerRequest *request);                 //
+void ConfigurationStateController(AsyncWebServerRequest *request);      //
+void ConfigurationSaveController(AsyncWebServerRequest *request);       //
+void GetMeasurementController(AsyncWebServerRequest *request);          //
+void SetServer();                                                       //
+void InitServer();                                                      //
+void RestartServer();                                                   //
+void SendObjectAllSocketClients(String type, String buffer);
+void onWsServerEvent(AsyncWebSocket * server, 
+                        AsyncWebSocketClient * client,
+                        AwsEventType type, void * arg, 
+                        uint8_t *data, 
+                        size_t len);
+void HandleServerMessage(AwsFrameInfo* info, uint8_t *data, size_t len);
+
+//  Websocket
+void InitWebsocketClient();                                             //
+void onEventsCallback(WebsocketsEvent event, String data);
+void onMessageCallback(const WebsocketsMessage& message);
+
+#endif //MPU_SOCKET_SERVER_CONFIG_H

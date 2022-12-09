@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout view="lHh lpR lfr">
     <q-page-container>
       <q-header elevated>
         <q-toolbar>
@@ -16,7 +16,7 @@
 
           <div>
             <q-toolbar-title>
-              <div class="conteudo">
+              <div class="content">
                 <q-icon name="ion-logo-github" size="14px" />
                 <a
                   href="https://github.com/MRossettiPQ/DashIMU-TCC"
@@ -29,13 +29,15 @@
         </q-toolbar>
       </q-header>
 
-      <q-ajax-bar ref="loadingBar" position="top" color="green" size="4px" />
+      <q-ajax-bar ref="loadingBar" position="top" color="green" size="6px" />
 
       <q-drawer
-        v-model="leftDrawerOpen"
-        bordered
-        content-class="bg-grey-1"
         show-if-above
+        v-model="leftDrawerOpen"
+        side="left"
+        elevated
+        bordered
+        content-class="bg-grey-1 column justify-between no-wrap"
       >
         <q-img
           v-if="!!bean"
@@ -45,22 +47,32 @@
           @click="goProfile"
         >
           <div class="absolute-bottom bg-transparent">
-            <q-avatar class="q-mb-sm" size="56px">
-              <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
-            </q-avatar>
             <div class="text-weight-bold">{{ bean.name }}</div>
             <div>@{{ bean.username }}</div>
           </div>
         </q-img>
 
-        <q-list>
+        <q-list separator>
           <EssentialLink
             v-for="link in essentialLinks"
             :key="link.title"
             v-bind="link"
+            :logged="logged"
           />
+        </q-list>
 
-          <q-item v-if="!!logged" clickable tag="a" @click="logOut">
+        <div class="col-grow"></div>
+
+        <q-list>
+          <q-item
+            v-if="!!logged"
+            clickable
+            tag="a"
+            @click="logOut"
+            class="inactive"
+            active-class="active"
+            exact-active-class="active"
+          >
             <q-item-section avatar>
               <q-icon name="logout" />
             </q-item-section>
@@ -80,14 +92,7 @@
 
 <script src="./MainApp.js" />
 
-<style lang="stylus" scoped>
-
-.conteudo-toolbar {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-}
-
+<style lang="scss" scoped>
 a {
   padding-left: 5px;
   color: hsl(240, 9%, 89%);
@@ -95,9 +100,17 @@ a {
   font-size: 14px;
 }
 
-.conteudo {
+.content {
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
+}
+
+.inactive {
+  color: $primary;
+}
+
+.active {
+  color: $secondary;
 }
 </style>

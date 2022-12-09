@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize) => {
   const Sensor = sequelize.define('sensors', {
-    idGyroSensor: {
+    id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
       autoIncrement: true,
@@ -8,22 +8,22 @@ module.exports = (sequelize, Sequelize) => {
     sensorName: {
       type: Sequelize.STRING,
     },
+    position: {
+      type: Sequelize.ENUM,
+      values: ['ONE', 'TWO'],
+    },
     type: {
       type: Sequelize.ENUM,
       values: ['GYROSCOPE', 'HUMIDITY'],
       defaultValue: 'GYROSCOPE',
     },
-    position: {
-      type: Sequelize.ENUM,
-      values: ['ONE', 'TWO'],
-    },
   })
 
   Sensor.associate = (models) => {
+    Sensor.belongsTo(models.Movement)
     Sensor.hasMany(models.GyroMeasurement, {
       onDelete: 'CASCADE',
     })
-    Sensor.belongsTo(models.Session)
     return Sensor
   }
 

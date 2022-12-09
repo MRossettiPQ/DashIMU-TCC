@@ -1,0 +1,1 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([[28],{bb3b:function(o,n,p){o.exports=p.p+"img/shoulder_-_external_rotation.54d379ab.jpg"}}]);
