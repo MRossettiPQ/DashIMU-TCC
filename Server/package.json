@@ -6,8 +6,6 @@
   "scripts": {
     "start:prod": "cross-env NODE_ENV=production node index.js --l pt-br",
     "start:dev": "cross-env NODE_ENV=development nodemon index.js --l pt-br",
-    "build:hml": "nexe nexe.js",
-    "build:prod": "nexe nexe.js",
     "lint": "npx eslint src test",
     "lint:fix": "npm run lint -- --fix",
     "prettier": "npx prettier src test --check",
