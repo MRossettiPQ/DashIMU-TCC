@@ -2,7 +2,5 @@ const WebSocketController = require('../src/app/WebSocket/Controllers/WebSocketC
 
 module.exports = (app, expressWs) => {
   // TODO WebSocket
-  app.ws('/socket', (client, req) =>
-    WebSocketController.sensorConnection(client, req, expressWs)
-  )
+  app.ws('/socket', WebSocketController.sensorConnection(expressWs))
 }

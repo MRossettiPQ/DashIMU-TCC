@@ -6,10 +6,8 @@
 #include "socket_client.h"
 #include "socket_server.h"
 #include "mpu_sensor.h"
-#include "core_system.h"
 
-void setup()
-{
+void setup(){
     Serial.begin(115200);
     digitalWrite(LED_READY, LOW);
     //  Initialize notification
@@ -30,72 +28,64 @@ void setup()
     SetServer();
 
     SetWebsocketClient();
-
-    //  xTaskCreatePinnedToCore(CoreLoop, "CoreLoop", STACK_CORE * 1024, nullptr, 2, &TaskCoreLoop, 0);
+    
+    digitalWrite(LED_READY, HIGH);
 }
 
-void loop()
-{
+void loop(){
+    bool connected = WiFiClass::status() == WL_CONNECTED;
     static uint32_t prev_ms = millis();
     static uint32_t last_clean_up = prev_ms;
 
-    if(mpu.update()) {
-        if (WiFiClass::status() == WL_CONNECTED)
-        {
-            if (millis() > last_clean_up + 300)
-            {
-                last_clean_up = millis();
-                confServerSocket.cleanupClients();
-                if (clientBackEnd.available())
-                {
-                    clientBackEnd.poll();
-                }
-                else
-                {
-                    RestartMeasurement();
-                    ConnectBackend();
-                }
-            }
+    if (connected && (millis() > (last_clean_up + 500))){
+        last_clean_up = millis();
+        confServerSocket.cleanupClients();
+        if (clientBackEnd.available()){
+            clientBackEnd.poll();
         }
+        else{
+            RestartMeasurement();
+            ConnectBackend();
+        }
+    }
 
-        if ((millis() > prev_ms + TIME_BETWEEN_MEASUREMENT_MILIS))
-        {
+    if (mpu.update()){
+        if (millis() >= (prev_ms + TIME_BETWEEN_MEASUREMENT_MILIS)){
             prev_ms = millis();
-            switch (cmdActual)
-            {
-            case 1:
-                // Serial.println("[SENSOR] - Mount/Send buffer");
-                MountBufferToSend();
-                break;
+            switch (cmdActual){
+                case 1:
+                    // Serial.println("[SENSOR] - Mount/Send buffer");
+                    MountBufferToSend();
+                    break;
 
-            case 2:
-                Serial.println("[SENSOR] - Pause");
-                RestartMeasurement();
-                break;
+                case 2:
+                    Serial.println("[SENSOR] - Pause");
+                    RestartMeasurement();
+                    break;
 
-            case 3:
-                Serial.println("[SENSOR] - Restart");
-                RestartMeasurement();
-                break;
+                case 3:
+                    Serial.println("[SENSOR] - Restart");
+                    RestartMeasurement();
+                    break;
 
-            case 4:
-                RestartMeasurement();
-                Serial.println("[SENSOR] - Calibrate sensor");
-                CalibrateIMU();
-                break;
+                case 4:
+                    RestartMeasurement();
+                    Serial.println("[SENSOR] - Calibrate sensor");
+                    CalibrateIMU();
+                    break;
 
-            case 5:
-                RestartMeasurement();
-                Serial.println("[SENSOR] - Load calibration");
-                LoadIMUCalibration();
-                break;
+                case 5:
+                    RestartMeasurement();
+                    Serial.println("[SENSOR] - Load calibration");
+                    LoadIMUCalibration();
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
             }
         }
 
-        if (WiFiClass::status() != WL_CONNECTED) {
+        if (!connected){
             StartWiFi();
 
             vTaskDelay(500 / portTICK_PERIOD_MS);

@@ -1,114 +1,63 @@
 const jwt = require('jsonwebtoken')
 const environment = require('../../../environment')
-const { throwForbiddenIf } = require('../Utils/RequestUtil')
-const UserContext = require('../Utils/UserContext')
-
-exports.verifyToken = async (req, res, next) => {
-  try {
-    console.log('[JWT] - Validar token')
-    const token = req.headers['x-access-token']
-
-    await throwForbiddenIf({
-      cond: !token,
-      message: `No token provided`,
-      log: `[CONTEXT] - No token provided`,
-      res,
-    })
-
-    jwt.verify(
-      token,
-      environment.secret,
-      (err, decoded) => {
-        if (err) {
-          return res.status(401).send({
-            message: 'Não Autorizado!',
-          })
-        }
-        console.log(`[JWT] - ${decoded.idUser} - ${token.substring(0, 60)}...`)
-        next()
-      },
-      null
-    )
-  } catch (e) {
-    console.error(e)
-  }
+const { throwForbidden } = require('../utils/RequestUtil')
+const { logColor } = require('../utils/LogUtil')
+const { i18n } = require('../utils/i18nUtil')
+// Context
+// const context = {
+//     token: '',
+//     user: {}
+// }
+const CreateToken = async (payload) => {
+  logColor('SERVER:CREATETOKEN', i18n.__('authorizejwt.create_token'))
+  return await jwt.sign(
+    {
+      ...payload,
+    },
+    environment.secret,
+    {
+      expiresIn: 3 * 86400, // TODO validade do token
+    }
+  )
 }
 
-exports.seAdmin = async (req, res, next) => {
-  try {
-    const userContext = await UserContext.getUserContext(req, res)
-
-    await throwForbiddenIf({
-      cond:
-        userContext === null ||
-        userContext?.getDataValue('role') !== 'ADMINISTRATOR',
-      message: 'Requer ser um Fisioterapeuta!',
-      console: '[JWT] - Authorization - Usuario não permitido',
-      res,
-    })
-
-    console.log('[JWT] - Permissão verificada - Autorizado')
-    next()
-  } catch (e) {
-    console.error(e)
-  }
+const ResolveToken = async (token) => {
+  return await jwt.verify(token, environment.secret)
 }
 
-exports.sePaciente = async (req, res, next) => {
-  try {
-    const userContext = await UserContext.getUserContext(req, res)
-
-    await throwForbiddenIf({
-      cond:
-        userContext === null || userContext?.getDataValue('role') !== 'PATIENT',
-      message: 'Requer ser um Fisioterapeuta!',
-      console: '[JWT] - Authorization - Usuario não permitido',
-      res,
+const VerifyToken = async (req, res, next) => {
+  logColor('SERVER:VERIFYTOKEN', i18n.__('authorizejwt.check_token'))
+  // Get header token
+  const token = req.headers['x-access-token']
+  if (!token) {
+    return await throwForbidden({
+      local: 'SERVER:VERIFYTOKEN',
+      message: i18n.__('authorizejwt.no_token'),
+      log: i18n.__('authorizejwt.no_token'),
     })
-
-    console.log('[JWT] - Permissão verificada - Autorizado')
-    next()
-  } catch (e) {
-    console.error(e)
   }
+
+  // Check token
+  const resultToken = await ResolveToken(token)
+  if (!resultToken) {
+    return await throwForbidden({
+      local: 'SERVER:VERIFYTOKEN',
+      message: i18n.__('authorizejwt.invalid_token'),
+      log: i18n.__('authorizejwt.invalid_token'),
+    })
+  }
+
+  // Add contenxt object in req
+  req.context = {
+    ...req.context,
+    token,
+  }
+
+  next()
 }
 
-exports.seFisio = async (req, res, next) => {
-  try {
-    const userContext = await UserContext.getUserContext(req, res)
-
-    await throwForbiddenIf({
-      cond:
-        userContext === null ||
-        userContext?.getDataValue('role') !== 'PHYSIOTHERAPIST',
-      message: 'Requer ser um Fisioterapeuta!',
-      console: '[JWT] - Authorization - Usuario não permitido',
-      res,
-    })
-
-    console.log('[JWT] - Permissão verificada - Autorizado')
-    next()
-  } catch (e) {
-    console.error(e)
-  }
-}
-
-exports.ifAdminPhysiotherapist = async (req, res, next) => {
-  try {
-    const userContext = await UserContext.getUserContext(req, res)
-
-    await throwForbiddenIf({
-      cond:
-        userContext?.getDataValue?.('role') !== 'PHYSIOTHERAPIST' &&
-        userContext?.getDataValue?.('role') !== 'ADMINISTRATOR',
-      message: 'Requires to be a Physiotherapist or Administrator',
-      console: '[JWT] - Authorization - User not allowed',
-      res,
-    })
-
-    console.log('[JWT] - Permission Verified - Authorized')
-    next()
-  } catch (e) {
-    console.error(e)
-  }
+module.exports = {
+  ResolveToken,
+  CreateToken,
+  VerifyToken,
 }

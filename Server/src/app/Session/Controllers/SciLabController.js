@@ -1,69 +1,60 @@
-const {
-  GyroMeasurement,
-  Movement,
-  Sensor,
-  Session,
-} = require('../../../core/DataBase')
-const UserContext = require('../../../core/Utils/UserContext')
-const {
-  throwSuccess,
-  throwErrorIf,
-} = require('../../../core/Utils/RequestUtil')
-const {
-  calculationVariabilityCenter,
-  getAllCalc,
-} = require('../Services/SciLabServices')
+const { GyroMeasurement, Movement, Sensor, Session } =
+  require('../../../core/DataBase').models
+const ContextUtil = require('../../../core/Utils/ContextUtil')
+const { throwSuccess, throwError } = require('../../../core/Utils/RequestUtil')
+const { getAllCalc } = require('../Services/SciLabServices')
 
-exports.getCalculationVariabilityCenter = async (req, res) => {
-  try {
-    console.log('[GET] - /api/session/:id/scilab')
-    const idUserContext = await UserContext.getUserContextId(req, res)
-    const { id } = req.params
-    const body = req.body
+exports.getCalculationVariabilityCenter = async (req) => {
+  const idUserContext = await ContextUtil.getUserContextId(req)
+  const { id } = req.params
+  const body = req.body
 
-    await throwErrorIf({
-      cond: idUserContext === null,
+  if (!idUserContext) {
+    return await throwError({
+      local: 'SERVER:SCILAB',
       message: 'Need to be logged in',
-      res,
+      log: 'Need to be logged in',
     })
-    await throwErrorIf({
-      cond: id === null,
-      message: 'Patient ID is missing',
-      res,
-    })
-    const session = await Session.findByPk(id)
-
-    const movements = await Movement.findAll({
-      where: {
-        sessionId: id,
-      },
-      include: [
-        {
-          model: Sensor,
-          include: [
-            {
-              model: GyroMeasurement,
-            },
-          ],
-        },
-      ],
-    })
-
-    console.log(movements)
-
-    await throwErrorIf({
-      cond: movements?.length === null,
-      message: 'Does not have measurements',
-      res,
-    })
-    let result = await getAllCalc(movements, session)
-
-    await throwSuccess({
-      content: result,
-      log: '\x1b[32m[GET] - /api/session/:id/scilab - Calculation performed successfully\x1b[0m',
-      res,
-    })
-  } catch (e) {
-    console.error(`\x1b[31m${e}\x1b[0m`)
   }
+  if (!id) {
+    return await throwError({
+      local: 'SERVER:SCILAB',
+      message: 'Patient ID is missing',
+      log: 'Patient ID is missing',
+    })
+  }
+  const session = await Session.findByPk(id)
+
+  const movements = await Movement.findAll({
+    where: {
+      sessionId: id,
+    },
+    include: [
+      {
+        model: Sensor,
+        include: [
+          {
+            model: GyroMeasurement,
+          },
+        ],
+      },
+    ],
+  })
+
+  console.log(movements, movements.length)
+
+  if (!movements?.length) {
+    return await throwError({
+      local: 'SERVER:SCILAB',
+      message: 'Does not have measurements',
+      log: 'Does not have measurements',
+    })
+  }
+  let result = await getAllCalc(movements, session)
+
+  return await throwSuccess({
+    local: 'SERVER:SCILAB',
+    content: result,
+    log: 'Calculation performed successfully',
+  })
 }

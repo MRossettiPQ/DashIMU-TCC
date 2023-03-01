@@ -1,13 +1,11 @@
 const dayjs = require('dayjs')
 const { throwSuccess } = require('../../../core/Utils/RequestUtil')
 const { v4: uuidv4 } = require('uuid')
-const { WebSocket } = require('ws')
 const network = require('network')
-const Procedure = require('../../Session/Controllers/Procedure')
 const environment = require('../../../../environment')
 
 let sensorList = []
-exports.getMetadata = async (req, res) => {
+exports.getMetadata = async () => {
   function getIP() {
     return new Promise((resolve) => {
       network.get_private_ip((err, ip) => {
@@ -16,113 +14,104 @@ exports.getMetadata = async (req, res) => {
     })
   }
 
-  try {
-    console.log('[GET] - /api/websocket/metadata')
-    let server_ip = await getIP()
-    await throwSuccess({
-      content: {
-        socket_url: `${server_ip}:${environment.host.port}`,
-        url: server_ip,
-        port: environment.host.port,
-      },
-      log: '[GET] - /api/sensor/list - Listed',
-      res,
-    })
-  } catch (e) {
-    console.error(`\x1b[31m${e}\x1b[0m`)
-  }
+  let server_ip = await getIP()
+  return await throwSuccess({
+    content: {
+      socket_url: `${server_ip}:${environment.host.port}`,
+      url: server_ip,
+      port: environment.host.port,
+    },
+    log: 'Sensor list',
+  })
 }
 
-exports.getSensorList = async (req, res) => {
-  try {
-    console.log('[GET] - /api/websocket/list')
-    await throwSuccess({
-      content: sensorList,
-      log: '[GET] - /api/sensor/list - Listed',
-      res,
-    })
-  } catch (e) {
-    console.error(`\x1b[31m${e}\x1b[0m`)
-  }
+exports.getSensorList = async () => {
+  return await throwSuccess({
+    local: 'SERVER:SENSOR',
+    content: sensorList,
+    log: 'Sensor list',
+  })
 }
 
-exports.sensorConnection = (client, req, expressWs) => {
-  console.log(`[SOCKET] - Client connected in network! - ${dayjs()}`)
+exports.sensorConnection = (expressWs) => {
+  return function (client, req) {
+    console.log(`[SOCKET] - Client connected in network! - ${dayjs()}`)
 
-  client.connectionInfo = null
+    client.connectionInfo = null
 
-  client.isAlive = true
-
-  client.on('message', async (msg) => {
-    try {
-      console.log(`[SOCKET] - message`)
-      const data = await JSON.parse(msg)
-      console.log(data)
-      if (data.origin) {
-        client.origin = data.origin
-        if (data.origin === 'SENSOR' && client.connectionInfo === null) {
-          client.connectionInfo = {
-            uuid: uuidv4(null, null, null),
-            ...data,
-          }
-          sensorList.push(client.connectionInfo)
-          console.log(`[SOCKET] - Add sensor - ${msg} - ${dayjs()}`)
-        } else if (data.origin === 'SENSOR') {
-          // Update sensor info
-          client.connectionInfo = {
-            ...client.connectionInfo,
-            ...data,
-          }
-          const index = sensorList.findIndex(
-            (sensor) => sensor.uuid === client.connectionInfo.uuid
-          )
-          sensorList[index] = { ...sensorList[index], ...data }
-          console.log(`[SOCKET] - Update sensor - ${msg} - ${dayjs()}`)
-        }
-        switch (data?.type) {
-          case 'GET_UPDATE_CLIENT_LIST':
-            sendMessageToClient(client, 'UPDATE_CLIENT_LIST', sensorList)
-            break
-          default:
-            break
-        }
-      }
-    } catch (e) {
-      console.log(e)
-    }
-  })
-
-  client.once('close', (e) => {
-    console.log('event:close')
-    if (client.origin === 'SENSOR') {
-      removeClient(client.connectionInfo)
-      sendMessageAllClients(expressWs, 'UPDATE_CLIENT_LIST', sensorList)
-      sendMessageAllClients(
-        expressWs,
-        'SENSOR_DISCONNECTED',
-        client.connectionInfo
-      )
-    }
-    clearInterval(client.interval)
-  })
-
-  client.on('pong', (data) => {
     client.isAlive = true
-  })
 
-  client.once('error', (e) => {
-    console.log(e)
-    client.close(1000, 'Keep alive timeout')
-  })
+    client.on('message', async (msg) => {
+      try {
+        console.log(`[SOCKET] - message`)
+        const data = await JSON.parse(msg)
+        console.log(data)
+        if (data.origin) {
+          client.origin = data.origin
+          if (data.origin === 'SENSOR' && client.connectionInfo === null) {
+            client.connectionInfo = {
+              uuid: uuidv4(null, null, null),
+              ...data,
+            }
+            sensorList.push(client.connectionInfo)
+            console.log(`[SOCKET] - Add sensor - ${msg} - ${dayjs()}`)
+          } else if (data.origin === 'SENSOR') {
+            // Update sensor info
+            client.connectionInfo = {
+              ...client.connectionInfo,
+              ...data,
+            }
+            const index = sensorList.findIndex(
+              (sensor) => sensor.uuid === client.connectionInfo.uuid
+            )
+            sensorList[index] = { ...sensorList[index], ...data }
+            console.log(`[SOCKET] - Update sensor - ${msg} - ${dayjs()}`)
+          }
+          switch (data?.type) {
+            case 'GET_UPDATE_CLIENT_LIST':
+              sendMessageToClient(client, 'UPDATE_CLIENT_LIST', sensorList)
+              break
+            default:
+              break
+          }
+        }
+      } catch (e) {
+        console.log(e)
+      }
+    })
 
-  client.interval = setInterval(() => {
-    if (!client.isAlive) {
-      return client.terminate()
-    }
+    client.once('close', (e) => {
+      console.log('event:close')
+      if (client.origin === 'SENSOR') {
+        removeClient(client.connectionInfo)
+        sendMessageAllClients(expressWs, 'UPDATE_CLIENT_LIST', sensorList)
+        sendMessageAllClients(
+          expressWs,
+          'SENSOR_DISCONNECTED',
+          client.connectionInfo
+        )
+      }
+      clearInterval(client.interval)
+    })
 
-    client.isAlive = false
-    client.ping()
-  }, 10000)
+    client.on('pong', (data) => {
+      client.isAlive = true
+    })
+
+    client.once('error', (e) => {
+      console.log(e)
+      client.close(1000, 'Keep alive timeout')
+    })
+
+    client.interval = setInterval(() => {
+      if (!client.isAlive) {
+        return client.terminate()
+      }
+
+      client.isAlive = false
+      client.ping()
+    }, 5000)
+  }
 }
 
 function sendMessageAllClients(expressWs, type, message) {

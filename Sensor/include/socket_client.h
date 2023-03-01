@@ -28,7 +28,6 @@ void ConnectBackend(){
     if(connectedWebsocketClient) {
         Serial.println("[SENSOR] - Connected with the server!");
         SendStatusSensor();
-        digitalWrite(LED_READY, HIGH);
     }
 }
 

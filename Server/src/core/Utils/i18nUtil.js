@@ -2,11 +2,12 @@ const { I18n } = require('i18n')
 const path = require('path')
 
 const i18n = new I18n({
-  locales: ['pt-br', 'en-us'],
+  defaultLocale: 'pt-br',
+  locales: ['pt-br', 'en'],
   directory: path.join(__dirname, 'locales'),
 })
 
-async function setLocale(locale) {
+async function setLocale(locale = 'pt-br') {
   i18n.setLocale(locale)
 }
 

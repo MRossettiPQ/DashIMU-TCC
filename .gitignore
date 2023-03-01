@@ -6,6 +6,13 @@
 *.sln
 *.iml
 
+#IGNORE SERVER
+/Electron/node_modules
+/Electron/.idea
+/Electron/yarn.lock
+/Electron/.vscode
+/Electron/*.iml
+/Electron/package-lock.json
 
 #IGNORE SERVER
 /Server/node_modules
@@ -65,6 +72,7 @@ Session/*.iml
 Sensor/.pio
 Sensor/cmake-build-debug
 Sensor/cmake-build-esp32dev
+Sensor/build/*
 
 
 /Init/node_modules
