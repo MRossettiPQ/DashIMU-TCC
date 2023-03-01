@@ -10,7 +10,6 @@ const {
   getArrayPow,
   getArraySqrt,
 } = require('../../../core/Utils/SciLab')
-const dayjs = require('dayjs')
 
 exports.getAllCalc = (movements, newSession) => {
   return new Promise((resolve, reject) => {

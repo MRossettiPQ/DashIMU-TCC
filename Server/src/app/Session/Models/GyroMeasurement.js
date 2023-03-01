@@ -60,6 +60,27 @@ module.exports = (sequelize, Sequelize) => {
     Yaw: {
       type: Sequelize.DECIMAL,
     },
+    Euler_X: {
+      type: Sequelize.DECIMAL,
+    },
+    Euler_Y: {
+      type: Sequelize.DECIMAL,
+    },
+    Euler_Z: {
+      type: Sequelize.DECIMAL,
+    },
+    Quaternion_X: {
+      type: Sequelize.DECIMAL,
+    },
+    Quaternion_Y: {
+      type: Sequelize.DECIMAL,
+    },
+    Quaternion_Z: {
+      type: Sequelize.DECIMAL,
+    },
+    Quaternion_W: {
+      type: Sequelize.DECIMAL,
+    },
   })
 
   GyroMeasurement.associate = (models) => {

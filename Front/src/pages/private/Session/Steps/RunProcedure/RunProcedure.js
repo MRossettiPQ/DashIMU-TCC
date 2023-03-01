@@ -33,7 +33,7 @@ class RunProcedure extends Vue {
     {
       align: "center",
       field: "numberMensuration",
-      label: "numberMensuration",
+      label: "nº",
       sortable: true,
     },
     {
@@ -54,6 +54,27 @@ class RunProcedure extends Vue {
       align: "center",
       field: "Yaw",
       label: "Yaw",
+      format: (val) => Number(val).toFixed(3),
+      sortable: true,
+    },
+    {
+      align: "center",
+      field: "Euler_X",
+      label: "Euler X",
+      format: (val) => Number(val).toFixed(3),
+      sortable: true,
+    },
+    {
+      align: "center",
+      field: "Euler_Y",
+      label: "Euler Y",
+      format: (val) => Number(val).toFixed(3),
+      sortable: true,
+    },
+    {
+      align: "center",
+      field: "Euler_Z",
+      label: "Euler Z",
       format: (val) => Number(val).toFixed(3),
       sortable: true,
     },

@@ -1,171 +1,152 @@
-const {
-  GyroMeasurement,
-  Sensor,
-  Session,
-  Movement,
-} = require('../../../core/DataBase')
-const UserContext = require('../../../core/utils/UserContext')
+const { GyroMeasurement, Sensor, Session, Movement } =
+  require('../../../core/DataBase').models
+const ContextUtil = require('../../../core/utils/ContextUtil')
 const {
   throwSuccess,
-  throwNotFoundIf,
+  throwNotFound,
 } = require('../../../core/Utils/RequestUtil')
 const { getAllCalc } = require('../Services/SciLabServices')
 const { PaginationUtil } = require('../../../core/Utils/FetchUtil')
 const Procedure = require('./Procedure')
 
-exports.postSaveSession = async (req, res) => {
-  console.log('[POST] - /api/session')
-  try {
-    const idUserContext = await UserContext.getUserContextId(req, res)
+exports.postSaveSession = async (req) => {
+  const idUserContext = await ContextUtil.getUserContextId(req)
 
-    let { session } = req.body
+  let { session } = req.body
 
-    const newSession = await Session.create(
-      {
-        ...session,
-        userId: idUserContext,
-      },
-      {
-        include: [
-          {
-            model: Movement,
-            include: [
-              {
-                model: Sensor,
-                include: [
-                  {
-                    model: GyroMeasurement,
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      }
-    )
-
-    let result = await getAllCalc(newSession.movements, newSession)
-
-    await throwSuccess({
-      content: {
-        session: newSession,
-        result,
-      },
-      message: 'Session save successful',
-      log: '\x1b[32m[POST] - /api/session - success save\x1b[0m',
-      res,
-    })
-  } catch (e) {
-    console.error(`\x1b[31m${e}\x1b[0m`)
-  }
-}
-
-exports.getMensurationList = async (req, res) => {
-  try {
-    console.log('[GET] - /api/session/:id/mensuration')
-    const { sessionId: idSession } = req.params
-    const { limit, page, field, movementId } = req.query
-    console.log(movementId, req.query)
-
-    const mensurationList = await GyroMeasurement.findAll({
-      order: [
-        ['numberMensuration', 'ASC'],
-        ['sensorId', 'ASC'],
-      ],
+  const newSession = await Session.create(
+    {
+      ...session,
+      userId: idUserContext,
+    },
+    {
       include: [
         {
-          model: Sensor,
-          where: {
-            movementId,
-          },
+          model: Movement,
+          include: [
+            {
+              model: Sensor,
+              include: [
+                {
+                  model: GyroMeasurement,
+                },
+              ],
+            },
+          ],
         },
       ],
-    })
+    }
+  )
 
-    await throwNotFoundIf({
-      cond: mensurationList === null,
-      log: '[GET] - /api/session/:id/mensuration - not founded',
-      res,
-    })
+  let result = await getAllCalc(newSession.movements, newSession)
 
-    await throwSuccess({
-      content: {
-        resultList: mensurationList,
-      },
-      log: '\x1b[32m[GET] - /api/session/:id/mensuration - founded\x1b[0m',
-      res,
-    })
-  } catch (e) {
-    console.error(`\x1b[31m${e}\x1b[0m`)
-  }
+  return await throwSuccess({
+    local: 'SERVER:SESSION',
+    content: {
+      session: newSession,
+      result,
+    },
+    message: 'Session save successful',
+    log: 'Session save successful',
+  })
 }
 
-exports.getSessionList = async (req, res) => {
-  try {
-    console.log('[GET] - /api/session')
-    const { id: idPatient } = req.params
-    const { limit, page, field } = req.query
+exports.getMensurationList = async (req) => {
+  const { sessionId: idSession } = req.params
+  const { limit, page, field, movementId } = req.query
+  console.log(movementId, req.query)
 
-    const sessionList = await Session.findAll({
-      where: {
-        patientId: idPatient,
+  const mensurationList = await GyroMeasurement.findAll({
+    order: [
+      ['numberMensuration', 'ASC'],
+      ['sensorId', 'ASC'],
+    ],
+    include: [
+      {
+        model: Sensor,
+        where: {
+          movementId,
+        },
       },
-    })
+    ],
+  })
 
-    await throwNotFoundIf({
-      cond: sessionList === null,
-      message: '[GET] - /api/session - not founded',
-      log: '[GET] - /api/session - not founded',
-      res,
+  if (!mensurationList) {
+    return await throwNotFound({
+      local: 'SERVER:SESSION',
+      log: 'Not founded',
+      message: 'Not founded',
     })
-
-    await throwSuccess({
-      content: {
-        resultList: sessionList,
-      },
-      log: '\x1b[32m[GET] - /api/session - founded\x1b[0m',
-      res,
-    })
-  } catch (e) {
-    console.error(`\x1b[31m${e}\x1b[0m`)
   }
+
+  return await throwSuccess({
+    local: 'SERVER:SESSION',
+    content: {
+      resultList: mensurationList,
+    },
+    log: 'Founded',
+  })
 }
 
-exports.getSession = async (req, res) => {
-  try {
-    console.log('[GET] - /api/session/:id')
-    const { id } = req.params
+exports.getSessionList = async (req) => {
+  const { id: idPatient } = req.params
+  const { limit, page, field } = req.query
 
-    const session = await Session.findByPk(id)
+  const sessionList = await Session.findAll({
+    where: {
+      patientId: idPatient,
+    },
+  })
 
-    await throwNotFoundIf({
-      cond: session === null,
-      message: '[GET] - /api/session/:id - not founded',
-      log: '[GET] - /api/session/:id - not founded',
-      res,
+  if (!sessionList) {
+    return await throwNotFound({
+      local: 'SERVER:SESSION',
+      message: 'Not founded',
+      log: 'Not founded',
     })
-
-    await throwSuccess({
-      content: session,
-      log: '\x1b[32m[GET] - /api/session/:id - founded\x1b[0m',
-      res,
-    })
-  } catch (e) {
-    console.error(`\x1b[31m${e}\x1b[0m`)
   }
+
+  return await throwSuccess({
+    local: 'SERVER:SESSION',
+    content: {
+      resultList: sessionList,
+    },
+    log: 'Founded',
+  })
 }
 
-exports.getMetadata = async (req, res) => {
-  try {
-    console.log('[GET] - /api/session/metadata')
-    await throwSuccess({
-      content: {
-        procedures: Procedure.getProcedures(),
-      },
-      log: `\x1b[32m[GET] - /api/session/metadata\x1b[0m`,
-      res,
+exports.getSession = async (req) => {
+  const { id } = req.params
+  if (!id) {
+    return await throwNotFound({
+      local: 'SERVER:SESSION',
+      message: 'Not founded',
+      log: 'Not founded',
     })
-  } catch (e) {
-    console.error(`\x1b[31m${e}\x1b[0m`)
   }
+
+  const session = await Session.findByPk(id)
+
+  if (!session) {
+    return await throwNotFound({
+      local: 'SERVER:SESSION',
+      message: 'Not founded',
+      log: 'Not founded',
+    })
+  }
+
+  return await throwSuccess({
+    local: 'SERVER:SESSION',
+    content: session,
+    log: 'Founded',
+  })
+}
+
+exports.getMetadata = async () => {
+  return await throwSuccess({
+    local: 'SERVER:SESSION',
+    content: {
+      procedures: Procedure.getProcedures(),
+    },
+  })
 }

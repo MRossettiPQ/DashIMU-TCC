@@ -39,6 +39,7 @@ void InitIMU() {
     // IMU initialization
     do {
         Wire.begin(SDA_PIN, SCL_PIN);
+        Wire.setClock(400000);
         // delay(50);
         vTaskDelay(50 / portTICK_PERIOD_MS);
 
@@ -46,11 +47,13 @@ void InitIMU() {
         setting.accel_fs_sel = ACCEL_FS_SEL::A16G;
         setting.gyro_fs_sel = GYRO_FS_SEL::G2000DPS;
         setting.mag_output_bits = MAG_OUTPUT_BITS::M16BITS;
-        setting.fifo_sample_rate = FIFO_SAMPLE_RATE::SMPL_200HZ;
+        setting.fifo_sample_rate = FIFO_SAMPLE_RATE::SMPL_1000HZ;
         setting.gyro_fchoice = 0x03;
-        setting.gyro_dlpf_cfg = GYRO_DLPF_CFG::DLPF_41HZ;
+        setting.gyro_dlpf_cfg = GYRO_DLPF_CFG::DLPF_184HZ;
         setting.accel_fchoice = 0x01;
-        setting.accel_dlpf_cfg = ACCEL_DLPF_CFG::DLPF_45HZ;
+        setting.accel_dlpf_cfg = ACCEL_DLPF_CFG::DLPF_218HZ_0;
+        mpu.selectFilter(QuatFilterSel::MAHONY);
+        //mpu.setFilterIterations(10);
 
         if (!mpu.setup(ADDRESS_SENSOR, setting)) {
             Serial.println("[SENSOR] - It has not been initialized, Check the connection between the IMU and the ESP32 and restart the device");
@@ -67,10 +70,13 @@ void CalibrateIMU() {
     #if defined(ESP_PLATFORM) || defined(ESP32)
         EEPROM.begin(0x80);
     #endif
+    calibrating = true;
+    setupEEPROM();
 
     Serial.println("[SENSOR] - Accel Gyro calibration will start in 5 seconds");
     Serial.println("[SENSOR] - Please leave the device still on the plan");
     mpu.verbose(true);
+
     // delay(5000);
     vTaskDelay(5000 / portTICK_PERIOD_MS);
     //digitalWrite(LED_SENSOR_CALIBRATION_PLAN, HIGH);
@@ -79,7 +85,7 @@ void CalibrateIMU() {
 
     Serial.println("[SENSOR] - Magnetic calibration will start in 5 seconds");
     Serial.println("[SENSOR] - Please wave the device in a figure eight until finished");
-    // delay(5000);;
+    // delay(5000);
     vTaskDelay(5000 / portTICK_PERIOD_MS);
     //digitalWrite(LED_SENSOR_CALIBRATION_EIGHT, HIGH);
     mpu.calibrateMag();
@@ -92,6 +98,7 @@ void CalibrateIMU() {
     SaveIMUCalibration();
 
     LoadIMUCalibration();
+    calibrating = false;
 }
 
 void SaveIMUCalibration() {
@@ -158,6 +165,15 @@ String ReturnsJSONFromMeasurement(int MeasurementNumber) {
     double Roll = mpu.getRoll();
     double Pitch = mpu.getPitch();
     double Yaw = mpu.getYaw();
+    // EulerX, EulerY e EulerZ
+    double Euler_X = mpu.getEulerX();
+    double Euler_Y = mpu.getEulerY();
+    double Euler_Z = mpu.getEulerZ();
+    // EulerX, EulerY e EulerZ
+    double Quaternion_X = mpu.getQuaternionX();
+    double Quaternion_Y = mpu.getQuaternionY();
+    double Quaternion_Z = mpu.getQuaternionZ();
+    double Quaternion_W = mpu.getQuaternionW();
 
     //-----------------Sensor----------------
     String Leitura = R"({"sensorName":")";
@@ -201,6 +217,22 @@ String ReturnsJSONFromMeasurement(int MeasurementNumber) {
     Leitura += Pitch;
     Leitura += R"(","Yaw":")";
     Leitura += Yaw;
+    //----------Euler_X, Euler_Y e Euler_Z-------------
+    Leitura += R"(","Euler_X":")";
+    Leitura += Euler_X;
+    Leitura += R"(","Euler_Y":")";
+    Leitura += Euler_Y;
+    Leitura += R"(","Euler_Z":")";
+    Leitura += Euler_Z;
+    //----------Euler_X, Euler_Y e Euler_Z-------------
+    Leitura += R"(","Quaternion_X":")";
+    Leitura += Quaternion_X;
+    Leitura += R"(","Quaternion_Y":")";
+    Leitura += Quaternion_Y;
+    Leitura += R"(","Quaternion_Z":")";
+    Leitura += Quaternion_Z;
+    Leitura += R"(","Quaternion_W":")";
+    Leitura += Quaternion_W;
     Leitura += "\"}";
 
     return Leitura;
@@ -230,7 +262,7 @@ void MountBufferToSend() {
         Serial.print(lastDispatch + BUFFER_LENGTH);
         numberMeasurement = numberMeasurement + 1;
         // Buffer de 320 Measurement = BUFFER_LENGTH /  = 120Hz, default BUFFER_LENGTH = 320
-        if (numberMeasurement == (lastDispatch + BUFFER_LENGTH)) {
+        if (numberMeasurement >= (lastDispatch + BUFFER_LENGTH)) {
             Serial.println("[SENSOR] - Send buffer");
 
             String content = R"({"origin":"SENSOR","type":"MEASUREMENT_LIST","message":[)" + measurementArray + "]}";

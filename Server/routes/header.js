@@ -1,10 +1,10 @@
+const environment = require('../environment')
 module.exports = (req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*')
-  res.header('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT')
+  res.header('Access-Control-Allow-Origin', environment.cors.origin)
+  res.header('Access-Control-Allow-Methods', environment.cors.methods.join(','))
   res.header(
     'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+    environment.cors.allowedHeaders.join(',')
   )
-
   next()
 }

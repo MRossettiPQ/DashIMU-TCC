@@ -1,25 +1,25 @@
-import {Component, Prop, Ref, Vue, Watch} from "vue-property-decorator";
+import { Component, Prop, Ref, Vue, Watch } from "vue-property-decorator";
 import VEChart from "../VEChart/VEChart.vue";
-import {PaginationUtils} from "src/commons/utils/PaginationUtils";
+import { PaginationUtils } from "src/commons/utils/PaginationUtils";
 
 @Component({
   name: "result-chart-screen",
   components: {
-    VEChart
-  }
+    VEChart,
+  },
 })
 class ResultChartScreen extends Vue {
   @Ref("chart")
   chart;
 
   @Prop()
-  sessionId
+  sessionId;
 
   tabPanel = "Movimento_0";
   movTab = "Tabela";
-  filter = ""
-  pagination = null
-  selectedMovement = null
+  filter = "";
+  pagination = null;
+  selectedMovement = null;
 
   @Prop()
   result;
@@ -41,23 +41,23 @@ class ResultChartScreen extends Vue {
   }
 
   async mounted() {
-    if(this.result.length > 0){
+    if (this.result.length > 0) {
       this.pagination = PaginationUtils.create({
         url: `/api/session/${this.sessionId}/movement/mensuration`,
-        infinite: false
+        infinite: false,
       });
-      this.selectedMovement = this.result[0].movement
-      await this.search()
+      this.selectedMovement = this.result[0].movement;
+      await this.search();
     }
   }
 
   async search() {
-    await this.pagination.search({ movementId: this.selectedMovement.id })
+    await this.pagination.search({ movementId: this.selectedMovement.id });
   }
 
-  async selectMovement(movement){
-    this.selectedMovement = movement
-    await this.search()
+  async selectMovement(movement) {
+    this.selectedMovement = movement;
+    await this.search();
   }
 
   columns = [
@@ -94,12 +94,33 @@ class ResultChartScreen extends Vue {
     },
     {
       align: "center",
+      field: "Euler_X",
+      label: "Euler X",
+      format: (val) => Number(val).toFixed(3),
+      sortable: true,
+    },
+    {
+      align: "center",
+      field: "Euler_Y",
+      label: "Euler Y",
+      format: (val) => Number(val).toFixed(3),
+      sortable: true,
+    },
+    {
+      align: "center",
+      field: "Euler_Z",
+      label: "Euler Z",
+      format: (val) => Number(val).toFixed(3),
+      sortable: true,
+    },
+    {
+      align: "center",
       label: "ID Measurement",
       field: "id",
       style: "width: 50px",
       sortable: true,
     },
-  ]
+  ];
 }
 
 export default ResultChartScreen;
