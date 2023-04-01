@@ -6,7 +6,8 @@ const cors = require('cors')
 const environment = require('./environment')
 const { i18n } = require('./src/core/Utils/i18nUtil')
 const { logColor } = require('./src/core/Utils/LogUtil')
-const Database = require('./src/core/database')
+const Database = require('./src/core/DataBase')
+
 let expressWs = null
 
 class RServer {

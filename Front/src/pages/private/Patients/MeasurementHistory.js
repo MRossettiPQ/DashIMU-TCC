@@ -1,11 +1,14 @@
-import {Component, Prop, Ref, Vue} from "vue-property-decorator";
+import { Component, Prop, Ref, Vue } from "vue-property-decorator";
 import DialogHeader from "components/DialogHeader/DialogHeader.vue";
-import {LoadDataUtils} from "src/commons/utils/LoadDataUtils";
+import { LoadDataUtils } from "src/commons/utils/LoadDataUtils";
 import SessionService from "src/commons/services/SessionService";
+import LoadingScreen from "components/LoadingScreen/LoadingScreen.vue";
+import ErrorScreen from "components/ErrorScreen/ErrorScreen.vue";
+import ResultChartScreen from "components/ResultChartScreen/ResultChartScreen.vue";
 
 @Component({
   name: "measurement-history",
-  components: {DialogHeader},
+  components: { ResultChartScreen, ErrorScreen, LoadingScreen, DialogHeader },
 })
 class MeasurementHistory extends Vue {
   @Ref("dialog")
@@ -35,25 +38,23 @@ class MeasurementHistory extends Vue {
       await this.fetchData.loadAll({
         session: {
           options: {
-            id: this.id
-          }
+            id: this.id,
+          },
         },
         procedure: {
           options: {
-            sessionId: this.id
-          }
+            sessionId: this.id,
+          },
         },
-      })
+      });
     }
   }
-
 
   tabPanel = "Tab_0";
 
   get isMobile() {
     return this.$q.platform.is.mobile;
   }
-
 }
 
 export default MeasurementHistory;

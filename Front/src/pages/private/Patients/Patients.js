@@ -1,7 +1,8 @@
 import { Component, Vue } from "vue-property-decorator";
 import Patient from "./Patient.vue";
-import { PaginationUtils } from "src/commons/utils/PaginationUtils";
 import DialogUtils from "src/commons/utils/DialogUtils";
+import { LoadDataUtils } from "src/commons/utils/LoadDataUtils";
+import PatientService from "src/commons/services/PatientService";
 
 @Component({
   name: "patients",
@@ -9,11 +10,11 @@ import DialogUtils from "src/commons/utils/DialogUtils";
 })
 class Patients extends Vue {
   loading = false;
-  filter = "";
+  term = "";
 
-  pagination = PaginationUtils.create({
-    url: "/api/patient/",
-    infinite: true,
+  pagination = LoadDataUtils.pagination({
+    toLoad: PatientService.getPatientList,
+    auto: true,
   });
 
   columns = [
@@ -37,12 +38,8 @@ class Patients extends Vue {
     },
   ];
 
-  async mounted() {
-    try {
-      await this.pagination.search();
-    } catch (e) {
-      console.log(e);
-    }
+  async search() {
+    await this.pagination.search();
   }
 
   async openDialog(evt, row) {
@@ -52,11 +49,15 @@ class Patients extends Vue {
       });
 
       if (data?.save) {
-        await this.pagination.search();
+        await this.search();
       }
     } catch (e) {
       console.log(e);
     }
+  }
+
+  async beforeDestroy() {
+    await this.pagination.abortRequest();
   }
 }
 

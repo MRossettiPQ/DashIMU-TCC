@@ -1,5 +1,6 @@
-import {Component, Prop, Ref, Vue, Watch} from "vue-property-decorator";
+import { Component, Prop, Ref, Vue } from "vue-property-decorator";
 import * as echarts from "echarts";
+import { throttle } from "quasar";
 
 @Component({
   name: "v-e-chart",
@@ -8,10 +9,7 @@ class VEChart extends Vue {
   @Ref("chart")
   chart;
 
-  @Ref("chart-div")
-  chartDiv;
-
-  div = null
+  div = null;
 
   @Prop()
   values;
@@ -96,40 +94,20 @@ class VEChart extends Vue {
     };
     try {
       this.myChart = echarts.init(document.getElementById("chart"), null, {
-        renderer: "canvas",
+        renderer: "svg",
       });
       this.myChart.setOption(opts);
+      window.onresize = this.resizeChart;
     } catch (e) {
       console.log("makeChart", e);
     }
-    console.log()
+    console.log();
   }
 
-  get width() {
-    return document.getElementById("chartDiv")?.offsetWidth
-  }
+  resizeChart = throttle(this.resize, 500);
 
-  get height() {
-    return document.getElementById("chartDiv")?.clientHeight
-  }
-
-  @Watch('width')
-  @Watch('height')
   resize() {
-    let resize =false
-    if(this.width <= this.newWidth - 30 || this.width >= this.newWidth + 30){
-      resize = true
-    }
-
-    if(this.height <= this.newHeight - 30 || this.height >= this.newHeight + 30){
-      resize = true
-    }
-
-    if(resize) {
-      this.myChart.resize()
-      this.newWidth = document.getElementById("chartDiv").offsetWidth
-      this.newHeight = document.getElementById("chartDiv").offsetHeight
-    }
+    this.myChart?.resize();
   }
 
   beforeDestroy() {

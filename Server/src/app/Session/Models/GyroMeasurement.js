@@ -60,6 +60,8 @@ module.exports = (sequelize, Sequelize) => {
     Yaw: {
       type: Sequelize.DECIMAL,
     },
+    /*
+    TODO descomentar depois de fazer backup, colunas faltando no banco
     Euler_X: {
       type: Sequelize.DECIMAL,
     },
@@ -80,7 +82,7 @@ module.exports = (sequelize, Sequelize) => {
     },
     Quaternion_W: {
       type: Sequelize.DECIMAL,
-    },
+    }, */
   })
 
   GyroMeasurement.associate = (models) => {

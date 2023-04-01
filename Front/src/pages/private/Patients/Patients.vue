@@ -4,10 +4,9 @@
       <q-table
         :columns="columns"
         :data="pagination.list"
-        :filter="filter"
+        :filter="term"
         :loading="pagination.loading"
         bordered
-        class="col"
         flat
         row-key="id"
         @row-click="openDialog"
@@ -26,7 +25,7 @@
           />
           <q-space />
           <q-input
-            v-model="filter"
+            v-model="term"
             borderless
             class="col-5"
             color="primary"
@@ -35,7 +34,7 @@
             outlined
           >
             <template #append>
-              <q-icon name="search" />
+              <q-icon name="search" @click="search" />
             </template>
           </q-input>
         </template>

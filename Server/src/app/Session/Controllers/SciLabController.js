@@ -41,8 +41,6 @@ exports.getCalculationVariabilityCenter = async (req) => {
     ],
   })
 
-  console.log(movements, movements.length)
-
   if (!movements?.length) {
     return await throwError({
       local: 'SERVER:SCILAB',

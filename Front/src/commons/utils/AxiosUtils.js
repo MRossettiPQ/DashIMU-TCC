@@ -7,7 +7,6 @@ class Request {
     constructor() {}
 
     setAxios(option) {
-      console.log(option, typeof option);
       this.Axios = axios.create({ ...option });
       this.Axios.interceptors.response.use(
         this.handlerResponse,
@@ -53,7 +52,6 @@ class Request {
       let response = error?.response;
       let msg = null;
       let haveMsg = false;
-      console.log("handlerReject");
       if (response && response?.data) {
         haveMsg = true;
         const data = response?.data;

@@ -4,9 +4,10 @@ const ContextUtil = require('../../../core/utils/ContextUtil')
 const {
   throwSuccess,
   throwNotFound,
+  throwError,
 } = require('../../../core/Utils/RequestUtil')
 const { getAllCalc } = require('../Services/SciLabServices')
-const { PaginationUtil } = require('../../../core/Utils/FetchUtil')
+const { PaginationUtil } = require('../../../core/Utils/PaginationUtil')
 const Procedure = require('./Procedure')
 
 exports.postSaveSession = async (req) => {
@@ -52,10 +53,33 @@ exports.postSaveSession = async (req) => {
 }
 
 exports.getMensurationList = async (req) => {
-  const { sessionId: idSession } = req.params
-  const { limit, page, field, movementId } = req.query
-  console.log(movementId, req.query)
-
+  const { id: sessionId } = req.params
+  const { rpp, page, field } = req.query
+  console.log(req.query)
+  const pagination = await PaginationUtil(GyroMeasurement, {
+    rpp,
+    page,
+    field,
+    include: [
+      {
+        model: Sensor,
+        include: [
+          {
+            model: Movement,
+            where: {
+              sessionId,
+            },
+          },
+        ],
+      },
+    ],
+    order: [
+      ['numberMensuration', 'ASC'],
+      ['sensorId', 'ASC'],
+    ],
+  })
+  console.log(pagination)
+  /*
   const mensurationList = await GyroMeasurement.findAll({
     order: [
       ['numberMensuration', 'ASC'],
@@ -70,8 +94,9 @@ exports.getMensurationList = async (req) => {
       },
     ],
   })
+  */
 
-  if (!mensurationList) {
+  if (!pagination) {
     return await throwNotFound({
       local: 'SERVER:SESSION',
       log: 'Not founded',
@@ -81,24 +106,31 @@ exports.getMensurationList = async (req) => {
 
   return await throwSuccess({
     local: 'SERVER:SESSION',
-    content: {
-      resultList: mensurationList,
-    },
+    content: pagination,
     log: 'Founded',
   })
 }
 
 exports.getSessionList = async (req) => {
   const { id: idPatient } = req.params
-  const { limit, page, field } = req.query
+  const { rpp, page, field } = req.query
 
-  const sessionList = await Session.findAll({
-    where: {
-      patientId: idPatient,
-    },
+  if (!idPatient) {
+    return await throwError({
+      local: 'SERVER:SCILAB',
+      message: 'User not found',
+      log: 'User not found',
+    })
+  }
+
+  const pagination = await PaginationUtil(Session, {
+    rpp,
+    page,
+    field,
+    order: [['id', 'ASC']],
   })
 
-  if (!sessionList) {
+  if (!pagination) {
     return await throwNotFound({
       local: 'SERVER:SESSION',
       message: 'Not founded',
@@ -108,9 +140,7 @@ exports.getSessionList = async (req) => {
 
   return await throwSuccess({
     local: 'SERVER:SESSION',
-    content: {
-      resultList: sessionList,
-    },
+    content: pagination,
     log: 'Founded',
   })
 }
@@ -126,7 +156,6 @@ exports.getSession = async (req) => {
   }
 
   const session = await Session.findByPk(id)
-
   if (!session) {
     return await throwNotFound({
       local: 'SERVER:SESSION',

@@ -2,7 +2,6 @@ const RegisterValidation = require('../src/core/Middleware/RegisterValidation.js
 const SessionController = require('../src/app/Session/Controllers/SessionController.js')
 const AuthenticationController = require('../src/app/User/Controllers/AuthenticationController.js')
 const WebSocketController = require('../src/app/WebSocket/Controllers/WebSocketController.js')
-const TesteController = require('../src/app/Session/Controllers/TesteController.js')
 const { AsyncHandler, AsyncHandlers } = require('../src/core/Utils/RequestUtil')
 
 module.exports = (app) => {
@@ -27,10 +26,5 @@ module.exports = (app) => {
   app.get(
     '/api/websocket/list',
     AsyncHandler(WebSocketController.getSensorList)
-  )
-
-  app.get(
-    '/api/websocket/teste',
-    AsyncHandler(TesteController.getSessionListTeste)
   )
 }

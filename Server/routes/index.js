@@ -3,8 +3,9 @@ const PrivateRoutes = require('./PrivateRoutes.js')
 const PublicRoutes = require('./PublicRoutes.js')
 const header = require('./header')
 const dayjs = require('dayjs')
-const { SpaResolver } = require('../src/core/Utils/RequestUtil')
+const { SpaResolver, AsyncHandler } = require('../src/core/Utils/RequestUtil')
 const environment = require('../environment')
+const DevController = require('../src/app/Dev/Controllers/DevController')
 
 module.exports = (app, expressWs) => {
   SocketRoutes(app, expressWs)
@@ -16,22 +17,14 @@ module.exports = (app, expressWs) => {
         message: `Server online, current time: ${dayjs()}`,
       })
     })
+    app.get('/ddl', AsyncHandler(DevController.alterTable))
+    app.get('/testpagination', AsyncHandler(DevController.testPagination))
   }
 
   // TODO redirect to page in spa or api
   if (!environment.just_api) {
     app.use(SpaResolver)
   }
-
-  // TODO redirect to page in spa or api
-  app.use((req, res, next) => {
-    const toApi = req.originalUrl.includes('/api')
-    if (toApi) {
-      next()
-    } else {
-      res.redirect(`/#${req.originalUrl}`)
-    }
-  })
 
   // TODO header
   app.use(header)

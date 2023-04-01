@@ -1,6 +1,5 @@
 <template>
-  <div ref="chart-div" class="column h-100 w-100">
-    <span> {{width}} - {{height}} </span>
+  <div class="column h-100 w-100">
     <div id="chart" ref="chart" class="vue-chart"/>
   </div>
 </template>

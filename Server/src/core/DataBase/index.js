@@ -2,6 +2,7 @@ const { Sequelize } = require('sequelize')
 const fs = require('fs')
 const path = require('path')
 const mysql = require('mysql2')
+const mariadb = require('mariadb')
 const environment = require('../../../environment')
 const { i18n } = require('../utils/i18nUtil')
 const { logColor } = require('../utils/LogUtil')
@@ -28,13 +29,14 @@ module.exports = new (class Database {
 
   models = {}
 
+  constructor() {}
+
   get allModels() {
     return this.models
   }
 
-  constructor() {}
-
   initDataBase() {
+    // eslint-disable-next-line no-async-promise-executor
     return new Promise(async (resolve, reject) => {
       try {
         // Before init sequelize
@@ -110,6 +112,11 @@ module.exports = new (class Database {
     await this.createDatabase(pool)
     pool.end()
   }
+  alterTable = async () => {
+    logColor('SERVER:DATABASE:SQL', 'Alter table')
+    return await this.sequelize.sync({ alter: true })
+  }
+
   asyncQuerySql = ({ pool, sql }) => {
     logColor('SERVER:DATABASE:SQL', sql)
     return new Promise((resolve, reject) => {

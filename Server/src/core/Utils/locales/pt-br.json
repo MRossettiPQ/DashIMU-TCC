@@ -94,5 +94,6 @@
   "user.auth_unable_authenticate": "Não foi possivel autenticar o usuario",
   "user.auth_success": "Logado com sucesso",
   "user.auth_found": "Contexto do Usuário encontrado",
-  "user.auth_saved": "Usuário salvo com sucesso"
+  "user.auth_saved": "Usuário salvo com sucesso",
+  "invalid_password": "invalid_password"
 }

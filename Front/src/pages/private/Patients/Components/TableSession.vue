@@ -60,6 +60,7 @@
   display: flex;
   flex-direction: row;
   width: 100%;
+  padding-bottom: 2px;
 }
 ::v-deep .q-table__top,
 .relative-position,

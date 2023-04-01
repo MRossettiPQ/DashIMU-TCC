@@ -21,6 +21,7 @@ class Register extends Vue {
       await FormUtils.validateAsync(this.$refs.mainForm);
       await AuthenticationService.register({ bean: this.bean });
       const result = await AuthenticationService.login({ bean: this.bean });
+      console.log("result", result);
       await this.$store.dispatch("Authentication/login", result);
       await this.$router.push("/home");
     } catch (e) {

@@ -10,19 +10,11 @@ const { i18n } = require('../utils/i18nUtil')
 // }
 const CreateToken = async (payload) => {
   logColor('SERVER:CREATETOKEN', i18n.__('authorizejwt.create_token'))
-  return await jwt.sign(
-    {
-      ...payload,
-    },
-    environment.secret,
-    {
-      expiresIn: 3 * 86400, // TODO validade do token
-    }
-  )
+  return await jwt.sign(payload, environment.secret, null, null)
 }
 
 const ResolveToken = async (token) => {
-  return await jwt.verify(token, environment.secret)
+  return jwt.verify(token, environment.secret, null, null)
 }
 
 const VerifyToken = async (req, res, next) => {

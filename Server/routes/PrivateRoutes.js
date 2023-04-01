@@ -1,4 +1,3 @@
-const AuthorizeJwt = require('../src/core/Middleware/AuthorizeJwt.js')
 const RegisterValidation = require('../src/core/Middleware/RegisterValidation.js')
 const SessionController = require('../src/app/Session/Controllers/SessionController.js')
 const SciLabController = require('../src/app/Session/Controllers/SciLabController.js')
@@ -11,7 +10,7 @@ const { VerifyRoles } = require('../src/core/Middleware/AuthorizeRoles')
 module.exports = (app) => {
   // TODO Patient
   app.get(
-    '/api/patient/',
+    '/api/patient',
     AsyncHandlers(
       [VerifyToken, VerifyRoles(['ADMINISTRATOR', 'PHYSIOTHERAPIST'])],
       true

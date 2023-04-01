@@ -1,6 +1,7 @@
 import { Component, Prop, Ref, Vue, Watch } from "vue-property-decorator";
 import VEChart from "../VEChart/VEChart.vue";
-import { PaginationUtils } from "src/commons/utils/PaginationUtils";
+import { LoadDataUtils } from "src/commons/utils/LoadDataUtils";
+import SessionService from "src/commons/services/SessionService";
 
 @Component({
   name: "result-chart-screen",
@@ -18,7 +19,11 @@ class ResultChartScreen extends Vue {
   tabPanel = "Movimento_0";
   movTab = "Tabela";
   filter = "";
-  pagination = null;
+
+  pagination = LoadDataUtils.pagination({
+    toLoad: SessionService.getMensurationListBySession,
+    infinite: false,
+  });
   selectedMovement = null;
 
   @Prop()
@@ -41,11 +46,13 @@ class ResultChartScreen extends Vue {
   }
 
   async mounted() {
-    if (this.result.length > 0) {
-      this.pagination = PaginationUtils.create({
-        url: `/api/session/${this.sessionId}/movement/mensuration`,
-        infinite: false,
+    if (this.result?.length > 0) {
+      await this.pagination.search({
+        options: {
+          idPatient: this.sessionId,
+        },
       });
+
       this.selectedMovement = this.result[0].movement;
       await this.search();
     }

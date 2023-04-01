@@ -2,7 +2,8 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import MeasurementHistory from "../MeasurementHistory.vue";
 import ImportExample from "./ImportExample.vue";
 import DialogUtils from "src/commons/utils/DialogUtils";
-import { PaginationUtils } from "src/commons/utils/PaginationUtils";
+import { LoadDataUtils } from "src/commons/utils/LoadDataUtils";
+import PatientService from "src/commons/services/PatientService";
 
 @Component({
   name: "table-session",
@@ -13,7 +14,11 @@ class TableSession extends Vue {
   id;
 
   loading = false;
-  pagination = [{}];
+  pagination = LoadDataUtils.pagination({
+    toLoad: PatientService.getMensurationList,
+    infinite: true,
+  });
+
   filter = "";
 
   columns = [
@@ -41,16 +46,12 @@ class TableSession extends Vue {
   ];
 
   async mounted() {
-    try {
-      if (this.id !== null) {
-        this.pagination = PaginationUtils.create({
-          url: `/api/patient/${this.id}/session`,
-          infinite: true,
-        });
-        await this.pagination.search();
-      }
-    } catch (e) {
-      console.log(e);
+    if (this.id) {
+      await this.pagination.search({
+        options: {
+          idPatient: this.id,
+        },
+      });
     }
   }
 

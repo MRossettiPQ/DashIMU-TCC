@@ -1,62 +1,74 @@
-const { User, Patient } = require('../DataBase')
-const { throwErrorIf } = require('../Utils/RequestUtil')
+const { User, Patient } = require('../DataBase').models
+const { throwError } = require('../Utils/RequestUtil')
 
 exports.verifyUserEmailDuplicate = async (req, res, next) => {
-  try {
-    const userFound = await User.findOne({
-      where: {
-        username: req.body.username,
-      },
+  console.log(req.body)
+  if (!req.body) {
+    return await throwError({
+      local: 'SERVER:VALIDATOR-USER',
+      message: 'Nenhum dado valido foi enviado',
+      log: 'Nenhum dado valido foi enviado',
     })
-
-    if (userFound) {
-      res.status(400).send({
-        message: 'Falhou! Usuario esta em uso!',
-      })
-      return
-    }
-
-    const emailFound = await User.findOne({
-      where: {
-        email: req.body.email,
-      },
-    })
-
-    if (emailFound) {
-      res.status(400).send({
-        message: 'Falhou! E-Mail esta em uso!',
-      })
-      return
-    }
-
-    next()
-  } catch (e) {
-    console.error(`\x1b[33m${e}\x1b[0m`)
   }
+
+  const userFound = await User.findOne({
+    where: {
+      username: req.body.username,
+    },
+  })
+
+  if (userFound) {
+    return await throwError({
+      local: 'SERVER:VALIDATOR-USER',
+      message: 'Falhou! Usuario esta em uso!',
+      log: 'Falhou! Usuario esta em uso!',
+    })
+  }
+
+  const emailFound = await User.findOne({
+    where: {
+      email: req.body.email,
+    },
+  })
+
+  if (emailFound) {
+    return await throwError({
+      local: 'SERVER:VALIDATOR-USER',
+      message: 'Falhou! E-Mail esta em uso!',
+      log: 'Falhou! E-Mail esta em uso!',
+    })
+  }
+
+  next()
 }
 
 exports.verifyExistsCPFinPatient = async (req, res, next) => {
-  try {
-    const { cpf, idPatient } = req.body
-    if (idPatient) {
-      next()
-      return
-    }
-    const patientFound = await Patient.findAll({
-      where: {
-        cpf: cpf,
-      },
+  if (!!req.body) {
+    return await throwError({
+      local: 'SERVER:VALIDATOR-USER',
+      message: 'Nenhum dado valido foi enviado',
+      log: 'Nenhum dado valido foi enviado',
     })
-
-    await throwErrorIf({
-      cond: patientFound.length,
-      message: 'CPF is already in use',
-      log: '[MIDDLEWARE] - CPF is already in use',
-      res,
-    })
-
-    next()
-  } catch (e) {
-    console.error(`\x1b[33m${e}\x1b[0m`)
   }
+
+  const { cpf, id } = req.body
+  if (id) {
+    next()
+    return
+  }
+  const patientFound = await Patient.findAll({
+    where: {
+      cpf: cpf,
+    },
+  })
+
+  if (patientFound.length) {
+    return await throwError({
+      local: 'SERVER:VALIDATOR-PATIENT',
+      message: 'CPF is already in use',
+      log: 'CPF is already in use',
+    })
+  }
+
+  next()
 }

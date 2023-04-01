@@ -57,9 +57,7 @@ class MainApp extends Vue {
     };
   }
 
-  mounted() {
-    console.log(this.$store.state.Authentication?.user);
-  }
+  mounted() {}
 
   get logged() {
     return !!this.$store.state.Authentication?.user;

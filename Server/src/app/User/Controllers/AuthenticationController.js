@@ -12,9 +12,7 @@ const ContextUtil = require('../../../core/Utils/ContextUtil')
 
 exports.register = async (req) => {
   const newUser = await User.create({
-    username: req.body.username,
-    email: req.body.email,
-    name: req.body.name,
+    ...req.body,
     password: bcrypt.hashSync(req.body.password, 8),
   })
 
@@ -30,13 +28,15 @@ exports.register = async (req) => {
 }
 
 exports.login = async (req) => {
+  console.log(req.body)
   const userFound = await User.findOne({
     where: {
       username: req.body.username,
     },
   })
+  console.log(userFound)
 
-  if (!!userFound) {
+  if (!userFound) {
     return await throwNotFound({
       local: 'SERVER:AUTHENTICATION',
       message: i18n.__('user.auth_not_found'),
@@ -52,8 +52,8 @@ exports.login = async (req) => {
   if (!validPassword) {
     return await throwUnauthorized({
       local: 'SERVER:AUTHENTICATION',
-      message: i18n.__('invalid_password'),
-      log: i18n.__('invalid_password'),
+      message: i18n.__('authentication.invalid_password'),
+      log: i18n.__('authentication.invalid_password'),
     })
   }
 

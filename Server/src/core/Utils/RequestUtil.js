@@ -45,6 +45,10 @@ const SpaResolver = (req, res, next) => {
   if (toApi) {
     return next()
   }
+  const toSwagger = req.originalUrl.includes('/api-docs')
+  if (toSwagger) {
+    return next()
+  }
   return res.redirect(`/#${req.originalUrl}`)
 }
 
@@ -59,8 +63,11 @@ const AsyncHandlers = (handlers = [], middleware = false) => {
 const AsyncHandler = (callback, middleware = false, index = 0) => {
   return function (req, res, next) {
     let result = null
+
     function setResult(v) {
-      result = v
+      if (v !== undefined) {
+        result = v
+      }
     }
 
     if (!middleware) {

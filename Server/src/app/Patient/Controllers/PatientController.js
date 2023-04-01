@@ -1,11 +1,18 @@
 const { Patient } = require('../../../core/DataBase').models
+const { throwSuccess, throwError } = require('../../../core/Utils/RequestUtil')
 const {
-  throwSuccess,
-  throwErrorIf,
-  throwError,
-} = require('../../../core/Utils/RequestUtil')
+  PaginationUtil,
+  GetWhere,
+} = require('../../../core/Utils/PaginationUtil')
 
-exports.postSavePatient = async (req, res) => {
+exports.postSavePatient = async (req) => {
+  if (!req.body) {
+    return await throwError({
+      local: 'SERVER:PATIENT',
+      message: 'Nenhum dado valido foi enviado',
+      log: 'Nenhum dado valido foi enviado',
+    })
+  }
   let patient = await Patient.findByPk(req.body.id)
   if (patient) {
     // Update registered patient
@@ -33,11 +40,17 @@ exports.postSavePatient = async (req, res) => {
 }
 
 exports.getPatientList = async (req) => {
-  const patient = await Patient.findAll()
+  const { rpp, page, field, term } = req.query
+  const pagination = await PaginationUtil(Patient, {
+    where: GetWhere(term?.length, { name: term }),
+    rpp,
+    page,
+    field,
+  })
 
   return await throwSuccess({
     local: 'SERVER:PATIENT',
-    content: { resultList: patient },
+    content: pagination,
     log: 'Patient list',
   })
 }

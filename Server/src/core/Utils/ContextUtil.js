@@ -1,4 +1,4 @@
-const { User } = require('../database').models
+const { User } = require('../DataBase').models
 const { throwError, throwForbidden } = require('./RequestUtil')
 const { logColor } = require('./LogUtil')
 const { ResolveToken } = require('../middleware/AuthorizeJwt')
