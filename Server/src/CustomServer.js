@@ -3,17 +3,18 @@ const enableWs = require('express-ws')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const cors = require('cors')
-const environment = require('./environment')
-const { i18n } = require('./src/core/Utils/i18nUtil')
-const { logColor } = require('./src/core/Utils/LogUtil')
-const Database = require('./src/core/DataBase')
-
-let expressWs = null
+const environment = require('../environment')
+const { translate, i18n } = require('./core/Utils/i18nUtil')
+const { logColor } = require('./core/Utils/LogUtil')
+const Database = require('./core/DataBase')
 
 class CustomServer {
   app
-
   lang
+  database = Database
+  started = false
+  loading = false
+  expressWs = null
 
   constructor(lang = 'pt-br') {
     this.lang = lang
@@ -21,15 +22,16 @@ class CustomServer {
 
   async boot() {
     try {
-      logColor('SERVER', i18n.__('main.init'), 'fg.blue')
+      this.loading = true
+      // Set locale
+      await i18n.setLocale(this.lang)
+
+      logColor('SERVER', translate('main.init'), 'fg.blue')
       await Database.loadModels()
 
       // Only after models are loaded
-      logColor('SERVER', i18n.__('main.load_routes'))
-      const routes = require('./routes')
-
-      // Set locale
-      i18n.setLocale(this.lang)
+      logColor('SERVER', translate('main.load_routes'))
+      const routes = require('../routes')
 
       // Instance express
       this.app = express()
@@ -53,20 +55,23 @@ class CustomServer {
       this.app.use(bodyParser.urlencoded({ extended: true }))
 
       // Active web-socket on app express
-      expressWs = enableWs(this.app)
+      this.expressWs = enableWs(this.app)
 
       // Morgan logging
       this.app.use(morgan('combined'))
 
       // Routes
-      routes(this.app, expressWs)
+      routes(this.app, this.expressWs)
 
       // Listen server in port
       await this.app.listen(environment.host.port)
-      logColor('SERVER', `${i18n.__('main.initialized')} ${environment.host.port}`, 'fg.blue')
+      logColor('SERVER', `${translate('main.initialized')} ${environment.host.port}`, 'fg.blue')
+      this.started = true
     } catch (e) {
-      logColor('SERVER', i18n.__('main.error'), 'fg.red')
+      logColor('SERVER', translate('main.error'), 'fg.red')
       console.log(e)
+    } finally {
+      this.loading = false
     }
   }
 }

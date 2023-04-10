@@ -1,4 +1,4 @@
-module.exports = (sequelize, Sequelize) => {
+module.exports = function Session(sequelize, Sequelize) {
   const Session = sequelize.define('sessions', {
     id: {
       type: Sequelize.INTEGER,
@@ -17,16 +17,7 @@ module.exports = (sequelize, Sequelize) => {
     },
     procedure: {
       type: Sequelize.ENUM,
-      values: [
-        'SHOULDER',
-        'ELBOW',
-        'RADIOULNAR',
-        'WRIST',
-        'CARPOMETACARPAL_THUMB',
-        'METACARPOPHALANGEAL',
-        'PROXIMAL_INTERPHALANGEAL',
-        'DISTAL_INTERPHALANGEAL',
-      ],
+      values: ['SHOULDER', 'ELBOW', 'RADIOULNAR', 'WRIST', 'CARPOMETACARPAL_THUMB', 'METACARPOPHALANGEAL', 'PROXIMAL_INTERPHALANGEAL', 'DISTAL_INTERPHALANGEAL'],
     },
   })
 

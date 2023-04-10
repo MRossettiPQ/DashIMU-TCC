@@ -1,4 +1,4 @@
-module.exports = (sequelize, Sequelize) => {
+module.exports = function Movement(sequelize, Sequelize) {
   const Movement = sequelize.define('movements', {
     id: {
       type: Sequelize.INTEGER,

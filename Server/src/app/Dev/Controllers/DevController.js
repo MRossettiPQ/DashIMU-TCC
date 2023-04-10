@@ -1,10 +1,7 @@
-const { Patient, Session } = require('../../../core/DataBase').models
-const { alterTable } = require('../../../core/DataBase')
-const {
-  throwSuccess,
-  throwNotFound,
-} = require('../../../core/Utils/RequestUtil')
+const { Session } = require('../../../core/DataBase').models
+const { throwSuccess, throwNotFound } = require('../../../core/Utils/RequestUtil')
 const { PaginationUtil } = require('../../../core/Utils/PaginationUtil')
+const dayjs = require('dayjs')
 
 exports.testPagination = async (req) => {
   let { id: patientId } = req.params
@@ -36,20 +33,10 @@ exports.testPagination = async (req) => {
   })
 }
 
-exports.alterTable = async () => {
-  let result = await alterTable()
-
-  if (!result) {
-    return await throwNotFound({
-      local: 'SERVER:SESSION',
-      message: 'Not founded',
-      log: 'Not founded',
-    })
-  }
-
+exports.ping = async () => {
   return await throwSuccess({
-    local: 'SERVER:SESSION',
-    content: 'pagination',
-    log: 'Founded',
+    local: 'SERVER:DEV',
+    message: `Server online, current time: ${dayjs()}`,
+    log: 'Ping',
   })
 }

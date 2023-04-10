@@ -1,4 +1,4 @@
-module.exports = (sequelize, Sequelize) => {
+module.exports = function Sensor(sequelize, Sequelize) {
   const Sensor = sequelize.define('sensors', {
     id: {
       type: Sequelize.INTEGER,

@@ -1,9 +1,6 @@
 const { Patient } = require('../../../core/DataBase').models
 const { throwSuccess, throwError } = require('../../../core/Utils/RequestUtil')
-const {
-  PaginationUtil,
-  GetWhere,
-} = require('../../../core/Utils/PaginationUtil')
+const { PaginationUtil, GetWhere } = require('../../../core/Utils/PaginationUtil')
 
 exports.postSavePatient = async (req) => {
   if (!req.body) {

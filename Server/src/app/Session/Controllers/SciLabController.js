@@ -1,5 +1,4 @@
-const { GyroMeasurement, Movement, Sensor, Session } =
-  require('../../../core/DataBase').models
+const { GyroMeasurement, Movement, Sensor, Session } = require('../../../core/DataBase').models
 const ContextUtil = require('../../../core/Utils/ContextUtil')
 const { throwSuccess, throwError } = require('../../../core/Utils/RequestUtil')
 const { getAllCalc } = require('../Services/SciLabServices')

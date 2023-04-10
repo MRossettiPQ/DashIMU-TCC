@@ -1,15 +1,4 @@
-const {
-  getColumn,
-  getMean,
-  getArraySubtract,
-  getMax,
-  getMin,
-  getSqrt,
-  getStDeviation,
-  getArrayDivision,
-  getArrayPow,
-  getArraySqrt,
-} = require('../../../core/Utils/SciLab')
+const { getColumn, getMean, getArraySubtract, getMax, getMin, getSqrt, getStDeviation, getArrayDivision, getArrayPow, getArraySqrt } = require('../../../core/Utils/SciLab')
 
 exports.getAllCalc = (movements, newSession) => {
   return new Promise((resolve, reject) => {
@@ -38,25 +27,15 @@ exports.getAllCalc = (movements, newSession) => {
   })
 }
 
-exports.calculationVariabilityCenter = ({
-  sensors,
-  session,
-  chartType = 'eChart',
-  rangeStart,
-  rangeEnd,
-}) => {
+exports.calculationVariabilityCenter = ({ sensors, session, chartType = 'eChart', rangeStart, rangeEnd }) => {
   console.log('[Service] - /api/session/:id/scilab')
   return new Promise((resolve, reject) => {
     try {
       if (sensors?.length) {
         // Sensor 1
-        const sensor_1 = sensors.find(
-          (s) => s.position === 'ONE'
-        )?.gyro_measurements
+        const sensor_1 = sensors.find((s) => s.position === 'ONE')?.gyro_measurements
         // Sensor 2
-        const sensor_2 = sensors.find(
-          (s) => s.position === 'TWO'
-        )?.gyro_measurements
+        const sensor_2 = sensors.find((s) => s.position === 'TWO')?.gyro_measurements
         if (sensor_1 !== null && sensor_2 !== null) {
           const length = sensor_1?.length
 
@@ -153,9 +132,7 @@ exports.calculationVariabilityCenter = ({
 
           let z_atorn = getArraySubtract(r_atorn, 90)
           const rms_r_atorn = getArraySqrt(getArrayPow(z_atorn, 2))
-          const rms_r_pitch_1p = getSqrt(
-            getArraySqrt(getArrayPow(r_pitch_1p, 2))
-          )
+          const rms_r_pitch_1p = getSqrt(getArraySqrt(getArrayPow(r_pitch_1p, 2)))
 
           const mean_rms_r_atorn = getMean(rms_r_atorn)
           const sd_rms_r_atorn = getStDeviation(rms_r_atorn)
