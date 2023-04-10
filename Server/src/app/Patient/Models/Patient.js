@@ -1,4 +1,4 @@
-module.exports = (sequelize, Sequelize) => {
+module.exports = function Patient(sequelize, Sequelize) {
   const Patient = sequelize.define('patients', {
     id: {
       type: Sequelize.INTEGER,

@@ -61,9 +61,7 @@ exports.getProcedures = () => {
         {
           movement_name: i18n.__('procedures.shoulder.internal_rotation'),
           value: 'INTERNAL_ROTATION',
-          description: i18n.__(
-            'procedures.shoulder.internal_rotation.description'
-          ),
+          description: i18n.__('procedures.shoulder.internal_rotation.description'),
           image: 'shoulder_-_internal_rotation.jpg',
           angle: {
             min: 0,
@@ -73,9 +71,7 @@ exports.getProcedures = () => {
         {
           movement_name: i18n.__('procedures.shoulder.external_rotation'),
           value: 'EXTERNAL_ROTATION',
-          description: i18n.__(
-            'procedures.shoulder.external_rotation.description'
-          ),
+          description: i18n.__('procedures.shoulder.external_rotation.description'),
           image: 'shoulder_-_external_rotation.jpg',
           angle: {
             min: 0,
@@ -233,9 +229,7 @@ exports.getProcedures = () => {
         {
           movement_name: i18n.__('procedures.carpometacarpal_thumb.flexion'),
           value: 'FLEXION',
-          description: i18n.__(
-            'procedures.carpometacarpal_thumb.flexion.description'
-          ),
+          description: i18n.__('procedures.carpometacarpal_thumb.flexion.description'),
           image: 'carpometacarpal_thumb_-_flexion.jpg',
           angle: {
             min: 0,
@@ -245,9 +239,7 @@ exports.getProcedures = () => {
         {
           movement_name: i18n.__('procedures.carpometacarpal_thumb.abduction'),
           value: 'ADDUCTION',
-          description: i18n.__(
-            'procedures.carpometacarpal_thumb.abduction.description'
-          ),
+          description: i18n.__('procedures.carpometacarpal_thumb.abduction.description'),
           image: 'carpometacarpal_thumb_-_abduction.jpg',
           angle: {
             min: 0,
@@ -257,9 +249,7 @@ exports.getProcedures = () => {
         {
           movement_name: i18n.__('procedures.carpometacarpal_thumb.extension'),
           value: 'EXTENSION',
-          description: i18n.__(
-            'procedures.carpometacarpal_thumb.extension.description'
-          ),
+          description: i18n.__('procedures.carpometacarpal_thumb.extension.description'),
           image: 'carpometacarpal_thumb_-_extension.jpg',
           angle: {
             min: 0,
@@ -286,9 +276,7 @@ exports.getProcedures = () => {
         {
           movement_name: i18n.__('procedures.metacarpophalangeal.flexion'),
           value: 'FLEXION',
-          description: i18n.__(
-            'procedures.metacarpophalangeal.flexion.description'
-          ),
+          description: i18n.__('procedures.metacarpophalangeal.flexion.description'),
           image: 'metacarpophalangeal_-_flexion.jpg',
           angle: {
             min: 0,
@@ -298,9 +286,7 @@ exports.getProcedures = () => {
         {
           movement_name: i18n.__('procedures.metacarpophalangeal.abduction'),
           value: 'EXTENSION',
-          description: i18n.__(
-            'procedures.metacarpophalangeal.abduction.description'
-          ),
+          description: i18n.__('procedures.metacarpophalangeal.abduction.description'),
           image: 'metacarpophalangeal_-_extension.jpg',
           angle: {
             min: 0,
@@ -310,9 +296,7 @@ exports.getProcedures = () => {
         {
           movement_name: i18n.__('procedures.metacarpophalangeal.abduction'),
           value: 'ABDUCTION',
-          description: i18n.__(
-            'procedures.metacarpophalangeal.abduction.description'
-          ),
+          description: i18n.__('procedures.metacarpophalangeal.abduction.description'),
           image: 'metacarpophalangeal_-_abduction-adduction.jpg',
           angle: {
             min: 0,
@@ -322,9 +306,7 @@ exports.getProcedures = () => {
         {
           movement_name: i18n.__('procedures.metacarpophalangeal.adduction'),
           value: 'ADDUCTION',
-          description: i18n.__(
-            'procedures.metacarpophalangeal.adduction.description'
-          ),
+          description: i18n.__('procedures.metacarpophalangeal.adduction.description'),
           image: 'metacarpophalangeal_-_abduction-adduction.jpg',
           angle: {
             min: 0,
@@ -351,9 +333,7 @@ exports.getProcedures = () => {
         {
           movement_name: i18n.__('procedures.proximal_interphalangeal.flexion'),
           value: 'FLEXION',
-          description: i18n.__(
-            'procedures.proximal_interphalangeal.flexion.description'
-          ),
+          description: i18n.__('procedures.proximal_interphalangeal.flexion.description'),
           image: 'proximal_interphalangeal_-_flexion.jpg',
           angle: {
             min: 0,
@@ -361,13 +341,9 @@ exports.getProcedures = () => {
           },
         },
         {
-          movement_name: i18n.__(
-            'procedures.proximal_interphalangeal.extension'
-          ),
+          movement_name: i18n.__('procedures.proximal_interphalangeal.extension'),
           value: 'EXTENSION',
-          description: i18n.__(
-            'procedures.proximal_interphalangeal.extension.description'
-          ),
+          description: i18n.__('procedures.proximal_interphalangeal.extension.description'),
           image: 'proximal_interphalangeal_-_extension.jpg',
           angle: {
             min: 0,
@@ -394,9 +370,7 @@ exports.getProcedures = () => {
         {
           movement_name: i18n.__('procedures.distal_interphalangeal.flexion'),
           value: 'FLEXION',
-          description: i18n.__(
-            'procedures.distal_interphalangeal.flexion.description'
-          ),
+          description: i18n.__('procedures.distal_interphalangeal.flexion.description'),
           image: 'proximal_interphalangeal_-_flexion.jpg',
           angle: {
             min: 0,
@@ -404,13 +378,9 @@ exports.getProcedures = () => {
           },
         },
         {
-          movement_name: i18n.__(
-            'procedures.distal_interphalangeal.thumb_internal_flexion'
-          ),
+          movement_name: i18n.__('procedures.distal_interphalangeal.thumb_internal_flexion'),
           value: 'THUMB_INTERNAL_FLEXION',
-          description: i18n.__(
-            'procedures.distal_interphalangeal.thumb_internal_flexion.description'
-          ),
+          description: i18n.__('procedures.distal_interphalangeal.thumb_internal_flexion.description'),
           image: 'proximal_interphalangeal_-_flexion.jpg',
           angle: {
             min: 0,
@@ -418,13 +388,9 @@ exports.getProcedures = () => {
           },
         },
         {
-          movement_name: i18n.__(
-            'procedures.distal_interphalangeal.thumb_internal_extension'
-          ),
+          movement_name: i18n.__('procedures.distal_interphalangeal.thumb_internal_extension'),
           value: 'THUMB_INTERNAL_EXTENSION',
-          description: i18n.__(
-            'procedures.distal_interphalangeal.thumb_internal_extension.description'
-          ),
+          description: i18n.__('procedures.distal_interphalangeal.thumb_internal_extension.description'),
           image: 'proximal_interphalangeal_-_flexion.jpg',
           angle: {
             min: 0,
@@ -432,13 +398,9 @@ exports.getProcedures = () => {
           },
         },
         {
-          movement_name: i18n.__(
-            'procedures.distal_interphalangeal.internal_extension_fingers'
-          ),
+          movement_name: i18n.__('procedures.distal_interphalangeal.internal_extension_fingers'),
           value: 'INTERNAL_EXTENSION_FINGERS',
-          description: i18n.__(
-            'procedures.distal_interphalangeal.internal_extension_fingers.description'
-          ),
+          description: i18n.__('procedures.distal_interphalangeal.internal_extension_fingers.description'),
           image: 'proximal_interphalangeal_-_flexion.jpg',
           angle: {
             min: 0,
@@ -464,9 +426,7 @@ exports.getProcedures = () => {
         {
           movement_name: i18n.__('procedures.shoulder.internal_rotation'),
           value: 'INTERNAL_ROTATION',
-          description: i18n.__(
-            'procedures.shoulder.internal_rotation.description'
-          ),
+          description: i18n.__('procedures.shoulder.internal_rotation.description'),
           image: 'shoulder_-_internal_rotation.jpg',
           angle: {
             min: 0,

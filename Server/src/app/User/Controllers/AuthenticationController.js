@@ -1,19 +1,14 @@
-const bcrypt = require('bcryptjs')
+const bcryptjs = require('bcryptjs')
 const { User } = require('../../../core/DataBase').models
-const {
-  throwSuccess,
-  throwError,
-  throwUnauthorized,
-  throwNotFound,
-} = require('../../../core/Utils/RequestUtil')
+const { throwSuccess, throwError, throwUnauthorized, throwNotFound } = require('../../../core/Utils/RequestUtil')
 const { i18n } = require('../../../core/Utils/i18nUtil')
-const { CreateToken } = require('../../../core/Middleware/AuthorizeJwt')
+const { CreateToken, CompareCrypt } = require('../../../core/Middleware/AuthorizeJwt')
 const ContextUtil = require('../../../core/Utils/ContextUtil')
 
 exports.register = async (req) => {
   const newUser = await User.create({
     ...req.body,
-    password: bcrypt.hashSync(req.body.password, 8),
+    password: bcryptjs.hashSync(req.body.password, 8),
   })
 
   return await throwSuccess({
@@ -44,10 +39,7 @@ exports.login = async (req) => {
     })
   }
 
-  const validPassword = await bcrypt.compareSync(
-    req.body.password,
-    userFound.password
-  )
+  const validPassword = await CompareCrypt(req.body.password, userFound.password)
 
   if (!validPassword) {
     return await throwUnauthorized({

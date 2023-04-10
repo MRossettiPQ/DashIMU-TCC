@@ -54,17 +54,7 @@ function getMaxPages(count, rpp) {
   return Math.ceil(maxPages)
 }
 
-const PaginationUtil = async (
-  entity,
-  {
-    rpp = 10,
-    page = 0,
-    field = '',
-    order = [['id', 'ASC']],
-    where = null,
-    options,
-  } = {}
-) => {
+const PaginationUtil = async (entity, { rpp = 10, page = 0, field = '', order = [['id', 'ASC']], where = null, options } = {}) => {
   // TRANSFORMAR PARAMS EM NUMERO
   const actualPage = toNumber(page)
   const actualRpp = toNumber(rpp)
@@ -108,5 +98,5 @@ function GetWhere(cond, where) {
 module.exports = {
   MergeFields,
   PaginationUtil,
-  GetWhere,
-}
+  GetWhere
+};

@@ -61,9 +61,7 @@ exports.sensorConnection = (expressWs) => {
               ...client.connectionInfo,
               ...data,
             }
-            const index = sensorList.findIndex(
-              (sensor) => sensor.uuid === client.connectionInfo.uuid
-            )
+            const index = sensorList.findIndex((sensor) => sensor.uuid === client.connectionInfo.uuid)
             sensorList[index] = { ...sensorList[index], ...data }
             console.log(`[SOCKET] - Update sensor - ${msg} - ${dayjs()}`)
           }
@@ -85,11 +83,7 @@ exports.sensorConnection = (expressWs) => {
       if (client.origin === 'SENSOR') {
         removeClient(client.connectionInfo)
         sendMessageAllClients(expressWs, 'UPDATE_CLIENT_LIST', sensorList)
-        sendMessageAllClients(
-          expressWs,
-          'SENSOR_DISCONNECTED',
-          client.connectionInfo
-        )
+        sendMessageAllClients(expressWs, 'SENSOR_DISCONNECTED', client.connectionInfo)
       }
       clearInterval(client.interval)
     })

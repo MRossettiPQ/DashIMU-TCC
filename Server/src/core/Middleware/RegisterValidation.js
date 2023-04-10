@@ -1,7 +1,7 @@
 const { User, Patient } = require('../DataBase').models
 const { throwError } = require('../Utils/RequestUtil')
 
-exports.verifyUserEmailDuplicate = async (req, res, next) => {
+exports.VerifyUserEmailDuplicate = async (req, res, next) => {
   console.log(req.body)
   if (!req.body) {
     return await throwError({
@@ -43,7 +43,7 @@ exports.verifyUserEmailDuplicate = async (req, res, next) => {
 }
 
 exports.verifyExistsCPFinPatient = async (req, res, next) => {
-  if (!!req.body) {
+  if (req.body) {
     return await throwError({
       local: 'SERVER:VALIDATOR-USER',
       message: 'Nenhum dado valido foi enviado',

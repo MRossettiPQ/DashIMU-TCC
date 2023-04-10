@@ -1,16 +1,40 @@
 const dayjs = require('dayjs')
 
+function getColor(colours, firstKey, secondKey) {
+  let c = null
+
+  c = colours[firstKey]
+
+  switch (typeof c) {
+    case 'string':
+      return c
+    case 'object':
+      if (secondKey) {
+        return getColor(c, secondKey)
+      }
+      return ''
+    case 'function':
+      if (secondKey) {
+        return c?.(secondKey)
+      }
+      return ''
+    default:
+      return ''
+  }
+}
+
 exports.logColor = (local = 'C_LOG', message = '', color = 'reset') => {
+  // TODO enquanto esse metodo apenas monta a mensagem para um console.log comum, futuramente irá servir como logger creator tambem
   const splitColor = color.split('.')
-  let c =
-    splitColor.length > 1
-      ? colours[splitColor[0]][splitColor?.[1]]
-      : colours[color]
-  console.log(
-    `${c}[CLOG] - ${dayjs().format(
-      'DD/MM/YYYY[-]HH:mm:ss'
-    )} - [${local}] - ${message}\x1b[0m`
-  )
+  let c = ''
+  if (splitColor.length > 1) {
+    const firstName = splitColor[0]
+    const secondName = splitColor[1]
+    c = getColor(colours, firstName, secondName)
+  } else {
+    c = getColor(colours, color)
+  }
+  console.log(`${c}[CLOG] - ${dayjs().format('DD/MM/YYYY[-]HH:mm:ss')} - [${local}] - ${message}\x1b[0m`)
 }
 
 const colours = {

@@ -1,11 +1,6 @@
-const { GyroMeasurement, Sensor, Session, Movement } =
-  require('../../../core/DataBase').models
+const { GyroMeasurement, Sensor, Session, Movement } = require('../../../core/DataBase').models
 const ContextUtil = require('../../../core/utils/ContextUtil')
-const {
-  throwSuccess,
-  throwNotFound,
-  throwError,
-} = require('../../../core/Utils/RequestUtil')
+const { throwSuccess, throwNotFound, throwError } = require('../../../core/Utils/RequestUtil')
 const { getAllCalc } = require('../Services/SciLabServices')
 const { PaginationUtil } = require('../../../core/Utils/PaginationUtil')
 const Procedure = require('./Procedure')

@@ -1,4 +1,4 @@
-module.exports = (sequelize, Sequelize) => {
+module.exports = function GyroMeasurement(sequelize, Sequelize) {
   const GyroMeasurement = sequelize.define('gyro_measurements', {
     id: {
       type: Sequelize.INTEGER,

@@ -9,7 +9,7 @@ exports.getUserContextId = async (req) => {
   const token = req.headers['x-access-token']
   if (!token) {
     return await throwForbidden({
-      local: 'SERVER:USERCONTEXT',
+      local: 'SERVER:USER-CONTEXT',
       message: `No token provided`,
       log: `No token provided`,
     })
@@ -58,10 +58,7 @@ exports.getUserContext = async (req) => {
 }
 
 exports.getContext = async (req) => {
-  logColor(
-    'SERVER:CONTEXT',
-    `[${req.method}] - ${req.originalUrl} - getContext`
-  )
+  logColor('SERVER:CONTEXT', `[${req.method}] - ${req.originalUrl} - getContext`)
   if (req?.context) {
     return req?.context
   }
