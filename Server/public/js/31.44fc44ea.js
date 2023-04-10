@@ -1,1 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([[31],{f6f7:function(n,p,o){n.exports=o.p+"img/wrist_-_extension.99586864.jpg"}}]);

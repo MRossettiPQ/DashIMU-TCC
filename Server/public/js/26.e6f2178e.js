@@ -1,1 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([[26],{"7f12":function(o,p,n){o.exports=n.p+"img/shoulder_-_adduction.73a0c8bf.jpg"}}]);

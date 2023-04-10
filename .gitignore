@@ -6,13 +6,14 @@
 *.sln
 *.iml
 
-#IGNORE SERVER
-/Electron/node_modules
-/Electron/.idea
-/Electron/yarn.lock
-/Electron/.vscode
-/Electron/*.iml
-/Electron/package-lock.json
+#IGNORE ELECTRON
+/electron/node_modules
+/electron/.idea
+/electron/yarn.lock
+/electron/.vscode
+/electron/*.iml
+/electron/package-lock.json
+/electron/build/*
 
 #IGNORE SERVER
 /Server/node_modules
@@ -21,6 +22,7 @@
 /Server/.vscode
 /Server/*.iml
 /Server/package-lock.json
+/Server/public/*
 
 #IGNORE FRONT
 /Front/node_modules
@@ -86,3 +88,6 @@ Sensor/build/*
 !/Sensor/CMakeLists.txt
 
 !/Sensor/CMakeListsPrivate.txt
+/Electron/build/
+
+*.sqlite

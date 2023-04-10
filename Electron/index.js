@@ -1,107 +1,69 @@
-const {app, BrowserWindow, Notification, Tray, Menu, nativeImage, shell} = require('electron')
-const {io} = require('socket.io-client')
+const { CustomServer } = require('./src/CustomServer')
+const { app, Tray, Menu, nativeImage, shell } = require('electron')
 const environment = require('./environment')
-const {NotAgent} = require('../server/NotAgent')
 
-class App {
-    loaded = false
-    tray
-    socket
+class ElectronApp {
+  loaded = false
+  loading = false
+  tray
+  server = new CustomServer()
 
-    server = new NotAgent()
+  async createTrayMenu() {
+    // Generate tray icon
+    const icon = nativeImage.createFromPath('./assets/icon.png')
+    this.tray = new Tray(icon)
 
-    constructor() {
-        this.init().then().catch()
+    // Tray icon menu
+    const contextMenu = Menu.buildFromTemplate([
+      {
+        label: 'Open',
+        type: 'normal',
+        icon: icon.resize({ width: 32, height: 32 }),
+        click: async () => {
+          // Open Window in browser
+          await shell.openExternal(environment.electron.url)
+        },
+      },
+      {
+        type: 'separator',
+      },
+      {
+        label: 'Close',
+        type: 'normal',
+        click: async () => {
+          // Close app
+          await app.quit()
+        },
+      },
+    ])
+
+    this.tray.setContextMenu(contextMenu)
+    this.tray.setToolTip('This is my application')
+    this.tray.setTitle('This is my title')
+  }
+
+  async boot() {
+    try {
+      this.loading = true
+      console.log(`\x1b[35m[ELECTRON] - Init\x1b[0m`)
+
+      await app.whenReady()
+
+      await this.createTrayMenu()
+
+      await this.server.boot()
+      console.log(`\x1b[35m[ELECTRON] - Initialized\x1b[0m`)
+      this.loaded = true
+    } catch (e) {
+      console.log(e)
+    } finally {
+      this.loading = true
     }
-
-    async createTrayMenu() {
-        // Generate tray icon
-        const icon = nativeImage.createFromPath('./assets/icon.png')
-        this.tray = new Tray(icon)
-
-        // Tray icon menu
-        const contextMenu = Menu.buildFromTemplate([
-            {
-                label: 'Open',
-                type: 'normal',
-                icon: icon.resize({width: 32, height: 32}),
-                click: async () => {
-                    // Open Window in browser
-                    await shell.openExternal("http://localhost:8000")
-                }
-            },
-            {
-                type: 'separator'
-            },
-            {
-                label: 'Close',
-                type: 'normal',
-                click: async () => {
-                    // Close app
-                    app.quit()
-                }
-            },
-        ])
-
-        this.tray.setContextMenu(contextMenu)
-        this.tray.setToolTip('This is my application')
-        this.tray.setTitle('This is my title')
-    }
-
-    async createSocket() {
-        this.socket = io(environment.host.url_socket)
-
-        this.socket.on('disconnect', () => {
-            console.log('user disconnected');
-        });
-
-        this.socket.on('deadline', (obj) => {
-            console.log('deadline: ', obj);
-            this.notification({
-                title: 'Deadline',
-                body: 'Uma nova notificação disponivel'
-            })
-        });
-    }
-
-    async createServer() {
-        await this.server.init()
-    }
-
-    async notification({title = 'title', body = 'body'} = {}) {
-        const icon = nativeImage.createFromPath('./assets/icon.png')
-        const notification = new Notification({
-            title,
-            body,
-            icon: icon.resize({width: 32, height: 32})
-        })
-
-        notification.on('click', (event, arg) => {
-            shell.openExternal("http://localhost:8000/notifications")
-        })
-
-        notification.show()
-    }
-
-    async init() {
-        try {
-            console.log(`\x1b[35m[ELECTRON] - Init\x1b[0m`)
-
-            await app.whenReady()
-
-            await this.createTrayMenu()
-
-            await this.createServer()
-
-            await this.createSocket()
-            console.log(`\x1b[35m[ELECTRON] - Initialized\x1b[0m`)
-        } catch (e) {
-            console.log(e)
-        } finally {
-            this.loaded = true
-        }
-    }
+  }
 }
 
-
-const n = new App()
+// eslint-disable-next-line no-unused-vars
+const run = (async () => {
+  const electronApp = new ElectronApp()
+  await electronApp.boot()
+})()

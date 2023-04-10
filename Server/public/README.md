@@ -1,1 +1,0 @@
-Front: Necessario realizar build

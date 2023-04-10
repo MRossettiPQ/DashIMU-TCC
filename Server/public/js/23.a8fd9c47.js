@@ -1,1 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([[23],{"57fe":function(n,o,p){n.exports=p.p+"img/radioulnar_-_pronation.879656f9.jpg"}}]);

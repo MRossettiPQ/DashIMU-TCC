@@ -1,1 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([[27],{fdec:function(n,o,p){n.exports=p.p+"img/shoulder_-_extension.0bab8d4c.jpg"}}]);

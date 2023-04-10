@@ -1,1 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([[24],{feee:function(n,p,o){n.exports=o.p+"img/radioulnar_-_supnation.9dd3c075.jpg"}}]);

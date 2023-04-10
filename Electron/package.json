@@ -1,17 +1,49 @@
 {
-  "name": "electron-server",
+  "name": "dash-imu-electron",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "electron:server:start": "electron ."
+    "electron:server:build": "cross-env STORAGE_SRC='../../../cache/dashi_imu' NODE_ENV='production' JWT_SECRET='dash-imu-secret-key' electron .",
+    "electron:server:start": "cross-env STORAGE_SRC='../../../cache/dashi_imu' NODE_ENV='development' JWT_SECRET='dash-imu-secret-key' electron ."
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "electron": "^23.0.0"
-  },
   "dependencies": {
-    "socket.io-client": "^4.6.0"
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dayjs": "^1.11.7",
+    "express": "^4.18.2",
+    "express-ws": "^5.0.2",
+    "glob": "^10.0.0",
+    "i18n": "^0.15.1",
+    "jsonwebtoken": "^9.0.0",
+    "lodash": "^4.17.21",
+    "mariadb": "^3.1.1",
+    "mathjs": "^11.8.0",
+    "mime": "^3.0.0",
+    "morgan": "^1.10.0",
+    "mysql2": "^3.2.0",
+    "network": "^0.6.1",
+    "quick-local-ip": "^1.0.7",
+    "sequelize": "^6.31.0",
+    "sqlite3": "^5.1.6",
+    "uuid": "^9.0.0",
+    "yargs": "^17.7.1"
+  },
+  "devDependencies": {
+    "copyfiles": "^2.4.1",
+    "cross-env": "^7.0.3",
+    "electron": "^24.0.0",
+    "eslint": "^8.38.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-prettier": "^4.2.1",
+    "nodemon": "^2.0.22",
+    "prettier": "^2.8.7",
+    "sucrase": "^3.32.0"
   }
 }

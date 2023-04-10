@@ -1,11 +1,7 @@
-const { RServer } = require('./server')
-const yargs = require('yargs')
-  .alias('l', 'locale')
-  .alias('f', 'filename')
-  .alias('c', 'content')
-  .demandOption('locale').argv
+const { CustomServer } = require('./server')
+const yargs = require('yargs').alias('l', 'locale').alias('f', 'filename').alias('c', 'content').demandOption('locale').argv
 
 module.exports = (async () => {
-  const server = new RServer()
+  const server = new CustomServer()
   await server.init()
 })()

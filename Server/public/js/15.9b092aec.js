@@ -1,1 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([[15],{dfaa:function(p,a,n){p.exports=n.p+"img/carpometacarpal_thumb_-_extension.c344e77a.jpg"}}]);
