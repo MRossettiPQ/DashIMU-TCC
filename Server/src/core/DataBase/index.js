@@ -60,14 +60,14 @@ module.exports = new (class CustomDatabase {
       case 'mariadb':
         this.sequelize = new Sequelize({
           ...environment.database.sequelize.maria_mysql,
-          logging: (logMessage) => logColor('SEQUELIZE:LOG', logMessage),
+          // logging: (logMessage) => logColor('SEQUELIZE:LOG', logMessage),
         })
         break
       case 'sqlite':
         this.sequelize = new Sequelize({
           ...environment.database.sequelize.sqlite,
           storage: path.resolve(__dirname, `${environment.database.sequelize.sqlite.storage}.sqlite`),
-          logging: (logMessage) => logColor('SEQUELIZE:LOG', logMessage, 'fg.magenta'),
+          // logging: (logMessage) => logColor('SEQUELIZE:LOG', logMessage, 'fg.magenta'),
         })
         break
       default:

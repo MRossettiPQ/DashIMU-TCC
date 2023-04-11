@@ -46,7 +46,6 @@ const resolveEnvironment = () => {
           host: '127.0.0.1',
           port: 3306,
           dialect: 'mysql',
-          benchmark: true,
           pool: {
             max: 5,
             min: 0,
@@ -57,7 +56,6 @@ const resolveEnvironment = () => {
         sqlite: {
           storage: 'dash_imu',
           dialect: 'sqlite',
-          benchmark: true,
           pool: {
             max: 5,
             min: 0,

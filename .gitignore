@@ -16,78 +16,72 @@
 /electron/build/*
 
 #IGNORE SERVER
-/Server/node_modules
-/Server/.idea
-/Server/yarn.lock
-/Server/.vscode
-/Server/*.iml
-/Server/package-lock.json
-/Server/public/*
+/server/node_modules
+/server/.idea
+/server/yarn.lock
+/server/.vscode
+/server/*.iml
+/server/package-lock.json
+/server/public/*
 
 #IGNORE FRONT
-/Front/node_modules
-/Front/package-lock.json
-/Front/.idea
-/Front/yarn.lock
-/Front/.vscode
+/client/node_modules
+/client/package-lock.json
+/client/.idea
+/client/yarn.lock
+/client/.vscode
 /Front/*.iml
-/Front/.DS_Store
-/Front/.thumbs.db
+/client/.DS_Store
+/client/.thumbs.db
 # Quasar core related directories
-/Front/.quasar
-/Front/dist
+/client/.quasar
+/client/dist
 
 # Cordova related directories and files
-/Front/src-cordova/node_modules
-/Front/src-cordova/platforms
-/Front/src-cordova/plugins
-/Front/src-cordova/www
-/Front/src-cordova/android
-/Front/src-cordova/yarn.lock
+/client/src-cordova/node_modules
+/client/src-cordova/platforms
+/client/src-cordova/plugins
+/client/src-cordova/www
+/client/src-cordova/android
+/client/src-cordova/yarn.lock
 
 # Capacitor related directories and files
-/Front/src-capacitor/www
-/Front/src-capacitor/node_modules
-/Front/src-capacitor/android
-/Front/src-capacitor/yarn.lock
+/client/src-capacitor/www
+/client/src-capacitor/node_modules
+/client/src-capacitor/android
+/client/src-capacitor/yarn.lock
 
 # BEX related directories and files
-/Front/src-bex/www
-/Front/src-bex/js/core
+/client/src-bex/www
+/client/src-bex/js/core
 
 # Log files
-/Front/npm-debug.log*
-/Front/yarn-debug.log*
-/Front/yarn-error.log*
+/client/npm-debug.log*
+/client/yarn-debug.log*
+/client/yarn-error.log*
 
-/Front/.quasar-ide-helper
+/client/.quasar-ide-helper
 
-/Front/webpack.config.js
+/client/webpack.config.js
 
-/Front/dev.env
-/Front/prod.env
+/client/dev.env
+/client/prod.env
 
 #IGNORE SENSOR
-Sensor/.idea
-Sensor/.vscode
-Session/*.iml
-Sensor/.pio
-Sensor/cmake-build-debug
-Sensor/cmake-build-esp32dev
-Sensor/build/*
+sensor/.idea
+sensor/.vscode
+sensor/*.iml
+sensor/.pio
+sensor/cmake-build-debug
+sensor/cmake-build-esp32dev
+sensor/build/*
 
 
-/Init/node_modules
-/Init/package-lock.json
-/Init/.idea
-/Init/yarn.lock
-/Init/.vscode
-/Init/*.iml!/Sensor/.vscode/
-!/Sensor/build/
-!/Sensor/cmake-build-debug-mingw/
-!/Sensor/CMakeLists.txt
+!/sensor/build/
+!/sensor/cmake-build-debug-mingw/
+!/sensor/CMakeLists.txt
 
-!/Sensor/CMakeListsPrivate.txt
-/Electron/build/
+!/sensor/CMakeListsPrivate.txt
+/electron/build/
 
 *.sqlite

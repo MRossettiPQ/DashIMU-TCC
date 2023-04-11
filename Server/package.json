@@ -1,7 +1,7 @@
 {
-  "name": "dashimu-marcha",
+  "name": "dash-imu-node",
   "version": "1.0.0",
-  "description": "DashBoard IMU - Analise de Marcha - NodeJS 16.5",
+  "description": "IMU - Analise de Marcha - NodeJS 16.20",
   "main": "server.js",
   "scripts": {
     "start:prod": "cross-env NODE_ENV=production node index.js --l pt-br",
@@ -38,6 +38,8 @@
     "yargs": "^17.7.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.21.4",
+    "@babel/plugin-proposal-decorators": "^7.21.0",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
     "eslint": "^8.38.0",

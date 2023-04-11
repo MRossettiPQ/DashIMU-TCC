@@ -74,6 +74,10 @@ class CustomServer {
       this.loading = false
     }
   }
+
+  async close() {
+    await this.app.close()
+  }
 }
 
 module.exports = {

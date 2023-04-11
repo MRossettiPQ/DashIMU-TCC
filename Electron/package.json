@@ -1,14 +1,19 @@
 {
   "name": "dash-imu-electron",
+  "productName": "dash-imu-electron",
   "version": "1.0.0",
-  "description": "",
+  "description": "IMU - Analise de Marcha - NodeJS 16.20",
   "main": "index.js",
   "scripts": {
-    "electron:server:build": "cross-env STORAGE_SRC='../../../cache/dashi_imu' NODE_ENV='production' JWT_SECRET='dash-imu-secret-key' electron .",
-    "electron:server:start": "cross-env STORAGE_SRC='../../../cache/dashi_imu' NODE_ENV='development' JWT_SECRET='dash-imu-secret-key' electron ."
+    "electron:server:build": "cross-env STORAGE_SRC='../../../cache/dashi_imu' NODE_ENV='production' JWT_SECRET='dash-imu-secret-key' electron .  --l pt-br",
+    "electron:server:start": "cross-env STORAGE_SRC='../../../cache/dashi_imu' NODE_ENV='development' JWT_SECRET='dash-imu-secret-key' electron .  --l pt-br"
   },
-  "author": "",
-  "license": "ISC",
+  "keywords": [],
+  "author": {
+    "name": "Matheus Rossetti",
+    "email": "matheus__rossetti@hotmail.com"
+  },
+  "license": "MIT",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
@@ -37,6 +42,8 @@
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
     "electron": "^24.0.0",
+    "electron-builder": "^23.6.0",
+    "electron-packager": "^17.1.1",
     "eslint": "^8.38.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.8.0",
