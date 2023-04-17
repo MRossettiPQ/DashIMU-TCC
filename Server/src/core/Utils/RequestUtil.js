@@ -54,11 +54,9 @@ function getResponseColor(type = 'ValidationError') {
 // Resolver para caso seja servido arquivos estaticos no servidor
 const SpaResolver = (req, res, next) => {
   const toApi = req.originalUrl.includes('/api')
-  if (toApi) {
-    return next()
-  }
   const toSwagger = req.originalUrl.includes('/api-docs')
-  if (toSwagger) {
+  const toPublic = req.originalUrl === '/'
+  if (toApi || toSwagger || toPublic) {
     return next()
   }
   return res.redirect(`/#${req.originalUrl}`)

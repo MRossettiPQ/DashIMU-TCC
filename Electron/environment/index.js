@@ -1,8 +1,13 @@
+const yargs = require('yargs').alias('NODE_ENV', 'NODE_ENV').alias('SEQUELIZE_DIALECT', 'SEQUELIZE_DIALECT').alias('JWT_SECRET', 'JWT_SECRET').alias('STORAGE_SRC', 'STORAGE_SRC').argv
+// const env = yargs?.NODE_ENV || 'development'
+// const secret = yargs?.JWT_SECRET || null
+// const dialect = yargs?.SEQUELIZE_DIALECT || null
+// const storageSrc = yargs?.STORAGE_SRC || null
 const env = process.env?.NODE_ENV ? process.env.NODE_ENV : 'development'
 const dialect = process.env?.SEQUELIZE_DIALECT ? process.env.SEQUELIZE_DIALECT : null
 const secret = process.env?.JWT_SECRET ? process.env.JWT_SECRET : null
 const storageSrc = process.env?.STORAGE_SRC ? process.env.STORAGE_SRC : null
-console.log(env, dialect, secret, storageSrc)
+console.log(env, secret, dialect, storageSrc)
 const resolveEnvironment = () => {
   let mergeEnv = require(`./env.${env}.json`)
 

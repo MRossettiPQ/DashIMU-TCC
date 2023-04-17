@@ -85,3 +85,10 @@ sensor/build/*
 /electron/build/
 
 *.sqlite
+/electron/src/public/
+/executavel/*
+/server/src/public/
+/client/dist/
+/build/yarn.lock
+/build/node_modules/
+/electron/dist/

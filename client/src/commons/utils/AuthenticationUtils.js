@@ -6,7 +6,7 @@ class AuthenticationUtils {
       value = JSON.stringify(value);
       window.localStorage[key] = value;
       if (timeout) {
-        window.localStorage[key + "Timeout"] = JSON.stringify({
+        window.localStorage[key + "-timeout"] = JSON.stringify({
           timeout: timeout,
           date: dayjs().toISOString(),
         });
@@ -15,7 +15,7 @@ class AuthenticationUtils {
   }
 
   get(key) {
-    let timeout = window.localStorage[key + "Timeout"];
+    let timeout = window.localStorage[key + "-timeout"];
     if (timeout && timeout !== "undefined") {
       timeout = JSON.parse(timeout);
       if (dayjs().diff(timeout.date, "minutes") > timeout.timeout) {
@@ -31,9 +31,9 @@ class AuthenticationUtils {
 
   remove(key) {
     window.localStorage[key] = undefined;
-    window.localStorage[key + "Timeout"] = undefined;
-    window.localStorage.removeItem[key];
-    window.localStorage.removeItem[key + "Timeout"];
+    window.localStorage[key + "-timeout"] = undefined;
+    window.localStorage.removeItem(key);
+    window.localStorage.removeItem(key + "-timeout");
   }
 
   eraseLocalStorage() {

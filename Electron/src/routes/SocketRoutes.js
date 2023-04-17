@@ -1,4 +1,4 @@
-const WebSocketController = require('../src/app/WebSocket/Controllers/WebSocketController.js')
+const WebSocketController = require('../app/WebSocket/Controllers/WebSocketController.js')
 
 module.exports = (app, expressWs) => {
   // TODO WebSocket

@@ -8,10 +8,7 @@ class Request {
 
     setAxios(option) {
       this.Axios = axios.create({ ...option });
-      this.Axios.interceptors.response.use(
-        this.handlerResponse,
-        this.handlerReject
-      );
+      this.Axios.interceptors.response.use(this.handlerResponse, this.handlerReject);
       this.Axios.interceptors.request.use(this.handlerRequest, this.reject);
 
       return this.Axios;
@@ -30,18 +27,12 @@ class Request {
 
     async handlerResponse(response) {
       if (response?.config?.method?.toUpperCase() !== "GET") {
-        if (
-          response?.data &&
-          (response?.data?.message || response?.data?.msg)
-        ) {
+        if (response?.data && (response?.data?.message || response?.data?.msg)) {
           notifySuccess(response?.data?.message || response?.data?.msg);
         }
       }
       if (response?.config?.method?.toUpperCase() !== "POST") {
-        if (
-          response?.data &&
-          (response?.data?.message || response?.data?.msg)
-        ) {
+        if (response?.data && (response?.data?.message || response?.data?.msg)) {
           notifySuccess(response?.data?.message || response?.data?.msg);
         }
       }
@@ -78,8 +69,11 @@ class Request {
     return new this.Axios().setAxios(option);
   }
 }
+console.log("AXIOS ENV", process.env);
+console.log("AXIOS NODE_ENV", process.env?.NODE_ENV);
+console.log("AXIOS SERVER_API", process.env?.SERVER_API);
 export const Axios = Request.create(
   process.env.DEV && {
-    baseURL: process.env.SERVER_API.replace(/['"!@#$%^&*]/g, ""),
+    baseURL: process.env.SERVER_API?.replace(/['"!@#$%^&*]/g, ""),
   }
 );

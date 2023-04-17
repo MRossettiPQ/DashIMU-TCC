@@ -15,12 +15,11 @@ export const routes = [
             path: "home",
             component: () => import("pages/public/Home/Home.vue"),
           },
-          /*{
+          {
             name: "access.settings",
             path: "settings",
-            component: () =>
-              import("pages/public/Configuration/Configuration.vue"),
-          },*/
+            component: () => import("pages/public/Configuration/Configuration.vue"),
+          },
           {
             name: "access.login",
             path: "login",
@@ -72,12 +71,7 @@ export const routes = [
 
 export const RouteBeforeGuard = async (to, from, next) => {
   // TODO Access granted without authentication
-  let accessReleased = [
-    "access.login",
-    "access.register",
-    "access.home",
-    "access.socket",
-  ];
+  let accessReleased = ["access.login", "access.register", "access.home", "access.socket", "access.settings"];
   // TODO Hide when logged
   let hideWhenLogged = ["access.login", "access.register"];
   let token = AuthenticationUtils.getToken();

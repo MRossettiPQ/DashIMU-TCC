@@ -1,12 +1,13 @@
 {
-  "name": "dash-imu-electron",
-  "productName": "dash-imu-electron",
+  "name": "dash-imu",
+  "productName": "dash-imu",
   "version": "1.0.0",
   "description": "IMU - Analise de Marcha - NodeJS 16.20",
   "main": "index.js",
   "scripts": {
-    "electron:server:build": "cross-env STORAGE_SRC='../../../cache/dashi_imu' NODE_ENV='production' JWT_SECRET='dash-imu-secret-key' electron .  --l pt-br",
-    "electron:server:start": "cross-env STORAGE_SRC='../../../cache/dashi_imu' NODE_ENV='development' JWT_SECRET='dash-imu-secret-key' electron .  --l pt-br"
+    "electron:server:builder": "node ./build.js --STORAGE_SRC='../../../../cache/dashi_imu' --NODE_ENV='production' --JWT_SECRET='q5kewZW1MYE5HpIlyL3AEnP4syAXooNHeOU1Cc0gEMH0og51pKTU7lLVcXsq81gRwXIfz'",
+    "electron:server:build": "electron-packager . --ignore=^/cache --platform=win32 --icon='./assets/icon.png' --arch=x64 --out=../executavel --overwrite",
+    "electron:server:start": "electron . --l pt-br --STORAGE_SRC='../../../cache/dashi_imu' --NODE_ENV='development' --JWT_SECRET='dash-imu-secret-key'"
   },
   "keywords": [],
   "author": {
@@ -18,6 +19,7 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dayjs": "^1.11.7",
     "express": "^4.18.2",
     "express-ws": "^5.0.2",
@@ -40,10 +42,11 @@
   },
   "devDependencies": {
     "copyfiles": "^2.4.1",
-    "cross-env": "^7.0.3",
+    "dotenv": "^16.0.3",
     "electron": "^24.0.0",
     "electron-builder": "^23.6.0",
     "electron-packager": "^17.1.1",
+    "electron-winstaller": "^5.1.0",
     "eslint": "^8.38.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.8.0",

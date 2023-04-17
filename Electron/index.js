@@ -1,6 +1,9 @@
 const { CustomServer } = require('./src/CustomServer')
-const { app, Tray, Menu, nativeImage, shell } = require('electron')
+const { app, Tray, Menu, nativeImage, shell, Notification } = require('electron')
 const environment = require('./environment')
+const path = require('path')
+const packageFile = require('./package.json')
+const yargs = require('yargs').alias('NODE_ENV', 'NODE_ENV').alias('SEQUELIZE_DIALECT', 'SEQUELIZE_DIALECT').alias('JWT_SECRET', 'JWT_SECRET').alias('STORAGE_SRC', 'STORAGE_SRC').argv
 
 class ElectronApp {
   loaded = false
@@ -10,7 +13,7 @@ class ElectronApp {
 
   async createTrayMenu() {
     // Generate tray icon
-    const icon = nativeImage.createFromPath('./assets/icon.png')
+    const icon = nativeImage.createFromPath(path.resolve(__dirname, './assets/icon.png'))
     this.tray = new Tray(icon)
 
     // Tray icon menu
@@ -18,10 +21,9 @@ class ElectronApp {
       {
         label: 'Open',
         type: 'normal',
-        icon: icon.resize({ width: 32, height: 32 }),
+        icon: icon.resize({ width: 16, height: 16 }),
         click: async () => {
-          // Open Window in browser
-          await shell.openExternal(environment.electron.url)
+          await shell.openExternal(`${environment.electron.url}:${this.server.port}/`)
         },
       },
       {
@@ -38,8 +40,33 @@ class ElectronApp {
     ])
 
     this.tray.setContextMenu(contextMenu)
-    this.tray.setToolTip('This is my application')
-    this.tray.setTitle('This is my title')
+    this.tray.setToolTip(packageFile.productName)
+    this.tray.setTitle(packageFile.productName)
+  }
+
+  async showNotification(title, body, icon) {
+    const notification = new Notification({
+      title,
+      body,
+      icon,
+    })
+
+    notification.on('click', (event) => {
+      event.preventDefault()
+
+      shell.openExternal(`${environment.electron.url}:${this.server.port}/`, {
+        activate: true,
+      })
+    })
+
+    notification.show()
+  }
+
+  async quit() {
+    // Close app
+    console.log('quit')
+    await this.server.close()
+    await app.quit()
   }
 
   async boot() {
@@ -49,13 +76,24 @@ class ElectronApp {
 
       await app.whenReady()
 
+      await this.server.boot()
+
       await this.createTrayMenu()
 
-      await this.server.boot()
+      await this.showNotification('Dash IMU', 'Dashboard pronto para uso', path.resolve(__dirname, './assets/icon.png'))
+
+      // await this.showNotification('STORAGE_SRC', path.resolve(yargs?.STORAGE_SRC), path.resolve(__dirname, './assets/icon.png'))
+      //
+      // await this.showNotification('NODE_ENV', yargs?.NODE_ENV, path.resolve(__dirname, './assets/icon.png'))
+      //
+      // await this.showNotification('JWT_SECRET', yargs?.JWT_SECRET, path.resolve(__dirname, './assets/icon.png'))
+
       console.log(`\x1b[35m[ELECTRON] - Initialized\x1b[0m`)
       this.loaded = true
     } catch (e) {
       console.log(e)
+      await this.showNotification('Error ao carregar app', '', path.resolve(__dirname, './assets/icon.png'))
+      await app.quit()
     } finally {
       this.loading = true
     }

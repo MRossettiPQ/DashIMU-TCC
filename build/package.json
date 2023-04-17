@@ -1,0 +1,17 @@
+{
+  "name": "build-dash-imu",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build:start": "cross-env TYPE=electron node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "copyfiles": "^2.4.1",
+    "cross-env": "^7.0.3",
+    "nodemon": "^2.0.22"
+  }
+}

@@ -66,7 +66,7 @@ module.exports = new (class CustomDatabase {
       case 'sqlite':
         this.sequelize = new Sequelize({
           ...environment.database.sequelize.sqlite,
-          storage: path.resolve(__dirname, `${environment.database.sequelize.sqlite.storage}.sqlite`),
+          storage: path.join(__dirname, `${environment.database.sequelize.sqlite.storage}.sqlite`),
           logging: (logMessage) => logColor('SEQUELIZE:LOG', logMessage, 'fg.magenta'),
         })
         break

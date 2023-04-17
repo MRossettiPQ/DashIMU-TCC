@@ -3,8 +3,8 @@ const PrivateRoutes = require('./PrivateRoutes.js')
 const PublicRoutes = require('./PublicRoutes.js')
 const DevelopmentRoutes = require('./DevelopmentRoutes.js')
 const header = require('./header')
-const { SpaResolver } = require('../src/core/Utils/RequestUtil')
-const environment = require('../environment')
+const { SpaResolver } = require('../core/Utils/RequestUtil')
+const environment = require('../../environment')
 
 module.exports = (app, expressWs) => {
   SocketRoutes(app, expressWs)

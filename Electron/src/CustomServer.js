@@ -15,6 +15,7 @@ class CustomServer {
   started = false
   loading = false
   expressWs = null
+  port
 
   constructor(lang = 'pt-br') {
     this.lang = lang
@@ -31,7 +32,7 @@ class CustomServer {
 
       // Only after models are loaded
       logColor('SERVER', translate('main.load_routes'))
-      const routes = require('../routes')
+      const routes = require('./routes')
 
       // Instance express
       this.app = express()
@@ -63,8 +64,9 @@ class CustomServer {
       // Routes
       routes(this.app, this.expressWs)
 
+      this.port = environment.host.port
       // Listen server in port
-      await this.app.listen(environment.host.port)
+      await this.app.listen(this.port)
       logColor('SERVER', `${translate('main.initialized')} ${environment.host.port}`, 'fg.blue')
       this.started = true
     } catch (e) {
@@ -76,7 +78,7 @@ class CustomServer {
   }
 
   async close() {
-    await this.app.close()
+    return this.app.close()
   }
 }
 

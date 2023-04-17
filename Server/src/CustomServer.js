@@ -7,6 +7,7 @@ const environment = require('../environment')
 const { translate, i18n } = require('./core/Utils/i18nUtil')
 const { logColor } = require('./core/Utils/LogUtil')
 const Database = require('./core/DataBase')
+const path = require('path')
 
 class CustomServer {
   app
@@ -31,7 +32,7 @@ class CustomServer {
 
       // Only after models are loaded
       logColor('SERVER', translate('main.load_routes'))
-      const routes = require('../routes')
+      const routes = require('./routes')
 
       // Instance express
       this.app = express()

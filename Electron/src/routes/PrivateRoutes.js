@@ -1,11 +1,11 @@
-const SessionController = require('../src/app/Session/Controllers/SessionController.js')
-const SciLabController = require('../src/app/Session/Controllers/SciLabController.js')
-const PatientController = require('../src/app/Patient/Controllers/PatientController.js')
-const UserController = require('../src/app/User/Controllers/UserController.js')
-const { AsyncHandler, AsyncMiddlewares } = require('../src/core/Utils/RequestUtil')
-const { VerifyToken } = require('../src/core/Middleware/AuthorizeJwt')
-const { VerifyRoles } = require('../src/core/Middleware/AuthorizeRoles')
-const { verifyExistsCPFinPatient } = require('../src/core/Middleware/RegisterValidation')
+const SessionController = require('../app/Session/Controllers/SessionController.js')
+const SciLabController = require('../app/Session/Controllers/SciLabController.js')
+const PatientController = require('../app/Patient/Controllers/PatientController.js')
+const UserController = require('../app/User/Controllers/UserController.js')
+const { AsyncHandler, AsyncMiddlewares } = require('../core/Utils/RequestUtil')
+const { VerifyToken } = require('../core/Middleware/AuthorizeJwt')
+const { VerifyRoles } = require('../core/Middleware/AuthorizeRoles')
+const { verifyExistsCPFinPatient } = require('../core/Middleware/RegisterValidation')
 
 module.exports = (app) => {
   // TODO Patient

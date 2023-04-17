@@ -1,8 +1,8 @@
-const SessionController = require('../src/app/Session/Controllers/SessionController.js')
-const AuthenticationController = require('../src/app/User/Controllers/AuthenticationController.js')
-const WebSocketController = require('../src/app/WebSocket/Controllers/WebSocketController.js')
-const { AsyncHandler, AsyncMiddlewares } = require('../src/core/Utils/RequestUtil')
-const { VerifyUserEmailDuplicate } = require('../src/core/Middleware/RegisterValidation')
+const SessionController = require('../app/Session/Controllers/SessionController.js')
+const AuthenticationController = require('../app/User/Controllers/AuthenticationController.js')
+const WebSocketController = require('../app/WebSocket/Controllers/WebSocketController.js')
+const { AsyncHandler, AsyncMiddlewares } = require('../core/Utils/RequestUtil')
+const { VerifyUserEmailDuplicate } = require('../core/Middleware/RegisterValidation')
 
 module.exports = (app) => {
   // TODO Authentication
