@@ -3,7 +3,6 @@ const { app, Tray, Menu, nativeImage, shell, Notification } = require('electron'
 const environment = require('./environment')
 const path = require('path')
 const packageFile = require('./package.json')
-const yargs = require('yargs').alias('NODE_ENV', 'NODE_ENV').alias('SEQUELIZE_DIALECT', 'SEQUELIZE_DIALECT').alias('JWT_SECRET', 'JWT_SECRET').alias('STORAGE_SRC', 'STORAGE_SRC').argv
 
 class ElectronApp {
   loaded = false
@@ -81,12 +80,6 @@ class ElectronApp {
       await this.createTrayMenu()
 
       await this.showNotification('Dash IMU', 'Dashboard pronto para uso', path.resolve(__dirname, './assets/icon.png'))
-
-      // await this.showNotification('STORAGE_SRC', path.resolve(yargs?.STORAGE_SRC), path.resolve(__dirname, './assets/icon.png'))
-      //
-      // await this.showNotification('NODE_ENV', yargs?.NODE_ENV, path.resolve(__dirname, './assets/icon.png'))
-      //
-      // await this.showNotification('JWT_SECRET', yargs?.JWT_SECRET, path.resolve(__dirname, './assets/icon.png'))
 
       console.log(`\x1b[35m[ELECTRON] - Initialized\x1b[0m`)
       this.loaded = true

@@ -5,7 +5,7 @@ exports.getMean = (array) => {
   let total = 0
   let count = 0
 
-  for (const row in array) {
+  for (const row of array) {
     total += row
     count++
   }

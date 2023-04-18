@@ -5,7 +5,8 @@
   "description": "IMU - Analise de Marcha - NodeJS 16.20",
   "main": "index.js",
   "scripts": {
-    "electron:server:builder": "node ./build.js --STORAGE_SRC='../../../../cache/dashi_imu' --NODE_ENV='production' --JWT_SECRET='q5kewZW1MYE5HpIlyL3AEnP4syAXooNHeOU1Cc0gEMH0og51pKTU7lLVcXsq81gRwXIfz'",
+    "postinstall": "electron-builder install-app-deps",
+    "electron:server:builder": "node ./build.js --STORAGE_SRC='C:/cache-imu/dashi_imu' --NODE_ENV='production' --JWT_SECRET='q5kewZW1MYE5HpIlyL3AEnP4syAXooNHeOU1Cc0gEMH0og51pKTU7lLVcXsq81gRwXIfz'",
     "electron:server:build": "electron-packager . --ignore=^/cache --platform=win32 --icon='./assets/icon.png' --arch=x64 --out=../executavel --overwrite",
     "electron:server:start": "electron . --l pt-br --STORAGE_SRC='../../../cache/dashi_imu' --NODE_ENV='development' --JWT_SECRET='dash-imu-secret-key'"
   },
@@ -45,6 +46,8 @@
     "dotenv": "^16.0.3",
     "electron": "^24.0.0",
     "electron-builder": "^23.6.0",
+    "electron-debug": "^3.2.0",
+    "electron-devtools-installer": "^3.2.0",
     "electron-packager": "^17.1.1",
     "electron-winstaller": "^5.1.0",
     "eslint": "^8.38.0",

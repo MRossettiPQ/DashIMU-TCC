@@ -1,13 +1,8 @@
-const yargs = require('yargs').alias('NODE_ENV', 'NODE_ENV').alias('SEQUELIZE_DIALECT', 'SEQUELIZE_DIALECT').alias('JWT_SECRET', 'JWT_SECRET').alias('STORAGE_SRC', 'STORAGE_SRC').argv
-// const env = yargs?.NODE_ENV || 'development'
-// const secret = yargs?.JWT_SECRET || null
-// const dialect = yargs?.SEQUELIZE_DIALECT || null
-// const storageSrc = yargs?.STORAGE_SRC || null
 const env = process.env?.NODE_ENV ? process.env.NODE_ENV : 'development'
 const dialect = process.env?.SEQUELIZE_DIALECT ? process.env.SEQUELIZE_DIALECT : null
 const secret = process.env?.JWT_SECRET ? process.env.JWT_SECRET : null
 const storageSrc = process.env?.STORAGE_SRC ? process.env.STORAGE_SRC : null
-console.log(env, secret, dialect, storageSrc)
+
 const resolveEnvironment = () => {
   let mergeEnv = require(`./env.${env}.json`)
 
@@ -26,11 +21,11 @@ const resolveEnvironment = () => {
     }
   }
   return {
-    development: true,
+    development: false,
     just_api: false,
     secret: 'dash-imu-secret-key',
     electron: {
-      url: 'http://localhost:8000/',
+      url: 'http://localhost',
     },
     host: {
       port: 8000,
@@ -84,7 +79,7 @@ const resolveEnvironment = () => {
     morgan: {
       format: '[CLOG] - :date[clf] - [MORGAN] - [:method] - :url :status :res[content-length] - :response-time ms',
     },
-    ...mergeEnv,
+    // ...mergeEnv,
   }
 }
 

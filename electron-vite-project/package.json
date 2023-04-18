@@ -1,0 +1,71 @@
+{
+  "name": "dash-imu-electron-server",
+  "version": "1.0.0",
+  "main": "dist-electron/main.js",
+  "description": "Dash IMU electron typescript runner",
+  "author": "MRossettiPQ <matheus__rossetti@hotmail.com>",
+  "license": "MIT",
+  "private": true,
+  "keywords": [
+    "electron",
+    "rollup",
+    "vite"
+  ],
+  "debug": {
+    "env": {
+      "VITE_DEV_SERVER_URL": "http://127.0.0.1:9999",
+      "NODE_ENV": "",
+      "SEQUELIZE_DIALECT": "",
+      "JWT_SECRET": "",
+      "STORAGE_SRC": ""
+    }
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build && electron-builder",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^24.1.0",
+    "@rollup/plugin-dynamic-import-vars": "^2.0.3",
+    "@types/bcryptjs": "^2.4.2",
+    "@types/cors": "^2.8.13",
+    "@types/express-ws": "^3.0.1",
+    "@types/i18n": "^0.13.6",
+    "@types/jsonwebtoken": "^9.0.1",
+    "@types/lodash": "^4.14.194",
+    "@types/morgan": "^1.9.4",
+    "@types/node": "^18.15.11",
+    "@types/uuid": "^9.0.1",
+    "electron": "^23.1.1",
+    "electron-builder": "^24.2.1",
+    "typescript": "^5.0.3",
+    "vite": "^4.1.4",
+    "vite-plugin-electron": "^0.11.1"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "bufferutil": "^4.0.7",
+    "cors": "^2.8.5",
+    "dayjs": "^1.11.7",
+    "express": "^4.18.2",
+    "express-ws": "^5.0.2",
+    "fastify": "^4.15.0",
+    "glob": "^10.2.1",
+    "i18n": "^0.15.1",
+    "jsonwebtoken": "^9.0.0",
+    "lodash": "^4.17.21",
+    "mariadb": "^3.1.1",
+    "mathjs": "^11.8.0",
+    "mime": "^3.0.0",
+    "morgan": "^1.10.0",
+    "mysql2": "^3.2.3",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.31.0",
+    "sqlite3": "^5.1.6",
+    "utf-8-validate": "^5.0.10",
+    "uuid": "^9.0.0",
+    "yargs": "^17.7.1"
+  }
+}

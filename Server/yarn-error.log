@@ -31,10 +31,10 @@ npm manifest:
     "name": "dashimu-marcha",
     "version": "1.0.0",
     "description": "DashBoard IMU Analise de Marcha - NodeJS 16.5",
-    "main": "CustomServer.js",
+    "main": "CustomServer.ts",
     "scripts": {
-      "start": "cross-env NODE_ENV=production node CustomServer.js",
-      "dev": "cross-env NODE_ENV=development nodemon CustomServer.js",
+      "start": "cross-env NODE_ENV=production node CustomServer.ts",
+      "dev": "cross-env NODE_ENV=development nodemon CustomServer.ts",
       "lint": "eslint --ext .js,.vue ./"
     },
     "author": "Matheus Rossetti",
