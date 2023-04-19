@@ -1,6 +1,5 @@
 const { PaginationUtil } = require("../../../Core/Utils/PaginationUtil");
 const { Database } = require("../../../Core/Database");
-const { environment } = require("../../../Environment");
 const { throwNotFound, throwSuccess } = require("../../../Core/Utils/RequestUtil");
 const dayjs = require("dayjs");
 

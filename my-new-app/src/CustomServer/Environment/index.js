@@ -1,25 +1,7 @@
-const env = process.env?.NODE_ENV ? process.env.NODE_ENV : "development";
-const dialect = process.env?.SEQUELIZE_DIALECT ? process.env.SEQUELIZE_DIALECT : null;
-const secret = process.env?.JWT_SECRET ? process.env.JWT_SECRET : null;
-const storageSrc = process.env?.STORAGE_SRC ? process.env.STORAGE_SRC : null;
-
 function resolveEnvironment() {
-  let mergeEnv = require(`./env.${env}.json`);
+  // let mergeEnv = require(`./env.${env}.json`);
 
-  if (mergeEnv) {
-    if (dialect) {
-      // DIALECT ENV
-      mergeEnv.database.dialect = dialect;
-    }
-    if (secret) {
-      // JWT SECRET ENV
-      mergeEnv.secret = secret;
-    }
-    if (storageSrc) {
-      // JWT SECRET ENV
-      mergeEnv.database.sequelize.sqlite.storage = storageSrc;
-    }
-  }
+  // TODO abaixo configuração de desenvolvimento
   return {
     development: true,
     just_api: false,
@@ -55,7 +37,7 @@ function resolveEnvironment() {
           },
         },
         sqlite: {
-          storage: "dash_imu",
+          storage: "../../../../cache/dash_imu.sqlite", // TODO cria uma pasta 'cache' na raiz do projeto contendo o banco
           dialect: "sqlite",
           benchmark: true,
           pool: {
@@ -84,7 +66,4 @@ function resolveEnvironment() {
 }
 
 const environment = resolveEnvironment();
-module.exports = {
-  environment,
-  resolveEnvironment,
-};
+module.exports = environment;

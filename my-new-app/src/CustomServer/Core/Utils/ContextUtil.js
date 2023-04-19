@@ -1,4 +1,4 @@
-const { Database } = require("../DataBase");
+const { Database } = require("../Database");
 const { throwError, throwForbidden } = require("./RequestUtil");
 const { logColor } = require("./LogUtil");
 const { ResolveToken } = require("../middleware/AuthorizeJwt");

@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import bcryptjs from "bcryptjs";
-import { environment } from "../../environment";
+import environment from "../../environment";
 import { throwForbidden } from "../utils/RequestUtil";
 import { logColor } from "../utils/LogUtil";
 import { translate } from "../utils/i18nUtil";

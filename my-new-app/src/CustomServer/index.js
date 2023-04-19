@@ -6,7 +6,7 @@ const enableWs = require("express-ws");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const morgan = require("morgan");
-const { environment } = require("./Environment");
+const environment = require("./Environment");
 
 class CustomServer {
   lang;
@@ -57,7 +57,7 @@ class CustomServer {
       this.expressWs = enableWs(this.app);
 
       // Morgan logging
-      this.app.use(morgan("combined"));
+      this.app.use(morgan(environment.morgan.format));
 
       console.log("Routes", Routes);
       // Routes

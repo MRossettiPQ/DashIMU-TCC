@@ -1,4 +1,4 @@
-const { environment } = require("../Environment");
+const environment = require("../Environment");
 const { SocketRoutes } = require("./SocketRoutes");
 const { DevelopmentRoutes } = require("./DevelopmentRoutes");
 const { SpaResolver } = require("../Core/Utils/RequestUtil");

@@ -1,4 +1,4 @@
-const { environment } = require("../Environment");
+const environment = require("../Environment");
 
 function Header(req, res, next) {
   res.header("Access-Control-Allow-Origin", environment.host.cors.origin);

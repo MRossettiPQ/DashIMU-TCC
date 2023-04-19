@@ -1,6 +1,6 @@
 const path = require("path");
 const { Sequelize } = require("sequelize");
-const { environment } = require("../../Environment");
+const environment = require("../../Environment");
 const { logColor } = require("../Utils/LogUtil");
 const { translate } = require("../Utils/i18nUtil");
 const { throwError } = require("../Utils/RequestUtil");
@@ -26,7 +26,7 @@ class CustomDatabase {
       case "sqlite":
         this.sequelize = new Sequelize({
           ...environment.database.sequelize.sqlite,
-          storage: path.join(__dirname, `${environment.database.sequelize.sqlite.storage}.sqlite`),
+          storage: path.join(__dirname, environment.database.sequelize.sqlite.storage),
           logging: (logMessage) => logColor("SEQUELIZE:LOG", logMessage, "fg.magenta"),
         });
         break;
@@ -36,7 +36,6 @@ class CustomDatabase {
   }
 
   initDataBase() {
-    // eslint-disable-next-line no-async-promise-executor
     return new Promise(async (resolve, reject) => {
       try {
         // switch (environment.database.dialect) {

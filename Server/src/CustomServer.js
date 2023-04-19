@@ -59,7 +59,7 @@ class CustomServer {
       this.expressWs = enableWs(this.app)
 
       // Morgan logging
-      this.app.use(morgan('combined'))
+      this.app.use(morgan(environment.morgan.format))
 
       // Routes
       routes(this.app, this.expressWs)
