@@ -7,11 +7,7 @@
   "private": true,
   "scripts": {
     "client:build": "cross-env NODE_ENV=production quasar build",
-    "client:build-electron": "cross-env NODE_ENV=production quasar build -m electron",
-    "client:build-mobile": "cross-env NODE_ENV=production quasar build -m capacitor -T android",
     "client:serve": "cross-env NODE_ENV=development quasar dev",
-    "client:serve-electron": "cross-env NODE_ENV=development quasar dev --mode electron",
-    "client:serve-mobile": "cross-env NODE_ENV=development quasar dev --mode capacitor -T android",
     "lint-fix": "eslint --fix --ext .js,.vue src",
     "test": "echo \"No test specified\" && exit 0"
   },

@@ -4,7 +4,7 @@ const environment = require("../../Environment");
 const { logColor } = require("../Utils/LogUtil");
 const { translate } = require("../Utils/i18nUtil");
 const { throwError } = require("../Utils/RequestUtil");
-const { glob } = require("glob");
+const { glob, sync } = require("glob");
 
 class MariaMySQL {}
 
@@ -72,7 +72,8 @@ class CustomDatabase {
 
     logColor("SERVER:SEQUELIZE", translate("sequelize.load_models"));
     // Exemplo:  import User = require("../../app/User/Models/User";
-    const modelsPath = await glob("./src/app/**/Models/**.js");
+    const modelsPath = await glob("./src/CustomServer/App/**/Models/**.js", {});
+    console.log(modelsPath);
     for (const filePath of modelsPath) {
       const model = await require(path.resolve(filePath));
       // Load model
@@ -95,4 +96,4 @@ class CustomDatabase {
 
 const Database = new CustomDatabase();
 
-export { CustomDatabase, Database };
+module.exports = { CustomDatabase, Database };

@@ -59,7 +59,6 @@ class CustomServer {
       // Morgan logging
       this.app.use(morgan(environment.morgan.format));
 
-      console.log("Routes", Routes);
       // Routes
       Routes(this.app, this.expressWs);
 
@@ -70,6 +69,7 @@ class CustomServer {
       this.started = true;
     } catch (e) {
       console.log(e);
+      throw Error(e);
     } finally {
       this.loading = false;
     }

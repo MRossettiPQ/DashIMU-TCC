@@ -1,10 +1,9 @@
 const ContextUtil = require("../../../core/Utils/ContextUtil");
 const { throwSuccess, throwError } = require("../../../core/Utils/RequestUtil");
 const { getAllCalc } = require("../Services/SciLabService");
-const { Database } = require("../../../Core/Database");
+const { GyroMeasurement, Sensor, Session, Movement } = require("../../../Core/Database").models;
 
-const { GyroMeasurement, Sensor, Session, Movement } = Database.models;
-
+console.log(Sensor);
 module.exports = new (class SciLabController {
   async getCalculationVariabilityCenter(req) {
     const idUserContext = await ContextUtil.getUserContextId(req);

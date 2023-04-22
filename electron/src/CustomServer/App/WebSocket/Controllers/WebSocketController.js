@@ -1,25 +1,25 @@
 const dayjs = require("dayjs");
 const { throwSuccess } = require("../../../core/Utils/RequestUtil");
 const { v4: uuidv4 } = require("uuid");
-const network = require("network");
+// const network = require("network");
 const environment = require("../../../Environment");
 
 let sensorList = [];
 module.exports = new (class WebSocketController {
-  async metadata() {
-    function getIP() {
-      return new Promise((resolve) => {
-        network.get_private_ip((err, ip) => {
-          resolve(ip || "0.0.0.0");
-        });
-      });
-    }
+  async metadata(req) {
+    // function getIP() {
+    //   return new Promise((resolve) => {
+    //     network.get_private_ip((err, ip) => {
+    //       resolve(ip || "0.0.0.0");
+    //     });
+    //   });
+    // }
 
-    let server_ip = await getIP();
+    // let server_ip = await getIP();
     return await throwSuccess({
       content: {
-        socket_url: `${server_ip}:${environment.host.port}`,
-        url: server_ip,
+        socket_url: `${req.socket.url}:${environment.host.port}`,
+        url: req.socket.url,
         port: environment.host.port,
       },
       log: "Sensor list",
@@ -34,7 +34,7 @@ module.exports = new (class WebSocketController {
     });
   }
 
-  sensorConnection() {
+  sensorConnection(expressWs) {
     return function (client, req) {
       console.log(`[SOCKET] - Client connected in network! - ${dayjs()}`);
 

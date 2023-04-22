@@ -4,7 +4,7 @@ import path from "path";
 const i18n = new I18n({
   defaultLocale: "pt-br",
   locales: ["pt-br", "en-us"],
-  directory: path.join(__dirname, "locales"),
+  directory: path.resolve(__dirname, "./Locales"),
 });
 
 async function setLocale(locale = "pt-br") {

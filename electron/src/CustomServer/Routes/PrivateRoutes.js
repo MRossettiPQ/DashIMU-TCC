@@ -9,11 +9,11 @@ const SciLabController = require("../App/Session/Controllers/SciLabController");
 
 function PrivateRoutes(app) {
   // TODO Patient
-  app.get("/api/patient", AsyncMiddlewares([VerifyToken, VerifyRoles(["ADMINISTRATOR", "PHYSIOTHERAPIST"])]), AsyncHandler(PatientController.getPatientList));
+  app.get("/api/patient", AsyncMiddlewares([VerifyToken, VerifyRoles(["ADMINISTRATOR", "PHYSIOTHERAPIST"])]), AsyncHandler(PatientController.list));
 
-  app.get("/api/patient/:id", AsyncMiddlewares([VerifyToken, VerifyRoles(["ADMINISTRATOR", "PHYSIOTHERAPIST"])]), AsyncHandler(PatientController.getPatient));
+  app.get("/api/patient/:id", AsyncMiddlewares([VerifyToken, VerifyRoles(["ADMINISTRATOR", "PHYSIOTHERAPIST"])]), AsyncHandler(PatientController.get));
 
-  app.post("/api/patient", AsyncMiddlewares([VerifyToken, VerifyRoles(["ADMINISTRATOR", "PHYSIOTHERAPIST"]), VerifyExistsCPFinPatient]), AsyncHandler(PatientController.postSavePatient));
+  app.post("/api/patient", AsyncMiddlewares([VerifyToken, VerifyRoles(["ADMINISTRATOR", "PHYSIOTHERAPIST"]), VerifyExistsCPFinPatient]), AsyncHandler(PatientController.save));
 
   // TODO Session
   app.get("/api/patient/:id/session", AsyncMiddlewares([VerifyToken, VerifyRoles(["ADMINISTRATOR", "PHYSIOTHERAPIST"])]), AsyncHandler(SessionController.list));

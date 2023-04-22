@@ -1,4 +1,5 @@
 import { Vue } from "vue-property-decorator";
+import { Dialog } from "quasar";
 
 class DialogUtils extends Vue {
   static async Show({ options }) {
@@ -11,10 +12,14 @@ class DialogUtils extends Vue {
   }
 
   static async asyncDialog(component, props) {
+    // Dialog.create({
+    //   component
+    // })
+
     return new Promise((resolve) => {
       this.prototype.$q
         .dialog({
-          component: component,
+          component,
           ...props,
         })
         .onOk((e) => resolve(e))

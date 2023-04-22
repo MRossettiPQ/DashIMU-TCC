@@ -1,5 +1,7 @@
 function resolveEnvironment() {
   // let mergeEnv = require(`./env.${env}.json`);
+  // TODO Criar leitor de arquivo de configuração na raiz do projeto ../../../../ pra permitir configurar app
+  // TODO  E leitor de arquivo de configuração nessa mesma pasta (arquivo será criado no momento da primeira execução, gerar secret automaticamente)
 
   // TODO abaixo configuração de desenvolvimento
   return {

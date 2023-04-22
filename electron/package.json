@@ -1,8 +1,8 @@
 {
-  "name": "my-new-app",
-  "productName": "my-new-app",
+  "name": "dash-imu",
+  "productName": "dash-imu",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "Projeto de TCC em quasar v1 (Vue2)",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",

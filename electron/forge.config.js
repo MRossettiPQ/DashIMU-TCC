@@ -1,18 +1,30 @@
+const path = require("path");
+
 module.exports = {
-  packagerConfig: {},
+  buildIdentifier: "dash-imu",
+  packagerConfig: {
+    icon: path.resolve("./src/CustomServer/Assets/icon.png"),
+  },
   rebuildConfig: {},
   makers: [
     {
       name: "@electron-forge/maker-squirrel",
-      config: {},
+      config: {
+        icon: path.resolve("./src/CustomServer/Assets/icon.ico"),
+      },
     },
     {
       name: "@electron-forge/maker-zip",
       platforms: ["darwin"],
+      config: {
+        icon: path.resolve("./src/CustomServer/Assets/icon.ico"),
+      },
     },
     {
       name: "@electron-forge/maker-deb",
-      config: {},
+      config: {
+        icon: path.resolve("./src/CustomServer/Assets/icon.png"),
+      },
     },
     {
       name: "@electron-forge/maker-rpm",

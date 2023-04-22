@@ -1,7 +1,7 @@
 const { Database } = require("../DataBase");
 const { throwError } = require("../Utils/RequestUtil");
 
-const { User, Patient } = Database?.models;
+const { User, Patient } = Database.models;
 async function VerifyUserEmailDuplicate(req, res, next) {
   console.log(req.body);
   if (!req.body) {
