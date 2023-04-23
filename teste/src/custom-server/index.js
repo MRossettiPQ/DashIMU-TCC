@@ -3,17 +3,17 @@ const enableWs = require('express-ws')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const cors = require('cors')
-const environment = require('../environment')
-const { translate, i18n } = require('./core/Utils/i18nUtil')
-const { logColor } = require('./core/Utils/LogUtil')
-const Database = require('./core/DataBase')
-const path = require('path')
+const { settings } = require('./settings')
+const { translate, i18n } = require('./core/utils/i18nUtil')
+const { logColor } = require('./core/utils/LogUtil')
+const Database = require('./core/database')
 
 class CustomServer {
   app
   lang
   database = Database
   started = false
+  port = 8000
   loading = false
   expressWs = null
 
@@ -28,7 +28,7 @@ class CustomServer {
       await i18n.setLocale(this.lang)
 
       logColor('SERVER', translate('main.init'), 'fg.blue')
-      await Database.loadModels()
+      await this.database.loadModels()
 
       // Only after models are loaded
       logColor('SERVER', translate('main.load_routes'))
@@ -41,7 +41,7 @@ class CustomServer {
       this.app.use(i18n.init)
 
       // Database initialization
-      await Database.initDataBase()
+      await this.database.initDataBase()
 
       // Cors rules
       this.app.use(cors())
@@ -59,21 +59,39 @@ class CustomServer {
       this.expressWs = enableWs(this.app)
 
       // Morgan logging
-      this.app.use(morgan('combined'))
+      this.app.use(morgan(settings.morgan.format))
 
       // Routes
       routes(this.app, this.expressWs)
 
       // Listen server in port
-      await this.app.listen(environment.host.port)
-      logColor('SERVER', `${translate('main.initialized')} ${environment.host.port}`, 'fg.blue')
+      await this.listen()
+      logColor('SERVER', `${translate('main.initialized')} ${settings.host.port}`, 'fg.blue')
       this.started = true
     } catch (e) {
       logColor('SERVER', translate('main.error'), 'fg.red')
       console.log(e)
+      throw Error('Erro no server' + e.toString())
     } finally {
       this.loading = false
     }
+  }
+
+  async close() {
+    // return this.app.close();
+  }
+
+  async listen() {
+    return new Promise((resolve, reject) => {
+      if (!this.app) {
+        return reject()
+      }
+
+      const server = this.app.listen(settings.host.port)
+      process.once('uncaughtException', reject)
+      server.once('error', reject)
+      server.once('listening', resolve)
+    })
   }
 }
 
