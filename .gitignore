@@ -7,15 +7,15 @@
 *.iml
 
 #IGNORE ELECTRON
-/teste/node_modules
-/teste/.idea
-/teste/yarn.lock
-/teste/.vscode
-/teste/*.iml
-/teste/package-lock.json
-/teste/build/*
-/teste/build/dist/**
-/teste/build/src/custom-server/public/**
+/electron/node_modules
+/electron/.idea
+/electron/yarn.lock
+/electron/.vscode
+/electron/*.iml
+/electron/package-lock.json
+/electron/build/*
+/electron/build/dist/**
+/electron/build/src/custom-server/public/**
 
 #IGNORE SERVER
 /server/node_modules
