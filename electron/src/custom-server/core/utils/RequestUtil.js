@@ -63,7 +63,7 @@ const SpaResolver = (req, res, next) => {
 }
 
 const AsyncMiddlewares = (handlers = []) => {
-  return AsyncHandlers(handlers, true)
+  return handlers.map((callback, index) => AsyncMiddleware(callback))
 }
 const AsyncMiddleware = (callback) => {
   return AsyncHandler(callback, true)

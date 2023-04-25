@@ -1,6 +1,6 @@
-const { Session } = require('../../../core/DataBase').models
-const { throwSuccess, throwNotFound } = require('../../../core/Utils/RequestUtil')
-const { PaginationUtil } = require('../../../core/Utils/PaginationUtil')
+const { Session } = require('../../../core/database').models
+const { throwSuccess, throwNotFound } = require('../../../core/utils/RequestUtil')
+const { PaginationUtil } = require('../../../core/utils/PaginationUtil')
 const dayjs = require('dayjs')
 
 module.exports = new (class DevelopmentController {

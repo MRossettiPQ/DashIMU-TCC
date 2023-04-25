@@ -1,5 +1,5 @@
-const { throwSuccess, throwError } = require('../../../core/Utils/RequestUtil')
-const ContextUtil = require('../../../core/Utils/ContextUtil')
+const { throwSuccess, throwError } = require('../../../core/utils/RequestUtil')
+const { getUserContext } = require('../../../core/utils/ContextUtil')
 
 module.exports = new (class UserController {
   async save(req) {

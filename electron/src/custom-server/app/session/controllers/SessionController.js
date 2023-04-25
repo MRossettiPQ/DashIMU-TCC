@@ -1,9 +1,9 @@
-const { GyroMeasurement, Sensor, Session, Movement } = require('../../../core/DataBase').models
-const ContextUtil = require('../../../core/utils/ContextUtil')
-const { throwSuccess, throwNotFound, throwError } = require('../../../core/Utils/RequestUtil')
+const { GyroMeasurement, Sensor, Session, Movement } = require('../../../core/database').models
+const { throwSuccess, throwNotFound, throwError } = require('../../../core/utils/RequestUtil')
 const { getAllCalc } = require('../services/SciLabServices')
-const { PaginationUtil } = require('../../../core/Utils/PaginationUtil')
+const { PaginationUtil } = require('../../../core/utils/PaginationUtil')
 const Procedure = require('./Procedure')
+const { getUserContextId } = require('../../../core/utils/ContextUtil')
 
 module.exports = new (class SessionController {
   async save(req) {

@@ -1,25 +1,26 @@
 const dayjs = require('dayjs')
-const { throwSuccess } = require('../../../core/Utils/RequestUtil')
+const { throwSuccess } = require('../../../core/utils/RequestUtil')
 const { v4: uuid } = require('uuid')
-// const network = require('network')
+const network = require('network')
 const { settings } = require('../../../settings')
+const { logColor } = require('../../../core/utils/LogUtil')
 
 let sensorList = []
 module.exports = new (class WebSocketController {
   async metadata(req) {
-    // function getIP() {
-    //   return new Promise((resolve) => {
-    //     network.get_private_ip((err, ip) => {
-    //       resolve(ip || "0.0.0.0");
-    //     });
-    //   });
-    // }
+    function getIP() {
+      return new Promise((resolve) => {
+        network.get_private_ip((err, ip) => {
+          resolve(ip || '0.0.0.0')
+        })
+      })
+    }
 
-    // let server_ip = await getIP();
+    let server_ip = await getIP()
     return await throwSuccess({
       content: {
-        socket_url: `${req.socket.url}:${settings.host.port}`,
-        url: req.socket.url,
+        socket_url: `${server_ip}:${settings.host.port}`,
+        url: server_ip,
         port: settings.host.port,
       },
       log: 'Sensor list',
@@ -36,7 +37,7 @@ module.exports = new (class WebSocketController {
 
   sensorConnection(expressWs) {
     return function (client, req) {
-      console.log(`[SOCKET] - Client connected in network! - ${dayjs()}`)
+      logColor(`[SOCKET] - Client connected in network! - ${dayjs()}`)
 
       client.connectionInfo = null
 
@@ -55,7 +56,7 @@ module.exports = new (class WebSocketController {
                 ...data,
               }
               sensorList.push(client.connectionInfo)
-              console.log(`[SOCKET] - Add sensor - ${msg} - ${dayjs()}`)
+              logColor(`[SOCKET] - Add sensor - ${msg} - ${dayjs()}`)
             } else if (data.origin === 'SENSOR') {
               // Update sensor info
               client.connectionInfo = {
@@ -64,7 +65,7 @@ module.exports = new (class WebSocketController {
               }
               const index = sensorList.findIndex((sensor) => sensor.uuid === client.connectionInfo.uuid)
               sensorList[index] = { ...sensorList[index], ...data }
-              console.log(`[SOCKET] - Update sensor - ${msg} - ${dayjs()}`)
+              logColor(`[SOCKET] - Update sensor - ${msg} - ${dayjs()}`)
             }
             switch (data?.type) {
               case 'GET_UPDATE_CLIENT_LIST':
@@ -80,7 +81,6 @@ module.exports = new (class WebSocketController {
       })
 
       client.once('close', (e) => {
-        console.log('event:close')
         if (client.origin === 'SENSOR') {
           removeClient(client.connectionInfo)
           sendMessageAllClients(expressWs, 'UPDATE_CLIENT_LIST', sensorList)
@@ -126,7 +126,7 @@ function sendMessageAllClients(expressWs, type, message) {
         })
       )
     })
-    console.log(`[SOCKET] - Send message all clients - ${type} - ${dayjs()}`)
+    logColor(`[SOCKET] - Send message all clients - ${type} - ${dayjs()}`)
   } catch (e) {
     console.log(e)
   }
@@ -143,12 +143,11 @@ function sendMessageToClient(client, type, message) {
 }
 
 function removeClient(connectionInfo) {
-  console.log('removeClient')
   let ip = connectionInfo?.ip
   let index = sensorList.findIndex((sensor) => {
     return sensor.uuid !== connectionInfo.uuid
   })
 
   sensorList.splice(index, 1)
-  console.log(`[SOCKET] - Sensor ${ip} removed from network! - ${dayjs()}`)
+  logColor(`[SOCKET] - Sensor ${ip} removed from network! - ${dayjs()}`)
 }

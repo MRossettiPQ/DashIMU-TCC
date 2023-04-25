@@ -1,5 +1,4 @@
 import { Vue } from "vue-property-decorator";
-import { Dialog } from "quasar";
 
 class DialogUtils extends Vue {
   static async Show({ options }) {

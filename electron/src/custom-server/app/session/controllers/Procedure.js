@@ -1,10 +1,10 @@
-const { i18n } = require('../../../core/Utils/i18nUtil')
+const { translate } = require('../../../core/utils/i18nUtil')
 const { settings } = require('../../../settings')
 
 exports.getProcedures = () => {
   const procedures = [
     {
-      articulation_name: i18n.__('procedures.shoulder'),
+      articulation_name: translate('procedures.shoulder'),
       value: 'SHOULDER',
       min_sensor: 2,
       sensor_positions: [
@@ -19,9 +19,9 @@ exports.getProcedures = () => {
       ],
       rules: [
         {
-          movement_name: i18n.__('procedures.shoulder.flexion'),
+          movement_name: translate('procedures.shoulder.flexion'),
           value: 'FLEXION',
-          description: i18n.__('procedures.shoulder.flexion.description'),
+          description: translate('procedures.shoulder.flexion.description'),
           image: 'shoulder_-_flexion.jpg',
           angle: {
             min: 0,
@@ -29,9 +29,9 @@ exports.getProcedures = () => {
           },
         },
         {
-          movement_name: i18n.__('procedures.shoulder.extension'),
+          movement_name: translate('procedures.shoulder.extension'),
           value: 'EXTENSION',
-          description: i18n.__('procedures.shoulder.extension.description'),
+          description: translate('procedures.shoulder.extension.description'),
           image: 'shoulder_-_extension.jpg',
           angle: {
             min: 0,
@@ -39,9 +39,9 @@ exports.getProcedures = () => {
           },
         },
         {
-          movement_name: i18n.__('procedures.shoulder.abduction'),
+          movement_name: translate('procedures.shoulder.abduction'),
           value: 'ABDUCTION',
-          description: i18n.__('procedures.shoulder.abduction.description'),
+          description: translate('procedures.shoulder.abduction.description'),
           image: 'shoulder_-_abduction.jpg',
           angle: {
             min: 0,
@@ -49,9 +49,9 @@ exports.getProcedures = () => {
           },
         },
         {
-          movement_name: i18n.__('procedures.shoulder.adduction'),
+          movement_name: translate('procedures.shoulder.adduction'),
           value: 'ADDUCTION',
-          description: i18n.__('procedures.shoulder.adduction.description'),
+          description: translate('procedures.shoulder.adduction.description'),
           image: 'shoulder_-_adduction.jpg',
           angle: {
             min: 0,
@@ -59,9 +59,9 @@ exports.getProcedures = () => {
           },
         },
         {
-          movement_name: i18n.__('procedures.shoulder.internal_rotation'),
+          movement_name: translate('procedures.shoulder.internal_rotation'),
           value: 'INTERNAL_ROTATION',
-          description: i18n.__('procedures.shoulder.internal_rotation.description'),
+          description: translate('procedures.shoulder.internal_rotation.description'),
           image: 'shoulder_-_internal_rotation.jpg',
           angle: {
             min: 0,
@@ -69,9 +69,9 @@ exports.getProcedures = () => {
           },
         },
         {
-          movement_name: i18n.__('procedures.shoulder.external_rotation'),
+          movement_name: translate('procedures.shoulder.external_rotation'),
           value: 'EXTERNAL_ROTATION',
-          description: i18n.__('procedures.shoulder.external_rotation.description'),
+          description: translate('procedures.shoulder.external_rotation.description'),
           image: 'shoulder_-_external_rotation.jpg',
           angle: {
             min: 0,
@@ -81,7 +81,7 @@ exports.getProcedures = () => {
       ],
     },
     {
-      articulation_name: i18n.__('procedures.elbow'),
+      articulation_name: translate('procedures.elbow'),
       value: 'ELBOW',
       min_sensor: 2,
       sensor_positions: [
@@ -96,9 +96,9 @@ exports.getProcedures = () => {
       ],
       rules: [
         {
-          movement_name: i18n.__('procedures.elbow.flexion'),
+          movement_name: translate('procedures.elbow.flexion'),
           value: 'FLEXION',
-          description: i18n.__('procedures.elbow.flexion.description'),
+          description: translate('procedures.elbow.flexion.description'),
           image: 'elbow_-_extension-flexion.jpg',
           angle: {
             min: 0,
@@ -106,9 +106,9 @@ exports.getProcedures = () => {
           },
         },
         {
-          movement_name: i18n.__('procedures.elbow.extension'),
+          movement_name: translate('procedures.elbow.extension'),
           value: 'EXTENSION',
-          description: i18n.__('procedures.elbow.extension.description'),
+          description: translate('procedures.elbow.extension.description'),
           image: 'elbow_-_extension-flexion.jpg',
           angle: {
             min: 145,
@@ -118,7 +118,7 @@ exports.getProcedures = () => {
       ],
     },
     {
-      articulation_name: i18n.__('procedures.radioulnar'),
+      articulation_name: translate('procedures.radioulnar'),
       value: 'RADIOULNAR',
       min_sensor: 2,
       sensor_positions: [
@@ -133,9 +133,9 @@ exports.getProcedures = () => {
       ],
       rules: [
         {
-          movement_name: i18n.__('procedures.radioulnar.pronation'),
+          movement_name: translate('procedures.radioulnar.pronation'),
           value: 'PRONATION',
-          description: i18n.__('procedures.radioulnar.pronation.description'),
+          description: translate('procedures.radioulnar.pronation.description'),
           image: 'radioulnar_-_pronation.jpg',
           angle: {
             min: 0,
@@ -143,9 +143,9 @@ exports.getProcedures = () => {
           },
         },
         {
-          movement_name: i18n.__('procedures.radioulnar.supnation'),
+          movement_name: translate('procedures.radioulnar.supnation'),
           value: 'SUPINATION',
-          description: i18n.__('procedures.radioulnar.supnation.description'),
+          description: translate('procedures.radioulnar.supnation.description'),
           image: 'radioulnar_-_supnation.jpg',
           angle: {
             min: 0,
@@ -155,7 +155,7 @@ exports.getProcedures = () => {
       ],
     },
     {
-      articulation_name: i18n.__('procedures.wrist'),
+      articulation_name: translate('procedures.wrist'),
       value: 'WRIST',
       min_sensor: 2,
       sensor_positions: [
@@ -170,9 +170,9 @@ exports.getProcedures = () => {
       ],
       rules: [
         {
-          movement_name: i18n.__('procedures.wrist.flexion'),
+          movement_name: translate('procedures.wrist.flexion'),
           value: 'FLEXION',
-          description: i18n.__('procedures.wrist.flexion.description'),
+          description: translate('procedures.wrist.flexion.description'),
           image: 'wrist_-_flexion.jpg',
           angle: {
             min: 0,
@@ -180,9 +180,9 @@ exports.getProcedures = () => {
           },
         },
         {
-          movement_name: i18n.__('procedures.wrist.extension'),
+          movement_name: translate('procedures.wrist.extension'),
           value: 'EXTENSION',
-          description: i18n.__('procedures.wrist.extension.description'),
+          description: translate('procedures.wrist.extension.description'),
           image: 'wrist_-_extension.jpg',
           angle: {
             min: 0,
@@ -190,9 +190,9 @@ exports.getProcedures = () => {
           },
         },
         {
-          movement_name: i18n.__('procedures.wrist.ulnar_adduction'),
+          movement_name: translate('procedures.wrist.ulnar_adduction'),
           value: 'ULNAR_ADDUCTION',
-          description: i18n.__('procedures.wrist.ulnar_adduction.description'),
+          description: translate('procedures.wrist.ulnar_adduction.description'),
           image: 'wrist_-_ulnar_adduction.jpg',
           angle: {
             min: 0,
@@ -200,9 +200,9 @@ exports.getProcedures = () => {
           },
         },
         {
-          movement_name: i18n.__('procedures.wrist.radial_adduction'),
+          movement_name: translate('procedures.wrist.radial_adduction'),
           value: 'RADIAL_ADDUCTION',
-          description: i18n.__('procedures.wrist.radial_adduction.description'),
+          description: translate('procedures.wrist.radial_adduction.description'),
           image: 'wrist.radial_adduction.jpg',
           angle: {
             min: 0,
@@ -212,7 +212,7 @@ exports.getProcedures = () => {
       ],
     },
     {
-      articulation_name: i18n.__('procedures.carpometacarpal_thumb'),
+      articulation_name: translate('procedures.carpometacarpal_thumb'),
       value: 'CARPOMETACARPAL_THUMB',
       min_sensor: 2,
       sensor_positions: [
@@ -227,9 +227,9 @@ exports.getProcedures = () => {
       ],
       rules: [
         {
-          movement_name: i18n.__('procedures.carpometacarpal_thumb.flexion'),
+          movement_name: translate('procedures.carpometacarpal_thumb.flexion'),
           value: 'FLEXION',
-          description: i18n.__('procedures.carpometacarpal_thumb.flexion.description'),
+          description: translate('procedures.carpometacarpal_thumb.flexion.description'),
           image: 'carpometacarpal_thumb_-_flexion.jpg',
           angle: {
             min: 0,
@@ -237,9 +237,9 @@ exports.getProcedures = () => {
           },
         },
         {
-          movement_name: i18n.__('procedures.carpometacarpal_thumb.abduction'),
+          movement_name: translate('procedures.carpometacarpal_thumb.abduction'),
           value: 'ADDUCTION',
-          description: i18n.__('procedures.carpometacarpal_thumb.abduction.description'),
+          description: translate('procedures.carpometacarpal_thumb.abduction.description'),
           image: 'carpometacarpal_thumb_-_abduction.jpg',
           angle: {
             min: 0,
@@ -247,9 +247,9 @@ exports.getProcedures = () => {
           },
         },
         {
-          movement_name: i18n.__('procedures.carpometacarpal_thumb.extension'),
+          movement_name: translate('procedures.carpometacarpal_thumb.extension'),
           value: 'EXTENSION',
-          description: i18n.__('procedures.carpometacarpal_thumb.extension.description'),
+          description: translate('procedures.carpometacarpal_thumb.extension.description'),
           image: 'carpometacarpal_thumb_-_extension.jpg',
           angle: {
             min: 0,
@@ -259,7 +259,7 @@ exports.getProcedures = () => {
       ],
     },
     {
-      articulation_name: i18n.__('procedures.metacarpophalangeal'),
+      articulation_name: translate('procedures.metacarpophalangeal'),
       value: 'METACARPOPHALANGEAL',
       min_sensor: 2,
       sensor_positions: [
@@ -274,9 +274,9 @@ exports.getProcedures = () => {
       ],
       rules: [
         {
-          movement_name: i18n.__('procedures.metacarpophalangeal.flexion'),
+          movement_name: translate('procedures.metacarpophalangeal.flexion'),
           value: 'FLEXION',
-          description: i18n.__('procedures.metacarpophalangeal.flexion.description'),
+          description: translate('procedures.metacarpophalangeal.flexion.description'),
           image: 'metacarpophalangeal_-_flexion.jpg',
           angle: {
             min: 0,
@@ -284,9 +284,9 @@ exports.getProcedures = () => {
           },
         },
         {
-          movement_name: i18n.__('procedures.metacarpophalangeal.abduction'),
+          movement_name: translate('procedures.metacarpophalangeal.abduction'),
           value: 'EXTENSION',
-          description: i18n.__('procedures.metacarpophalangeal.abduction.description'),
+          description: translate('procedures.metacarpophalangeal.abduction.description'),
           image: 'metacarpophalangeal_-_extension.jpg',
           angle: {
             min: 0,
@@ -294,9 +294,9 @@ exports.getProcedures = () => {
           },
         },
         {
-          movement_name: i18n.__('procedures.metacarpophalangeal.abduction'),
+          movement_name: translate('procedures.metacarpophalangeal.abduction'),
           value: 'ABDUCTION',
-          description: i18n.__('procedures.metacarpophalangeal.abduction.description'),
+          description: translate('procedures.metacarpophalangeal.abduction.description'),
           image: 'metacarpophalangeal_-_abduction-adduction.jpg',
           angle: {
             min: 0,
@@ -304,9 +304,9 @@ exports.getProcedures = () => {
           },
         },
         {
-          movement_name: i18n.__('procedures.metacarpophalangeal.adduction'),
+          movement_name: translate('procedures.metacarpophalangeal.adduction'),
           value: 'ADDUCTION',
-          description: i18n.__('procedures.metacarpophalangeal.adduction.description'),
+          description: translate('procedures.metacarpophalangeal.adduction.description'),
           image: 'metacarpophalangeal_-_abduction-adduction.jpg',
           angle: {
             min: 0,
@@ -316,7 +316,7 @@ exports.getProcedures = () => {
       ],
     },
     {
-      articulation_name: i18n.__('procedures.proximal_interphalangeal'),
+      articulation_name: translate('procedures.proximal_interphalangeal'),
       value: 'PROXIMAL_INTERPHALANGEAL',
       min_sensor: 2,
       sensor_positions: [
@@ -331,9 +331,9 @@ exports.getProcedures = () => {
       ],
       rules: [
         {
-          movement_name: i18n.__('procedures.proximal_interphalangeal.flexion'),
+          movement_name: translate('procedures.proximal_interphalangeal.flexion'),
           value: 'FLEXION',
-          description: i18n.__('procedures.proximal_interphalangeal.flexion.description'),
+          description: translate('procedures.proximal_interphalangeal.flexion.description'),
           image: 'proximal_interphalangeal_-_flexion.jpg',
           angle: {
             min: 0,
@@ -341,9 +341,9 @@ exports.getProcedures = () => {
           },
         },
         {
-          movement_name: i18n.__('procedures.proximal_interphalangeal.extension'),
+          movement_name: translate('procedures.proximal_interphalangeal.extension'),
           value: 'EXTENSION',
-          description: i18n.__('procedures.proximal_interphalangeal.extension.description'),
+          description: translate('procedures.proximal_interphalangeal.extension.description'),
           image: 'proximal_interphalangeal_-_extension.jpg',
           angle: {
             min: 0,
@@ -353,7 +353,7 @@ exports.getProcedures = () => {
       ],
     },
     {
-      articulation_name: i18n.__('procedures.distal_interphalangeal'),
+      articulation_name: translate('procedures.distal_interphalangeal'),
       value: 'DISTAL_INTERPHALANGEAL',
       min_sensor: 2,
       sensor_positions: [
@@ -368,9 +368,9 @@ exports.getProcedures = () => {
       ],
       rules: [
         {
-          movement_name: i18n.__('procedures.distal_interphalangeal.flexion'),
+          movement_name: translate('procedures.distal_interphalangeal.flexion'),
           value: 'FLEXION',
-          description: i18n.__('procedures.distal_interphalangeal.flexion.description'),
+          description: translate('procedures.distal_interphalangeal.flexion.description'),
           image: 'proximal_interphalangeal_-_flexion.jpg',
           angle: {
             min: 0,
@@ -378,9 +378,9 @@ exports.getProcedures = () => {
           },
         },
         {
-          movement_name: i18n.__('procedures.distal_interphalangeal.thumb_internal_flexion'),
+          movement_name: translate('procedures.distal_interphalangeal.thumb_internal_flexion'),
           value: 'THUMB_INTERNAL_FLEXION',
-          description: i18n.__('procedures.distal_interphalangeal.thumb_internal_flexion.description'),
+          description: translate('procedures.distal_interphalangeal.thumb_internal_flexion.description'),
           image: 'proximal_interphalangeal_-_flexion.jpg',
           angle: {
             min: 0,
@@ -388,9 +388,9 @@ exports.getProcedures = () => {
           },
         },
         {
-          movement_name: i18n.__('procedures.distal_interphalangeal.thumb_internal_extension'),
+          movement_name: translate('procedures.distal_interphalangeal.thumb_internal_extension'),
           value: 'THUMB_INTERNAL_EXTENSION',
-          description: i18n.__('procedures.distal_interphalangeal.thumb_internal_extension.description'),
+          description: translate('procedures.distal_interphalangeal.thumb_internal_extension.description'),
           image: 'proximal_interphalangeal_-_flexion.jpg',
           angle: {
             min: 0,
@@ -398,9 +398,9 @@ exports.getProcedures = () => {
           },
         },
         {
-          movement_name: i18n.__('procedures.distal_interphalangeal.internal_extension_fingers'),
+          movement_name: translate('procedures.distal_interphalangeal.internal_extension_fingers'),
           value: 'INTERNAL_EXTENSION_FINGERS',
-          description: i18n.__('procedures.distal_interphalangeal.internal_extension_fingers.description'),
+          description: translate('procedures.distal_interphalangeal.internal_extension_fingers.description'),
           image: 'proximal_interphalangeal_-_flexion.jpg',
           angle: {
             min: 0,
@@ -413,7 +413,7 @@ exports.getProcedures = () => {
 
   if (settings?.development) {
     procedures.unshift({
-      articulation_name: i18n.__('procedures.shoulder') + ' EM DEV',
+      articulation_name: translate('procedures.shoulder') + ' EM DEV',
       value: 'SHOULDER',
       min_sensor: 1,
       sensor_positions: [
@@ -424,9 +424,9 @@ exports.getProcedures = () => {
       ],
       rules: [
         {
-          movement_name: i18n.__('procedures.shoulder.internal_rotation'),
+          movement_name: translate('procedures.shoulder.internal_rotation'),
           value: 'INTERNAL_ROTATION',
-          description: i18n.__('procedures.shoulder.internal_rotation.description'),
+          description: translate('procedures.shoulder.internal_rotation.description'),
           image: 'shoulder_-_internal_rotation.jpg',
           angle: {
             min: 0,

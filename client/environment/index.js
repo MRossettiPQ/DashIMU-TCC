@@ -19,6 +19,5 @@ module.exports = function environment() {
     ...process.env,
     ...parsedEnv,
   };
-  console.log(process.env);
   return parsedEnv;
 };

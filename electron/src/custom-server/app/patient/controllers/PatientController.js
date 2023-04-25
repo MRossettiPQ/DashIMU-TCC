@@ -1,6 +1,6 @@
-const { Patient } = require('../../../core/DataBase').models
-const { throwSuccess, throwError } = require('../../../core/Utils/RequestUtil')
-const { PaginationUtil, GetWhere } = require('../../../core/Utils/PaginationUtil')
+const { Patient } = require('../../../core/database').models
+const { throwSuccess, throwError } = require('../../../core/utils/RequestUtil')
+const { PaginationUtil, GetWhere } = require('../../../core/utils/PaginationUtil')
 
 module.exports = new (class PatientController {
   async save(req) {

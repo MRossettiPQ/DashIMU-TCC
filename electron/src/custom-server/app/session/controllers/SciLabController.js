@@ -1,6 +1,6 @@
-const { GyroMeasurement, Movement, Sensor, Session } = require('../../../core/DataBase').models
-const ContextUtil = require('../../../core/Utils/ContextUtil')
-const { throwSuccess, throwError } = require('../../../core/Utils/RequestUtil')
+const { GyroMeasurement, Movement, Sensor, Session } = require('../../../core/database').models
+const ContextUtil = require('../../../core/utils/ContextUtil')
+const { throwSuccess, throwError } = require('../../../core/utils/RequestUtil')
 const { getAllCalc } = require('../services/SciLabServices')
 
 module.exports = new (class SciLabController {

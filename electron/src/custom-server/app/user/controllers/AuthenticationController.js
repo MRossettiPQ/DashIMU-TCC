@@ -1,9 +1,9 @@
 const bcryptjs = require('bcryptjs')
-const { User } = require('../../../core/DataBase').models
-const { throwSuccess, throwError, throwUnauthorized, throwNotFound } = require('../../../core/Utils/RequestUtil')
-const { i18n } = require('../../../core/Utils/i18nUtil')
-const { CreateToken, CompareCrypt } = require('../../../core/Middleware/AuthorizeJwt')
-const ContextUtil = require('../../../core/Utils/ContextUtil')
+const { User } = require('../../../core/database').models
+const { throwSuccess, throwError, throwUnauthorized, throwNotFound } = require('../../../core/utils/RequestUtil')
+const { translate } = require('../../../core/utils/i18nUtil')
+const { CreateToken, CompareCrypt } = require('../../../core/middleware/AuthorizeJwt')
+const ContextUtil = require('../../../core/utils/ContextUtil')
 
 module.exports = new (class AuthenticationController {
   async register(req) {

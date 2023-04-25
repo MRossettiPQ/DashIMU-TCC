@@ -15,7 +15,7 @@
 /electron/package-lock.json
 /electron/build/*
 /electron/build/dist/**
-/electron/build/src/custom-server/public/**
+/electron/src/custom-server/public/**
 
 #IGNORE SERVER
 /server/node_modules
@@ -95,3 +95,8 @@ sensor/build/*
 /build/node_modules/
 /electron/dist/
 /teste/node_modules/
+/electron/cache/
+/electron/error.log
+/electron/info.log
+/electron/log/
+client/yarn.lock

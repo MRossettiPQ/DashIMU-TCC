@@ -1,3 +1,6 @@
+const NODE_ENV = process.env?.NODE_ENV || 'development'
+const { resolve } = require('path')
+
 const settings = {
   development: true,
   just_api: false,
@@ -33,7 +36,7 @@ const settings = {
         },
       },
       sqlite: {
-        storage: '../../../../cache/dash_imu.sqlite', // TODO cria uma pasta 'cache' na raiz do projeto contendo o banco
+        storage: resolve('./cache/dash_imu.sqlite'), // TODO cria uma pasta 'cache' na raiz do projeto contendo o banco
         dialect: 'sqlite',
         benchmark: true,
         pool: {

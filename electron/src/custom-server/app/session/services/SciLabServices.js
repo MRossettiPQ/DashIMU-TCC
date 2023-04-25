@@ -1,4 +1,4 @@
-const { getColumn, getMean, getArraySubtract, getMax, getMin, getSqrt, getStDeviation, getArrayDivision, getArrayPow, getArraySqrt } = require('../../../core/Utils/SciLab')
+const { getColumn, getMean, getArraySubtract, getMax, getMin, getSqrt, getStDeviation, getArrayDivision, getArrayPow, getArraySqrt } = require('../../../core/utils/SciLab')
 
 exports.getAllCalc = (movements, newSession) => {
   return new Promise((resolve, reject) => {
@@ -181,11 +181,11 @@ exports.getEChartOptions = ({ session, max_atorn }) => {
   // reference -> https://echarts.apache.org/
   return {
     /* title: {
-                left: 'center',
-                text: `Session ${session.id} - ${dayjs(session.date).format(
-                  'DD/MM/YYYY'
-                )}`,
-              }, */
+                    left: 'center',
+                    text: `Session ${session.id} - ${dayjs(session.date).format(
+                      'DD/MM/YYYY'
+                    )}`,
+                  }, */
     yAxis: {
       boundaryGap: [0, '100%'],
       type: 'value',

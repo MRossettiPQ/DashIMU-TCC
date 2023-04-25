@@ -52,9 +52,10 @@ class AppElectron {
       const mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
+        show: false,
       })
 
-      await mainWindow.show()
+      // await mainWindow.show()
 
       await this.showNotification(packageFile.productName, 'Pronto para uso', resolve(__dirname, './assets/icon.ico'))
     }
@@ -73,6 +74,7 @@ class AppElectron {
   }
 
   async open(event) {
+    console.log('open')
     event.preventDefault()
     await shell.openExternal(`${settings.electron.url}:${this.server.port}/`)
   }
@@ -85,7 +87,7 @@ class AppElectron {
 
   async createMenu() {
     // Generate tray icon
-    const icon = nativeImage.createFromPath(resolve(__dirname, './public/icon.png'))
+    const icon = nativeImage.createFromPath(join(__dirname, './assets/icon.png'))
     this.tray = new Tray(icon)
     // Tray icon menu
     const contextMenu = Menu.buildFromTemplate([
@@ -113,7 +115,7 @@ class AppElectron {
   }
 }
 
-;(async () => {
+const run = (async () => {
   const el = new AppElectron()
   await el.boot()
 })()

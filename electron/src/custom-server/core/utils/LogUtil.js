@@ -1,4 +1,20 @@
 const dayjs = require('dayjs')
+const winston = require('winston')
+
+const info = new winston.transports.File({ filename: 'info.log', level: 'info', dirname: 'cache' })
+
+const logger = winston.createLogger({
+  format: winston.format.combine(winston.format.errors({ stack: true }), winston.format.json()),
+  transports: [info],
+})
+
+if (process.env.ENV !== 'production') {
+  logger.add(
+    new winston.transports.Console({
+      format: winston.format.simple(),
+    })
+  )
+}
 
 function getColor(colours, firstKey, secondKey) {
   let c = null
@@ -34,7 +50,9 @@ exports.logColor = (local = 'C_LOG', message = '', color = 'reset') => {
   } else {
     c = getColor(colours, color)
   }
-  console.log(`${c}[CLOG] - ${dayjs().format('DD/MM/YYYY[-]HH:mm:ss')} - [${local}] - ${message}\x1b[0m`)
+
+  logger.info(`${c}[CLOG] - ${dayjs().format('DD/MM/YYYY[-]HH:mm:ss')} - [${local}] - ${message}\x1b[0m`)
+  // console.log(`${c}[CLOG] - ${dayjs().format('DD/MM/YYYY[-]HH:mm:ss')} - [${local}] - ${message}\x1b[0m`)
 }
 
 const colours = {
