@@ -5,7 +5,7 @@ const morgan = require('morgan')
 const cors = require('cors')
 const { settings } = require('./settings')
 const { translate, i18n } = require('./core/utils/i18nUtil')
-const { logColor } = require('./core/utils/LogUtil')
+const { logColor, logMiddleware } = require('./core/utils/LogUtil')
 const Database = require('./core/database')
 
 class CustomServer {
@@ -59,7 +59,7 @@ class CustomServer {
       this.expressWs = enableWs(this.app)
 
       // Morgan logging
-      this.app.use(morgan(settings.morgan.format))
+      this.app.use(morgan(logMiddleware))
 
       // Routes
       routes(this.app, this.expressWs)

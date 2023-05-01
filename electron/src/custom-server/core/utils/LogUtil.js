@@ -1,7 +1,7 @@
 const dayjs = require('dayjs')
 const winston = require('winston')
 
-const info = new winston.transports.File({ filename: 'info.log', level: 'info', dirname: 'cache' })
+const info = new winston.transports.File({ filename: 'info.log', level: 'info', dirname: 'cache', maxSize: '20m', maxFiles: '14d' })
 
 const logger = winston.createLogger({
   format: winston.format.combine(winston.format.errors({ stack: true }), winston.format.json()),
@@ -16,7 +16,7 @@ if (process.env.ENV !== 'production') {
   )
 }
 
-function getColor(colours, firstKey, secondKey) {
+function getConsoleColor(colours, firstKey, secondKey) {
   let c = null
 
   c = colours[firstKey]
@@ -26,7 +26,7 @@ function getColor(colours, firstKey, secondKey) {
       return c
     case 'object':
       if (secondKey) {
-        return getColor(c, secondKey)
+        return getConsoleColor(c, secondKey)
       }
       return ''
     case 'function':
@@ -39,20 +39,47 @@ function getColor(colours, firstKey, secondKey) {
   }
 }
 
-exports.logColor = (local = 'C_LOG', message = '', color = 'reset') => {
+function coloringLog(color, message) {
+  const coloredMessage = `${color}${message}\x1b[0m`
+  logger.info(message)
+  // Optei por usar console padrão ao inves do gerado pelo winston para ser mais limpo sem a estrutura json, e poder colorir
+  // console.log(coloredMessage)
+  return coloredMessage
+}
+
+function logMiddleware(tokens, req, res) {
+  //
+  const time = dayjs().format('DD/MM/YYYY[-]HH:mm:ss')
+  const method = tokens.method(req, res)
+  const url = tokens.url(req, res)
+  const status = tokens.status(req, res)
+  const responseTime = tokens['response-time'](req, res)
+  const contentLength = tokens.res(req, res, 'content-length')
+  //
+  const formatedLog = `[CLOG] - ${time} - [MORGAN] - [${method}] - ${url} - ${responseTime} ms - ${status} - ${contentLength}`
+  return coloringLog('\x1b[33m', formatedLog)
+}
+
+function logColor(local = 'C_LOG', message = '', color = 'reset') {
   // TODO enquanto esse metodo apenas monta a mensagem para um console.log comum, futuramente irá servir como logger creator tambem
   const splitColor = color.split('.')
   let c = ''
   if (splitColor.length > 1) {
     const firstName = splitColor[0]
     const secondName = splitColor[1]
-    c = getColor(colours, firstName, secondName)
+    c = getConsoleColor(colours, firstName, secondName)
   } else {
-    c = getColor(colours, color)
+    c = getConsoleColor(colours, color)
   }
 
-  logger.info(`${c}[CLOG] - ${dayjs().format('DD/MM/YYYY[-]HH:mm:ss')} - [${local}] - ${message}\x1b[0m`)
-  // console.log(`${c}[CLOG] - ${dayjs().format('DD/MM/YYYY[-]HH:mm:ss')} - [${local}] - ${message}\x1b[0m`)
+  const formatedLog = `[CLOG] - ${dayjs().format('DD/MM/YYYY[-]HH:mm:ss')} - [${local}] - ${message}`
+  coloringLog(c, formatedLog)
+}
+
+module.exports = {
+  logColor,
+  logMiddleware,
+  getConsoleColor,
 }
 
 const colours = {

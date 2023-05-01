@@ -46,16 +46,19 @@ export const routes = [
             name: "private.patient",
             path: "patients",
             component: () => import("pages/private/Patients/Patients.vue"),
+            meta: { requiresAuth: true },
           },
           {
             name: "private.profile",
             path: "profile",
             component: () => import("pages/private/Account/Account.vue"),
+            meta: { requiresAuth: true },
           },
           {
             name: "private.session",
             path: "session",
             component: () => import("pages/private/Session/Session.vue"),
+            meta: { requiresAuth: true },
           },
         ],
       },
@@ -70,6 +73,7 @@ export const routes = [
 ];
 
 export const RouteBeforeGuard = async (to, from, next) => {
+  console.log("RouteBeforeGuard", to, from, next);
   // TODO Access granted without authentication
   let accessReleased = ["access.login", "access.register", "access.home", "access.socket", "access.settings"];
   // TODO Hide when logged

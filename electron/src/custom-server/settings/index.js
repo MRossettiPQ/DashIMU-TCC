@@ -57,9 +57,6 @@ const settings = {
       explorer: true,
     },
   },
-  morgan: {
-    format: '[CLOG] - :date[clf] - [MORGAN] - [:method] - :url :status :res[content-length] - :response-time ms',
-  },
   // ...mergeEnv,
 }
 module.exports = { settings }

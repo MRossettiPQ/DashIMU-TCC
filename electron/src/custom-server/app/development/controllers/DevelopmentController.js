@@ -35,7 +35,6 @@ module.exports = new (class DevelopmentController {
   }
 
   async ping(req) {
-    console.log('aqui')
     return await throwSuccess({
       local: 'SERVER:DEV',
       // content: { time: `Server online, current time: ${dayjs()}`, environment },

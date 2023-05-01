@@ -3,7 +3,7 @@ const DevelopmentController = require('../app/development/controllers/Developmen
 
 module.exports = (app) => {
   // TODO ping
-  app.get('/ping', DevelopmentController.ping)
+  app.get('/ping', AsyncHandler(DevelopmentController.ping))
   // app.get('/ddl', AsyncHandler(DevController.alterTable))
   app.get('/test_pagination', AsyncHandler(DevelopmentController.testPagination))
 }
