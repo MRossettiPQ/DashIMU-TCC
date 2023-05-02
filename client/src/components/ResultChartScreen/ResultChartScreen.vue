@@ -3,19 +3,25 @@
     <q-tabs v-model="tabPanel" vertical class="text-grey" active-color="primary" indicator-color="primary">
       <q-tab v-for="(calc, index) in result" :key="index" class="custom-tab" icon="directions_run" :label="'Mov. ' + index" :name="`Movimento_${index}`" @click="selectMovement(calc.movement)" />
     </q-tabs>
-    <q-tab-panels v-model="tabPanel" class="col w-100 h-100 data-content" animated>
-      <q-tab-panel v-for="(calc, index) in result" :key="index" class="h-100 w-100 justify-center items-center flex" :name="`Movimento_${index}`" style="padding: 0 !important; gap: 8px">
+    <q-tab-panels v-model="tabPanel" class="col w-100 h-100 data-content" animated vertical>
+      <q-tab-panel
+        v-for="(calc, index) in result"
+        :key="`Movimento_${index}`"
+        class="h-100 w-100 justify-center items-center flex"
+        :name="`Movimento_${index}`"
+        style="padding: 0 !important; gap: 8px"
+      >
         <q-tabs v-model="movTab" vertical class="text-grey" active-color="primary" indicator-color="primary">
           <q-tab class="custom-tab" icon="table_rows" label="Tabela" name="Tabela" />
           <q-tab class="custom-tab" icon="show_chart" label="Gráfico" name="Graph" />
         </q-tabs>
         <q-tab-panels v-model="movTab" class="col w-100 h-100 data-content" animated>
-          <q-tab-panel class="h-100 w-100 justify-center items-center flex" name="Tabela" style="padding: 0 !important">
-            <q-table :columns="columns" :data="pagination?.list" :filter="filter" :loading="pagination?.loading" class="col" flat :rows-per-page-options="[15]" virtual-scroll> </q-table>
+          <q-tab-panel class="h-100 w-100 justify-center flex p-0" name="Tabela">
+            <q-table :columns="columns" :data="pagination?.list" :filter="filter" :loading="pagination?.loading" class="col" flat :rows-per-page-options="[15]" virtual-scroll />
           </q-tab-panel>
-          <q-tab-panel class="h-100 w-100 justify-center items-center flex" name="Graph" style="padding: 0 !important">
+          <q-tab-panel class="h-100 w-100 justify-center flex" name="Graph" style="padding: 0 !important">
             <div class="col h-100">
-              <v-e-chart :values="calc.atorn" :loading="loading" :option="calc.chartOption"></v-e-chart>
+              <v-e-chart :values="calc.atorn" :loading="loading" :option="calc.chartOption" />
             </div>
           </q-tab-panel>
         </q-tab-panels>

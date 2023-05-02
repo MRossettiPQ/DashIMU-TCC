@@ -16,6 +16,9 @@ class ResultChartScreen extends Vue {
   @Prop()
   sessionId;
 
+  @Prop()
+  movementId;
+
   tabPanel = "Movimento_0";
   movTab = "Tabela";
   filter = "";
@@ -47,12 +50,6 @@ class ResultChartScreen extends Vue {
 
   async mounted() {
     if (this.result?.length > 0) {
-      await this.pagination.search({
-        options: {
-          idSession: this.sessionId,
-        },
-      });
-
       this.selectedMovement = this.result[0].movement;
 
       await this.search();
@@ -70,6 +67,7 @@ class ResultChartScreen extends Vue {
 
   async selectMovement(movement) {
     this.selectedMovement = movement;
+    this.movTab = "Tabela";
     await this.search();
   }
 
@@ -78,36 +76,58 @@ class ResultChartScreen extends Vue {
       align: "center",
       label: "Number Mensuration",
       field: "numberMensuration",
+      name: "numberMensuration",
       style: "width: 50px",
+      format: (val) => Number(val),
       sortable: true,
     },
     {
       align: "center",
       label: "Sensor Name",
       field: "sensorName",
+      name: "sensorName",
       style: "width: 50px",
+    },
+    {
+      align: "center",
+      label: "Sensor Id",
+      field: "sensorId",
+      name: "sensorId",
+      style: "width: 50px",
+      format: (val) => Number(val),
+      sortable: true,
     },
     {
       align: "center",
       label: "Roll",
       field: "Roll",
+      name: "Roll",
       style: "width: 50px",
+      format: (val) => Number(val).toFixed(3),
+      sortable: true,
     },
     {
       align: "center",
       label: "Pitch",
       field: "Pitch",
+      name: "Pitch",
       style: "width: 50px",
+      format: (val) => Number(val).toFixed(3),
+      sortable: true,
     },
     {
       align: "center",
       label: "Yaw",
       field: "Yaw",
+      name: "Yaw",
       style: "width: 50px",
+      format: (val) => Number(val).toFixed(3),
+      sortable: true,
     },
     {
       align: "center",
       field: "Euler_X",
+      name: "Euler_X",
       label: "Euler X",
       format: (val) => Number(val).toFixed(3),
       sortable: true,
@@ -115,6 +135,7 @@ class ResultChartScreen extends Vue {
     {
       align: "center",
       field: "Euler_Y",
+      name: "Euler_Y",
       label: "Euler Y",
       format: (val) => Number(val).toFixed(3),
       sortable: true,
@@ -122,6 +143,7 @@ class ResultChartScreen extends Vue {
     {
       align: "center",
       field: "Euler_Z",
+      name: "Euler_Z",
       label: "Euler Z",
       format: (val) => Number(val).toFixed(3),
       sortable: true,
@@ -130,7 +152,9 @@ class ResultChartScreen extends Vue {
       align: "center",
       label: "ID Measurement",
       field: "id",
+      name: "id",
       style: "width: 50px",
+      format: (val) => Number(val),
       sortable: true,
     },
   ];

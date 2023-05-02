@@ -51,7 +51,6 @@ module.exports = new (class SessionController {
   async listMeasurement(req) {
     const { id: sessionId } = req.params
     const { rpp, page, field, movementId } = req.query
-    console.log('params', req.params, req.query)
 
     const pagination = await PaginationUtil(GyroMeasurement, {
       rpp,
@@ -76,8 +75,8 @@ module.exports = new (class SessionController {
         ],
       },
       order: [
-        ['numberMensuration', 'ASC'],
         ['sensorId', 'ASC'],
+        ['numberMensuration', 'ASC'],
       ],
     })
 

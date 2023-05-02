@@ -1,5 +1,5 @@
 <template>
-  <q-dialog no-refocus ref="dialog" class="dialog" full-height full-width>
+  <q-dialog ref="dialog" class="dialog" full-height full-width>
     <q-card class="column full-height dialog-card">
       <dialog-header :id="id" :label-right-button="!isMobile ? 'Fechar' : null" else-msg="Sem sessão" id-msg="Medição nº" />
       <loading-screen v-if="fetchData.loading" />

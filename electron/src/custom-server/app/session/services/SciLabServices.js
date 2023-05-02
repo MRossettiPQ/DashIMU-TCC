@@ -20,7 +20,8 @@ exports.calculationVariabilityCenter = (sensors, session, chartType = 'eChart') 
     const sensor_1 = sensors.find((s) => s.position === 'ONE')?.gyro_measurements
     // Sensor 2
     const sensor_2 = sensors.find((s) => s.position === 'TWO')?.gyro_measurements
-    if (sensor_1 !== null && sensor_2 !== null) {
+    console.log(sensors.map((s) => s.id))
+    if (sensor_1 && sensor_2) {
       const length = sensor_1?.length
 
       const pitch_1 = getColumn(sensor_1, 'Pitch')
@@ -116,7 +117,10 @@ exports.calculationVariabilityCenter = (sensors, session, chartType = 'eChart') 
 
       let z_atorn = getArraySubtract(r_atorn, 90)
       const rms_r_atorn = getArraySqrt(getArrayPow(z_atorn, 2))
-      const rms_r_pitch_1p = getSqrt(getArraySqrt(getArrayPow(r_pitch_1p, 2)))
+
+      const r_pitch_1p_pow = getArrayPow(r_pitch_1p, 2)
+      const r_pitch_1p_sqrt = getArraySqrt(r_pitch_1p_pow)
+      const rms_r_pitch_1p = getSqrt(r_pitch_1p_sqrt)
 
       const mean_rms_r_atorn = getMean(rms_r_atorn)
       const sd_rms_r_atorn = getStDeviation(rms_r_atorn)

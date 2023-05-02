@@ -23,6 +23,7 @@ class Patients extends Vue {
       align: "left",
       label: "ID",
       field: "id",
+      sortable: true,
     },
     {
       name: "name",

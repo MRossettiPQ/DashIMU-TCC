@@ -47,6 +47,7 @@ class MeasurementHistory extends Vue {
           },
         },
       });
+      console.log(this.fetchData.result?.procedure);
     }
   }
 
