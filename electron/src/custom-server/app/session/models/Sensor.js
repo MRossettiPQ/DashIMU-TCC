@@ -19,9 +19,9 @@ module.exports = function Sensor(sequelize, Sequelize) {
     },
   })
 
-  Sensor.associate = (models) => {
-    Sensor.belongsTo(models.Movement)
-    Sensor.hasMany(models.GyroMeasurement, {
+  Sensor.associate = ({ Movement, GyroMeasurement }) => {
+    Sensor.belongsTo(Movement)
+    Sensor.hasMany(GyroMeasurement, {
       onDelete: 'CASCADE',
     })
     return Sensor

@@ -49,17 +49,23 @@ class ResultChartScreen extends Vue {
     if (this.result?.length > 0) {
       await this.pagination.search({
         options: {
-          idPatient: this.sessionId,
+          idSession: this.sessionId,
         },
       });
 
       this.selectedMovement = this.result[0].movement;
+
       await this.search();
     }
   }
 
   async search() {
-    await this.pagination.search({ movementId: this.selectedMovement.id });
+    await this.pagination.search({
+      options: {
+        idSession: this.sessionId,
+        movementId: this.selectedMovement.id,
+      },
+    });
   }
 
   async selectMovement(movement) {

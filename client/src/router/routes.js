@@ -1,4 +1,4 @@
-import AuthenticationUtils from "src/commons/utils/AuthenticationUtils";
+import AuthenticationUtils from "src/commons/utils/StorageUtils";
 
 export const routes = [
   {
@@ -29,11 +29,6 @@ export const routes = [
             name: "access.register",
             path: "register",
             component: () => import("pages/public/Register/Register.vue"),
-          },
-          {
-            name: "access.socket",
-            path: "socket",
-            component: () => import("pages/public/SocketTest/SocketTest.vue"),
           },
         ],
       },
@@ -73,12 +68,11 @@ export const routes = [
 ];
 
 export const RouteBeforeGuard = async (to, from, next) => {
-  console.log("RouteBeforeGuard", to, from, next);
   // TODO Access granted without authentication
   let accessReleased = ["access.login", "access.register", "access.home", "access.socket", "access.settings"];
   // TODO Hide when logged
   let hideWhenLogged = ["access.login", "access.register"];
-  let token = AuthenticationUtils.getToken();
+  let token = await AuthenticationUtils.getToken();
   let isLoggedIn = !!token;
 
   if (to.name === from.name) {

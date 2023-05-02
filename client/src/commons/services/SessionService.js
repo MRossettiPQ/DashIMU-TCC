@@ -11,18 +11,16 @@ class SessionService {
     return data?.content;
   }
 
-  async getMensurationListBySession({ idSession, term, rpp, page, signal }) {
-    const { data } = await Axios.get(
-      `/api/session/${idSession}/movement/mensuration`,
-      {
-        signal,
-        params: {
-          term,
-          rpp,
-          page,
-        },
-      }
-    );
+  async getMensurationListBySession({ idSession, movementId, term, rpp, page, signal }) {
+    const { data } = await Axios.get(`/api/session/${idSession}/movement/mensuration`, {
+      signal,
+      params: {
+        term,
+        rpp,
+        page,
+        movementId,
+      },
+    });
     return data?.content;
   }
 

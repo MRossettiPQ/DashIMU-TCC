@@ -100,3 +100,4 @@ sensor/build/*
 /electron/info.log
 /electron/log/
 client/yarn.lock
+/client/.ide-helper/

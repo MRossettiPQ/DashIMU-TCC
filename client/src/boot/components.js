@@ -36,7 +36,7 @@ import {
   QToolbarTitle,
   QTooltip,
 } from "quasar";
-import { installFilters, ValidatorPlugin } from "../commons/UseUtils";
+import { ValidatorPlugin } from "../commons/UseUtils";
 
 export default async ({ Vue }) => {
   console.log("[INIT] - Loading components");
@@ -67,13 +67,8 @@ export default async ({ Vue }) => {
     );
 
     // Globally register the component
-    Vue.component(
-      `${componentName}`,
-      componentConfig.default || componentConfig
-    );
+    Vue.component(`${componentName}`, componentConfig.default || componentConfig);
   });
-
-  installFilters(Vue);
 
   Vue.component("QMarkupTable", QMarkupTable);
   Vue.component("QLinearProgress", QLinearProgress);

@@ -1,4 +1,4 @@
-import AuthenticationUtils from "./AuthenticationUtils";
+import AuthenticationUtils from "./StorageUtils";
 import axios from "axios";
 import { notifyError, notifySuccess } from "src/commons/utils/NotifyUtils";
 
@@ -15,8 +15,8 @@ class Request {
     }
 
     // Abaixo são utilitarios para configuração do Axios
-    handlerRequest = (config) => {
-      let token = AuthenticationUtils.getToken();
+    handlerRequest = async (config) => {
+      let token = await AuthenticationUtils.getToken();
       token ? (config.headers["x-access-token"] = token) : void 0;
       return config;
     };
@@ -70,8 +70,8 @@ class Request {
   }
 }
 console.log("AXIOS ENV", process.env);
-console.log("AXIOS NODE_ENV", process.env?.NODE_ENV);
-console.log("AXIOS SERVER_API", process.env?.SERVER_API);
+// console.log("AXIOS NODE_ENV", process.env?.NODE_ENV);
+// console.log("AXIOS SERVER_API", process.env?.SERVER_API);
 export const Axios = Request.create(
   process.env.DEV && {
     baseURL: process.env.SERVER_API?.replace(/['"!@#$%^&*]/g, ""),

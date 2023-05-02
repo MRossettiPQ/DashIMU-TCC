@@ -50,47 +50,36 @@ module.exports = new (class SessionController {
 
   async listMeasurement(req) {
     const { id: sessionId } = req.params
-    const { rpp, page, field } = req.query
-    console.log(req.query)
+    const { rpp, page, field, movementId } = req.query
+    console.log('params', req.params, req.query)
+
     const pagination = await PaginationUtil(GyroMeasurement, {
       rpp,
       page,
       field,
-      include: [
-        {
-          model: Sensor,
-          include: [
-            {
-              model: Movement,
-              where: {
-                sessionId,
+      options: {
+        include: [
+          {
+            model: Sensor,
+            include: [
+              {
+                model: Movement,
+                where: {
+                  sessionId,
+                },
               },
+            ],
+            where: {
+              movementId: movementId || null,
             },
-          ],
-        },
-      ],
+          },
+        ],
+      },
       order: [
         ['numberMensuration', 'ASC'],
         ['sensorId', 'ASC'],
       ],
     })
-    console.log(pagination)
-    /*
-              const mensurationList = await GyroMeasurement.findAll({
-                order: [
-                  ['numberMensuration', 'ASC'],
-                  ['sensorId', 'ASC'],
-                ],
-                include: [
-                  {
-                    model: Sensor,
-                    where: {
-                      movementId,
-                    },
-                  },
-                ],
-              })
-              */
 
     if (!pagination) {
       return await throwNotFound({

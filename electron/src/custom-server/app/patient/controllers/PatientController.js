@@ -39,8 +39,9 @@ module.exports = new (class PatientController {
 
   async list(req) {
     const { rpp, page, field, term } = req.query
+    console.log('aqui')
     const pagination = await PaginationUtil(Patient, {
-      where: GetWhere(term?.length, { name: term }),
+      // where: GetWhere(term?.length, { name: term }),
       rpp,
       page,
       field,

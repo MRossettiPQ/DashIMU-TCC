@@ -116,6 +116,6 @@ class AppElectron {
 }
 
 const run = (async () => {
-  const el = new AppElectron()
-  await el.boot()
+    const el = new AppElectron()
+    await el.boot()
 })()

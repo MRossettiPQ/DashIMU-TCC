@@ -42,4 +42,4 @@ class MariaMySQL {
   }
 }
 
-module.exports = { MariaMySQL }
+module.exports = {MariaMySQL}

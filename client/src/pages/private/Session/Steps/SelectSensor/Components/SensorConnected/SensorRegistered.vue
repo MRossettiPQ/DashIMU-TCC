@@ -6,9 +6,7 @@
       <q-item-label caption>
         {{ sensor.device.ip }}
       </q-item-label>
-      <q-item-label v-if="measurementNumber > 0">
-        Medições armazenadas: {{ measurementNumber }}
-      </q-item-label>
+      <q-item-label v-if="measurementNumber > 0"> Medições armazenadas: {{ measurementNumber }} </q-item-label>
       <q-select
         v-model="sensor.position"
         class="col"
@@ -18,31 +16,15 @@
         dense
         :label="$t('session.positions')"
         :rules="[$validators.notBlank]"
+        hint="Não pode ser nulo"
         option-label="label"
         option-value="value"
         @input="(value) => update(value)"
       />
     </q-item-section>
     <q-item-section class="col menu" style="margin-left: 0px !important">
-      <q-btn
-        dense
-        flat
-        icon="done"
-        color="primary"
-        :disable="connected"
-        aria-label="Conectar"
-        round
-        @click="connect"
-      />
-      <q-btn
-        dense
-        flat
-        icon="close"
-        color="primary"
-        :disable="!connected"
-        round
-        @click="disconnect"
-      />
+      <q-btn dense flat icon="done" color="primary" :disable="connected" aria-label="Conectar" round @click="connect" />
+      <q-btn dense flat icon="close" color="primary" :disable="!connected" round @click="disconnect" />
       <q-btn dense flat icon="more_vert" color="primary">
         <q-menu>
           <q-list class="column" style="min-width: 100px; gap: 6px">

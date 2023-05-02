@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 
-class AuthenticationUtils {
-  store(key, value, timeout) {
+class StorageUtils {
+  async store(key, value, timeout) {
     if (key && value) {
       value = JSON.stringify(value);
       window.localStorage[key] = value;
@@ -14,7 +14,7 @@ class AuthenticationUtils {
     }
   }
 
-  get(key) {
+  async get(key) {
     let timeout = window.localStorage[key + "-timeout"];
     if (timeout && timeout !== "undefined") {
       timeout = JSON.parse(timeout);
@@ -29,43 +29,43 @@ class AuthenticationUtils {
     }
   }
 
-  remove(key) {
+  async remove(key) {
     window.localStorage[key] = undefined;
     window.localStorage[key + "-timeout"] = undefined;
     window.localStorage.removeItem(key);
     window.localStorage.removeItem(key + "-timeout");
   }
 
-  eraseLocalStorage() {
+  async eraseLocalStorage() {
     window.localStorage.clear();
   }
 
   //
-  getUser = () => {
+  async getUser() {
     return JSON.parse(localStorage.getItem("user"));
-  };
+  }
 
-  getToken = () => {
-    const user = this.getUser();
+  async getToken() {
+    const user = await this.getUser();
 
     if (user) {
       return user.accessToken;
     } else {
       return null;
     }
-  };
-
-  saveUser(user) {
-    this.store("user", user);
   }
 
-  saveToken(token) {
-    this.store("token", token);
+  async setUser(user) {
+    await this.store("user", user);
   }
 
-  removeToken() {
-    this.remove("token");
+  async saveToken(token) {
+    await this.store("token", token);
+  }
+
+  async removeToken() {
+    await this.remove("token");
   }
 }
 
-export default new AuthenticationUtils();
+export default new StorageUtils();

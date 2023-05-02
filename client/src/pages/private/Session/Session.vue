@@ -2,10 +2,7 @@
   <section class="responsive-height">
     <loading-screen v-if="fetchData.loading" />
     <error-screen v-else-if="fetchData.hasError" />
-    <div
-      v-else-if="fetchData.result !== null"
-      class="column responsive-content div-session h-100 w-100"
-    >
+    <div v-else-if="fetchData.result !== null" class="column responsive-content div-session h-100 w-100">
       <stepper-header
         :navigation="navigation"
         :session.sync="session"
@@ -18,7 +15,7 @@
         class="row"
       />
 
-      <transition class="row" name="slide-fade" mode="out-in">
+      <transition class="row overflow-hidden" name="slide-fade" mode="out-in">
         <Component
           :is="navigation.actualStepValue"
           :session-connection="sessionConnection"

@@ -43,7 +43,7 @@ exports.VerifyUserEmailDuplicate = async (req, res, next) => {
 }
 
 exports.verifyExistsCPFinPatient = async (req, res, next) => {
-  if (req.body) {
+  if (!req.body) {
     return await throwError({
       local: 'SERVER:VALIDATOR-USER',
       message: 'Nenhum dado valido foi enviado',

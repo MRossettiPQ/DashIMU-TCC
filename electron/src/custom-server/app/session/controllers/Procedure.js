@@ -415,11 +415,15 @@ exports.getProcedures = () => {
     procedures.unshift({
       articulation_name: translate('procedures.shoulder') + ' EM DEV',
       value: 'SHOULDER',
-      min_sensor: 1,
+      min_sensor: 2,
       sensor_positions: [
         {
           label: 'ONE',
           value: 'ONE',
+        },
+        {
+          label: 'TWO',
+          value: 'TWO',
         },
       ],
       rules: [

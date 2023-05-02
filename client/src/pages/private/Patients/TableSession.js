@@ -1,5 +1,5 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
-import MeasurementHistory from "../MeasurementHistory.vue";
+import MeasurementHistory from "./MeasurementHistory.vue";
 import ImportExample from "./ImportExample.vue";
 import DialogUtils from "src/commons/utils/DialogUtils";
 import { LoadDataUtils } from "src/commons/utils/LoadDataUtils";

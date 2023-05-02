@@ -66,8 +66,8 @@ module.exports = new (class CustomDatabase {
     if (!modelsPath.length) {
       return throwError({
         local: 'SERVER:SEQUELIZE:MODELS-ERROR',
-        message: 'Não foi encontrado nenhuma entidade nos arquivos do sistema',
-        log: 'Não foi encontrado nenhuma entidade nos arquivos do sistema',
+        message: translate('sequelize.empty_entity'),
+        log: translate('sequelize.empty_entity'),
       })
     }
 

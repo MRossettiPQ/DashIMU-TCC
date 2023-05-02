@@ -96,5 +96,5 @@ class CustomServer {
 }
 
 module.exports = {
-  CustomServer,
+    CustomServer,
 }

@@ -12,12 +12,12 @@ const CreateToken = async (payload) => {
 
 const ResolveToken = async (token) => {
   logColor('SERVER:RESOLVE-TOKEN', translate('authorize_jwt.compare_crypt'))
-  return jwt.verify(token, settings.secret)
+  return jwt.verify(token, settings.secret, null, null)
 }
 
 const CompareCrypt = async (first, second) => {
   logColor('SERVER:COMPARE-CRYPT', translate('authorize_jwt.compare_crypt'))
-  return bcryptjs.compareSync(first, second)
+  return await bcryptjs.compare(first, second)
 }
 
 const VerifyToken = async (req, res, next) => {

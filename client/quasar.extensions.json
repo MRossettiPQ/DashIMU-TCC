@@ -5,5 +5,8 @@
     "common_root_object": ".env",
     "create_env_files": false,
     "add_env_to_gitignore": false
+  },
+  "ide-helper": {
+    "addToGitIgnore": true
   }
 }

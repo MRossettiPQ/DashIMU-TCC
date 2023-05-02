@@ -10,8 +10,10 @@
 const path = require("path");
 const ESLintPlugin = require("eslint-webpack-plugin");
 const environment = require("./environment");
+const { createHelpers } = require("./scripts/create-helpers");
 
-module.exports = function (/* ctx */) {
+module.exports = async function (/* ctx */) {
+  await createHelpers();
   return {
     // https://v1.quasar.dev/quasar-cli/supporting-ts
     supportTS: false,
@@ -22,7 +24,7 @@ module.exports = function (/* ctx */) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v1.quasar.dev/quasar-cli/boot-files
-    boot: ["components", "i18n", "axios"],
+    boot: ["components", "i18n", "axios", "filters"],
 
     // https://v1.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
     css: ["app.scss"],

@@ -60,33 +60,31 @@ module.exports = function GyroMeasurement(sequelize, Sequelize) {
     Yaw: {
       type: Sequelize.DECIMAL,
     },
-    /*
-        TODO descomentar depois de fazer backup, colunas faltando no banco
-        Euler_X: {
-          type: Sequelize.DECIMAL,
-        },
-        Euler_Y: {
-          type: Sequelize.DECIMAL,
-        },
-        Euler_Z: {
-          type: Sequelize.DECIMAL,
-        },
-        Quaternion_X: {
-          type: Sequelize.DECIMAL,
-        },
-        Quaternion_Y: {
-          type: Sequelize.DECIMAL,
-        },
-        Quaternion_Z: {
-          type: Sequelize.DECIMAL,
-        },
-        Quaternion_W: {
-          type: Sequelize.DECIMAL,
-        }, */
+    Euler_X: {
+      type: Sequelize.DECIMAL,
+    },
+    Euler_Y: {
+      type: Sequelize.DECIMAL,
+    },
+    Euler_Z: {
+      type: Sequelize.DECIMAL,
+    },
+    Quaternion_X: {
+      type: Sequelize.DECIMAL,
+    },
+    Quaternion_Y: {
+      type: Sequelize.DECIMAL,
+    },
+    Quaternion_Z: {
+      type: Sequelize.DECIMAL,
+    },
+    Quaternion_W: {
+      type: Sequelize.DECIMAL,
+    },
   })
 
-  GyroMeasurement.associate = (models) => {
-    GyroMeasurement.belongsTo(models.Sensor)
+  GyroMeasurement.associate = ({ Sensor }) => {
+    GyroMeasurement.belongsTo(Sensor)
     return GyroMeasurement
   }
 

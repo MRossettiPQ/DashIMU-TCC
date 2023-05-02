@@ -24,9 +24,9 @@ module.exports = function Movement(sequelize, Sequelize) {
       ],
     },
   })
-  Movement.associate = (models) => {
-    Movement.belongsTo(models.Session)
-    Movement.hasMany(models.Sensor, {
+  Movement.associate = ({ Session, Sensor }) => {
+    Movement.belongsTo(Session)
+    Movement.hasMany(Sensor, {
       onDelete: 'CASCADE',
     })
     return Movement

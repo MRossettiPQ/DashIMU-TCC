@@ -21,12 +21,12 @@ module.exports = function Session(sequelize, Sequelize) {
     },
   })
 
-  Session.associate = (models) => {
-    Session.hasMany(models.Movement, {
+  Session.associate = ({ Movement, Patient, User }) => {
+    Session.hasMany(Movement, {
       onDelete: 'CASCADE',
     })
-    Session.belongsTo(models.Patient)
-    Session.belongsTo(models.User)
+    Session.belongsTo(Patient)
+    Session.belongsTo(User)
     return Session
   }
 

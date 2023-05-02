@@ -41,6 +41,7 @@ class Session extends Vue {
   get inDev() {
     return process.env.DEV;
   }
+
   fetchData = LoadDataUtils.loadList({
     loadList: {
       metadata: SessionService.getMetadata,
@@ -48,9 +49,7 @@ class Session extends Vue {
     },
     onLoad: ({ result }) => {
       this.fetchResult = result;
-      this.sessionConnection.connectSession(
-        this.fetchResult?.metadata?.socket_url
-      );
+      this.sessionConnection.connectSession(this.fetchResult?.metadata?.socket_url);
       this.session.load({
         metadata: result.metadata,
       });
@@ -92,8 +91,7 @@ class Session extends Vue {
       this.loadingSave = true;
       if (this.session.checkMovementsMeasurements) {
         Notify.create({
-          message:
-            "Você deve ter captado alguma medição para completar esse procedimento!",
+          message: "Você deve ter captado alguma medição para completar esse procedimento!",
           textColor: "white",
           color: "error",
         });
@@ -106,7 +104,7 @@ class Session extends Vue {
         },
       };
       const data = await SessionService.postSession(bean);
-      console.log(data)
+      console.log(data);
       if (data != null) {
         this.saveResult = data;
         this.session.restart();

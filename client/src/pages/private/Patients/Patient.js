@@ -2,8 +2,7 @@ import { Component, Prop, Ref, Vue } from "vue-property-decorator";
 import PatientService from "src/commons/services/PatientService";
 import FormUtils from "src/commons/utils/FormUtils";
 import MeasurementHistory from "./MeasurementHistory.vue";
-import TableSession from "./Components/TableSession.vue";
-import DateUtils from "src/commons/utils/DateUtils";
+import TableSession from "./TableSession.vue";
 import { LoadDataUtils } from "src/commons/utils/LoadDataUtils";
 
 @Component({
@@ -14,7 +13,7 @@ class Patient extends Vue {
   @Ref("dialog")
   dialog;
 
-  @Prop()
+  @Prop({ default: null })
   id;
 
   bean = {};
@@ -30,7 +29,7 @@ class Patient extends Vue {
   }
 
   async mounted() {
-    if (this.id !== null) {
+    if (this.id) {
       this.bean = await this.fetchData.load({ id: this.id });
     } else {
       this.bean = {};
@@ -52,10 +51,6 @@ class Patient extends Vue {
     } finally {
       this.loading = false;
     }
-  }
-
-  filterDate(date) {
-    return DateUtils.getDateFormated(date);
   }
 
   get isMobile() {

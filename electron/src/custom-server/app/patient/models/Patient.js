@@ -32,8 +32,8 @@ module.exports = function Patient(sequelize, Sequelize) {
     },
   })
 
-  Patient.associate = (models) => {
-    Patient.hasMany(models.Session, {
+  Patient.associate = ({ Session }) => {
+    Patient.hasMany(Session, {
       onDelete: 'CASCADE',
     })
     return Patient

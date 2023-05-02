@@ -1,4 +1,4 @@
-import {Component, Vue, Watch} from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import { LoadDataUtils } from "src/commons/utils/LoadDataUtils";
 import SocketService from "src/commons/services/SocketService";
 import SensorOptions from "./Components/SensorOptions.vue";
@@ -19,15 +19,14 @@ class Home extends Vue {
   });
 
   baseSensor = {
-    nameSensor: 'To Config',
-    ip: '192.168.4.1'
-  }
+    nameSensor: "To Config",
+    ip: "192.168.4.1",
+  };
 
-  @Watch('fetchData.loading')
+  @Watch("fetchData.loading")
   loading() {
-    console.log(this.fetchData.result)
+    // console.log(this.fetchData.result)
   }
-
 }
 
 export default Home;
