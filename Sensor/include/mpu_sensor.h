@@ -169,7 +169,7 @@ String ReturnsJSONFromMeasurement(int MeasurementNumber) {
     double Euler_X = mpu.getEulerX();
     double Euler_Y = mpu.getEulerY();
     double Euler_Z = mpu.getEulerZ();
-    // EulerX, EulerY e EulerZ
+    // QuaternionX, QuaternionY, QuaternionZ e QuaternionW
     double Quaternion_X = mpu.getQuaternionX();
     double Quaternion_Y = mpu.getQuaternionY();
     double Quaternion_Z = mpu.getQuaternionZ();
