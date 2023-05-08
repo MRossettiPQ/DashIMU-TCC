@@ -5,7 +5,7 @@
         <q-btn :disable="loading" :label="!isMobile ? 'Session' : null" color="primary" dense icon="add" unelevated @click="toMeasurement" />
         <q-btn :disable="loading" :label="!isMobile ? 'Importar' : null" color="primary" dense unelevated icon="publish" @click="openImportExample" />
         <q-space />
-        <q-input v-model="filter" borderless class="col-5" color="primary" debounce="300" unelevated dense outlined>
+        <q-input v-model="filter" borderless class="col" color="primary" debounce="300" unelevated dense outlined>
           <template #append>
             <q-icon name="search" />
           </template>
@@ -22,9 +22,11 @@
   gap: 12px;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   width: 100%;
   padding-bottom: 2px;
 }
+
 ::v-deep .q-table__top,
 .relative-position,
 .row,

@@ -68,6 +68,10 @@ $colors: ("primary": var(--q-color-primary),
   .p-r-#{$space} {
     padding-right: #{$space + 'px'} !important
   }
+
+  .gap-#{$space} {
+    gap: #{$space + 'px'} !important
+  }
 }
 
 @for $space from 0 through 20 {
