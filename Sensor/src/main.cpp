@@ -15,6 +15,7 @@ void setup(){
 
     //  Initialize FileSystem
     InitFileSystem();
+
     //  Initialize WiFi AP Station
     SetWiFi();
 
@@ -22,76 +23,71 @@ void setup(){
     InitIMU();
 
     //  Initialize CalibrateIMU
-    CalibrateIMU();
-
-    //  Initialize Web Server and Web Socket
-    SetServer();
-
-    SetWebsocketClient();
+    //  CalibrateIMU();
     
     digitalWrite(LED_READY, HIGH);
 }
 
-void loop(){
-    bool connected = WiFiClass::status() == WL_CONNECTED;
-    static uint32_t prev_ms = millis();
-    static uint32_t last_clean_up = prev_ms;
+void loop() {
+        bool connected = WiFiClass::status() == WL_CONNECTED;
+        static uint32_t prev_ms = millis();
+        static uint32_t last_clean_up = prev_ms;
 
-    if (connected && (millis() > (last_clean_up + 500))){
-        last_clean_up = millis();
-        confServerSocket.cleanupClients();
-        if (clientBackEnd.available()){
-            clientBackEnd.poll();
-        }
-        else{
-            RestartMeasurement();
-            ConnectBackend();
-        }
-    }
-
-    if (mpu.update()){
-        if (millis() >= (prev_ms + TIME_BETWEEN_MEASUREMENT_MILIS)){
-            prev_ms = millis();
-            switch (cmdActual){
-                case 1:
-                    // Serial.println("[SENSOR] - Mount/Send buffer");
-                    MountBufferToSend();
-                    break;
-
-                case 2:
-                    Serial.println("[SENSOR] - Pause");
-                    RestartMeasurement();
-                    break;
-
-                case 3:
-                    Serial.println("[SENSOR] - Restart");
-                    RestartMeasurement();
-                    break;
-
-                case 4:
-                    RestartMeasurement();
-                    Serial.println("[SENSOR] - Calibrate sensor");
-                    CalibrateIMU();
-                    break;
-
-                case 5:
-                    RestartMeasurement();
-                    Serial.println("[SENSOR] - Load calibration");
-                    LoadIMUCalibration();
-                    break;
-
-                default:
-                    break;
+        if (connected && (millis() > (last_clean_up + 500))) {
+            last_clean_up = millis();
+            confServerSocket.cleanupClients();
+            if (clientBackEnd.available()){
+                clientBackEnd.poll();
+            }
+            else{
+                RestartMeasurement();
+                ConnectBackend();
             }
         }
 
-        if (!connected){
-            StartWiFi();
+        if (mpu.update()){
+            if (millis() >= (prev_ms + TIME_BETWEEN_MEASUREMENT_MILIS)){
+                prev_ms = millis();
+                switch (cmdActual){
+                    case 1:
+                        // Serial.println("[SENSOR] - Mount/Send buffer");
+                        MountBufferToSend();
+                        break;
 
-            vTaskDelay(500 / portTICK_PERIOD_MS);
-            digitalWrite(LED_READY, HIGH);
-            vTaskDelay(500 / portTICK_PERIOD_MS);
-            digitalWrite(LED_READY, LOW);
-        }
+                    case 2:
+                        Serial.println("[SENSOR] - Pause");
+                        RestartMeasurement();
+                        break;
+
+                    case 3:
+                        Serial.println("[SENSOR] - Restart");
+                        RestartMeasurement();
+                        break;
+
+                    case 4:
+                        RestartMeasurement();
+                        Serial.println("[SENSOR] - Calibrate sensor");
+                        CalibrateIMU();
+                        break;
+
+                    case 5:
+                        RestartMeasurement();
+                        Serial.println("[SENSOR] - Load calibration");
+                        LoadIMUCalibration();
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            if (!connected){
+                StartWiFi();
+
+                vTaskDelay(500 / portTICK_PERIOD_MS);
+                digitalWrite(LED_READY, HIGH);
+                vTaskDelay(500 / portTICK_PERIOD_MS);
+                digitalWrite(LED_READY, LOW);
+            }
     }
 }

@@ -15,7 +15,10 @@ void SetWiFi() {
     itoa(getRandom(0, 100, 1), str, 10);
     strcat(ssidName, str);
     WiFi.softAP(ssidName, nullptr);
-    
+
+    SetServer();
+
+    //  Initialize Web Server and Web Socket
     InitServer();
 
     IPAddress IP = WiFi.softAPIP();
@@ -26,9 +29,7 @@ void SetWiFi() {
         ESP.restart();
     }
 
-    do {
-        StartWiFi();
-    } while (WiFiClass::status() != WL_CONNECTED);
+    StartWiFi();
 }
 
 void StartWiFi() {
@@ -38,16 +39,7 @@ void StartWiFi() {
         if (WiFiClass::status() != WL_CONNECTED) {
             tryConnectWifi++;
             vTaskDelay(500 / portTICK_PERIOD_MS);
-            Serial.print("WiFi not connected");
-
-            if (tryConnectWifi == 50) {
-                Serial.println("Restarting WIFI");
-                Serial.println("SSID: " + ssid);
-                Serial.println("Password: " + password);
-                Serial.println("");
-                tryConnectWifi = 0;
-                WiFi.disconnect(true, true);
-            }
+            Serial.println("WiFi not connected");
         } 
         
         if (WiFiClass::status() == WL_CONNECTED)  {
@@ -55,12 +47,15 @@ void StartWiFi() {
             addressESP = WiFi.localIP().toString();
             Serial.println("\n[SENSOR] - Wi-Fi connection established - IP address: " + addressESP);
             Serial.println("\n[SENSOR] - IP Address:\t" + addressESP + ":" + WEB_PORT);
+
+            SetWebsocketClient();
         }
     }
 }
 
 String ScanWiFi() {
     String wifiList = "[";
+    /*
     int n = WiFi.scanComplete();
     if (n == -2) {
         WiFi.scanNetworks(true);
@@ -79,7 +74,7 @@ String ScanWiFi() {
         if (WiFi.scanComplete() == -2) {
             WiFi.scanNetworks(true);
         }
-    }
+    }*/
     wifiList += "]";
     return wifiList;
 }

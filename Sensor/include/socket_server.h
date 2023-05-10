@@ -119,7 +119,7 @@ void SetServer() {
 }
 
 void InitServer() {
-    Serial.println("[SENSOR] - Starting th Server");
+    Serial.println("[SENSOR] - Starting the Server");
     confServer.begin();
 }
 
