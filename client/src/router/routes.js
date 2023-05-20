@@ -55,6 +55,12 @@ export const routes = [
             component: () => import("pages/private/Session/Session.vue"),
             meta: { requiresAuth: true },
           },
+          {
+            name: "private.n-session",
+            path: "n-session/:id",
+            component: () => import("pages/private/NSession/Session.vue"),
+            meta: { requiresAuth: true },
+          },
         ],
       },
     ],

@@ -120,7 +120,7 @@ exports.calculationVariabilityCenter = (sensors, session, chartType = 'eChart') 
 
       const r_pitch_1p_pow = getArrayPow(r_pitch_1p, 2)
       const r_pitch_1p_sqrt = getArraySqrt(r_pitch_1p_pow)
-      const rms_r_pitch_1p = getSqrt(r_pitch_1p_sqrt)
+      const rms_r_pitch_1p = getSqrt(r_pitch_1p_sqrt.reduce((partialSum, a) => partialSum + a, 0))
 
       const mean_rms_r_atorn = getMean(rms_r_atorn)
       const sd_rms_r_atorn = getStDeviation(rms_r_atorn)

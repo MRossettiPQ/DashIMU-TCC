@@ -410,3 +410,17 @@ $colors: ("primary": var(--q-color-primary),
 .nowrap {
   white-space: nowrap;
 }
+
+/*
+ * Clamp
+ */
+@for $lines from 1 through 25 {
+  .clamp-lines-#{$lines} {
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: $lines;
+    white-space: initial;
+  }
+}

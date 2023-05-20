@@ -40,18 +40,18 @@
               class="col"
               style="display: flex ;flex-direction: column; gap: 12px; align-content: flex-end"
             >
-              <q-select
-                v-model="config.ssid"
-                class="w-100"
-                :options="config.wifiList"
-                emit-value
-                filled
-                dense
-                label="Lista de wi-fi disponiveis"
-                option-label="ssid"
-                option-value="ssid"
-                @input="changeSSID()"
-              />
+<!--              <q-select-->
+<!--                v-model="config.ssid"-->
+<!--                class="w-100"-->
+<!--                :options="config.wifiList"-->
+<!--                emit-value-->
+<!--                filled-->
+<!--                dense-->
+<!--                label="Lista de wi-fi disponiveis"-->
+<!--                option-label="ssid"-->
+<!--                option-value="ssid"-->
+<!--                @input="changeSSID()"-->
+<!--              />-->
               <q-input
                 v-model="config.ssid"
                 :rules="[$validators.notBlank]"
