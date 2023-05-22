@@ -1,0 +1,1104 @@
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:01 - [SERVER] - Iniciando server"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:02 - [SERVER:SEQUELIZE-SQLITE] - "}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:02 - [SERVER:SEQUELIZE-SQLITE] - false"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:02 - [SERVER:SEQUELIZE] - Carregar models"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:02 - [SERVER:SEQUELIZE:MODELS] - User"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:23 - [SERVER] - Iniciando server"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:24 - [SERVER:SEQUELIZE-SQLITE] - "}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:24 - [SERVER:SEQUELIZE-SQLITE] - false"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:24 - [SERVER:SEQUELIZE] - Carregar models"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:24 - [SERVER:SEQUELIZE:MODELS] - User"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:24 - [SERVER:SEQUELIZE:MODELS] - Session"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:24 - [SERVER:SEQUELIZE:MODELS] - Sensor"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:24 - [SERVER:SEQUELIZE:MODELS] - Movement"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:24 - [SERVER:SEQUELIZE:MODELS] - GyroMeasurement"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:24 - [SERVER:SEQUELIZE:MODELS] - Patient"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:24 - [SERVER] - Carregando rotas da api"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SEQUELIZE:LOG] - Executed (default): DROP TABLE IF EXISTS `gyro_measurements`;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SEQUELIZE:LOG] - Executed (default): DROP TABLE IF EXISTS `sensors`;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SEQUELIZE:LOG] - Executed (default): DROP TABLE IF EXISTS `movements`;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SEQUELIZE:LOG] - Executed (default): DROP TABLE IF EXISTS `sessions`;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SEQUELIZE:LOG] - Executed (default): DROP TABLE IF EXISTS `patients`;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SEQUELIZE:LOG] - Executed (default): DROP TABLE IF EXISTS `users`;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SEQUELIZE:LOG] - Executed (default): PRAGMA foreign_keys = OFF"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SEQUELIZE:LOG] - Executed (default): DROP TABLE IF EXISTS `users`;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SEQUELIZE:LOG] - Executed (default): DROP TABLE IF EXISTS `sessions`;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SEQUELIZE:LOG] - Executed (default): DROP TABLE IF EXISTS `sensors`;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SEQUELIZE:LOG] - Executed (default): DROP TABLE IF EXISTS `movements`;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SEQUELIZE:LOG] - Executed (default): DROP TABLE IF EXISTS `gyro_measurements`;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SEQUELIZE:LOG] - Executed (default): DROP TABLE IF EXISTS `patients`;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SEQUELIZE:LOG] - Executed (default): PRAGMA foreign_keys = ON"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SEQUELIZE:LOG] - Executed (default): DROP TABLE IF EXISTS `users`;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SEQUELIZE:LOG] - Executed (default): CREATE TABLE IF NOT EXISTS `users` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `username` VARCHAR(255) NOT NULL UNIQUE, `name` VARCHAR(255) NOT NULL, `email` VARCHAR(255) NOT NULL, `password` VARCHAR(255) NOT NULL, `role` TEXT DEFAULT 'PHYSIOTHERAPIST', `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL);"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`users`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_INFO(`sqlite_autoindex_users_1`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SEQUELIZE:LOG] - Executed (default): DROP TABLE IF EXISTS `patients`;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SEQUELIZE:LOG] - Executed (default): CREATE TABLE IF NOT EXISTS `patients` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` VARCHAR(255) NOT NULL, `cpf` VARCHAR(255) NOT NULL UNIQUE, `email` VARCHAR(255) NOT NULL, `phone` VARCHAR(255), `birthday` DATETIME, `stature` DECIMAL, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL);"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`patients`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_INFO(`sqlite_autoindex_patients_1`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SEQUELIZE:LOG] - Executed (default): DROP TABLE IF EXISTS `sessions`;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SEQUELIZE:LOG] - Executed (default): CREATE TABLE IF NOT EXISTS `sessions` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `date` DATETIME, `type` TEXT DEFAULT 'REAL', `procedure` TEXT, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, `userId` INTEGER REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE, `patientId` INTEGER REFERENCES `patients` (`id`) ON DELETE SET NULL ON UPDATE CASCADE);"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`sessions`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SEQUELIZE:LOG] - Executed (default): DROP TABLE IF EXISTS `movements`;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SEQUELIZE:LOG] - Executed (default): CREATE TABLE IF NOT EXISTS `movements` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `type` TEXT, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, `sessionId` INTEGER REFERENCES `sessions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE);"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`movements`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SEQUELIZE:LOG] - Executed (default): DROP TABLE IF EXISTS `sensors`;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SEQUELIZE:LOG] - Executed (default): CREATE TABLE IF NOT EXISTS `sensors` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `sensorName` VARCHAR(255), `position` TEXT, `type` TEXT DEFAULT 'GYROSCOPE', `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, `movementId` INTEGER REFERENCES `movements` (`id`) ON DELETE SET NULL ON UPDATE CASCADE);"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`sensors`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SEQUELIZE:LOG] - Executed (default): DROP TABLE IF EXISTS `gyro_measurements`;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SEQUELIZE:LOG] - Executed (default): CREATE TABLE IF NOT EXISTS `gyro_measurements` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `sensorName` VARCHAR(255), `numberMensuration` INTEGER, `hourMensuration` DATETIME, `Acc_X` DECIMAL, `Acc_Y` DECIMAL, `Acc_Z` DECIMAL, `AccelX_mss` DECIMAL, `AccelY_mss` DECIMAL, `AccelZ_mss` DECIMAL, `Gyr_X` DECIMAL, `Gyr_Y` DECIMAL, `Gyr_Z` DECIMAL, `Mag_X` DECIMAL, `Mag_Y` DECIMAL, `Mag_Z` DECIMAL, `Roll` DECIMAL, `Pitch` DECIMAL, `Yaw` DECIMAL, `Euler_X` DECIMAL, `Euler_Y` DECIMAL, `Euler_Z` DECIMAL, `Quaternion_X` DECIMAL, `Quaternion_Y` DECIMAL, `Quaternion_Z` DECIMAL, `Quaternion_W` DECIMAL, `createdAt` DATETIME NOT NULL, `updatedAt` DATETIME NOT NULL, `sensorId` INTEGER REFERENCES `sensors` (`id`) ON DELETE CASCADE ON UPDATE CASCADE);"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`gyro_measurements`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SERVER:DATABASE] - Drop ou Rsync Database"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SERVER:SOCKET-IO] - Setup socket.io"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:26:27 - [SERVER] - Server está rodando na porta: 8000"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:02 - [SERVER:REQUEST] - [GET] - /api/websocket/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:04 - [] - [GET] - /api/websocket/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:04 - [MORGAN] - [GET] - /api/websocket/metadata - 1516.737 ms - 200 - 96"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:04 - [SERVER:REQUEST] - [GET] - /api/websocket/list"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:04 - [SERVER:SENSOR] - [GET] - /api/websocket/list"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:04 - [MORGAN] - [GET] - /api/websocket/list - 1.044 ms - 200 - 27"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:12 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:12 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:12 - [MORGAN] - [GET] - /api/session/metadata - 1.733 ms - 200 - 6716"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:12 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:12 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:12 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:12 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:12 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:12 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:12 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:12 - [SERVER:CONTEXT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:12 - [MORGAN] - [GET] - /api/patient/1 - 17.533 ms - 500 - 34"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:12 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0vozz - 1.160 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:14 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0vpK4 - 0.222 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:16 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0vpmV - 0.156 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:19 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0vqcB - 0.145 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:21 - [SERVER:REQUEST] - [GET] - /api/websocket/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:22 - [] - [GET] - /api/websocket/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:22 - [MORGAN] - [GET] - /api/websocket/metadata - 867.797 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:22 - [SERVER:REQUEST] - [GET] - /api/websocket/list"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:22 - [SERVER:SENSOR] - [GET] - /api/websocket/list"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:22 - [MORGAN] - [GET] - /api/websocket/list - 0.686 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:24 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0vrqa - 0.173 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:29 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0vt2w - 0.174 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:34 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0vuHJ - 0.163 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:39 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0vvVu - 0.185 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:40 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`username` = 'socket-io';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:40 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`email` = 'socket-io@socket-io.com' LIMIT 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:40 - [SERVER:REQUEST] - [POST] - /api/auth/register"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:40 - [SEQUELIZE:LOG] - Executed (default): INSERT INTO `users` (`id`,`username`,`name`,`email`,`password`,`role`,`createdAt`,`updatedAt`) VALUES (NULL,$1,$2,$3,$4,$5,$6,$7);"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:40 - [SERVER:AUTHENTICATION] - [POST] - /api/auth/register"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:40 - [MORGAN] - [POST] - /api/auth/register - 49.420 ms - 200 - 114"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:40 - [SERVER:REQUEST] - [POST] - /api/auth/login"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:40 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`username` = 'socket-io';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:40 - [SERVER:COMPARE-CRYPT] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:40 - [SERVER:CREATE-TOKEN] - Gerar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:40 - [SERVER:AUTHENTICATION] - [POST] - /api/auth/login"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:40 - [MORGAN] - [POST] - /api/auth/login - 24.642 ms - 200 - 284"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:40 - [SERVER:REQUEST] - [GET] - /api/websocket/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:41 - [] - [GET] - /api/websocket/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:41 - [MORGAN] - [GET] - /api/websocket/metadata - 933.204 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:41 - [SERVER:REQUEST] - [GET] - /api/websocket/list"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:41 - [SERVER:SENSOR] - [GET] - /api/websocket/list"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:41 - [MORGAN] - [GET] - /api/websocket/list - 1.239 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:41 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:41 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:41 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:41 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:41 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:41 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:41 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:41 - [SERVER:REQUEST] - [GET] - /api/patient/"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:41 - [SEQUELIZE:LOG] - Executed (default): SELECT count(*) AS `count` FROM `patients` AS `patients`;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:41 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` ORDER BY `patients`.`id` ASC;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:41 - [SERVER:PATIENT] - [GET] - /api/patient/"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:41 - [MORGAN] - [GET] - /api/patient/ - 12.247 ms - 200 - 112"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:44 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0vwkJ - 0.263 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:49 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0vxyr - 0.168 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:54 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0vzBE - 0.135 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:57 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:57 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:57 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:57 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:57 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:57 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:57 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:57 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`cpf` = '101.290.359-12';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:57 - [SERVER:REQUEST] - [POST] - /api/patient"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:57 - [SEQUELIZE:LOG] - Executed (default): INSERT INTO `patients` (`id`,`name`,`cpf`,`email`,`phone`,`stature`,`createdAt`,`updatedAt`) VALUES (NULL,$1,$2,$3,$4,$5,$6,$7);"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:57 - [SERVER:PATIENT] - [POST] - /api/patient"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:57 - [MORGAN] - [POST] - /api/patient - 14.139 ms - 200 - 245"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:57 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:57 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:57 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:57 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:57 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:57 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:57 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:57 - [SERVER:REQUEST] - [GET] - /api/patient/"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:57 - [SEQUELIZE:LOG] - Executed (default): SELECT count(*) AS `count` FROM `patients` AS `patients`;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:57 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` ORDER BY `patients`.`id` ASC;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:57 - [SERVER:PATIENT] - [GET] - /api/patient/"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:57 - [MORGAN] - [GET] - /api/patient/ - 16.811 ms - 200 - 324"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:58 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:58 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:58 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:58 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:58 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:58 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:58 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:58 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:58 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:58 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:58 - [MORGAN] - [GET] - /api/patient/1 - 6.782 ms - 200 - 235"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:58 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:58 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:58 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:58 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:58 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:58 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:58 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:58 - [SERVER:REQUEST] - [GET] - /api/patient/1/session"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:58 - [SEQUELIZE:LOG] - Executed (default): SELECT count(*) AS `count` FROM `sessions` AS `sessions`;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:58 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `date`, `type`, `procedure`, `createdAt`, `updatedAt`, `userId`, `patientId` FROM `sessions` AS `sessions` ORDER BY `sessions`.`id` ASC;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:58 - [SERVER:SESSION] - [GET] - /api/patient/1/session"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:58 - [MORGAN] - [GET] - /api/patient/1/session - 8.166 ms - 200 - 112"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:41:59 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0v-Pg - 0.232 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:04 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0v_eI - 0.147 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:09 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0w0sk - 0.149 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:14 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:14 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:14 - [MORGAN] - [GET] - /api/session/metadata - 1.452 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:14 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:14 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:14 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:14 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:14 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:14 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:14 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:14 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:14 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:14 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:14 - [MORGAN] - [GET] - /api/patient/1 - 5.711 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:14 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0w25C - 0.203 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:14 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0w25D - 0.155 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:15 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0w2Gc - 0.136 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:18 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:18 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:18 - [MORGAN] - [GET] - /api/session/metadata - 1.462 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:18 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:18 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:18 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:18 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:18 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:18 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:18 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:18 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:18 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:18 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:18 - [MORGAN] - [GET] - /api/patient/1 - 7.199 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:18 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0w2_T - 0.241 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:19 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0w3IR - 0.133 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:21 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0w3h5 - 0.117 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:24 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0w4ae - 0.198 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:29 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0w5pB - 0.139 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:35 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0w71n - 0.154 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:40 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0w8GK - 0.129 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:45 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0w9V9 - 0.173 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:50 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wAjm - 0.209 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:51 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:51 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:51 - [MORGAN] - [GET] - /api/session/metadata - 13.821 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:51 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:51 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:51 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:51 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:51 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:51 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:51 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:51 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:51 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:51 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:51 - [MORGAN] - [GET] - /api/patient/1 - 8.891 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:51 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wB6i - 0.527 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:52 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wBMq - 0.187 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:55 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wByH - 0.185 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:55 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wC5D - 0.194 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:42:58 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wCfp - 0.119 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:43:00 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wDA- - 0.116 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:43:03 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wDuQ - 0.106 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:43:05 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wEPY - 0.143 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:43:08 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wF6v - 0.190 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:43:10 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wFeF - 0.123 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:43:13 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wGLc - 0.190 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:43:15 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wGt1 - 0.286 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:43:18 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wHaN - 0.222 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:43:20 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wI5p - 0.188 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:43:23 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wIp0 - 0.121 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:43:25 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wJKf - 0.132 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:43:28 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wK1Y - 0.107 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:43:30 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wKZC - 0.140 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:43:34 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:43:34 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:43:34 - [MORGAN] - [GET] - /api/session/metadata - 1.419 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:43:34 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:43:34 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:43:34 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:43:34 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:43:34 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:43:34 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:43:34 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:43:34 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:43:34 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:43:34 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:43:34 - [MORGAN] - [GET] - /api/patient/1 - 8.809 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:43:34 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wLdw - 0.168 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:43:36 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wM7r - 0.130 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:43:38 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wMcz - 0.250 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:43:44 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wO4w - 0.116 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:43:50 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wPYf - 0.124 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:43:56 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wR0H - 0.137 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:44:02 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wST- - 0.124 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:44:08 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wTxp - 0.280 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:44:14 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wVPT - 0.188 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:44:20 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wWtE - 0.122 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:44:26 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wYL8 - 0.124 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:44:32 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wZop - 0.145 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:44:38 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wbGf - 0.199 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:44:44 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wckE - 0.128 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:44:50 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0weBz - 0.183 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:44:56 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wffv - 0.122 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:02 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wh9a - 0.138 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:08 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wibQ - 0.218 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:14 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX0wk37 - 0.178 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:20 - [SERVER] - Iniciando server"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:20 - [SERVER:SEQUELIZE-SQLITE] - C:\\Desenvolvimento\\Trabalho\\DashIMU-TCC\\electron-1\\cache\\dash_imu.sqlite"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:20 - [SERVER:SEQUELIZE-SQLITE] - true"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:20 - [SERVER:SEQUELIZE] - Carregar models"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:20 - [SERVER:SEQUELIZE:MODELS] - User"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:20 - [SERVER:SEQUELIZE:MODELS] - Session"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:20 - [SERVER:SEQUELIZE:MODELS] - Sensor"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:20 - [SERVER:SEQUELIZE:MODELS] - Movement"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:20 - [SERVER:SEQUELIZE:MODELS] - GyroMeasurement"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:20 - [SERVER:SEQUELIZE:MODELS] - Patient"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:20 - [SERVER] - Carregando rotas da api"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:21 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='users';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:21 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`users`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:21 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_INFO(`sqlite_autoindex_users_1`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:21 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='patients';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:21 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`patients`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:21 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_INFO(`sqlite_autoindex_patients_1`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:21 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='sessions';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:21 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`sessions`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:21 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='movements';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:21 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`movements`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:21 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='sensors';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:21 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`sensors`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:21 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='gyro_measurements';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:21 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`gyro_measurements`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:21 - [SERVER:DATABASE] - Drop ou Rsync Database"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:21 - [SERVER:SOCKET-IO] - Setup socket.io"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:21 - [SERVER] - Server está rodando na porta: 8000"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:29 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:29 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:29 - [MORGAN] - [GET] - /api/session/metadata - 5.373 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:29 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:29 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:29 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:29 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:29 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:29 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:29 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:29 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:29 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:29 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:45:29 - [MORGAN] - [GET] - /api/patient/1 - 67.777 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:57:09 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:57:09 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:57:09 - [MORGAN] - [GET] - /api/session/metadata - 1.847 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:57:09 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:57:09 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:57:09 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:57:09 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:57:09 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:57:09 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:57:09 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:57:09 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:57:09 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:57:09 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-21:57:09 - [MORGAN] - [GET] - /api/patient/1 - 8.736 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:07:31 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:07:31 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:07:31 - [MORGAN] - [GET] - /api/session/metadata - 1.887 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:07:31 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:07:31 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:07:31 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:07:31 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:07:31 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:07:31 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:07:31 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:07:31 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:07:31 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:07:31 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:07:31 - [MORGAN] - [GET] - /api/patient/1 - 16.860 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:07:47 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:07:47 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:07:47 - [MORGAN] - [GET] - /api/session/metadata - 1.647 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:07:47 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:07:47 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:07:47 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:07:47 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:07:47 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:07:47 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:07:47 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:07:47 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:07:47 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:07:47 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:07:47 - [MORGAN] - [GET] - /api/patient/1 - 9.089 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:08:02 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:08:02 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:08:02 - [MORGAN] - [GET] - /api/session/metadata - 8.146 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:08:02 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:08:02 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:08:02 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:08:02 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:08:02 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:08:02 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:08:02 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:08:02 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:08:02 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:08:02 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:08:02 - [MORGAN] - [GET] - /api/patient/1 - 7.635 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:09:28 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:09:28 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:09:28 - [MORGAN] - [GET] - /api/session/metadata - 4.569 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:09:28 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:09:28 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:09:28 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:09:28 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:09:28 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:09:28 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:09:28 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:09:28 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:09:28 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:09:28 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:09:28 - [MORGAN] - [GET] - /api/patient/1 - 11.963 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:10:24 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:10:24 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:10:24 - [MORGAN] - [GET] - /api/session/metadata - 1.703 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:10:24 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:10:24 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:10:24 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:10:24 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:10:24 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:10:24 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:10:24 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:10:24 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:10:24 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:10:24 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:10:24 - [MORGAN] - [GET] - /api/patient/1 - 25.283 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:32 - [SERVER] - Iniciando server"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:32 - [SERVER:SEQUELIZE-SQLITE] - C:\\Desenvolvimento\\Trabalho\\DashIMU-TCC\\electron-1\\cache\\dash_imu.sqlite"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:32 - [SERVER:SEQUELIZE-SQLITE] - true"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:32 - [SERVER:SEQUELIZE] - Carregar models"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:32 - [SERVER:SEQUELIZE:MODELS] - User"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:32 - [SERVER:SEQUELIZE:MODELS] - Session"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:32 - [SERVER:SEQUELIZE:MODELS] - Sensor"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:32 - [SERVER:SEQUELIZE:MODELS] - Movement"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:32 - [SERVER:SEQUELIZE:MODELS] - GyroMeasurement"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:32 - [SERVER:SEQUELIZE:MODELS] - Patient"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:32 - [SERVER] - Carregando rotas da api"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:33 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='users';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:33 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`users`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:33 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_INFO(`sqlite_autoindex_users_1`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:33 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='patients';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:33 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`patients`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:33 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_INFO(`sqlite_autoindex_patients_1`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:33 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='sessions';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:33 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`sessions`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:33 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='movements';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:33 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`movements`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:33 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='sensors';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:33 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`sensors`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:33 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='gyro_measurements';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:33 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`gyro_measurements`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:33 - [SERVER:DATABASE] - Drop ou Rsync Database"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:33 - [SERVER:SOCKET-IO] - Setup socket.io"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:33 - [SERVER] - Server está rodando na porta: 8000"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:45 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:45 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:45 - [MORGAN] - [GET] - /api/session/metadata - 6.839 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:45 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:45 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:45 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:45 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:45 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:45 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:45 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:45 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:45 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:45 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:13:45 - [MORGAN] - [GET] - /api/patient/1 - 48.689 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:20 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:20 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:20 - [MORGAN] - [GET] - /api/session/metadata - 2.040 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:20 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:20 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:20 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:20 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:20 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:20 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:20 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:20 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:20 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:20 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:20 - [MORGAN] - [GET] - /api/patient/1 - 11.552 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:27 - [SERVER] - Iniciando server"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:27 - [SERVER:SEQUELIZE-SQLITE] - C:\\Desenvolvimento\\Trabalho\\DashIMU-TCC\\electron-1\\cache\\dash_imu.sqlite"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:27 - [SERVER:SEQUELIZE-SQLITE] - true"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:27 - [SERVER:SEQUELIZE] - Carregar models"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:27 - [SERVER:SEQUELIZE:MODELS] - User"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:27 - [SERVER:SEQUELIZE:MODELS] - Patient"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:27 - [SERVER:SEQUELIZE:MODELS] - Session"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:27 - [SERVER:SEQUELIZE:MODELS] - Sensor"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:27 - [SERVER:SEQUELIZE:MODELS] - Movement"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:27 - [SERVER:SEQUELIZE:MODELS] - GyroMeasurement"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:27 - [SERVER] - Carregando rotas da api"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:28 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='users';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:28 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`users`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:28 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_INFO(`sqlite_autoindex_users_1`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:28 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='patients';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:28 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`patients`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:28 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_INFO(`sqlite_autoindex_patients_1`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:28 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='sessions';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:28 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`sessions`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:28 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='movements';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:28 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`movements`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:28 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='sensors';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:28 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`sensors`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:28 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='gyro_measurements';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:28 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`gyro_measurements`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:28 - [SERVER:DATABASE] - Drop ou Rsync Database"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:28 - [SERVER:SOCKET-IO] - Setup socket.io"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:28 - [SERVER] - Server está rodando na porta: 8000"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:28 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX11Q3M - 4.621 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:33 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:33 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:33 - [MORGAN] - [GET] - /api/session/metadata - 4.848 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:33 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:33 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:33 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:33 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:33 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:33 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:33 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:33 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:33 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:33 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:33 - [MORGAN] - [GET] - /api/patient/1 - 24.074 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:33 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX11RUI - 0.399 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:34 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX11RlT - 0.231 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:37 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX11SKQ - 0.213 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:41 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX11TNH - 0.163 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:46 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX11Uby - 0.186 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:51 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX11Vqq - 0.245 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:14:56 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX11X3e - 0.244 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:15:01 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX11YKx - 0.172 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:15:07 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX11Zog - 0.145 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:15:13 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX11bGO - 0.147 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:15:19 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX11ckH - 0.144 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:15:25 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX11eBq - 0.176 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:15:31 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX11ffi - 0.163 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:15:37 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX11h7X - 0.138 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:15:43 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX11ibJ - 0.131 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:15:49 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX11k2- - 0.161 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:15:51 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:15:51 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:15:51 - [MORGAN] - [GET] - /api/session/metadata - 1.829 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:15:51 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:15:51 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:15:51 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:15:51 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:15:51 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:15:51 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:15:51 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:15:51 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:15:51 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:15:51 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:15:51 - [MORGAN] - [GET] - /api/patient/1 - 11.874 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:15:55 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX11lWa - 0.261 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:01 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX11m-P - 0.162 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:07 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX11oSE - 0.181 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:09 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:09 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:09 - [MORGAN] - [GET] - /api/session/metadata - 1.828 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:09 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:09 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:09 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:09 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:09 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:09 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:09 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:09 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:09 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:09 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:09 - [MORGAN] - [GET] - /api/patient/1 - 12.642 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:12 - [SERVER] - Iniciando server"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:12 - [SERVER:SEQUELIZE-SQLITE] - C:\\Desenvolvimento\\Trabalho\\DashIMU-TCC\\electron-1\\cache\\dash_imu.sqlite"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:12 - [SERVER:SEQUELIZE-SQLITE] - true"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:12 - [SERVER:SEQUELIZE] - Carregar models"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:12 - [SERVER:SEQUELIZE:MODELS] - User"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:12 - [SERVER:SEQUELIZE:MODELS] - Session"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:12 - [SERVER:SEQUELIZE:MODELS] - Sensor"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:12 - [SERVER:SEQUELIZE:MODELS] - Movement"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:12 - [SERVER:SEQUELIZE:MODELS] - GyroMeasurement"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:12 - [SERVER:SEQUELIZE:MODELS] - Patient"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:12 - [SERVER] - Carregando rotas da api"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:13 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='users';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:13 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`users`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:13 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_INFO(`sqlite_autoindex_users_1`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:13 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='patients';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:13 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`patients`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:13 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_INFO(`sqlite_autoindex_patients_1`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:13 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='sessions';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:13 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`sessions`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:13 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='movements';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:13 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`movements`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:13 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='sensors';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:13 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`sensors`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:13 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='gyro_measurements';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:13 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`gyro_measurements`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:13 - [SERVER:DATABASE] - Drop ou Rsync Database"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:13 - [SERVER:SOCKET-IO] - Setup socket.io"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:13 - [SERVER] - Server está rodando na porta: 8000"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:13 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX11pv_ - 2.731 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:19 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX11rNc - 0.358 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:24 - [MORGAN] - [GET] - /socket.io/?EIO=4&transport=polling&t=OX11scP - 0.283 ms - 302 - 69"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:31 - [SERVER] - Iniciando server"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:32 - [SERVER:SEQUELIZE-SQLITE] - C:\\Desenvolvimento\\Trabalho\\DashIMU-TCC\\electron-1\\cache\\dash_imu.sqlite"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:32 - [SERVER:SEQUELIZE-SQLITE] - true"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:32 - [SERVER:SEQUELIZE] - Carregar models"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:32 - [SERVER:SEQUELIZE:MODELS] - User"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:32 - [SERVER:SEQUELIZE:MODELS] - Session"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:32 - [SERVER:SEQUELIZE:MODELS] - Sensor"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:32 - [SERVER:SEQUELIZE:MODELS] - Movement"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:32 - [SERVER:SEQUELIZE:MODELS] - GyroMeasurement"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:32 - [SERVER:SEQUELIZE:MODELS] - Patient"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:32 - [SERVER] - Carregando rotas da api"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:33 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='users';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:33 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`users`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:33 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_INFO(`sqlite_autoindex_users_1`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:33 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='patients';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:33 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`patients`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:33 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_INFO(`sqlite_autoindex_patients_1`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:33 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='sessions';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:33 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`sessions`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:33 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='movements';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:33 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`movements`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:33 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='sensors';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:33 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`sensors`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:33 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='gyro_measurements';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:33 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`gyro_measurements`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:33 - [SERVER:DATABASE] - Drop ou Rsync Database"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:33 - [SERVER:SOCKET-IO] - Setup socket.io"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:33 - [SERVER] - Server está rodando na porta: 8000"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:38 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:38 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:38 - [MORGAN] - [GET] - /api/session/metadata - 3.867 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:39 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:39 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:39 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:39 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:39 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:39 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:39 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:39 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:39 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:39 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:16:39 - [MORGAN] - [GET] - /api/patient/1 - 56.045 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:07 - [SERVER] - Iniciando server"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:07 - [SERVER:SEQUELIZE-SQLITE] - C:\\Desenvolvimento\\Trabalho\\DashIMU-TCC\\electron-1\\cache\\dash_imu.sqlite"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:07 - [SERVER:SEQUELIZE-SQLITE] - true"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:07 - [SERVER:SEQUELIZE] - Carregar models"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:07 - [SERVER:SEQUELIZE:MODELS] - User"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:07 - [SERVER:SEQUELIZE:MODELS] - Session"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:07 - [SERVER:SEQUELIZE:MODELS] - Sensor"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:07 - [SERVER:SEQUELIZE:MODELS] - Movement"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:07 - [SERVER:SEQUELIZE:MODELS] - GyroMeasurement"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:07 - [SERVER:SEQUELIZE:MODELS] - Patient"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:07 - [SERVER] - Carregando rotas da api"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:08 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='users';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:08 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`users`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:08 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_INFO(`sqlite_autoindex_users_1`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:08 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='patients';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:08 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`patients`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:08 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_INFO(`sqlite_autoindex_patients_1`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:08 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='sessions';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:08 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`sessions`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:08 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='movements';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:08 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`movements`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:08 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='sensors';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:08 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`sensors`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:08 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='gyro_measurements';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:08 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`gyro_measurements`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:08 - [SERVER:DATABASE] - Drop ou Rsync Database"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:08 - [SERVER:SOCKET-IO] - Setup socket.io"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:08 - [SERVER] - Server está rodando na porta: 8000"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:08 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:09 - [SERVER:SOCKET-IO] - Usuário desconectado"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:13 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:13 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:13 - [MORGAN] - [GET] - /api/session/metadata - 6.329 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:13 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:13 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:13 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:13 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:13 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:13 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:13 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:13 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:13 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:13 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:13 - [MORGAN] - [GET] - /api/patient/1 - 33.072 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:13 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:56 - [SERVER] - Iniciando server"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:56 - [SERVER:SEQUELIZE-SQLITE] - C:\\Desenvolvimento\\Trabalho\\DashIMU-TCC\\electron-1\\cache\\dash_imu.sqlite"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:56 - [SERVER:SEQUELIZE-SQLITE] - true"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:56 - [SERVER:SEQUELIZE] - Carregar models"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:56 - [SERVER:SEQUELIZE:MODELS] - User"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:56 - [SERVER:SEQUELIZE:MODELS] - Session"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:56 - [SERVER:SEQUELIZE:MODELS] - Sensor"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:56 - [SERVER:SEQUELIZE:MODELS] - Movement"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:56 - [SERVER:SEQUELIZE:MODELS] - GyroMeasurement"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:56 - [SERVER:SEQUELIZE:MODELS] - Patient"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:56 - [SERVER] - Carregando rotas da api"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:57 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='users';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:57 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`users`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:57 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_INFO(`sqlite_autoindex_users_1`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:57 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='patients';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:57 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`patients`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:57 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_INFO(`sqlite_autoindex_patients_1`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:57 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='sessions';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:57 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`sessions`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:57 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='movements';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:57 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`movements`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:57 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='sensors';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:57 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`sensors`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:57 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='gyro_measurements';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:57 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`gyro_measurements`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:57 - [SERVER:DATABASE] - Drop ou Rsync Database"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:57 - [SERVER:SOCKET-IO] - Setup socket.io"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:57 - [SERVER] - Server está rodando na porta: 8000"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:17:59 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:18:02 - [SERVER:SOCKET-IO] - Usuário desconectado"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:18:06 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:18:06 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:18:06 - [MORGAN] - [GET] - /api/session/metadata - 5.154 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:18:06 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:18:06 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:18:06 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:18:06 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:18:06 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:18:06 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:18:06 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:18:06 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:18:06 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:18:06 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:18:06 - [MORGAN] - [GET] - /api/patient/1 - 30.839 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:18:06 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:20:16 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:20:16 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:20:16 - [MORGAN] - [GET] - /api/session/metadata - 2.120 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:20:16 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:20:16 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:20:16 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:20:16 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:20:16 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:20:16 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:20:16 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:20:16 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:20:16 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:20:16 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:20:16 - [MORGAN] - [GET] - /api/patient/1 - 6.273 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:20:16 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:24:46 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:24:46 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:24:46 - [MORGAN] - [GET] - /api/session/metadata - 2.647 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:24:46 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:24:46 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:24:46 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:24:46 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:24:46 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:24:46 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:24:46 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:24:46 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:24:46 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:24:46 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:24:46 - [MORGAN] - [GET] - /api/patient/1 - 12.287 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:24:46 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:26 - [SERVER] - Iniciando server"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:27 - [SERVER:SEQUELIZE-SQLITE] - C:\\Desenvolvimento\\Trabalho\\DashIMU-TCC\\electron-1\\cache\\dash_imu.sqlite"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:27 - [SERVER:SEQUELIZE-SQLITE] - true"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:27 - [SERVER:SEQUELIZE] - Carregar models"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:27 - [SERVER:SEQUELIZE:MODELS] - User"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:27 - [SERVER:SEQUELIZE:MODELS] - Patient"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:27 - [SERVER:SEQUELIZE:MODELS] - Session"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:27 - [SERVER:SEQUELIZE:MODELS] - Sensor"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:27 - [SERVER:SEQUELIZE:MODELS] - Movement"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:27 - [SERVER:SEQUELIZE:MODELS] - GyroMeasurement"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:27 - [SERVER] - Carregando rotas da api"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:29 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='users';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:29 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`users`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:29 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_INFO(`sqlite_autoindex_users_1`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:29 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='patients';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:29 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`patients`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:29 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_INFO(`sqlite_autoindex_patients_1`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:29 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='sessions';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:29 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`sessions`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:29 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='movements';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:29 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`movements`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:29 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='sensors';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:29 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`sensors`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:29 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='gyro_measurements';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:29 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`gyro_measurements`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:29 - [SERVER:DATABASE] - Drop ou Rsync Database"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:29 - [SERVER:SOCKET-IO] - Setup socket.io"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:29 - [SERVER] - Server está rodando na porta: 8000"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:29 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:30 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:30 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:57 - [SERVER] - Iniciando server"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:57 - [SERVER:SEQUELIZE-SQLITE] - C:\\Desenvolvimento\\Trabalho\\DashIMU-TCC\\electron-1\\cache\\dash_imu.sqlite"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:57 - [SERVER:SEQUELIZE-SQLITE] - true"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:57 - [SERVER:SEQUELIZE] - Carregar models"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:57 - [SERVER:SEQUELIZE:MODELS] - User"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:57 - [SERVER:SEQUELIZE:MODELS] - Session"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:57 - [SERVER:SEQUELIZE:MODELS] - Sensor"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:57 - [SERVER:SEQUELIZE:MODELS] - Movement"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:57 - [SERVER:SEQUELIZE:MODELS] - GyroMeasurement"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:57 - [SERVER:SEQUELIZE:MODELS] - Patient"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:57 - [SERVER] - Carregando rotas da api"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:59 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='users';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:59 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`users`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:59 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_INFO(`sqlite_autoindex_users_1`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:59 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='patients';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:59 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`patients`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:59 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_INFO(`sqlite_autoindex_patients_1`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:59 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='sessions';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:59 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`sessions`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:59 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='movements';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:59 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`movements`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:59 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='sensors';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:59 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`sensors`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:59 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='gyro_measurements';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:59 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`gyro_measurements`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:59 - [SERVER:DATABASE] - Drop ou Rsync Database"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:59 - [SERVER:SOCKET-IO] - Setup socket.io"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:25:59 - [SERVER] - Server está rodando na porta: 8000"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:26:01 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:26:01 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:26:01 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:26:26 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:26:26 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:26:26 - [MORGAN] - [GET] - /api/session/metadata - 24.786 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:26:26 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:26:26 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:26:26 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:26:26 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:26:26 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:26:26 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:26:26 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:26:26 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:26:26 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:26:26 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:26:26 - [MORGAN] - [GET] - /api/patient/1 - 46.556 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:26:26 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:27:38 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:27:38 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:27:38 - [MORGAN] - [GET] - /api/session/metadata - 6.270 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:27:38 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:27:38 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:27:38 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:27:38 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:27:38 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:27:38 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:27:38 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:27:38 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:27:38 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:27:38 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:27:38 - [MORGAN] - [GET] - /api/patient/1 - 20.677 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:27:38 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:09 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:09 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:09 - [MORGAN] - [GET] - /api/session/metadata - 2.535 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:10 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:10 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:10 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:10 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:10 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:10 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:10 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:10 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:10 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:10 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:10 - [MORGAN] - [GET] - /api/patient/1 - 28.060 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:10 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:19 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:19 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:19 - [MORGAN] - [GET] - /api/session/metadata - 21.920 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:19 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:19 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:19 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:19 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:19 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:19 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:19 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:19 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:19 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:19 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:19 - [MORGAN] - [GET] - /api/patient/1 - 80.796 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:19 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:35 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:35 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:35 - [MORGAN] - [GET] - /api/session/metadata - 32.273 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:35 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:35 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:35 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:35 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:35 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:35 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:35 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:35 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:35 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:35 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:35 - [MORGAN] - [GET] - /api/patient/1 - 19.972 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:35 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:53 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:53 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:53 - [MORGAN] - [GET] - /api/session/metadata - 2.108 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:53 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:53 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:53 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:53 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:53 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:53 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:53 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:53 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:53 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:53 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:53 - [MORGAN] - [GET] - /api/patient/1 - 11.525 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:28:53 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:04 - [SERVER] - Iniciando server"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:04 - [SERVER:SEQUELIZE-SQLITE] - C:\\Desenvolvimento\\Trabalho\\DashIMU-TCC\\electron-1\\cache\\dash_imu.sqlite"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:04 - [SERVER:SEQUELIZE-SQLITE] - true"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:04 - [SERVER:SEQUELIZE] - Carregar models"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:04 - [SERVER:SEQUELIZE:MODELS] - User"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:04 - [SERVER:SEQUELIZE:MODELS] - Patient"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:04 - [SERVER:SEQUELIZE:MODELS] - Session"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:04 - [SERVER:SEQUELIZE:MODELS] - Sensor"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:04 - [SERVER:SEQUELIZE:MODELS] - Movement"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:04 - [SERVER:SEQUELIZE:MODELS] - GyroMeasurement"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:04 - [SERVER] - Carregando rotas da api"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:06 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='users';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:06 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`users`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:06 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_INFO(`sqlite_autoindex_users_1`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:06 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='patients';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:06 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`patients`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:06 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_INFO(`sqlite_autoindex_patients_1`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:06 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='sessions';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:06 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`sessions`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:06 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='movements';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:06 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`movements`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:06 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='sensors';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:06 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`sensors`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:06 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='gyro_measurements';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:06 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`gyro_measurements`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:06 - [SERVER:DATABASE] - Drop ou Rsync Database"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:06 - [SERVER:SOCKET-IO] - Setup socket.io"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:06 - [SERVER] - Server está rodando na porta: 8000"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:06 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:06 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:06 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:06 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:06 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:06 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:06 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:06 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:06 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:10 - [SERVER:SOCKET-IO] - Usuário desconectado"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:10 - [SERVER:SOCKET-IO] - Usuário desconectado"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:10 - [SERVER:SOCKET-IO] - Usuário desconectado"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:10 - [SERVER:SOCKET-IO] - Usuário desconectado"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:10 - [SERVER:SOCKET-IO] - Usuário desconectado"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:10 - [SERVER:SOCKET-IO] - Usuário desconectado"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:10 - [SERVER:SOCKET-IO] - Usuário desconectado"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:10 - [SERVER:SOCKET-IO] - Usuário desconectado"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:10 - [SERVER:SOCKET-IO] - Usuário desconectado"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:13 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:13 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:13 - [MORGAN] - [GET] - /api/session/metadata - 5.553 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:13 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:13 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:13 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:13 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:13 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:13 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:13 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:13 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:13 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:13 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:13 - [MORGAN] - [GET] - /api/patient/1 - 20.136 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:13 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:26 - [SERVER:SOCKET-IO] - Usuário desconectado"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:31 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:31 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:31 - [MORGAN] - [GET] - /api/session/metadata - 2.757 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:31 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:31 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:31 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:31 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:31 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:31 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:31 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:31 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:31 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:31 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:31 - [MORGAN] - [GET] - /api/patient/1 - 9.782 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:37:31 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:07 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:07 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:07 - [MORGAN] - [GET] - /api/session/metadata - 4.571 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:08 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:08 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:08 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:08 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:08 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:08 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:08 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:08 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:08 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:08 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:08 - [MORGAN] - [GET] - /api/patient/1 - 16.524 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:08 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:38 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:38 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:38 - [MORGAN] - [GET] - /api/session/metadata - 3.998 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:38 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:38 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:38 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:38 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:38 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:38 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:38 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:38 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:38 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:38 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:38 - [MORGAN] - [GET] - /api/patient/1 - 42.546 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:38 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:50 - [SERVER:SOCKET-IO] - Usuário desconectado"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:50 - [SERVER:SOCKET-IO] - Usuário desconectado"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:50 - [SERVER:SOCKET-IO] - Usuário desconectado"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:53 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:53 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:53 - [MORGAN] - [GET] - /api/session/metadata - 1.955 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:53 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:53 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:53 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:53 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:53 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:53 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:53 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:53 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:53 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:53 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:53 - [MORGAN] - [GET] - /api/patient/1 - 25.943 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:39:54 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:40:23 - [SERVER] - Iniciando server"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:40:24 - [SERVER:SEQUELIZE-SQLITE] - C:\\Desenvolvimento\\Trabalho\\DashIMU-TCC\\electron-1\\cache\\dash_imu.sqlite"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:40:24 - [SERVER:SEQUELIZE-SQLITE] - true"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:40:24 - [SERVER:SEQUELIZE] - Carregar models"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:40:24 - [SERVER:SEQUELIZE:MODELS] - Session"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:40:24 - [SERVER:SEQUELIZE:MODELS] - Sensor"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:40:24 - [SERVER:SEQUELIZE:MODELS] - Movement"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:40:24 - [SERVER:SEQUELIZE:MODELS] - GyroMeasurement"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:40:24 - [SERVER:SEQUELIZE:MODELS] - Patient"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:40:24 - [SERVER:SEQUELIZE:MODELS] - User"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:40:24 - [SERVER] - Carregando rotas da api"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:40:25 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='patients';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:40:25 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`patients`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:40:25 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_INFO(`sqlite_autoindex_patients_1`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:40:25 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='users';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:40:25 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`users`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:40:25 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_INFO(`sqlite_autoindex_users_1`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:40:25 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='sessions';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:40:25 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`sessions`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:40:25 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='movements';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:40:25 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`movements`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:40:25 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='sensors';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:40:25 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`sensors`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:40:25 - [SEQUELIZE:LOG] - Executed (default): SELECT name FROM sqlite_master WHERE type='table' AND name='gyro_measurements';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:40:25 - [SEQUELIZE:LOG] - Executed (default): PRAGMA INDEX_LIST(`gyro_measurements`)"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:40:25 - [SERVER:DATABASE] - Drop ou Rsync Database"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:40:25 - [SERVER:SOCKET-IO] - Setup socket.io"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:40:25 - [SERVER] - Server está rodando na porta: 8000"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:40:26 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:45:36 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:45:36 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:45:36 - [MORGAN] - [GET] - /api/session/metadata - 5.415 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:45:36 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:45:36 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:45:36 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:45:36 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:45:36 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:45:36 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:45:36 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:45:36 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:45:36 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:45:36 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:45:36 - [MORGAN] - [GET] - /api/patient/1 - 20.289 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:45:36 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:55:19 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:55:19 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:55:19 - [MORGAN] - [GET] - /api/session/metadata - 2.665 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:55:19 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:55:19 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:55:19 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:55:19 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:55:19 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:55:19 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:55:19 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:55:19 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:55:19 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:55:19 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:55:19 - [MORGAN] - [GET] - /api/patient/1 - 12.261 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:55:19 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:56:07 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:56:07 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:56:07 - [MORGAN] - [GET] - /api/session/metadata - 2.646 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:56:07 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:56:07 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:56:07 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:56:07 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:56:07 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:56:07 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:56:07 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:56:07 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:56:07 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:56:07 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:56:07 - [MORGAN] - [GET] - /api/patient/1 - 15.519 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:56:07 - [SERVER:SOCKET-IO] - Nova conexão"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:56:28 - [SERVER:REQUEST] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:56:28 - [SERVER:SESSION] - [GET] - /api/session/metadata"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:56:28 - [MORGAN] - [GET] - /api/session/metadata - 2.060 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:56:28 - [SERVER:VERIFY-TOKEN] - Checar token"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:56:28 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:56:28 - [SERVER:VERIFYROLES] - authorizeroles.verify"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:56:28 - [SERVER:CONTEXT] - getUserContext"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:56:28 - [SERVER:CONTEXT] - getUserContextId"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:56:28 - [SERVER:RESOLVE-TOKEN] - Comparar tokens"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:56:28 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `username`, `name`, `email`, `password`, `role`, `createdAt`, `updatedAt` FROM `users` AS `users` WHERE `users`.`id` = 1;"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:56:28 - [SERVER:REQUEST] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:56:28 - [SEQUELIZE:LOG] - Executed (default): SELECT `id`, `name`, `cpf`, `email`, `phone`, `birthday`, `stature`, `createdAt`, `updatedAt` FROM `patients` AS `patients` WHERE `patients`.`id` = '1';"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:56:28 - [SERVER:PATIENT] - [GET] - /api/patient/1"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:56:28 - [MORGAN] - [GET] - /api/patient/1 - 12.764 ms - 304 - undefined"}
+{"level":"info","message":"[CLOG] - 21/05/2023-22:56:28 - [SERVER:SOCKET-IO] - Nova conexão"}

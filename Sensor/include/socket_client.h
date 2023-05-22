@@ -33,7 +33,7 @@ void SendStatusSensor() {
     } else {
         availableString = "false";
     }
-    clientBackEnd.send(R"({"ip":")" + addressESP + R"(","origin":"SENSOR)" + R"(","nameSensor":")" + nameSensor + R"(","available":")" + availableString + R"("})");
+    clientBackEnd.send(R"({"ip":")" + addressESP + R"(","origin":"SENSOR)" + R"(","sensorName":")" + nameSensor + R"(","available":")" + availableString + R"("})");
 }
 
 void onMessageCallback(const WebsocketsMessage& message) {

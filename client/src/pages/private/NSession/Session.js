@@ -71,6 +71,10 @@ class Session extends Vue {
   get isTinyScreen() {
     return this.isMdpi || this.isMobile;
   }
+
+  async beforeDestroy() {
+    await this.sessionControl.beforeUnmount();
+  }
 }
 
 export default Session;

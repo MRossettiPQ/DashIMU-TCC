@@ -49,16 +49,23 @@ export const routes = [
             component: () => import("pages/private/Account/Account.vue"),
             meta: { requiresAuth: true },
           },
-          {
-            name: "private.session",
-            path: "session",
-            component: () => import("pages/private/Session/Session.vue"),
-            meta: { requiresAuth: true },
-          },
+          // TODO removido após socket-io
+          // {
+          //   name: "private.session",
+          //   path: "session",
+          //   component: () => import("pages/private/Session/Session.vue"),
+          //   meta: { requiresAuth: true },
+          // },
+          // {
+          //   name: "private.n-session",
+          //   path: "n-session/:id",
+          //   component: () => import("pages/private/NSession/Session.vue"),
+          //   meta: { requiresAuth: true },
+          // },
           {
             name: "private.n-session",
             path: "n-session/:id",
-            component: () => import("pages/private/NSession/Session.vue"),
+            component: () => import("pages/private/SocketIO/Session.vue"),
             meta: { requiresAuth: true },
           },
         ],

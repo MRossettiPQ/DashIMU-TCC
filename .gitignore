@@ -16,6 +16,18 @@
 /electron/build/*
 /electron/build/dist/**
 /electron/src/custom-server/public/**
+/electron/src/public/
+
+#IGNORE ELECTRON SOCKET.IO
+/electron-io/node_modules
+/electron-io/.idea
+/electron-io/yarn.lock
+/electron-io/.vscode
+/electron-io/*.iml
+/electron-io/package-lock.json
+/electron-io/build/*
+/electron-io/build/dist/**
+/electron-io/src/custom-server/public/**
 
 #IGNORE SERVER
 /server/node_modules
@@ -77,17 +89,27 @@ sensor/.pio
 sensor/cmake-build-debug
 sensor/cmake-build-esp32dev
 sensor/build/*
-
-
 !/sensor/build/
 !/sensor/cmake-build-debug-mingw/
 !/sensor/CMakeLists.txt
-
 !/sensor/CMakeListsPrivate.txt
+
+#IGNORE SENSOR
+sensor-io/.idea
+sensor-io/.vscode
+sensor-io/*.iml
+sensor-io/.pio
+sensor-io/cmake-build-debug
+sensor-io/cmake-build-esp32dev
+sensor-io/build/*
+!/sensor-io/build/
+!/sensor-io/cmake-build-debug-mingw/
+!/sensor-io/CMakeLists.txt
+!/sensor-io/CMakeListsPrivate.txt
+
 /electron/build/
 
 *.sqlite
-/electron/src/public/
 /executavel/*
 /server/src/public/
 /client/dist/
@@ -101,7 +123,5 @@ sensor/build/*
 /electron/log/
 client/yarn.lock
 /client/.ide-helper/
-/test/node_modules/
-/test/yarn.lock
 /type/node_modules/
 /type/yarn.lock

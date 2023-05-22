@@ -1,7 +1,6 @@
 import _ from "lodash";
 import { Notify } from "quasar";
-
-const { v4: uuid } = require("uuid");
+import { v4 as uuid } from "uuid";
 
 const openMessage = "[WebSocket] Conexão com o sensor feita com websocket";
 const closeMessage = "[WebSocket] Websocket desconectado do servidor";
@@ -10,22 +9,17 @@ const errorMessage = "[WebSocket] Erro no servidor websocket";
 //
 // }
 
-class SensorSocket {
-  connected = false;
-  url = "";
-  socket = null;
-  onDisconnect = null;
-}
-
 class Storage {}
 
 class BackEndSocketUtil {
+  // Sensores disponíveis para conexão
   availableSensorsList = [];
-  registeredSensorsList = [];
   connected = false;
   loadingSensors = false;
+  // Endereço do backend
   url = "";
   socket = null;
+  // Callback para quando receber notificação de desconexão
   onDisconnect = null;
 
   constructor(onDisconnect = null) {
@@ -33,6 +27,7 @@ class BackEndSocketUtil {
   }
 
   connect(socket_url = "localhost:8000") {
+    // Conectar ao socket do backend, permite receber lista de sensores disponíveis e notificações de desconexões (caso o socket do client não perceba)
     this.socket = new WebSocket(`ws://${socket_url}/socket`, ["websocket"]);
 
     this.socket.onmessage = (event) => {
@@ -40,8 +35,9 @@ class BackEndSocketUtil {
     };
 
     this.socket.onopen = () => {
+      // Solicita a lista de sensores disponíveis
       this.connected = true;
-      this.send(this.socket, "GET_UPDATE_CLIENT_LIST");
+      this.requestAvailableSensors();
       this.notify(openMessage, "positive");
     };
 
@@ -58,22 +54,25 @@ class BackEndSocketUtil {
   }
 
   disconnect() {
+    //
     this.socket.close();
     this.connected = false;
   }
 
   requestAvailableSensors() {
+    // Solicita a lista de sensores disponíveis
     this.send(this.socket, "GET_UPDATE_CLIENT_LIST");
     this.loadingSensors = true;
   }
 
   send(socket, type, message = null) {
     if (socket !== null) {
-      socket?.send(JSON.stringify({ origin: "FRONT", type, message }));
+      socket.send(JSON.stringify({ origin: "FRONT", type, message }));
     }
   }
 
   handleMessage(json) {
+    // Gerencia a mensagem baseado no tipo enviado pelo backend
     console.log("nova mensagem", json);
     switch (json?.type) {
       case "UPDATE_CLIENT_LIST":
@@ -89,6 +88,8 @@ class BackEndSocketUtil {
   }
 
   checkIfSensorIsConnected(sensor) {
+    // Notifica o usuario caso o sensor desconectado seja um conectado a sessão
+    // Também chama o callback que comanda o stop a todos os sensores da sessão
     const result = this.getIndexSensorInConnectedList(sensor);
     if (result !== -1) {
       Notify.create({
@@ -102,7 +103,7 @@ class BackEndSocketUtil {
   }
 
   getIndexSensorInConnectedList(sensor) {
-    return this.registeredSensorsList?.findIndex(({ device }) => device.uuid === sensor.uuid);
+    return this.registeredSensorsList?.findIndex((s) => s.uuid === sensor.uuid);
   }
 
   notify(message, color) {
@@ -114,13 +115,33 @@ class BackEndSocketUtil {
   }
 
   mergeSensorList(jsonList) {
-    this.availableSensorsList = jsonList.map((s) => new Sensor(s));
+    return jsonList.filter((s) => !this.availableIps.includes(s.ip)).map((s) => this.availableSensorsList.push(new Sensor(s)));
+  }
+
+  get availableIps() {
+    // Ips disponiveis, apenas para filtrar ao receber novos sensores
+    return this.availableSensorsList.map((a) => a.ip);
+  }
+
+  get registeredSensorsList() {
+    // Todos sensores conectados a sessão, aqueles que irão receber os comandos e enviar as leituras
+    return this.availableSensorsList.filter((s) => !s.connected);
+  }
+
+  get allConnectedAndPositioned() {
+    console.log(
+      "allConnectedAndPositioned",
+      this.registeredSensorsList,
+      this.registeredSensorsList.every((rs) => rs.connectedAndPositioned)
+    );
+    return this.registeredSensorsList.every((rs) => rs.connectedAndPositioned);
   }
 }
 
 class NavigationUtil {
   selectedStep = null;
 
+  // Declaração das etapas
   steps = [
     {
       order: 0,
@@ -177,8 +198,16 @@ class NavigationUtil {
     return this.actualStep?.label;
   }
 
+  get validNext() {
+    return this.actualStepOrder < this.maxOrder;
+  }
+
+  get validPrev() {
+    return this.actualStepOrder >= 0;
+  }
+
   next() {
-    if (this.actualStepOrder < this.steps.length) {
+    if (this.validNext) {
       switch (this.actualStepOrder) {
         case 0:
         case 1:
@@ -194,7 +223,7 @@ class NavigationUtil {
   }
 
   prev() {
-    if (this.actualStepOrder >= 0) {
+    if (this.validPrev) {
       switch (this.actualStepOrder) {
         case 0:
           break;
@@ -268,20 +297,67 @@ class GyroMeasurement {
 class Sensor {
   // Bean
   sensorName = "";
-  position = "";
+  position = null;
   gyro_measurements = [];
 
   // Metadata
   ip = "";
   origin = "";
   uuid = "";
-  active = false;
+  available = false;
   measurementInProgress = false;
+
+  socket = null;
 
   constructor(sensor) {
     this.uuid = sensor.uuid;
     this.ip = sensor.ip;
     this.origin = sensor.origin;
+    this.sensorName = sensor.sensorName;
+    this.available = sensor.available;
+  }
+
+  get connected() {
+    return this.socket?.readyState === 1;
+  }
+
+  connect() {
+    // Configura a conexão com o sensor
+    this.socket = new WebSocket(`ws://${this.ip}:80/socket/session`, ["websocket"]);
+
+    this.socket.onmessage = (event) => {
+      console.log(event);
+      // this.handleMessage(JSON.parse(event?.data));
+    };
+
+    this.socket.onopen = () => {
+      this.available = false;
+      console.log("onopen");
+      // this.send(this.socket, "GET_UPDATE_CLIENT_LIST");
+      // this.notify(openMessage, "positive");
+    };
+
+    this.socket.onclose = () => {
+      console.log("onclose");
+      // this.notify(closeMessage, "warning");
+      this.available = true;
+    };
+
+    this.socket.onerror = () => {
+      // this.notify(errorMessage, "error");
+      this.socket.close();
+      this.available = true;
+    };
+  }
+
+  disconnect() {
+    this.socket.close();
+  }
+
+  calibrate() {}
+
+  send() {
+    // Update da situação do sensor -> 'available'
   }
 
   addMeasurement(measurement) {
@@ -290,6 +366,23 @@ class Sensor {
 
   get size() {
     return this.gyro_measurements.length;
+  }
+
+  get notEmpty() {
+    return !_.isEmpty(this.gyro_measurements);
+  }
+
+  get notNull() {
+    return !_.isNil(this.ip) && !_.isNil(this.position);
+  }
+
+  get valid() {
+    return this.notNull && this.gyro_measurements.every((gm) => gm.valid);
+  }
+
+  get connectedAndPositioned() {
+    console.log("connectedAndPositioned", this.connected && this.notNull, this.connected, this.notNull);
+    return this.connected && this.notNull;
   }
 }
 
@@ -320,15 +413,14 @@ class Movement {
       this.angle = foundMovement.angle;
       this.description = foundMovement.description;
     }
-    console.log(foundMovement);
-  }
-
-  addSensor() {
-    this.sensors.push(new Sensor());
   }
 
   get size() {
     return this.sensors.length;
+  }
+
+  get notEmpty() {
+    return !_.isEmpty(this.sensors);
   }
 
   get notNull() {
@@ -336,7 +428,7 @@ class Movement {
   }
 
   get valid() {
-    return this.notNull && this.sensors.length > 0;
+    return this.notNull && this.notEmpty && this.sensors.every((m) => m.valid);
   }
 }
 
@@ -384,12 +476,16 @@ class Procedure {
     return !_.isNil(this.procedure);
   }
 
+  get notEmpty() {
+    return !_.isEmpty(this.movements);
+  }
+
   get size() {
     return this.movements.length;
   }
 
   get valid() {
-    return this.notNull && this.movements.length > 0;
+    return this.notNull && this.notEmpty && this.movements.every((m) => m.valid);
   }
 }
 
@@ -406,10 +502,6 @@ class Session {
     this.uuid = uuid(null, null, null);
   }
 
-  get size() {
-    return this.procedures.length;
-  }
-
   addProcedure() {
     this.procedures.push(new Procedure());
   }
@@ -420,11 +512,29 @@ class Session {
       this.procedures.splice(rIndex, 1);
     }
   }
+
+  get notEmpty() {
+    return !_.isEmpty(this.procedures);
+  }
+
+  get size() {
+    return this.procedures.length;
+  }
+
+  get valid() {
+    return this.notEmpty && this.procedures.every((p) => p.valid);
+  }
+
+  get procedurePositionsWithMoreOptions() {
+    return this.procedures.reduce(({ positionOptions: prev }, { positionOptions: current }) => (prev.length > current.length ? prev : current)).positionOptions || [];
+  }
 }
 
 class SessionUtil {
   navigation = new NavigationUtil();
-  backEndSocket = new BackEndSocketUtil();
+  backEndSocket = new BackEndSocketUtil(() => {
+    this.stop();
+  });
   bean = new Session();
   storage = new Storage();
 
@@ -440,62 +550,96 @@ class SessionUtil {
   constructor() {}
 
   print() {
+    // Realiza impressão do bean no console do navegador, desabilitar botão quando não estiver em dev
     console.dir(this.bean);
   }
 
   setPatientId(id) {
+    // Seta o id do paciente no bean (sessão)
     this.bean.patientId = Number(id);
   }
 
   setMetadata(metadata) {
+    // Seta o metadata para sessões. ip da maquina do backend por ex.
     this.metadata = metadata;
   }
 
   setPatient(patient) {
+    // Seta o paciente da sessão, para metadata. caso necessite exibir alguma informação.
     this.patient = patient;
   }
 
   get disableNext() {
+    // Desabilita navegação para o next, considerando o passo da sessão
+    const proceduresNotNullAndMovementsNotNull = !(this.bean.notEmpty && this.bean.procedures.every((p) => p.notNull && p.notEmpty && p.movements.every((m) => m.notNull)));
     switch (this.navigation.actualStepOrder) {
       case 0:
+        // Bloqueia a navegação para o proximo caso não tenha adicionado o/os procedimentos e os movimentos que vão ser realizados
+        // return !this.navigation.validNext || !this.bean.proceduresNotNullAndMovementsNotNull;
+        return !this.navigation.validNext || proceduresNotNullAndMovementsNotNull;
+      case 1:
         // Bloqueia a navegação para o proximo caso não tenha adicionado o/os procedimentos que vão ser realizados
-        return this.navigation.actualStepOrder === this.navigation.maxOrder || this.bean.procedures.length === 0;
+        return !this.navigation.validNext || proceduresNotNullAndMovementsNotNull || !this.backEndSocket.allConnectedAndPositioned;
+      case 2:
+        // Bloqueia a navegação para o proximo caso não tenha adicionado o/os procedimentos que vão ser realizados
+        return !this.navigation.validNext;
       default:
-        return this.navigation.actualStepOrder === this.navigation.maxOrder;
+        return !this.navigation.validNext;
     }
   }
 
   get disablePrev() {
+    // Desabilita navegação para o prev, considerando o passo da sessão
     return this.navigation.actualStepOrder === 0;
   }
 
   get disableStartBtn() {
+    // Desabilita comando de start
     return false;
   }
 
   get disableStopBtn() {
+    // Desabilita comando de stop
     return false;
   }
 
   get disableRestartBtn() {
+    // Desabilita comando de restart
     return false;
   }
 
   get showCommandMenu() {
+    // Exibe o menu de comandos dos sensores (start, stop, restart)
     return this.navigation.actualStepAction === "receiver-measurements";
   }
 
   get numberOfValidConnection() {
-    return 0;
+    // Computado com o numero de conexões a sensores considerada válida
+    console.log(this.backEndSocket.registeredSensorsList, this.backEndSocket.registeredSensorsList.length);
+    return this.backEndSocket.registeredSensorsList.length;
   }
 
-  start() {}
+  get inDev() {
+    return process.env.DEV;
+  }
 
-  stop() {}
+  start() {
+    // Envia o comando de start para todos os sensores conectados
+    console.log("start todos");
+  }
 
-  restart() {}
+  stop() {
+    // Envia o comando de stop para todos os sensores conectados
+    console.log("stop todos");
+  }
+
+  restart() {
+    // Envia o comando de restart para todos os sensores conectados
+    console.log("restart todos");
+  }
 
   save() {
+    // Salva o bean da sessão
     try {
       this.saving = true;
     } catch (e) {
@@ -503,6 +647,11 @@ class SessionUtil {
     } finally {
       this.saving = false;
     }
+  }
+
+  async beforeUnmount() {
+    // Desconecta de qualquer socket ainda conectado
+    console.log("beforeUnmount");
   }
 }
 
