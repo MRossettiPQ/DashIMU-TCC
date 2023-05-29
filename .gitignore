@@ -17,6 +17,12 @@
 /electron/build/dist/**
 /electron/src/custom-server/public/**
 /electron/src/public/
+/electron/build/
+/electron/dist/
+/electron/cache/
+/electron/error.log
+/electron/info.log
+/electron/log/
 
 #IGNORE ELECTRON SOCKET.IO
 /electron-io/node_modules
@@ -28,6 +34,12 @@
 /electron-io/build/*
 /electron-io/build/dist/**
 /electron-io/src/custom-server/public/**
+/electron-io/build/
+/electron-io/dist/
+/electron-io/cache/
+/electron-io/error.log
+/electron-io/info.log
+/electron-io/log/
 
 #IGNORE SERVER
 /server/node_modules
@@ -37,6 +49,7 @@
 /server/*.iml
 /server/package-lock.json
 /server/public/*
+/server/src/public/
 
 #IGNORE FRONT
 /client/node_modules
@@ -47,9 +60,22 @@
 /Front/*.iml
 /client/.DS_Store
 /client/.thumbs.db
-# Quasar core related directories
 /client/.quasar
 /client/dist
+/client/dist/
+/client/.ide-helper/
+
+/client-ts/node_modules
+/client-ts/package-lock.json
+/client-ts/.idea
+/client-ts/yarn.lock
+/client-ts/.vscode
+/client-ts/.DS_Store
+/client-ts/.thumbs.db
+/client-ts/.quasar
+/client-ts/dist
+/client-ts/dist/
+/client-ts/.ide-helper/
 
 # Cordova related directories and files
 /client/src-cordova/node_modules
@@ -59,27 +85,47 @@
 /client/src-cordova/android
 /client/src-cordova/yarn.lock
 
+/client-ts/src-cordova/node_modules
+/client-ts/src-cordova/platforms
+/client-ts/src-cordova/plugins
+/client-ts/src-cordova/www
+/client-ts/src-cordova/android
+/client-ts/src-cordova/yarn.lock
+
 # Capacitor related directories and files
 /client/src-capacitor/www
 /client/src-capacitor/node_modules
 /client/src-capacitor/android
 /client/src-capacitor/yarn.lock
 
+/client-ts/src-capacitor/www
+/client-ts/src-capacitor/node_modules
+/client-ts/src-capacitor/android
+/client-ts/src-capacitor/yarn.lock
+
 # BEX related directories and files
 /client/src-bex/www
 /client/src-bex/js/core
+
+/client-ts/src-bex/www
+/client-ts/src-bex/js/core
 
 # Log files
 /client/npm-debug.log*
 /client/yarn-debug.log*
 /client/yarn-error.log*
-
 /client/.quasar-ide-helper
-
 /client/webpack.config.js
-
 /client/dev.env
 /client/prod.env
+
+/client-ts/npm-debug.log*
+/client-ts/yarn-debug.log*
+/client-ts/yarn-error.log*
+/client-ts/.quasar-ide-helper
+/client-ts/webpack.config.js
+/client-ts/dev.env
+/client-ts/prod.env
 
 #IGNORE SENSOR
 sensor/.idea
@@ -107,21 +153,9 @@ sensor-io/build/*
 !/sensor-io/CMakeLists.txt
 !/sensor-io/CMakeListsPrivate.txt
 
-/electron/build/
-
 *.sqlite
-/executavel/*
-/server/src/public/
-/client/dist/
 /build/yarn.lock
 /build/node_modules/
-/electron/dist/
-/teste/node_modules/
-/electron/cache/
-/electron/error.log
-/electron/info.log
-/electron/log/
-client/yarn.lock
-/client/.ide-helper/
 /type/node_modules/
 /type/yarn.lock
+/executavel/*

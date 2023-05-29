@@ -20,7 +20,9 @@ module.exports = function Sensor(sequelize, Sequelize) {
   })
 
   Sensor.associate = ({ Movement, GyroMeasurement }) => {
+    // Cada sensor deve ter um movimento
     Sensor.belongsTo(Movement)
+    // Todos sensores podem ter varias medições
     Sensor.hasMany(GyroMeasurement, {
       onDelete: 'CASCADE',
     })

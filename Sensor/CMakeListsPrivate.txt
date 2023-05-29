@@ -9,7 +9,7 @@
 
 set(CMAKE_CONFIGURATION_TYPES "esp32dev" CACHE STRING "Build Types reflect PlatformIO Environments" FORCE)
 
-# Convert "Home Directory" that may contain unescaped backslashes on Windows
+# Convert "HomePage Directory" that may contain unescaped backslashes on Windows
 file(TO_CMAKE_PATH $ENV{HOMEDRIVE}$ENV{HOMEPATH} ENV_HOME_PATH)
 
 

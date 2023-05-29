@@ -1,5 +1,5 @@
 import { Component, PropSync, Vue } from "vue-property-decorator";
-import Sensor from "pages/private/NSession/Components/Sensor.vue";
+import Sensor from "../Components/Sensor.vue";
 
 @Component({
   name: "second-step",

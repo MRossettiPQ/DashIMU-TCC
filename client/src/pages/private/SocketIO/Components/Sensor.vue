@@ -4,7 +4,7 @@
       <span>Sensor {{ order }}</span>
       <span>Nome: {{ syncSensor.sensorName }}</span>
       <span>Disponível: {{ syncSensor.available }}</span>
-      <span>Ip: {{ syncSensor.ip }}</span>
+      <span>Id: {{ syncSensor.id }}</span>
       <span v-if="syncSensor.size > 0">Medições armazenadas: {{ syncSensor.size }}</span>
       <q-select
         v-model="syncSensor.position"
@@ -23,9 +23,16 @@
 
     <div class="flex column m-l-0 gap-4">
       <q-badge
+        v-if="!syncSensor.inThisRoom"
         rounded
-        :color="syncSensor.available ? 'green' : 'red'"
-        :label="syncSensor.available ? 'conectado' : 'disponível'"
+        :color="syncSensor.connected ? 'green' : 'red'"
+        :label="syncSensor.connected ? 'conectado' : 'disponível'"
+      />
+      <q-badge
+        v-if="syncSensor.inThisRoom"
+        rounded
+        color="green"
+        :label="syncSensor.connected ? 'nesta sessão' : 'disponível'"
       />
       <q-btn
         dense
@@ -48,7 +55,7 @@
       />
       <q-btn dense flat icon="more_vert" color="primary" :disable="!syncSensor.connected">
         <q-menu fit>
-          <q-list class="column" style="min-width: 100px; gap: 6px">
+          <q-list class="column gap-8" >
             <q-btn
               v-for="(option, indexOption) in menuSensor"
               :key="indexOption"

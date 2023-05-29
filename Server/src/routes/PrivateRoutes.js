@@ -8,7 +8,7 @@ const { VerifyRoles } = require('../core/Middleware/AuthorizeRoles')
 const { verifyExistsCPFinPatient } = require('../core/Middleware/RegisterValidation')
 
 module.exports = (app) => {
-  // TODO Patient
+  // TODO PatientPage
   app.get('/api/patient', AsyncMiddlewares([VerifyToken, VerifyRoles(['ADMINISTRATOR', 'PHYSIOTHERAPIST'])]), AsyncHandler(PatientController.getPatientList))
 
   app.get('/api/patient/:id', AsyncMiddlewares([VerifyToken, VerifyRoles(['ADMINISTRATOR', 'PHYSIOTHERAPIST'])]), AsyncHandler(PatientController.getPatient))

@@ -10,11 +10,11 @@
       <sensor
         v-for="(p, index) in syncSession.backEndSocket.availableSensorsList"
         :key="index"
+        :socket.sync="syncSession.backEndSocket"
         :sensor.sync="syncSession.backEndSocket.availableSensorsList[index]"
         :session.sync="syncSession"
         :order="index"
       />
-
     </div>
   </div>
 </template>

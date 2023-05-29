@@ -10,6 +10,9 @@ class Sensor extends Vue {
   @PropSync("sensor")
   syncSensor;
 
+  @PropSync("socket")
+  syncSocket;
+
   @Prop()
   order;
 

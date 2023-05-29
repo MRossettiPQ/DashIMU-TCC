@@ -23,9 +23,14 @@ module.exports = function Movement(sequelize, Sequelize) {
         'RADIAL_ADDUCTION',
       ],
     },
+    observation: {
+      type: Sequelize.STRING,
+    },
   })
-  Movement.associate = ({ Session, Sensor }) => {
-    Movement.belongsTo(Session)
+  Movement.associate = ({ Procedure, Sensor }) => {
+    // O movimento possui um procedimento
+    Movement.belongsTo(Procedure)
+    // Os movimentos podem possuir varios sensores e esses as medições
     Movement.hasMany(Sensor, {
       onDelete: 'CASCADE',
     })

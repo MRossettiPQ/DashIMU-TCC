@@ -32,7 +32,7 @@ class Session {
   }
 
   get actualStep() {
-    return this.selectedStep;
+    return this.selectedStep || null;
   }
 
   get actualStepOrder() {
@@ -44,7 +44,7 @@ class Session {
   }
 
   get actualStepLabel() {
-    return this.actualStep?.label;
+    return this.actualStep?.label || "";
   }
 
   next() {
@@ -77,26 +77,18 @@ class Session {
   }
 
   nextStep() {
-    this.selectedStep = this.steps.find(
-      ({ order }) => order === this.selectedStep?.order + 1
-    );
+    this.selectedStep = this.steps.find(({ order }) => order === this.selectedStep?.order + 1);
   }
 
   prev() {
     if (this.selectedStep?.order > 0) {
-      this.selectedStep = this.steps.find(
-        ({ order }) => order === this.selectedStep?.order - 1
-      );
+      this.selectedStep = this.steps.find(({ order }) => order === this.selectedStep?.order - 1);
     }
   }
 }
 
 export class SessionUtils {
-  static createNavigation({
-    onEnd = null,
-    onStart = null,
-    onCheckProcedures = null,
-  } = {}) {
+  static createNavigation({ onEnd = null, onStart = null, onCheckProcedures = null } = {}) {
     return new Session(onEnd, onStart, onCheckProcedures);
   }
 }

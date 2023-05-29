@@ -1,0 +1,65 @@
+{
+  "name": "client-ts",
+  "version": "2.0.0",
+  "description": "Dash IMU Typescript",
+  "productName": "Dash IMU Typescript",
+  "author": "Matheus Rossetti <matheus__rossetti@hotmail.com>",
+  "private": true,
+  "scripts": {
+    "lint": "eslint --ext .js,.ts,.vue ./",
+    "test": "echo \"No test specified\" && exit 0",
+    "client:build": "cross-env NODE_ENV=production quasar build",
+    "client:serve": "cross-env NODE_ENV=development quasar dev"
+  },
+  "dependencies": {
+    "@lottiefiles/vue-lottie-player": "^1.1.0",
+    "@quasar/extras": "^1.0.0",
+    "axios": "^1.2.1",
+    "big.js": "^6.2.1",
+    "core-js": "^3.6.5",
+    "dayjs": "^1.11.7",
+    "glob": "^10.2.6",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.4",
+    "quasar": "^1.0.0",
+    "socket.io-client": "^4.6.1",
+    "three": "^0.152.2",
+    "vue-class-component": "^7.2.2",
+    "vue-i18n": "^8.0.0",
+    "vue-property-decorator": "^8.3.0"
+  },
+  "devDependencies": {
+    "@quasar/app": "^2.0.0",
+    "@types/big.js": "^6.1.6",
+    "@types/glob": "^8.1.0",
+    "@types/lodash": "^4.14.195",
+    "@types/node": "^12.20.21",
+    "@types/uuid": "^9.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.10.0",
+    "@typescript-eslint/parser": "^5.10.0",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.0.3",
+    "eslint": "^8.10.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-vue": "^9.0.0",
+    "ngrok": "^5.0.0-beta.2",
+    "prettier": "^2.5.1"
+  },
+  "browserslist": [
+    "ie >= 11",
+    "last 10 Chrome versions",
+    "last 10 Firefox versions",
+    "last 4 Edge versions",
+    "last 7 Safari versions",
+    "last 8 Android versions",
+    "last 8 ChromeAndroid versions",
+    "last 8 FirefoxAndroid versions",
+    "last 10 iOS versions",
+    "last 5 Opera versions"
+  ],
+  "engines": {
+    "node": ">= 10.18.1",
+    "npm": ">= 6.13.4",
+    "yarn": ">= 1.21.1"
+  }
+}

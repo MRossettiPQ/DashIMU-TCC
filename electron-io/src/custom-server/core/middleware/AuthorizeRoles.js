@@ -5,7 +5,7 @@ const { i18n } = require('../utils/i18nUtil')
 
 const VerifyRoles = function (roles = []) {
   return async function (req, res, next) {
-    logColor('SERVER:VERIFYROLES', i18n.__('authorizeroles.verify'))
+    logColor('SERVER:VERIFY-ROLES', i18n.__('authorizeroles.verify'))
     const userContext = await ContextUtil.getUserContext(req, res)
 
     // Implement the middleware function based on the options object

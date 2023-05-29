@@ -6,17 +6,17 @@
         <q-form ref="mainForm" greedy>
           <q-card bordered class="form-column form-column__padding-sm" flat>
             <div class="col form-lines form-lines__padding-sm form-lines__gap-md">
-              <q-input v-model="bean.id" class="col" outlined dense label="Id do User" readonly stack-label />
-              <q-input v-model="bean.name" class="col" outlined dense label="Nome" readonly stack-label />
+              <q-input v-model="bean.id" class="col" outlined dense label="Id do User" :readonly="readOnly" stack-label />
+              <q-input v-model="bean.name" class="col" outlined dense label="Nome" :readonly="readOnly" stack-label />
             </div>
 
             <div class="col form-lines form-lines__padding-sm form-lines__gap-md">
-              <q-input v-model="bean.email" class="col" outlined dense label="E-mail" readonly stack-label />
-              <q-input v-model="bean.accessToken" class="col" outlined dense label="Token" readonly stack-label />
+              <q-input v-model="bean.email" class="col" outlined dense label="E-mail" :readonly="readOnly" stack-label />
+              <q-input v-model="bean.accessToken" class="col" outlined dense label="Token" :readonly="readOnly" stack-label />
             </div>
 
             <div class="col form-lines form-lines__padding-sm form-lines__gap-md">
-              <q-input v-model="bean.role" class="col" outlined dense label="Funções do User" readonly stack-label />
+              <q-input v-model="bean.role" class="col" outlined dense label="Funções do User" :readonly="readOnly" stack-label />
             </div>
           </q-card>
         </q-form>
@@ -29,13 +29,6 @@
 
 <style lang="scss" scoped>
 @import "~src/css/mixins.scss";
-
-.grid-conteudo {
-  padding: 16px;
-  display: flex;
-  gap: 16px;
-  flex-direction: column;
-}
 
 .form-column {
   flex-direction: row;

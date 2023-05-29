@@ -87,7 +87,7 @@
 	"authorize_jwt.invalid_token": "Token invalido",
 	"authorize_roles.verify": "Checar roles",
 	"authorize_roles.not_allowed": "Usuário não foi autorizado",
-	"authorize_roles.requires": "É necessario que o usuario seja ",
+	"authorize_roles.requires": "É necessario que o usuário seja ",
 	"authorize_jwt.compare_crypt": "Comparar tokens",
 	"user.post_not_found": "Usuário não encontrado",
 	"user.post_saved": "Usuário salvo com sucesso",

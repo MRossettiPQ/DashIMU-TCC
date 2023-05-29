@@ -83,20 +83,9 @@ class TableSession extends Vue {
   }
 
   async toMeasurement() {
-    try {
-      console.log("toMeasurement", this.id);
-      await this.$router.push({
-        path: "session/",
-        query: {
-          id: this.id,
-        },
-        params: {
-          id: this.id,
-        },
-      });
-    } catch (e) {
-      console.log(e);
-    }
+    await this.$router.push({
+      path: `n-session/${this.id}`,
+    });
   }
 }
 

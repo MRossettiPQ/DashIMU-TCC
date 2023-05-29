@@ -15,7 +15,7 @@ async function packageApp(appDir, platform, arch, iconPath, outDir) {
 
     await electronInstaller.createWindowsInstaller({
       appDirectory: '.',
-      authors: 'My App Inc.',
+      authors: 'My PublicApp Inc.',
       exe: 'myapp.exe',
     })
     console.log(`Aplicativo empacotado com sucesso em: ${appPaths}`)

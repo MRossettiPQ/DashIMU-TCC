@@ -1,14 +1,14 @@
 <template>
   <q-dialog no-refocus ref="dialog" full-height full-width>
     <q-card class="column">
-      <dialog-header :id="id" :label-right-button="!isMobile ? 'Close' : null" id-msg="Patient nº" else-msg="New patient" />
+      <dialog-header :id="id" :label-right-button="!isMobile ? 'Close' : null" id-msg="PatientPage nº" else-msg="New patient" />
       <loading-screen v-if="fetchData.loading"></loading-screen>
       <error-screen v-else-if="fetchData.hasError"></error-screen>
       <q-card-section v-else-if="fetchData.result !== null" class="card-section w-100">
         <q-form ref="mainForm" class="col form-lines form-lines__gap-sm w-100" greedy>
           <q-input v-model="bean.name" :rules="[$validators.notBlank]" outlined dense label="Nome" />
           <q-input v-model="bean.cpf" :rules="[$validators.notBlank, $validators.cpf]" outlined dense label="CPF" mask="###.###.###-##" />
-          <q-input v-if="false" v-model="bean.birthday" outlined dense :rules="[$validators.notBlank, $validators.dateBorn]" fill-mask="DD-MM-YYYY">
+          <q-input v-if="false" v-model="bean.birthday" outlined dense :rules="[$validators.notBlank]" fill-mask="DD-MM-YYYY">
             <template #prepend>
               <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy cover transition-show="scale" transition-hide="scale">

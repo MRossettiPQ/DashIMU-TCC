@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken')
+const _ = require('lodash')
 const bcryptjs = require('bcryptjs')
 const { settings } = require('../../settings')
 const { throwForbidden } = require('../utils/RequestUtil')
@@ -23,8 +24,14 @@ const CompareCrypt = async (first, second) => {
 const VerifyToken = async (req, res, next) => {
   logColor('SERVER:VERIFY-TOKEN', translate('authorize_jwt.check_token'))
   // Get header token
-  const token = req.headers['x-access-token']
-  if (!token) {
+  // const token = req.headers['x-access-token']
+  let authHeader = req.headers['authorization']
+  let token = null
+  if (authHeader?.startsWith('Bearer ')) {
+    token = authHeader.substring(7, authHeader.length)
+  }
+
+  if (_.isUndefined(token) || _.isNil(token)) {
     return await throwForbidden({
       local: 'SERVER:VERIFY-TOKEN',
       message: translate('authorize_jwt.no_token'),
@@ -34,7 +41,7 @@ const VerifyToken = async (req, res, next) => {
 
   // Check token
   const resultToken = await ResolveToken(token)
-  if (!resultToken) {
+  if (_.isUndefined(resultToken) || _.isNil(resultToken)) {
     return await throwForbidden({
       local: 'SERVER:VERIFY-TOKEN',
       message: translate('authorize_jwt.invalid_token'),

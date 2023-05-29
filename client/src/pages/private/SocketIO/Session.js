@@ -7,9 +7,7 @@ import ThirdStep from "./Steps/ThirdStep.vue";
 import { LoadDataUtils } from "src/commons/utils/LoadDataUtils";
 import SessionService from "src/commons/services/SessionService";
 import PatientService from "src/commons/services/PatientService";
-import { SessionUtil } from "src/commons/utils/SessionUtilSocketIO";
-import _ from "lodash";
-import { Notify } from "quasar";
+import { SessionUtil } from "src/commons/utils/SessionController";
 
 @Component({
   name: "session",
@@ -37,16 +35,7 @@ class Session extends Vue {
   async mounted() {
     const { id } = this.$route.params;
     this.patientId = id;
-    if (_.isNil(this.patientId)) {
-      Notify.create({
-        message: "Sessões são criadas com um link do paciente",
-        textColor: "white",
-        color: "error",
-      });
-      return await this.$router.push({
-        path: "home",
-      });
-    }
+    // Load patient and metadata
     await this.fetchData.loadAll({
       patient: {
         options: {
@@ -54,22 +43,15 @@ class Session extends Vue {
         },
       },
     });
+    // Set patient and metadata in controller
     this.sessionControl.setPatientId(this.patientId);
     this.sessionControl.setMetadata(this.fetchData.result.metadata);
     this.sessionControl.setPatient(this.fetchData.result.patient);
-    this.sessionControl.backEndSocket.connect(this.fetchResult?.metadata?.socket_url);
-  }
-
-  get isMobile() {
-    return this.$q.screen.lt.sm;
-  }
-
-  get isMdpi() {
-    return this.$q.screen.lt.md;
+    this.sessionControl.backEndSocket.connect(this.fetchData?.metadata?.socket_url);
   }
 
   get isTinyScreen() {
-    return this.isMdpi || this.isMobile;
+    return this.$q.screen.lt.md;
   }
 
   async beforeDestroy() {

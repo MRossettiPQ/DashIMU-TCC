@@ -1,7 +1,7 @@
 <template>
   <q-page class="flex column p-16">
     <loading-screen v-if="fetchData.loading"/>
-    <error-screen v-else-if="fetchData.hasError"></error-screen>
+    <error-screen v-else-if="fetchData.hasError"/>
     <div
       v-else-if="fetchData.result !== null"
       class="gap-4 h-100 w-100 p-8 column scroll"

@@ -2,12 +2,20 @@ const { User } = require('../database').models
 const { throwError, throwForbidden } = require('./RequestUtil')
 const { logColor } = require('./LogUtil')
 const { ResolveToken } = require('../middleware/AuthorizeJwt')
+const _ = require('lodash')
 
 exports.getUserContextId = async (req) => {
   logColor('SERVER:CONTEXT', `getUserContextId`)
   // Get header token
-  const token = req.headers['x-access-token']
-  if (!token) {
+  // const token = req.headers['x-access-token']
+  let authHeader = req.headers['authorization']
+  let token = null
+  if (authHeader?.startsWith('Bearer ')) {
+    token = authHeader.substring(7, authHeader.length)
+  }
+  console.log(token)
+
+  if (_.isUndefined(token) || _.isNil(token)) {
     return await throwForbidden({
       local: 'SERVER:USER-CONTEXT',
       message: `No token provided`,
@@ -22,7 +30,7 @@ exports.getUserContextId = async (req) => {
 
   // Check token
   const resultToken = await ResolveToken(token)
-  if (!resultToken) {
+  if (_.isUndefined(resultToken) || _.isNil(resultToken)) {
     return await throwForbidden({
       local: 'SERVER:CONTEXT',
       message: `Invalid token`,

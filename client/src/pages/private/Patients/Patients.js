@@ -6,7 +6,6 @@ import PatientService from "src/commons/services/PatientService";
 
 @Component({
   name: "patients",
-  components: { Patient },
 })
 class Patients extends Vue {
   loading = false;
@@ -59,6 +58,10 @@ class Patients extends Vue {
 
   async beforeDestroy() {
     await this.pagination.abortRequest();
+  }
+
+  get isTinyScreen() {
+    return this.$q.screen.lt.md;
   }
 }
 

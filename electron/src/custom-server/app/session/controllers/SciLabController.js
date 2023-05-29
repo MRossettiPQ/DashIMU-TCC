@@ -19,8 +19,8 @@ module.exports = new (class SciLabController {
     if (!id) {
       return await throwError({
         local: 'SERVER:SCILAB',
-        message: 'Patient ID is missing',
-        log: 'Patient ID is missing',
+        message: 'PatientPage ID is missing',
+        log: 'PatientPage ID is missing',
       })
     }
     const session = await Session.findByPk(id)

@@ -1,5 +1,5 @@
 import { Component, PropSync, Vue } from "vue-property-decorator";
-import Procedure from "pages/private/NSession/Components/Procedure.vue";
+import Procedure from "../Components/Procedure.vue";
 
 @Component({
   name: "first-step",

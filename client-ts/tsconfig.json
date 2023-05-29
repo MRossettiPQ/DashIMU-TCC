@@ -1,0 +1,11 @@
+{
+  "extends": "@quasar/app/tsconfig-preset",
+  "typeRoots": ["typings", "node_modules/@types"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "experimentalDecorators": true,
+    "module": "ESNext",
+    "target": "ES2018",
+    "moduleResolution": "node",
+  }
+}

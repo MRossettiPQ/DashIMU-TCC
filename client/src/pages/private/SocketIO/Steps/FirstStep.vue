@@ -22,7 +22,6 @@
           :session.sync="syncSession"
           :order="index"
         />
-
       </q-form>
     </div>
   </div>

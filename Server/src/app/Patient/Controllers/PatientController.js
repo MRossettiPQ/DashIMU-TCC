@@ -23,16 +23,16 @@ exports.postSavePatient = async (req) => {
   if (!patient) {
     return await throwError({
       local: 'SERVER:PATIENT',
-      message: 'Patient not save',
-      log: 'Patient not save',
+      message: 'PatientPage not save',
+      log: 'PatientPage not save',
     })
   }
 
   return await throwSuccess({
     local: 'SERVER:PATIENT',
     content: patient,
-    message: 'Patient save successful',
-    log: 'Patient save successful',
+    message: 'PatientPage save successful',
+    log: 'PatientPage save successful',
   })
 }
 
@@ -48,7 +48,7 @@ exports.getPatientList = async (req) => {
   return await throwSuccess({
     local: 'SERVER:PATIENT',
     content: pagination,
-    log: 'Patient list',
+    log: 'PatientPage list',
   })
 }
 
@@ -59,14 +59,14 @@ exports.getPatient = async (req) => {
   if (!patient) {
     return await throwError({
       local: 'SERVER:PATIENT',
-      message: 'Patient not found',
-      log: 'Patient not found',
+      message: 'PatientPage not found',
+      log: 'PatientPage not found',
     })
   }
 
   return await throwSuccess({
     local: 'SERVER:PATIENT',
     content: patient,
-    log: 'Patient founded',
+    log: 'PatientPage founded',
   })
 }

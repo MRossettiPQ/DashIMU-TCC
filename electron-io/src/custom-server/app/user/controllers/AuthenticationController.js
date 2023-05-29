@@ -68,7 +68,7 @@ module.exports = new (class AuthenticationController {
         role: userFound.role,
         username: userFound.username,
         email: userFound.email,
-        accessToken: token,
+        accessToken: `Bearer ${token}`,
       },
       message: translate('user.auth_success'),
       log: translate('user.auth_success'),

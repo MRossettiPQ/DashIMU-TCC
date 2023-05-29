@@ -46,7 +46,7 @@ export default {
     },
     register: {
       title: "Register",
-      caption: "Register user",
+      caption: "RegisterPage user",
     },
     profile: {
       title: "Profile",
