@@ -6,12 +6,13 @@ import {
   SensorMetadata,
   SensorSocket,
 } from 'src/common/models/Sensor';
+import { GyroMeasurement } from 'src/common/models/GyroMeasurement';
 
 class SensorUtil implements SensorBean, SensorMetadata {
   // Bean
   sensorName?: string;
   position?: string;
-  gyro_measurements: GyroMeasurementUtil[] = [];
+  gyro_measurements?: GyroMeasurementUtil[] = [];
 
   // Metadata
   ip?: string;
@@ -34,7 +35,8 @@ class SensorUtil implements SensorBean, SensorMetadata {
   }
 
   get connected() {
-    return !this.available;
+    // indisponivel e nessa sessão
+    return !this.available && this.inThisRoom;
   }
 
   constructor(sensor: SensorSocket, socket: Socket) {
@@ -46,15 +48,13 @@ class SensorUtil implements SensorBean, SensorMetadata {
     this.available = sensor.available;
     this.socket = socket;
 
-    this.socket.on(`measurements-${this.sensorSocketId}`, (arg) => {
+    this.socket.on(`measurements-${this.ip}`, (arg) => {
       console.log('aqui', arg);
     });
-    this.socket.on(`remove-${this.sensorSocketId}`, (arg) => {
+    this.socket.on(`remove-${this.ip}`, (arg) => {
       console.log('aqui', arg);
     });
-    this.socket.on(`update-${this.sensorSocketId}`, (sensor) =>
-      this.update(sensor)
-    );
+    this.socket.on(`update-${this.ip}`, (sensor) => this.update(sensor));
   }
 
   calibrate() {
@@ -67,6 +67,8 @@ class SensorUtil implements SensorBean, SensorMetadata {
   }
 
   disconnect() {
+    this.room = '';
+    console.log('room', this.room);
     this.socket.emit('stop-all-room');
     this.socket.emit('remove-listener');
   }
@@ -77,7 +79,7 @@ class SensorUtil implements SensorBean, SensorMetadata {
   }
 
   update(sensor: SensorSocket) {
-    console.log('update');
+    console.log('update', sensor);
     this.ip = sensor.ip;
     this.sensorSocketId = sensor.id;
     this.sensorName = sensor.sensorName;
@@ -86,12 +88,18 @@ class SensorUtil implements SensorBean, SensorMetadata {
     this.room = sensor.room;
   }
 
-  addMeasurement(measurement: GyroMeasurementUtil) {
-    this.gyro_measurements.push(new GyroMeasurementUtil(measurement));
+  addMeasurement(measurement: GyroMeasurement) {
+    this.gyro_measurements?.push(new GyroMeasurementUtil(measurement));
+  }
+
+  addListMeasurements(measurements: GyroMeasurement[]) {
+    measurements.map((measurement: GyroMeasurement) =>
+      this.addMeasurement(measurement)
+    );
   }
 
   get size() {
-    return this.gyro_measurements.length;
+    return this.gyro_measurements?.length || 0;
   }
 
   get notEmpty() {
@@ -105,7 +113,7 @@ class SensorUtil implements SensorBean, SensorMetadata {
   get valid() {
     return (
       this.notNull &&
-      this.gyro_measurements.every((gm: GyroMeasurementUtil) => gm.valid)
+      this.gyro_measurements?.every((gm: GyroMeasurementUtil) => gm.valid)
     );
   }
 }

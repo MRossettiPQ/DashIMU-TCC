@@ -29,6 +29,9 @@ export default class MenuItem extends Vue {
     if (this.link) {
       return { to: this.link };
     }
+    if (this.action) {
+      return this.action;
+    }
     return '';
   }
 

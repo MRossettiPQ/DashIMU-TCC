@@ -23,6 +23,9 @@
  * Margins & Paddings
  */
 @for $space from 1 through 25 {
+  .z-index-#{$space} {
+    z-index: $space !important;
+  }
   $space: $space * 4;
   .m-#{$space} {
     margin: #{$space + 'px'} !important

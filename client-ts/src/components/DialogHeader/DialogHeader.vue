@@ -5,7 +5,7 @@
     <q-btn
       v-close-popup
       :icon="icon || 'close'"
-      :label="labelRightButton"
+      :label="!isTinyScreen ? labelRightButton : null"
       dense
       flat
       size="md"

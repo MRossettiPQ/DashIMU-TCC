@@ -11,25 +11,17 @@
       />
     </div>
     <div class="col w-100 scroll">
-      <q-form
-        ref="mainForm"
-        class="flex column gap-8 p-r-4"
-        greedy
-      >
-        <procedure
-          v-for="(p, index) in syncSession.bean.procedures"
-          :key="index"
-          :procedure.sync="syncSession.bean.procedures[index]"
-          :session.sync="syncSession"
-          :order="index"
-        />
-      </q-form>
+      <procedure
+        v-for="(p, index) in syncSession.bean.procedures"
+        :key="index"
+        :procedure.sync="syncSession.bean.procedures[index]"
+        :session.sync="syncSession"
+        :order="index"
+      />
     </div>
   </div>
 </template>
 
-<script src="./FirstStep.ts" lang="ts"/>
+<script src="./FirstStep.ts" lang="ts" />
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

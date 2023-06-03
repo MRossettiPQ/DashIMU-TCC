@@ -92,7 +92,7 @@ export default {
     no_sensor_available: 'Nenhum sensor disponível.',
     number_of_measurements: 'Numero de medições',
     runtime: 'Tempo de execução',
-    graphic_temporarily_unavailable: 'Gráfico temporarimente indisponivel.',
+    graphic_temporarily_unavailable: 'Gráfico vazio.',
     movement_column: 'Movimento',
     measurement_quantity_column: 'Coletas',
     no_number_of_measurements: 'Nenhuma medição salva para esse movimento',

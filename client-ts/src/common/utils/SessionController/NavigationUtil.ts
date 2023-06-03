@@ -1,3 +1,6 @@
+import { QForm } from 'quasar';
+import { FormUtils } from 'src/common/utils/FormUtils';
+
 interface Step {
   order: number;
   value: string;
@@ -35,7 +38,7 @@ class NavigationUtil {
   ];
 
   constructor() {
-    this.selectedStep = this.steps[0];
+    this.selectedStep = this.steps[2];
   }
 
   get maxOrder() {
@@ -74,7 +77,12 @@ class NavigationUtil {
     return this.actualStepOrder >= 0;
   }
 
-  next() {
+  async next(form?: QForm) {
+    console.log(form);
+    if (form) {
+      await FormUtils.validateAsync(form);
+    }
+
     if (this.validNext) {
       switch (this.actualStepOrder) {
         case 0:

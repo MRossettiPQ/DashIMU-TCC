@@ -1,7 +1,7 @@
 import { Component, Prop, PropSync, Vue } from 'vue-property-decorator';
 import Movement from './Movement.vue';
-import { SessionUtil } from 'src/common/utils/SessionController/SessionUtil';
 import { ProcedureUtil } from 'src/common/utils/SessionController/ProcedureUtil';
+import { SessionController } from 'src/common/utils/SessionController';
 
 @Component({
   name: 'procedure',
@@ -11,7 +11,7 @@ import { ProcedureUtil } from 'src/common/utils/SessionController/ProcedureUtil'
 })
 export default class Procedure extends Vue {
   @PropSync('session')
-  syncSession?: SessionUtil;
+  syncSession?: SessionController;
 
   @PropSync('procedure')
   syncProcedure?: ProcedureUtil;

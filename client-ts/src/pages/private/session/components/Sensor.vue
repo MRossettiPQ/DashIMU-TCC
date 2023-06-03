@@ -1,21 +1,23 @@
 <template>
-  <q-card bordered flat class="col p-8 flex">
-    <div class="col column">
+  <q-card bordered flat class="row w-100 p-8 flex">
+    <div class="col column gap-4">
       <span>Sensor {{ order }}</span>
       <span>Nome: {{ syncSensor.sensorName }}</span>
-      <span>Disponível: {{ syncSensor.available }}</span>
-      <span>Id: {{ syncSensor.id }}</span>
-      <span v-if="syncSensor.size > 0">Medições armazenadas: {{ syncSensor.size }}</span>
+      <span>Id: {{ syncSensor.sensorSocketId }}</span>
+      <span v-if="syncSensor.size > 0">
+        Medições armazenadas: {{ syncSensor.size }}
+      </span>
       <q-select
         v-model="syncSensor.position"
-        class="col"
         :options="syncSession.bean.procedurePositionsWithMoreOptions"
         emit-value
-        borderless
+        outlined
         dense
         :label="$t('session.positions')"
-        :rules="[$rules.notBlank]"
-        hint="Não pode ser nulo"
+        :rules="[
+          $rules.notBlankIf(syncSensor.inThisRoom),
+          positionValidator(syncSensor),
+        ]"
         option-label="label"
         option-value="value"
       />
@@ -23,23 +25,24 @@
 
     <div class="flex column m-l-0 gap-4">
       <q-badge
-        v-if="!syncSensor.inThisRoom"
         rounded
-        :color="syncSensor.connected ? 'green' : 'red'"
-        :label="syncSensor.connected ? 'conectado' : 'disponível'"
-      />
-      <q-badge
-        v-if="syncSensor.inThisRoom"
-        rounded
-        color="green"
-        :label="syncSensor.connected ? 'nesta sessão' : 'disponível'"
+        :color="
+          syncSensor.connected ? 'blue' : syncSensor.available ? 'green' : 'red'
+        "
+        :label="
+          syncSensor.connected
+            ? 'nesta sessão'
+            : syncSensor.available
+            ? 'disponível'
+            : 'indisponível'
+        "
       />
       <q-btn
         dense
         flat
         icon="done"
         color="primary"
-        :disable="syncSensor.connected"
+        :disable="!syncSensor.available"
         aria-label="Conectar"
         round
         @click="syncSensor.connect()"
@@ -53,9 +56,15 @@
         round
         @click="syncSensor.disconnect()"
       />
-      <q-btn dense flat icon="more_vert" color="primary" :disable="!syncSensor.connected">
+      <q-btn
+        dense
+        flat
+        icon="more_vert"
+        color="primary"
+        :disable="!syncSensor.connected"
+      >
         <q-menu fit>
-          <q-list class="column gap-8" >
+          <q-list class="column gap-8">
             <q-btn
               v-for="(option, indexOption) in menuSensor"
               :key="indexOption"
@@ -74,8 +83,6 @@
   </q-card>
 </template>
 
-<script src="./Sensor.ts" lang="ts"/>
+<script src="./Sensor.ts" lang="ts" />
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

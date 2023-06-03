@@ -1,9 +1,9 @@
-const { GyroMeasurement, Sensor, Session, Movement } = require('../../../core/database').models
+const { GyroMeasurement, Sensor, Session, Movement, Procedure } = require('../../../core/database').models
 const { throwSuccess, throwNotFound, throwError } = require('../../../core/utils/RequestUtil')
 const { getAllCalc } = require('../services/SciLabServices')
 const { PaginationUtil } = require('../../../core/utils/PaginationUtil')
-const Procedure = require('./Procedure')
 const { getUserContextId } = require('../../../core/utils/ContextUtil')
+const ProcedureMetadata = require('./Procedure')
 
 module.exports = new (class SessionController {
   async save(req) {
@@ -17,15 +17,20 @@ module.exports = new (class SessionController {
         userId: idUserContext,
       },
       {
-        include: [
+        include: Procedure,
+        model: [
           {
-            model: Movement,
             include: [
               {
-                model: Sensor,
+                model: Movement,
                 include: [
                   {
-                    model: GyroMeasurement,
+                    model: Sensor,
+                    include: [
+                      {
+                        model: GyroMeasurement,
+                      },
+                    ],
                   },
                 ],
               },
@@ -59,18 +64,23 @@ module.exports = new (class SessionController {
       options: {
         include: [
           {
-            model: Sensor,
+            model: Procedure,
             include: [
               {
-                model: Movement,
+                model: Sensor,
+                include: [
+                  {
+                    model: Movement,
+                    where: {
+                      sessionId,
+                    },
+                  },
+                ],
                 where: {
-                  sessionId,
+                  movementId: movementId || null,
                 },
               },
             ],
-            where: {
-              movementId: movementId || null,
-            },
           },
         ],
       },
@@ -159,7 +169,7 @@ module.exports = new (class SessionController {
     return await throwSuccess({
       local: 'SERVER:SESSION',
       content: {
-        procedures: Procedure.getProcedures(),
+        procedures: ProcedureMetadata.getProcedures(),
       },
     })
   }

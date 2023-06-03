@@ -1,9 +1,10 @@
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Mixins, Prop } from 'vue-property-decorator';
+import { ScreenMixin } from 'src/common/mixins/ScreenMixin';
 
 @Component({
   name: 'dialog-header',
 })
-export default class DialogHeader extends Vue {
+export default class DialogHeader extends Mixins(ScreenMixin) {
   @Prop()
   labelRightButton?: string;
 

@@ -1,14 +1,16 @@
 import { Component, Prop, PropSync, Vue } from 'vue-property-decorator';
-import { SessionUtil } from 'src/common/utils/SessionController/SessionUtil';
 import { SensorUtil } from 'src/common/utils/SessionController/SensorUtil';
-import { BackEndSocketUtil } from 'src/common/utils/SessionController';
+import {
+  BackEndSocketUtil,
+  SessionController,
+} from 'src/common/utils/SessionController';
 
 @Component({
   name: 'sensor',
 })
 export default class Sensor extends Vue {
   @PropSync('session')
-  syncSession?: SessionUtil;
+  syncSession!: SessionController;
 
   @PropSync('sensor')
   syncSensor?: SensorUtil;
@@ -26,5 +28,16 @@ export default class Sensor extends Vue {
         icon: 'iso',
       },
     ];
+  }
+
+  positionValidator(actual: SensorUtil) {
+    return (value: string) => {
+      return (
+        !this.syncSession.sockets.registeredSensorsList
+          ?.filter((sensor: SensorUtil) => sensor.ip !== actual.ip)
+          ?.some((sensor: SensorUtil) => sensor.position === value) ||
+        'Já está configurada em outro sensor'
+      );
+    };
   }
 }

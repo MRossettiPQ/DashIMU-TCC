@@ -1,14 +1,15 @@
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Mixins } from 'vue-property-decorator';
 import { Pagination } from 'src/common/utils/LoadDataUtils';
 import PatientService from 'src/common/services/PatientService';
 import { DialogUtils } from 'src/common/utils/DialogUtils';
 import PatientPage from './PatientPage.vue';
 import { Patient } from 'src/common/models/Patient';
+import { ScreenMixin } from 'src/common/mixins/ScreenMixin';
 
 @Component({
   name: 'patients-page',
 })
-export default class PatientsPage extends Vue {
+export default class PatientsPage extends Mixins(ScreenMixin) {
   loading = false;
   term = '';
 
@@ -72,9 +73,5 @@ export default class PatientsPage extends Vue {
 
   async beforeDestroy() {
     await this.pagination.abortRequest();
-  }
-
-  get isTinyScreen() {
-    return this.$q.screen.lt.md;
   }
 }

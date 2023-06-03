@@ -1,4 +1,4 @@
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Ref, Vue } from 'vue-property-decorator';
 import { FetchAllData } from 'src/common/utils/LoadDataUtils';
 import SessionService from 'src/common/services/SessionService';
 import PatientService from 'src/common/services/PatientService';
@@ -10,6 +10,8 @@ import SecondStep from 'pages/private/session/steps/SecondStep.vue';
 import ThirdStep from 'pages/private/session/steps/ThirdStep.vue';
 import FooterStep from 'pages/private/session/components/FooterStep.vue';
 import HeaderStep from 'pages/private/session/components/HeaderStep.vue';
+import RightMenu from 'pages/private/session/components/RightMenu.vue';
+import { QDrawer, QForm } from 'quasar';
 
 @Component({
   name: 'session-page',
@@ -19,10 +21,19 @@ import HeaderStep from 'pages/private/session/components/HeaderStep.vue';
     ThirdStep,
     FooterStep,
     HeaderStep,
+    RightMenu,
   },
 })
 export default class SessionPage extends Vue {
   patientId?: number;
+
+  @Ref('refForm')
+  refForm?: QForm;
+
+  @Ref('menuRef')
+  menuRef?: QDrawer;
+
+  rightDrawer = false;
 
   sessionControl = new SessionController();
 
@@ -50,7 +61,7 @@ export default class SessionPage extends Vue {
       this.sessionControl.setPatientId(this.patientId);
       this.sessionControl.setMetadata(metadata);
       this.sessionControl.setPatient(<Patient>this.fetchData.result?.patient);
-      this.sessionControl.backEndSocket.connect(<string>metadata.socket_url);
+      this.sessionControl.sockets.connect(<string>metadata.socket_url);
     }
   }
 

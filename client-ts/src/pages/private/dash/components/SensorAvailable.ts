@@ -5,6 +5,7 @@ import { FormUtils } from 'src/common/utils/FormUtils';
 import NotifyUtils from 'src/common/utils/NotifyUtils';
 import { GyroMeasurement } from 'src/common/models/GyroMeasurement';
 import { AxiosInstance } from 'axios';
+import _ from 'lodash';
 
 interface ResponseAxios {
   [key: string]: SensorSocket;
@@ -13,7 +14,7 @@ interface ResponseAxios {
 const success = 'Modulo será reiniciado e ficara temporariamente indisponível.';
 @Component({ name: 'sensor-available' })
 export default class SensorAvailable extends Vue {
-  request: AxiosInstance = this.$axios;
+  request!: AxiosInstance;
 
   loaded = false;
   loading = false;
@@ -145,9 +146,7 @@ export default class SensorAvailable extends Vue {
         '/api/measurement'
       );
       if (data.type === 'UNIQUE_MEASUREMENT') {
-        this.measurement = {
-          ...data.measurements,
-        };
+        this.measurement = _.merge(this.measurement, data.measurements);
       }
     } catch (e) {
       console.log(e);

@@ -4,6 +4,11 @@ import DialogHeader from 'components/DialogHeader/DialogHeader.vue';
 import ErrorScreen from 'components/ErrorScreen/ErrorScreen.vue';
 import LoadingScreen from 'components/LoadingScreen/LoadingScreen.vue';
 import MenuItem from 'components/MenuItem/MenuItem.vue';
+import ThreeVisualizer from 'components/ThreeVisualizer/ThreeVisualizer.vue';
+import ResultChartAndTable from 'components/ResultChartAndTable/ResultChartAndTable.vue';
+import ChartVisualizer from 'components/ChartVisualizer/ChartVisualizer.vue';
+import MeasurementTable from 'components/MeasurementTable/MeasurementTable.vue';
+import DrawerItem from 'components/DrawerItem/DrawerItem.vue';
 
 // import { camelCase, upperFirst } from 'lodash';
 export default boot(async ({ Vue }) => {
@@ -45,6 +50,11 @@ export default boot(async ({ Vue }) => {
   Vue.component('ErrorScreen', ErrorScreen);
   Vue.component('LoadingScreen', LoadingScreen);
   Vue.component('MenuItem', MenuItem);
+  Vue.component('ThreeVisualizer', ThreeVisualizer);
+  Vue.component('ResultChartAndTable', ResultChartAndTable);
+  Vue.component('ChartVisualizer', ChartVisualizer);
+  Vue.component('MeasurementTable', MeasurementTable);
+  Vue.component('DrawerItem', DrawerItem);
 
   //
   Vue.component('QMarkupTable', QMarkupTable);

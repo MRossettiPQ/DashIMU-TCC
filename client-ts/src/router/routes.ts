@@ -5,7 +5,7 @@ import StorageUtils from 'src/common/utils/StorageUtils';
 const routes: RouteConfig[] = [
   {
     path: '/',
-    name: 'public',
+    name: 'main',
     component: () => import('pages/MainApp.vue'),
     children: [
       {
@@ -44,7 +44,7 @@ const routes: RouteConfig[] = [
             meta: { requiresAuth: true },
           },
           {
-            name: 'private.patient',
+            name: 'private.patients',
             path: 'patients',
             component: () => import('pages/private/patients/PatientsPage.vue'),
             meta: { requiresAuth: true },
@@ -61,6 +61,12 @@ const routes: RouteConfig[] = [
             component: () => import('pages/private/session/SessionPage.vue'),
             meta: { requiresAuth: true },
           },
+          {
+            name: 'private.result',
+            path: 'result/:id',
+            component: () => import('pages/private/session/ResultPage.vue'),
+            meta: { requiresAuth: true },
+          },
         ],
       },
     ],
@@ -69,6 +75,7 @@ const routes: RouteConfig[] = [
   // Always leave this as last one,
   // but you can also remove it
   {
+    name: 'not-found',
     path: '*',
     component: () => import('pages/public/not-found/NotFound.vue'),
   },
@@ -85,9 +92,10 @@ async function RouteBeforeGuard(
   const blockWhenLogged = ['public.login', 'public.register', 'public.home'];
   const token = await StorageUtils.getToken();
   const isLoggedIn = !!token;
-  if (to?.name === from?.name) {
+  if (to?.path === from?.path) {
     return;
   }
+  console.log(to, from);
   if (isLoggedIn) {
     if (blockWhenLogged.includes(<string>to?.name)) {
       next({

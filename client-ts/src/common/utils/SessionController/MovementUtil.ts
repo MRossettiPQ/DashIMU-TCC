@@ -5,7 +5,7 @@ import { SensorUtil } from 'src/common/utils/SessionController/SensorUtil';
 
 class MovementUtil implements MovementBean, RulesMetadata {
   // Bean
-  sensors = [];
+  sensors?: SensorUtil[];
   observation = '';
   type?: string;
 
@@ -36,7 +36,7 @@ class MovementUtil implements MovementBean, RulesMetadata {
   }
 
   get size() {
-    return this.sensors.length;
+    return this.sensors?.length || 0;
   }
 
   get notEmpty() {
@@ -51,7 +51,8 @@ class MovementUtil implements MovementBean, RulesMetadata {
     return (
       this.notNull &&
       this.notEmpty &&
-      this.sensors.every((s: SensorUtil) => s.valid)
+      this.sensors &&
+      this.sensors?.every((s: SensorUtil) => s.valid)
     );
   }
 }

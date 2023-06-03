@@ -7,6 +7,7 @@ export interface SensorBean {
   sensorName?: string;
   position?: string;
   type?: string; // TODO: por default é GYROSCOPE
+  gyro_measurements?: GyroMeasurement[]; // TODO: por default é GYROSCOPE
 }
 //
 export interface SensorMetadata {

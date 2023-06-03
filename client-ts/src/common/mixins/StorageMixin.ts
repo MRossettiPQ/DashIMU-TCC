@@ -26,6 +26,8 @@ export class StorageMixin extends Vue {
   async watchState(user: User) {
     if (!_.isNil(user)) {
       await this.localStorage.setUser(user);
+    } else {
+      await this.localStorage.eraseLocalStorage();
     }
   }
 }

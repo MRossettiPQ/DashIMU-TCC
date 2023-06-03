@@ -6,11 +6,11 @@ const { settings } = require('../../../settings')
 const { logColor } = require('../../../core/utils/LogUtil')
 const { translate } = require('../../../core/utils/i18nUtil')
 
-const rooms = {}
+const sensors = {}
 
 class Connection {
   client = null
-  io = null
+  global = null
 
   // Sensor
   connectionInfo = {
@@ -40,7 +40,7 @@ class Connection {
   constructor(client, io) {
     logColor('SERVER:SOCKET-IO', translate('socket.connection'), 'fg.yellow')
     this.client = client
-    this.io = io
+    this.global = io
 
     // Registra
     this.client.on('register-sensor', (sensor) => this.registerSensor(sensor))
@@ -48,6 +48,7 @@ class Connection {
     this.client.on('get-sensor-list', () => this.sendSensorList(this.client))
     this.client.on('register-listener', (arg) => this.registerRoom(arg))
     this.client.on('remove-listener', () => this.removeRoom(this.client))
+    this.client.on('remove-my-room', () => this.removeMyRoom())
     // Redireciona as medições
     this.client.on('measurements', (array) => this.measurements(array))
     // Ao desconectar
@@ -67,29 +68,37 @@ class Connection {
   }
 
   registerRoom(id) {
-    console.log('registerRoom')
-    console.log(rooms[id])
-    const socket = rooms[id]
+    // id do socket do sensor a ser registrado
+    logColor('SERVER:SOCKET-IO', `Adicionar o sensor ${id} na sala`)
+    const socket = sensors[id]
     if (socket) {
-      console.log(id, this.client.id)
-      console.log(socket.connectionInfo)
-      socket.client.join(this.client.id)
-      socket.setNotAvailable(this.client.id)
-      socket.sendSelfUpdate()
+      if (!sensors[id].connectionInfo.available) {
+        logColor('SERVER:SOCKET-IO', `O sensor ${id} está indisponível`)
+        return this.sendError(`O sensor ${id} está indisponível`)
+      }
+      sensors[id].client.join(this.client.id)
+      sensors[id].setNotAvailable(this.client.id)
+      sensors[id].sendSelfUpdate()
     }
   }
 
   removeRoom(id) {
-    console.log('removeRoom')
-    console.log(rooms)
-    console.log(rooms[id])
-    console.log(id, this.client.id)
-    const socket = rooms[id]
+    logColor('SERVER:SOCKET-IO', `Remover o sensor ${id} da sala`)
+    const socket = sensors[id]
     if (socket) {
-      rooms.client.leave(this.client.id)
-      socket.setAvailable()
-      rooms.sendSelfUpdate()
+      if (sensors[id].connectionInfo.available) {
+        logColor('SERVER:SOCKET-IO', `O sensor ${id} já está disponível`)
+        return this.sendError(`O sensor ${id} já está disponível`)
+      }
+      sensors[id].client.leave(this.client.id)
+      sensors[id].setAvailable()
+      sensors[id].sendSelfUpdate()
     }
+  }
+
+  removeMyRoom() {
+    this.setAvailable()
+    this.sendSelfUpdate()
   }
 
   setNotAvailable(room) {
@@ -103,14 +112,17 @@ class Connection {
   }
 
   stopAll() {
-    this.io.to(this.client.id).emit('stop')
+    // Mandar todos os sensores da sala desse front pararem
+    this.global.to(this.client.id).emit('stop')
   }
 
   startAll() {
-    this.io.to(this.client.id).emit('stop')
+    // Mandar todos os sensores da sala desse front iniciarem
+    this.global.to(this.client.id).emit('start')
   }
 
   createRoom() {
+    // Inicia uma sala com o id do cliente
     this.client.join(this.client.id)
   }
 
@@ -120,34 +132,40 @@ class Connection {
 
   measurements(array) {
     if (this.isSensor) {
-      this.io.to(this.connectionInfo.room).emit(`measurements-${this.connectionInfo.id}`, array)
+      this.global.to(this.connectionInfo.room).emit(`measurements-${this.connectionInfo.ip}`, array)
     }
   }
 
   disconnect() {
     logColor('SERVER:SOCKET-IO', translate('socket.disconnect'), 'fg.yellow')
     if (this.isSensor) {
-      this.io.emit(`remove-${this.client.id}`)
+      this.global.emit(`remove-${this.client.ip}`)
       this.removeSensorList()
     }
   }
 
-  sendSelfUpdate() {
-    console.log(this.connectionInfo)
-    this.io.emit(`update-${this.client.id}`, this.connectionInfo)
+  sendError(msg) {
+    this.client.emit('error-event', 'Error: ' + msg)
   }
 
-  sendSensorList(socket = this.io) {
+  sendSelfUpdate() {
+    // Enviar atualização sobre a propria conexão para quem tem o evento update-ip
+    console.log('sendSelfUpdate', this.client.id, this.connectionInfo.ip, this.client.origin, this.isSensor)
+    this.global.emit(`update-${this.connectionInfo.ip}`, this.connectionInfo)
+  }
+
+  sendSensorList(socket = this.global) {
     socket.emit('sensor-list', {
       type: 'UPDATE_CLIENT_LIST',
       message: 'Lista de sensores disponíveis',
       data: {
-        list: _.values(rooms).map((s) => s.connectionInfo),
+        list: _.values(sensors).map((s) => s.connectionInfo),
       },
     })
   }
 
   registerSensor(json) {
+    console.log(json)
     this.connectionInfo.id = this.client.id
     this.connectionInfo.ip = json.ip
     this.connectionInfo.origin = json.origin
@@ -160,21 +178,21 @@ class Connection {
     // Adiciona ou atualiza o sensor
     // this.client.join(this.client.id)
 
-    rooms[this.client.id] = this
+    sensors[this.client.id] = this
 
     return this.sendSensorList()
   }
 
   updateSensor() {
     if (this.isSensor) {
-      rooms[this.client.id] = _.merge(rooms[this.client.id], this)
+      sensors[this.client.id] = _.merge(sensors[this.client.id], this)
       this.sendSensorList()
     }
   }
 
   removeSensorList() {
     if (this.isSensor) {
-      _.unset(rooms, this.client.id)
+      _.unset(sensors, this.client.id)
       this.sendSensorList()
     }
   }
@@ -225,7 +243,7 @@ module.exports = new (class WebSocketController {
   async listSensor() {
     return await throwSuccess({
       local: 'SERVER:SENSOR',
-      content: _.values(rooms).map((s) => s.connectionInfo),
+      content: _.values(sensors).map((s) => s.connectionInfo),
       log: 'Sensor list',
     })
   }
@@ -234,20 +252,23 @@ module.exports = new (class WebSocketController {
     io.on('connection', async (client) => new Connection(client, io))
 
     io.of(`/`).adapter.on('create-room', (room) => {
-      console.log(`Room created ${room}`)
+      console.log(`Sala criada: ${room}`)
     })
 
     io.of(`/`).adapter.on('join-room', (room, id) => {
-      console.log(`Joined ${room} - identifier:  ${id}`)
+      console.log(`Entrou na sala: ${room} - o id:  ${id}`)
     })
 
     io.of(`/`).adapter.on('delete-room', (room) => {
-      console.log(`Room deleted ${room} was delete`)
+      console.log(`Sala deletada: ${room}`)
       io.to(room).emit('stop-all-room')
+      io.to(room).emit('remove-my-room')
+      io.in(room).disconnectSockets(true)
     })
 
     io.of(`/`).adapter.on('leave-room', (room, id) => {
-      console.log(`Leave room ${room} - identifier:  ${id} `)
+      console.log(`Saiu da sala: ${room} - id:  ${id} `)
+      io.to(room).emit('stop-all-room')
     })
   }
 })()

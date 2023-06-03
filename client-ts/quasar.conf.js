@@ -81,7 +81,7 @@ module.exports = configure(async function (/* ctx */) {
     // Full list of options: https://v1.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
     devServer: {
       https: false,
-      port: 8080,
+      port: 8082,
       open: true, // opens browser window automatically
     },
 
@@ -156,6 +156,7 @@ module.exports = configure(async function (/* ctx */) {
         'QBanner',
         'QField',
         'QRouteTab',
+        'QResizeObserver',
       ],
       directives: ['Ripple', 'ClosePopup'],
 
@@ -249,6 +250,10 @@ module.exports = configure(async function (/* ctx */) {
       nodeIntegration: true,
 
       extendWebpack(cfg) {
+        config.module.rules.push({
+          test: /\.(glsl|vs|fs|vert|frag)$/,
+          use: ['raw-loader'],
+        });
         cfg.resolve.alias = {
           ...cfg.resolve.alias, // This adds the existing alias
 

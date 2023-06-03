@@ -1,12 +1,27 @@
-import { Component, Mixins } from 'vue-property-decorator';
-import { QDialogOptions } from 'quasar';
+import { Component, Mixins, Ref, Watch } from 'vue-property-decorator';
+import { Dialog, QDialogOptions, QDrawer } from 'quasar';
 import { StorageMixin } from 'src/common/mixins/StorageMixin';
+import { DialogPayload, DialogUtils } from 'src/common/utils/DialogUtils';
 
 @Component({
   name: 'main-app',
 })
 export default class MainApp extends Mixins(StorageMixin) {
-  leftDrawerOpen = false;
+  leftDrawerOpen = true;
+
+  @Ref('drawer')
+  drawer!: QDrawer;
+
+  mounted() {
+    this.closeDrawerIf();
+  }
+
+  @Watch('$route')
+  closeDrawerIf() {
+    if (this.$route?.name === 'private.session') {
+      this.drawer.hide();
+    }
+  }
 
   get menu() {
     const menu = [
@@ -59,9 +74,10 @@ export default class MainApp extends Mixins(StorageMixin) {
     };
   }
 
-  logOut() {
-    this.$q
-      .dialog({
+  async logOut() {
+    try {
+      console.log('aqui');
+      const data = await DialogUtils.create({
         message: this.$t('main.logout'),
         ok: {
           label: this.$t('main.yes'),
@@ -76,14 +92,12 @@ export default class MainApp extends Mixins(StorageMixin) {
           flat: true,
         },
         persistent: true,
-      } as QDialogOptions)
-      .onOk(async () => {
-        try {
-          await this.$store.dispatch('authentication/logout');
-        } catch (e) {
-          console.log(e);
-        }
-      });
+      } as QDialogOptions);
+      // await this.$store.dispatch('authentication/logout');
+      await this.$router.push('/home');
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async goProfile() {

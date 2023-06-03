@@ -1,14 +1,15 @@
-import { Component, PropSync, Vue } from 'vue-property-decorator';
+import { Component, Mixins, PropSync } from 'vue-property-decorator';
 import { Pagination } from 'src/common/utils/LoadDataUtils';
 import PatientService from 'src/common/services/PatientService';
 import SessionPage from '../../SessionPage.vue';
 import { DialogUtils } from 'src/common/utils/DialogUtils';
 import { SessionBean } from 'src/common/models/Session';
+import { ScreenMixin } from 'src/common/mixins/ScreenMixin';
 
 @Component({
   name: 'table-session',
 })
-export default class PatientPage extends Vue {
+export default class PatientPage extends Mixins(ScreenMixin) {
   @PropSync('id')
   idSync?: number | null;
 
@@ -76,10 +77,6 @@ export default class PatientPage extends Vue {
     } catch (e) {
       console.log(e);
     }
-  }
-
-  get isMobile() {
-    return this.$q.platform.is.mobile;
   }
 
   async toMeasurement() {

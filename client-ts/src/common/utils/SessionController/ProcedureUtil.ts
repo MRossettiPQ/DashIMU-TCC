@@ -43,6 +43,11 @@ class ProcedureUtil implements ProcedureMetadata, ProcedureBean {
     this.procedure = value; // Seta o valor para o bean da sessão (alias na sessão é procedure, checar backend)
     this.value = value; // Seta o valor na igual está no arquivo de procedure
     // Seta os metadata desse procedimento
+
+    this.movements?.forEach((value: MovementUtil, index: number) => {
+      this.movements[index].movement = '';
+    });
+
     const foundProcedure = procedures.find((p) => p.value === value);
     if (foundProcedure) {
       this.movementsOptions = foundProcedure.rules;
