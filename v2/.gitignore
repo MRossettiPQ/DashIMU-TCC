@@ -25,21 +25,21 @@
 /electron/log/
 
 #IGNORE ELECTRON SOCKET.IO
-/electron-io/node_modules
-/electron-io/.idea
-/electron-io/yarn.lock
-/electron-io/.vscode
+/electron/node_modules
+/electron/.idea
+/electron/yarn.lock
+/electron/.vscode
 /electron-io/*.iml
-/electron-io/package-lock.json
-/electron-io/build/*
-/electron-io/build/dist/**
-/electron-io/src/custom-server/public/**
-/electron-io/build/
-/electron-io/dist/
-/electron-io/cache/
-/electron-io/error.log
-/electron-io/info.log
-/electron-io/log/
+/electron/package-lock.json
+/electron/build/*
+/electron/build/dist/**
+/electron/src/custom-server/public/**
+/electron/build/
+/electron/dist/
+/electron/cache/
+/electron/error.log
+/electron/info.log
+/electron/log/
 
 #IGNORE SERVER
 /server/node_modules
@@ -65,17 +65,17 @@
 /client/dist/
 /client/.ide-helper/
 
-/client-ts/node_modules
-/client-ts/package-lock.json
-/client-ts/.idea
-/client-ts/yarn.lock
-/client-ts/.vscode
-/client-ts/.DS_Store
-/client-ts/.thumbs.db
-/client-ts/.quasar
-/client-ts/dist
-/client-ts/dist/
-/client-ts/.ide-helper/
+/client/node_modules
+/client/package-lock.json
+/client/.idea
+/client/yarn.lock
+/client/.vscode
+/client/.DS_Store
+/client/.thumbs.db
+/client/.quasar
+/client/dist
+/client/dist/
+/client/.ide-helper/
 
 
 /client-tsv1/node_modules
@@ -98,12 +98,12 @@
 /client/src-cordova/android
 /client/src-cordova/yarn.lock
 
-/client-ts/src-cordova/node_modules
-/client-ts/src-cordova/platforms
-/client-ts/src-cordova/plugins
-/client-ts/src-cordova/www
-/client-ts/src-cordova/android
-/client-ts/src-cordova/yarn.lock
+/client/src-cordova/node_modules
+/client/src-cordova/platforms
+/client/src-cordova/plugins
+/client/src-cordova/www
+/client/src-cordova/android
+/client/src-cordova/yarn.lock
 
 /client-tsv1/src-cordova/node_modules
 /client-tsv1/src-cordova/platforms
@@ -118,10 +118,10 @@
 /client/src-capacitor/android
 /client/src-capacitor/yarn.lock
 
-/client-ts/src-capacitor/www
-/client-ts/src-capacitor/node_modules
-/client-ts/src-capacitor/android
-/client-ts/src-capacitor/yarn.lock
+/client/src-capacitor/www
+/client/src-capacitor/node_modules
+/client/src-capacitor/android
+/client/src-capacitor/yarn.lock
 
 /client-tsv1/src-capacitor/www
 /client-tsv1/src-capacitor/node_modules
@@ -132,8 +132,8 @@
 /client/src-bex/www
 /client/src-bex/js/core
 
-/client-ts/src-bex/www
-/client-ts/src-bex/js/core
+/client/src-bex/www
+/client/src-bex/js/core
 
 /client-tsv1/src-bex/www
 /client-tsv1/src-bex/js/core
@@ -147,13 +147,13 @@
 /client/dev.env
 /client/prod.env
 
-/client-ts/npm-debug.log*
-/client-ts/yarn-debug.log*
-/client-ts/yarn-error.log*
-/client-ts/.quasar-ide-helper
-/client-ts/webpack.config.js
-/client-ts/dev.env
-/client-ts/prod.env
+/client/npm-debug.log*
+/client/yarn-debug.log*
+/client/yarn-error.log*
+/client/.quasar-ide-helper
+/client/webpack.config.js
+/client/dev.env
+/client/prod.env
 
 /client-tsv1/npm-debug.log*
 /client-tsv1/yarn-debug.log*
@@ -177,17 +177,17 @@ sensor/build/*
 !/sensor/CMakeListsPrivate.txt
 
 #IGNORE SENSOR
-sensor-io/.idea
-sensor-io/.vscode
+sensor/.idea
+sensor/.vscode
 sensor-io/*.iml
-sensor-io/.pio
-sensor-io/cmake-build-debug
-sensor-io/cmake-build-esp32dev
-sensor-io/build/*
-!/sensor-io/build/
-!/sensor-io/cmake-build-debug-mingw/
-!/sensor-io/CMakeLists.txt
-!/sensor-io/CMakeListsPrivate.txt
+sensor/.pio
+sensor/cmake-build-debug
+sensor/cmake-build-esp32dev
+sensor/build/*
+!/sensor/build/
+!/sensor/cmake-build-debug-mingw/
+!/sensor/CMakeLists.txt
+!/sensor/CMakeListsPrivate.txt
 
 *.sqlite
 /build/yarn.lock

@@ -1,0 +1,3 @@
+class ThreeJsUtils {}
+
+export { ThreeJsUtils };
