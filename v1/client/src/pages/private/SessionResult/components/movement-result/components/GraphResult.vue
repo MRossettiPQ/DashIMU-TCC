@@ -28,6 +28,7 @@
 
 <style lang="scss" scoped>
 @import 'src/css/mixins.scss';
+
 .chart-container {
   transition: width 1s ease-in-out, height 1s ease-in-out;
 }

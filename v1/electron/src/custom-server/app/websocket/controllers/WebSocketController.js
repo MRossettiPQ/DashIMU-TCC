@@ -1,26 +1,18 @@
 const dayjs = require('dayjs')
 const { throwSuccess } = require('../../../core/utils/RequestUtil')
 const { v4: uuid } = require('uuid')
-const network = require('network')
 const { settings } = require('../../../settings')
 const { logColor } = require('../../../core/utils/LogUtil')
+const WebSocketService = require('../services/WebSocketService')
 
 let sensorList = []
 module.exports = new (class WebSocketController {
   async metadata(req) {
-    function getIP() {
-      return new Promise((resolve) => {
-        network.get_private_ip((err, ip) => {
-          resolve(ip || '0.0.0.0')
-        })
-      })
-    }
-
-    let server_ip = await getIP()
+    const socket_url = await WebSocketService.getIP()
     return await throwSuccess({
       content: {
-        socket_url: `${server_ip}:${settings.host.port}`,
-        url: server_ip,
+        socket_url: `${socket_url}:${settings.host.port}`,
+        url: socket_url,
         port: settings.host.port,
       },
       log: 'Sensor list',
@@ -63,7 +55,9 @@ module.exports = new (class WebSocketController {
                 ...client.connectionInfo,
                 ...data,
               }
-              const index = sensorList.findIndex((sensor) => sensor.uuid === client.connectionInfo.uuid)
+              const index = sensorList.findIndex(
+                (sensor) => sensor.uuid === client.connectionInfo.uuid
+              )
               sensorList[index] = { ...sensorList[index], ...data }
               logColor(`[SOCKET] - Update sensor - ${msg} - ${dayjs()}`)
             }

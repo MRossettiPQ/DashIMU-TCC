@@ -3,19 +3,29 @@ import TabMeasurementTable from './Components/TabMeasurementTable/TabMeasurement
 import { ScreenMixin } from 'src/common/mixins/ScreenMixin'
 
 @Component({
-  name: 'run-procedure',
+  name: 'third-step',
   components: {
     TabMeasurementTable,
   },
 })
-class RunProcedure extends Mixins(ScreenMixin) {
+export default class ThirdStep extends Mixins(ScreenMixin) {
   @Prop()
-  sessionConnection
+  connection
 
   @Prop({ type: Object })
   patient
 
   tabPanel = 'GRAPH'
+
+  graphColumns = [
+    'Roll',
+    'Pitch',
+    'Yaw',
+    // 'Quaternion_X',
+    // 'Quaternion_Y',
+    // 'Quaternion_Z',
+    // 'Quaternion_W',
+  ]
 
   tableColumns = [
     {
@@ -109,5 +119,3 @@ class RunProcedure extends Mixins(ScreenMixin) {
     },
   ]
 }
-
-export default RunProcedure

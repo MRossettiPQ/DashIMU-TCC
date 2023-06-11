@@ -1,13 +1,21 @@
 <template>
-  <q-item v-if="renderLink" class="inactive" active-class="active" exact-active-class="active" clickable tag="a" v-bind="attrs">
-    <q-item-section v-if="icon" avatar>
-      <q-icon :name="icon" />
+  <q-item
+    class="inactive"
+    active-class="active"
+    exact-active-class="active"
+    clickable
+    tag="a"
+    @click="click"
+    v-bind="attrs"
+  >
+    <q-item-section v-if="item.icon" avatar>
+      <q-icon :name="item.icon" />
     </q-item-section>
 
     <q-item-section>
-      <q-item-label>{{ title }}</q-item-label>
+      <q-item-label>{{ item.title }}</q-item-label>
       <q-item-label caption>
-        {{ caption }}
+        {{ item.caption }}
       </q-item-label>
     </q-item-section>
   </q-item>
@@ -18,6 +26,7 @@
 .inactive {
   color: $primary;
 }
+
 .active {
   color: $secondary;
 }

@@ -9,7 +9,7 @@
     >
       <q-tab icon="leaderboard" name="GRAPH" :label="$t('session.tab')" />
       <q-tab
-        v-for="(sensor, index) in sessionConnection.registeredSensorsList"
+        v-for="(sensor, index) in connection.registeredSensorsList"
         :key="index"
         icon="table_rows"
         :label="'Tabela ' + sensor.device.id"
@@ -19,31 +19,25 @@
     <q-tab-panels v-model="tabPanel" class="row h-100" animated>
       <q-tab-panel class="h-100 w-100 justify-center items-center p-0" name="GRAPH">
         <chart-visualizer
-          :sensors="sessionConnection.registeredSensorsList"
-          :table-columns="tableColumns"
+          :sensors="connection.registeredSensorsList"
+          :table-columns="graphColumns"
           :smooth="true"
         />
       </q-tab-panel>
 
       <q-tab-panel
-        v-for="(sensor, index) in sessionConnection.registeredSensorsList"
+        v-for="(sensor, index) in connection.registeredSensorsList"
         :key="index"
         class="h-100 w-100 justify-center items-center p-0"
         :name="'Tab_' + sensor.device.id"
       >
-        <tab-measurement-table
-          :sensor="sensor"
-          :all-sensor="sessionConnection.registeredSensorsList"
-          :patient="patient"
-          :label="`${$t('session.spreadsheet')} ${sensor.device.id}`"
-          :table-columns="tableColumns"
-        />
+        <tab-measurement-table :sensor="sensor" :table-columns="tableColumns" />
       </q-tab-panel>
     </q-tab-panels>
   </div>
 </template>
 
-<script src="./RunProcedure.js" />
+<script src="./ThirdStep.js" />
 
 <style lang="scss" scoped>
 @import '~src/css/mixins.scss';

@@ -4,15 +4,15 @@ import SensorAvailable from './Components/SensorAvailable/SensorAvailable.vue'
 import { ScreenMixin } from 'src/common/mixins/ScreenMixin'
 
 @Component({
-  name: 'select-sensor',
+  name: 'second-step',
   components: {
     SensorRegistered,
     SensorAvailable,
   },
 })
-export default class SelectSensor extends Mixins(ScreenMixin) {
+export default class SecondStep extends Mixins(ScreenMixin) {
   @Prop()
-  sessionConnection
+  connection
 
   @PropSync('session')
   syncedSession

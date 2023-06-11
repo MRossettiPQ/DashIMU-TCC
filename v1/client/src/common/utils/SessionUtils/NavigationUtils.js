@@ -1,26 +1,24 @@
-class Session {
-  constructor(onEnd = null, onStart = null, onCheckProcedures) {
-    // Step
-    this.steps = [
-      {
-        order: 0,
-        value: 'first-step',
-        label: 'Selecionar procedimento', //$t("session.select_procedure"),
-      },
-      {
-        order: 1,
-        value: 'select-sensor',
-        label: 'Ativar sensores', //$t("session.select_sensor"),
-      },
-      {
-        order: 2,
-        value: 'run-procedure',
-        label: 'Captar medições', //$t("session.run_procedure"),
-      },
-    ]
+class Navigation {
+  steps = [
+    {
+      order: 0,
+      value: 'first-step',
+      label: 'Selecionar procedimento', //$t("session.select_procedure"),
+    },
+    {
+      order: 1,
+      value: 'second-step',
+      label: 'Ativar sensores', //$t("session.select_sensor"),
+    },
+    {
+      order: 2,
+      value: 'third-step',
+      label: 'Captar medições', //$t("session.run_procedure"),
+    },
+  ]
+
+  constructor({ onCheckProcedures = null } = {}) {
     this.selectedStep = this.steps[0]
-    this.onEnd = onEnd
-    this.onStart = onStart
     this.onCheckProcedures = onCheckProcedures
 
     this.started = false
@@ -69,8 +67,4 @@ class Session {
   }
 }
 
-export class SessionUtils {
-  static createNavigation({ onEnd = null, onStart = null, onCheckProcedures = null } = {}) {
-    return new Session(onEnd, onStart, onCheckProcedures)
-  }
-}
+export { Navigation }

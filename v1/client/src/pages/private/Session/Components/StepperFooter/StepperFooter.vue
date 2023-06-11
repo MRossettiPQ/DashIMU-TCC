@@ -10,11 +10,7 @@
       @click="navigation.prev()"
     />
 
-    <q-btn-group
-      v-if="navigation?.actualStepValue === 'run-procedure'"
-      rounded
-      flat
-    >
+    <q-btn-group v-if="navigation?.actualStepValue === 'third-step'" rounded flat>
       <q-btn
         dense
         color="primary"
@@ -22,8 +18,8 @@
         unelevated
         round
         icon="play_arrow"
-        :disable="sessionConnection.disableStartBtn"
-        @click="sessionConnection.start()"
+        :disable="connection.disableStartBtn"
+        @click="connection.start()"
       />
       <q-btn
         dense
@@ -32,24 +28,20 @@
         round
         icon="alarm"
         unelevated
-        :disable="sessionConnection.disableStartBtn"
+        :disable="connection.disableStartBtn"
       >
         <q-menu fit>
           <q-list style="min-width: 100px">
             <q-item>
-              <q-form
-                ref="mainForm"
-                class="column form-lines form-lines__gap-sm"
-                greedy
-              >
+              <q-form ref="mainForm" class="column form-lines form-lines__gap-sm" greedy>
                 <q-checkbox
-                  v-model="sessionConnection.useAlarm"
-                  :disable="sessionConnection.disableStartBtn"
+                  v-model="connection.useAlarm"
+                  :disable="connection.disableStartBtn"
                   label="Usar limitador"
                 />
                 <q-input
-                  v-model="sessionConnection.alarmTime"
-                  :disable="sessionConnection.disableStartBtn"
+                  v-model="connection.alarmTime"
+                  :disable="connection.disableStartBtn"
                   class="col"
                   :rules="[$validators.notBlank]"
                   filled
@@ -66,8 +58,8 @@
                 size="md"
                 unelevated
                 icon="play_arrow"
-                :disable="sessionConnection.disableStartBtn"
-                @click="sessionConnection.start()"
+                :disable="connection.disableStartBtn"
+                @click="connection.start()"
               />
             </q-item>
           </q-list>
@@ -81,8 +73,8 @@
         icon="stop"
         round
         unelevated
-        :disable="sessionConnection.disableStopBtn"
-        @click="sessionConnection.stop()"
+        :disable="connection.disableStopBtn"
+        @click="connection.stop()"
       />
       <q-btn
         dense
@@ -91,12 +83,11 @@
         round
         icon="restart_alt"
         unelevated
-        :disable="sessionConnection.disableRestartBtn"
-        @click="sessionConnection.restart()"
+        :disable="connection.disableRestartBtn"
+        @click="connection.restart()"
       >
-        <q-tooltip v-if="!sessionConnection.disableRestartBtn">
-          Reiniciar medições, apaga as medições que não foram adicionadas ao
-          movimento
+        <q-tooltip v-if="!connection.disableRestartBtn">
+          Reiniciar medições, apaga as medições que não foram adicionadas ao movimento
         </q-tooltip>
       </q-btn>
       <q-btn
@@ -120,11 +111,7 @@
       color="primary"
       :loading="loadingSave"
       :disable="disableNextButton"
-      :icon="
-        navigation?.actualStepValue !== 'run-procedure'
-          ? 'arrow_forward_ios'
-          : 'save'
-      "
+      :icon="navigation?.actualStepValue !== 'third-step' ? 'arrow_forward_ios' : 'save'"
       @click="navigation.next()"
     />
   </div>

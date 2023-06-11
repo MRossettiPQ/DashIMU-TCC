@@ -60,8 +60,4 @@ export default class PatientsPage extends Mixins(ScreenMixin) {
   async beforeDestroy() {
     await this.pagination.abortRequest()
   }
-
-  get isTinyScreen() {
-    return this.$q.screen.lt.md
-  }
 }

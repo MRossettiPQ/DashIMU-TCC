@@ -1,9 +1,7 @@
-// class Procedure {}
-
-class Session {
+class SessionUtils {
   constructor(type = 'REAL') {
     this.metadata = {}
-    this.indexList = [0]
+    this.indexList = []
 
     this.defaultMovement = {
       index: 0,
@@ -33,15 +31,15 @@ class Session {
       procedure: '',
       type: type,
       movements: [
-        {
-          ...this.defaultMovement,
-        },
+        // {
+        //   ...this.defaultMovement,
+        // },
       ],
     }
   }
 
   restart() {
-    this.indexList = [0]
+    this.indexList = []
     this.values = {
       selectedProcedureObj: null,
       procedure: '',
@@ -58,7 +56,7 @@ class Session {
     return this.values.movements
   }
 
-  load(metadata) {
+  setMetadata(metadata) {
     this.metadata = metadata
   }
 
@@ -67,14 +65,17 @@ class Session {
   }
 
   get procedures() {
+    // Procedimentos disponiveis
     return this.metadata?.procedures
   }
 
   get procedureSelected() {
+    // Procedimentos selecionado, referente ao type do procedimento
     return this.values?.procedure !== ''
   }
 
   get getSelectedProcedure() {
+    // Procedimentos selecionado, referente ao objeto no metadata
     return this.values.selectedProcedureObj
   }
 
@@ -97,6 +98,8 @@ class Session {
   async selectProcedure(procedure) {
     this.values.selectedProcedureObj = this.findProcedure(procedure)
     this.values.movements = []
+    this.running_movement = null
+    this.indexList = []
   }
 
   selectMovement(movement, index) {
@@ -109,7 +112,7 @@ class Session {
     }
   }
 
-  checkIndexInList(checkId) {
+  checkIndexInList(checkId = 0) {
     const checked = this.indexList?.findIndex((id) => id === checkId)
     if (checked === -1) {
       return checkId
@@ -118,7 +121,7 @@ class Session {
   }
 
   addMovement() {
-    const result = this.checkIndexInList(0)
+    const result = this.checkIndexInList()
     this.indexList.push(result)
     const add = { index: result }
     this.values.movements.push({
@@ -145,14 +148,15 @@ class Session {
   }
 
   addSensorsToMovement(sensors) {
-    if (this.running_movement) {
+    if (this.running_movement?.index >= 0) {
       this.values.movements[this.running_movement.index].sensors = sensors
       this.running_movement = null
     }
   }
 
   allSessionCompleted() {
-    this.session.values?.movements?.forEach((m) => {
+    // Se todos os movimentos possuem medições
+    this.values?.movements?.forEach((m) => {
       m.sensors?.forEach((s) => {
         s.gyro_measurements.length
       })
@@ -160,16 +164,24 @@ class Session {
   }
 
   get checkMovementsMeasurements() {
-    if (this.session?.values?.movements.length < 1) {
+    if (this.values?.movements.length < 1) {
       return true
     }
-    return this.session?.values?.movements?.some((m) => {
+    return this.values?.movements?.some((m) => {
       if (m.sensors.length < 1) {
         return true
       }
       return m.sensors.some((s) => s.gyro_measurements.length < 1)
     })
   }
+
+  get numberMovements() {
+    return this.values?.movements?.length || 0
+  }
+
+  get emptyMovements() {
+    return this.numberMovements === 0
+  }
 }
 
-export { Session }
+export { SessionUtils }

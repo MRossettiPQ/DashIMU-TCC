@@ -66,7 +66,7 @@ class Pagination {
         this.list = []
       }
 
-      const reqResult = await this.request.callService(
+      this.result = await this.request.callService(
         this.load,
         _.merge(
           {
@@ -77,8 +77,6 @@ class Pagination {
           options
         )
       )
-
-      this.result = reqResult
       const optKey = this.listKey
       if (optKey) {
         if (this.infinite && !options.erase) {

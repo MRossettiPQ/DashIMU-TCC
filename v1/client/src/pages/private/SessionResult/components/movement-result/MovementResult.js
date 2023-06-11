@@ -52,6 +52,7 @@ export default class MovementResult extends Mixins(ScreenMixin) {
         },
       },
     })
+    console.log(this.fetchData.result?.calculation)
     this.tab = 'RESULT'
   }
 

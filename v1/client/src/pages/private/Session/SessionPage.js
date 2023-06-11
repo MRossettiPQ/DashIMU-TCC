@@ -1,15 +1,16 @@
-import { Component, Mixins } from 'vue-property-decorator'
+import { Component, Mixins, Ref } from 'vue-property-decorator'
 import StepperFooter from './Components/StepperFooter/StepperFooter.vue'
+import DrawerMenu from './Components/DrawerMenu/DrawerMenu.vue'
 import StepperHeader from './Components/StepperHeader/StepperHeader.vue'
-import SelectSensor from './Steps/SelectSensor/SelectSensor.vue'
-import RunProcedure from './Steps/RunProcedure/RunProcedure.vue'
+import SecondStep from './Steps/SecondStep/SecondStep.vue'
+import ThirdStep from './Steps/ThirdStep/ThirdStep.vue'
 import FirstStep from './Steps/FirstStep/FirstStep.vue'
 import PatientService from 'src/common/services/PatientService'
 import SessionService from 'src/common/services/SessionService'
 import { SessionWebSocket } from 'src/common/utils/SessionUtils/WebSocketSensorsUtils'
 import { Notify } from 'quasar'
-import { SessionUtils } from 'src/common/utils/SessionUtils/SessionStepUtils'
-import { Session } from 'src/common/utils/SessionUtils/SessionInitUtils'
+import { Navigation } from 'src/common/utils/SessionUtils/NavigationUtils'
+import { SessionUtils } from 'src/common/utils/SessionUtils'
 import { FetchAllData } from 'src/common/utils/LoadDataUtil/FetchAllData'
 import { ScreenMixin } from 'src/common/mixins/ScreenMixin'
 import { DevMixin } from 'src/common/mixins/DevMixin'
@@ -17,25 +18,29 @@ import { DevMixin } from 'src/common/mixins/DevMixin'
 @Component({
   name: 'session-page',
   components: {
+    DrawerMenu,
     StepperFooter,
     StepperHeader,
-    SelectSensor,
-    RunProcedure,
+    SecondStep,
+    ThirdStep,
     FirstStep,
   },
 })
 export default class SessionPage extends Mixins(ScreenMixin, DevMixin) {
   patientId = null
 
+  @Ref('menuRef')
+  menuRef
+
+  rightDrawer = false
+
   // loading
   loadingSave = false
-  navigation = SessionUtils.createNavigation({
+  navigation = new Navigation({
     onCheckProcedures: this.saveSession,
   })
-  sessionConnection = new SessionWebSocket()
-  session = new Session()
-  fetchResult = null
-  saveResult = null
+  connection = new SessionWebSocket()
+  session = new SessionUtils()
 
   fetchData = new FetchAllData({
     loadList: {
@@ -54,14 +59,13 @@ export default class SessionPage extends Mixins(ScreenMixin, DevMixin) {
       },
     })
     if (this.fetchData.hasResult) {
-      this.fetchResult = this.fetchData.result
-      this.sessionConnection.connectSession(this.fetchResult?.metadata?.socket_url)
-      this.session.load(this.fetchResult?.metadata)
+      this.connection.connectSession(this.fetchData.result?.metadata?.socket_url)
+      this.session.setMetadata(this.fetchData.result?.metadata)
     }
   }
 
   beforeDestroy() {
-    this.sessionConnection.closeAll()
+    this.connection.closeAll()
   }
 
   async saveSession() {
@@ -84,9 +88,6 @@ export default class SessionPage extends Mixins(ScreenMixin, DevMixin) {
       const data = await SessionService.postSession(bean)
 
       if (data != null) {
-        this.saveResult = data
-        this.session.restart()
-        this.sessionConnection.restart()
         await this.$router.push({
           path: `/result/${data.id}`,
         })

@@ -5,15 +5,7 @@ const openMessage = '[WebSocket] Conexão com o sensor feita com websocket'
 const closeMessage = '[WebSocket] Websocket desconectado do servidor'
 const errorMessage = '[WebSocket] Erro no servidor websocket'
 class SessionWebSocket {
-  constructor({
-    onSensorConnect = null,
-    onSensorDisconnect = null,
-    onSensorError = null,
-    onSessionConnect = null,
-    onSessionDisconnect = null,
-    onSessionError = null,
-    onAddInDev = null,
-  } = {}) {
+  constructor() {
     // Session
     this.availableSensorsList = []
     this.registeredSensorsList = []
@@ -32,15 +24,6 @@ class SessionWebSocket {
     this.timeout = null
     this.runTimer = null
     this.time = null
-
-    // Callbacks
-    this.onSensorConnect = onSensorConnect
-    this.onSensorDisconnect = onSensorDisconnect
-    this.onSensorError = onSensorError
-    this.onSessionConnect = onSessionConnect
-    this.onSessionDisconnect = onSessionDisconnect
-    this.onSessionErro = onSessionError
-    this.onAddInDev = onAddInDev
 
     this.useAlarm = false
     this.alarmTime = 0
@@ -104,27 +87,24 @@ class SessionWebSocket {
     this.sessionSocket = new WebSocket(`ws://${socket_url}/socket`, ['websocket'])
 
     this.sessionSocket.onmessage = (event) => {
-      this.handleSessionMessage(JSON.parse(event?.data))
+      this.manageBackend(JSON.parse(event?.data))
     }
 
     this.sessionSocket.onopen = () => {
       this.connectedBackend = true
       this.sendSocketMessage(this.sessionSocket, 'GET_UPDATE_CLIENT_LIST')
       this.notify(openMessage, 'positive')
-      this.onSessionConnect?.()
     }
 
     this.sessionSocket.onclose = () => {
       this.notify(closeMessage, 'warning')
       this.connectedBackend = false
-      this.onSessionDisconnect?.()
     }
 
     this.sessionSocket.onerror = () => {
       this.notify(errorMessage, 'error')
       this.sessionSocket.close()
       this.connectedBackend = false
-      this.onSessionErro?.()
     }
   }
 
@@ -133,7 +113,7 @@ class SessionWebSocket {
     this.sessionLoadingRequest = true
   }
 
-  handleSessionMessage(json) {
+  manageBackend(json) {
     switch (json?.type) {
       case 'UPDATE_CLIENT_LIST':
         this.availableSensorsList = json?.message
@@ -229,10 +209,6 @@ class SessionWebSocket {
       this.notify(closeMessage + ' do sensor', 'warning')
       this.setDisconnected(index)
       this.stop()
-      this.onSensorDisconnect?.({
-        index,
-        sensor: this.registeredSensorsList[index].device,
-      })
     }
 
     this.registeredSensorsList[index].device.connection.onerror = () => {
@@ -240,19 +216,11 @@ class SessionWebSocket {
       this.setDisconnected(index)
       this.stop()
       this.registeredSensorsList[index].device.connection.close()
-      this.onSensorError?.({
-        index,
-        sensor: this.registeredSensorsList[index].device,
-      })
     }
 
     this.registeredSensorsList[index].device.connection.onopen = () => {
       this.notify(openMessage + ' do sensor', 'positive')
       this.setConnected(index)
-      this.onSensorConnect?.({
-        index,
-        sensor: this.registeredSensorsList[index].device,
-      })
     }
   }
 
@@ -483,7 +451,6 @@ class SessionWebSocket {
         })
       })
     }
-    this.onAddInDev?.()
   }
 }
 

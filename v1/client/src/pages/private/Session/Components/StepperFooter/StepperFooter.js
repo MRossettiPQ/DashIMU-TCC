@@ -6,7 +6,7 @@ import { Notify } from 'quasar'
 })
 export default class StepperFooter extends Vue {
   @Prop()
-  sessionConnection
+  connection
 
   @Prop()
   navigation
@@ -18,20 +18,25 @@ export default class StepperFooter extends Vue {
   syncedSession
 
   get disableAddMeasurement() {
-    if (this.sessionConnection.numberOfMeasurements > 0) {
-      if (this.sessionConnection.disableStartBtn) {
-        return this.sessionConnection.inProgress
+    // Desabilita botão que adiciona as medições temporarias ao movimento
+    // Caso tenha medições liberar
+    if (this.connection.numberOfMeasurements > 0) {
+      if (this.connection.disableStartBtn) {
+        // Caso o botão de start esteja desabilitado, desabilita se a medição estiver em progresso
+        return this.connection.inProgress
       }
       return false
     } else {
+      // Caso não tenha qualquer medição a um sensor
       return true
     }
   }
 
   addMeasurement() {
-    if (this.sessionConnection.numberOfMeasurements > 0) {
+    // Adiciona as medições temporarias exibidas na tela a um movimento escolhido no input do drawer menu
+    if (this.connection.numberOfMeasurements > 0) {
       if (this.syncedSession.running_movement !== null) {
-        this.syncedSession.addSensorsToMovement(this.sessionConnection.registeredSensorsList)
+        this.syncedSession.addSensorsToMovement(this.connection.registeredSensorsList)
         Notify.create({
           message: 'Medições adicionadas ao movimento',
           textColor: 'white',
@@ -58,9 +63,9 @@ export default class StepperFooter extends Vue {
     switch (this.navigation.actualStepValue) {
       case 'first-step':
         return true
-      case 'run-procedure':
-        return this.sessionConnection?.inProgress
-      case 'select-sensor':
+      case 'third-step':
+        return this.connection?.inProgress
+      case 'second-step':
       default:
         return false
     }
@@ -69,43 +74,46 @@ export default class StepperFooter extends Vue {
   get disableNextButton() {
     switch (this.navigation.actualStepValue) {
       case 'first-step':
+        // Bloqueia caso não tenha movimentos
         if (this.syncedSession?.values?.movements.length < 1) {
           return true
         }
+        // Bloqueia caso o procedimento esteja vazio ou tenha algum movimento sem o tipo
         return (
           this.syncedSession?.values?.procedure === '' ||
           this.syncedSession?.values?.movements?.some((m) => m.type === '')
         )
-      case 'select-sensor':
+      case 'second-step':
         return (
-          this.sessionConnection?.numberOfValidConnection < this.syncedSession?.minSensor ||
-          this.sessionConnection?.numberOfValidConnection > this.syncedSession?.minSensor ||
+          this.connection?.numberOfValidConnection < this.syncedSession?.minSensor ||
+          this.connection?.numberOfValidConnection > this.syncedSession?.minSensor ||
           this.checkPositionBlank
         )
-      case 'run-procedure':
-        if (this.sessionConnection?.blockSave) {
-          return true
-        } else {
-          return this.checkMovementsMeasurements
-        }
+      case 'third-step':
+        return this.connection?.blockSave || this.blockIfMovementsMeasurementsEmpty
       default:
         return false
     }
   }
 
-  get checkMovementsMeasurements() {
+  get blockIfMovementsMeasurementsEmpty() {
+    // Bloqueia caso não tenha movimentos registrados
     if (this.syncedSession?.values?.movements.length < 1) {
       return true
     }
+    // Bloqueia caso algum movimento não tenha sensor ou os sensores não tenham medições
     return this.syncedSession?.values?.movements?.some((m) => {
+      // Bloqueia caso não tenha sensores registrados
       if (m.sensors.length < 1) {
         return true
       }
+      // Bloqueia caso não tenha medições em algum sensor
       return m.sensors.some((s) => s.gyro_measurements.length < 1)
     })
   }
 
   get checkPositionBlank() {
-    return this.sessionConnection.registeredSensorsList.some((sr) => sr.position === '')
+    // Verifica se algum sensor registrado está com o campo position em branco, *este campo é obrigatorio
+    return this.connection.registeredSensorsList.some((sr) => sr.position === '')
   }
 }

@@ -9,16 +9,47 @@ const { verifyExistsCPFinPatient } = require('../core/middleware/RegisterValidat
 
 module.exports = (app) => {
   // TODO Patient
-  app.get('/api/patient', AsyncMiddlewares([VerifyToken, VerifyRoles(['ADMINISTRATOR', 'PHYSIOTHERAPIST'])]), AsyncHandler(PatientController.list))
-  app.get('/api/patient/:id', AsyncMiddlewares([VerifyToken, VerifyRoles(['ADMINISTRATOR', 'PHYSIOTHERAPIST'])]), AsyncHandler(PatientController.get))
-  app.post('/api/patient', AsyncMiddlewares([VerifyToken, VerifyRoles(['ADMINISTRATOR', 'PHYSIOTHERAPIST']), verifyExistsCPFinPatient]), AsyncHandler(PatientController.save))
+  app.get(
+    '/api/patient',
+    AsyncMiddlewares([VerifyToken, VerifyRoles(['ADMINISTRATOR', 'PHYSIOTHERAPIST'])]),
+    AsyncHandler(PatientController.list)
+  )
+  app.get(
+    '/api/patient/:id',
+    AsyncMiddlewares([VerifyToken, VerifyRoles(['ADMINISTRATOR', 'PHYSIOTHERAPIST'])]),
+    AsyncHandler(PatientController.get)
+  )
+  app.post(
+    '/api/patient',
+    AsyncMiddlewares([
+      VerifyToken,
+      VerifyRoles(['ADMINISTRATOR', 'PHYSIOTHERAPIST']),
+      verifyExistsCPFinPatient,
+    ]),
+    AsyncHandler(PatientController.save)
+  )
 
   // TODO Session
-  app.get('/api/patient/:id/session', AsyncMiddlewares([VerifyToken, VerifyRoles(['ADMINISTRATOR', 'PHYSIOTHERAPIST'])]), AsyncHandler(SessionController.list))
-  app.get('/api/session/:id', AsyncMiddlewares([VerifyToken, VerifyRoles(['ADMINISTRATOR', 'PHYSIOTHERAPIST'])]), AsyncHandler(SessionController.get))
-  app.get('/api/session/:id/movement/:movementId', AsyncMiddlewares([VerifyToken, VerifyRoles(['ADMINISTRATOR', 'PHYSIOTHERAPIST'])]), AsyncHandler(SessionController.getMovement))
-  // app.get('/api/session/:id/movement/mensuration', AsyncMiddlewares([VerifyToken, VerifyRoles(['ADMINISTRATOR', 'PHYSIOTHERAPIST'])]), AsyncHandler(SessionController.listMeasurement))
-  app.post('/api/session', AsyncMiddlewares([VerifyToken, VerifyRoles(['ADMINISTRATOR', 'PHYSIOTHERAPIST'])]), AsyncHandler(SessionController.save))
+  app.get(
+    '/api/patient/:id/session',
+    AsyncMiddlewares([VerifyToken, VerifyRoles(['ADMINISTRATOR', 'PHYSIOTHERAPIST'])]),
+    AsyncHandler(SessionController.list)
+  )
+  app.get(
+    '/api/session/:id',
+    AsyncMiddlewares([VerifyToken, VerifyRoles(['ADMINISTRATOR', 'PHYSIOTHERAPIST'])]),
+    AsyncHandler(SessionController.get)
+  )
+  app.get(
+    '/api/session/:id/movement/:movementId',
+    AsyncMiddlewares([VerifyToken, VerifyRoles(['ADMINISTRATOR', 'PHYSIOTHERAPIST'])]),
+    AsyncHandler(SessionController.getMovement)
+  )
+  app.post(
+    '/api/session',
+    AsyncMiddlewares([VerifyToken, VerifyRoles(['ADMINISTRATOR', 'PHYSIOTHERAPIST'])]),
+    AsyncHandler(SessionController.save)
+  )
 
   // TODO Scilab
   app.get(
@@ -28,5 +59,9 @@ module.exports = (app) => {
   )
 
   // TODO User
-  app.post('/api/user', AsyncMiddlewares([VerifyToken, VerifyRoles(['ADMINISTRATOR', 'PHYSIOTHERAPIST'])]), AsyncHandler(UserController.save))
+  app.post(
+    '/api/user',
+    AsyncMiddlewares([VerifyToken, VerifyRoles(['ADMINISTRATOR', 'PHYSIOTHERAPIST'])]),
+    AsyncHandler(UserController.save)
+  )
 }

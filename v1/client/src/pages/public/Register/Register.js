@@ -1,11 +1,11 @@
 import { Component, Vue } from 'vue-property-decorator'
-import { FormUtils } from '../../../common/utils/FormUtils'
+import { FormUtils } from 'src/common/utils/FormUtils'
 import AuthenticationService from 'src/common/services/AuthenticationService'
 
 @Component({
   name: 'register',
 })
-class Register extends Vue {
+export default class Register extends Vue {
   loading = false
   bean = {
     email: '',
@@ -30,5 +30,3 @@ class Register extends Vue {
     }
   }
 }
-
-export default Register

@@ -54,7 +54,10 @@ function getMaxPages(count, rpp) {
   return Math.ceil(maxPages)
 }
 
-const PaginationUtil = async (entity, { rpp = 10, page = 0, field = '', order = [['id', 'ASC']], where = null, options } = {}) => {
+const PaginationUtil = async (
+  entity,
+  { rpp = 10, page = 0, field = '', order = [['id', 'ASC']], where = null, options } = {}
+) => {
   // TRANSFORMAR PARAMS EM NUMERO
   const actualPage = toNumber(page)
   const actualRpp = toNumber(rpp)
@@ -65,7 +68,7 @@ const PaginationUtil = async (entity, { rpp = 10, page = 0, field = '', order = 
   // QUERY NO BANCO
   const result = await entity?.findAndCountAll({
     //limit: actualRpp, TODO tirar comentario para paginação
-    //where, TODO tirar comentario para paginação
+    where,
     order,
     attributes: fields,
     //offset, TODO tirar comentario para paginação

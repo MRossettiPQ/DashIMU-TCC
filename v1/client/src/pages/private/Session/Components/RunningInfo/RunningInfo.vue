@@ -3,18 +3,14 @@
     <span class="timer-title no-wrap">
       {{ $t('session.number_of_measurements') }}:
       <span class="timer-value">
-        {{ sessionConnection?.numberOfMeasurements }}
+        {{ connection?.numberOfMeasurements }}
       </span>
     </span>
-    <span v-if="sessionConnection?.time" class="timer-title no-wrap">
+    <span v-if="connection?.time" class="timer-title no-wrap">
       {{ $t('session.runtime') }}:
       <div class="timer no-wrap">
-        <q-icon
-          size="xs"
-          :name="sessionConnection.useAlarm ? 'timer' : 'schedule'"
-          color="primary"
-        />
-        <span class="timer-value">{{ sessionConnection?.timeRunning }}</span>
+        <q-icon size="xs" :name="connection.useAlarm ? 'timer' : 'schedule'" color="primary" />
+        <span class="timer-value">{{ connection?.timeRunning }}</span>
       </div>
     </span>
   </div>
@@ -34,7 +30,7 @@
     background-color: #f5f5f5;
     border: #565353 solid 1px;
     display: flex;
-    flex-display: row;
+    flex-direction: row;
     gap: 2px;
     align-items: center;
     padding: 0 4px 0 4px;

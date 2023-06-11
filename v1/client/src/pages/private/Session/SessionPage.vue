@@ -6,24 +6,37 @@
       <stepper-header
         :navigation="navigation"
         :session.sync="session"
-        :session-connection="sessionConnection"
+        :connection="connection"
         :patient="fetchData.result.patient"
+        :menu-ref="menuRef"
         class="row"
       />
 
-      <transition class="row h-100 w-100" name="slide-fade" mode="out-in">
-        <Component
-          :is="navigation.actualStepValue"
-          :session-connection="sessionConnection"
-          :session.sync="session"
-          :loading-save="loadingSave"
-          :save-result="saveResult"
-        />
-      </transition>
+      <div class="column h-100 w-100 overflow-auto">
+        <q-drawer
+          ref="menuRef"
+          behavior="desktop"
+          bordered
+          :value="rightDrawer"
+          side="right"
+          @hide="rightDrawer = false"
+          content-class="bg-grey-1 column justify-between no-wrap"
+        >
+          <drawer-menu :session.sync="session" :session-connection="connection" />
+        </q-drawer>
+        <transition class="h-100 w-100" name="slide-fade" mode="out-in">
+          <Component
+            :is="navigation.actualStepValue"
+            :connection="connection"
+            :session.sync="session"
+            :loading-save="loadingSave"
+          />
+        </transition>
+      </div>
 
       <stepper-footer
         :navigation="navigation"
-        :session-connection="sessionConnection"
+        :connection="connection"
         :session.sync="session"
         :loading-save="loadingSave"
         class="row"

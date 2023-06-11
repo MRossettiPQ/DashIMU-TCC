@@ -1,27 +1,25 @@
-/*
- * Cores
- */
-//$colors: ("primary": var(--q-color-primary),
-//  "secondary": var(--q-color-secondary),
-//  "tertiary": var(--q-color-tertiary),
-//  "background": var(--q-color-background),
-//  "neutral": var(--q-color-neutral),
-//  "white": var(--q-color-white),
-//  "dark": var(--q-color-dark));
-//
-//@each $name, $color in $colors {
-//  .c-#{$name} {
-//    color: $color !important;
-//  }
-//
-//  .bg-#{$name} {
-//    background-color: $color !important;
-//  }
-//}
+// TODO Cores
+$colors: (
+  "primary": var(--q-color-primary),
+  "secondary": var(--q-color-secondary),
+  "tertiary": var($tertiary),
+  "background": var(--q-color-background),
+  "neutral": var(--q-color-neutral),
+  "white": var(--q-color-white),
+  "dark": var(--q-color-dark)
+);
 
-/*
- * Margins & Paddings
- */
+@each $name, $color in $colors {
+  .c-#{$name} {
+    color: $color !important;
+  }
+
+  .bg-#{$name} {
+    background-color: $color !important;
+  }
+}
+
+// TODO Margins & Paddings
 @for $space from 1 through 25 {
   .z-index-#{$space} {
     z-index: $space !important;
@@ -77,53 +75,6 @@
   }
 }
 
-@for $space from 0 through 20 {
-  $space: $space * 5;
-  .m-#{$space} {
-    margin: #{$space + 'px'} !important
-  }
-  .m-v-#{$space} {
-    margin: #{$space + 'px'} 0 !important
-  }
-  .m-h-#{$space} {
-    margin: 0 #{$space + 'px'} !important
-  }
-  .m-t-#{$space} {
-    margin-top: #{$space + 'px'} !important
-  }
-  .m-b-#{$space} {
-    margin-bottom: #{$space + 'px'} !important
-  }
-  .m-l-#{$space} {
-    margin-left: #{$space + 'px'} !important
-  }
-  .m-r-#{$space} {
-    margin-right: #{$space + 'px'} !important
-  }
-
-  .p-#{$space} {
-    padding: #{$space + 'px'} !important
-  }
-  .p-v-#{$space} {
-    padding: #{$space + 'px'} 0 !important
-  }
-  .p-h-#{$space} {
-    padding: 0 #{$space + 'px'} !important
-  }
-  .p-t-#{$space} {
-    padding-top: #{$space + 'px'} !important
-  }
-  .p-b-#{$space} {
-    padding-bottom: #{$space + 'px'} !important
-  }
-  .p-l-#{$space} {
-    padding-left: #{$space + 'px'} !important
-  }
-  .p-r-#{$space} {
-    padding-right: #{$space + 'px'} !important
-  }
-}
-
 .m-l-auto {
   margin-left: auto !important;
 }
@@ -132,10 +83,7 @@
   margin-right: auto !important;
 }
 
-
-/*
- * Fonts
- */
+// TODO Fonts
 .f-100 {
   font-weight: 100 !important;
 }
@@ -193,10 +141,7 @@
   font-size: xx-large !important;
 }
 
-/*
- * Text
- */
-
+// TODO Text
 .text-center {
   text-align: center !important;
 }
@@ -213,9 +158,7 @@
   text-align: justify !important;
 }
 
-/*
- * Widths & Heights
- */
+// TODO Widths & Heights
 @for $space from 1 through 20 {
   $space: $space * 5;
   .w-#{$space} {
@@ -234,16 +177,12 @@
   width: 100vw !important;
 }
 
-/*
- * wordwrap
- */
+// TODO Word Wrap
 .ww-break {
   word-wrap: break-word;
 }
 
-/*
- * text-transform
- */
+// TODO Text Transform
 .lowercase {
   text-transform: lowercase;
 }
@@ -256,9 +195,7 @@
   text-transform: capitalize;
 }
 
-/*
-* Positioning
-*/
+// TODO Positioning
 .p-relative {
   position: relative !important;
 }
@@ -283,24 +220,7 @@
   float: right !important;
 }
 
-/*
- * Overflow
- */
-.o-hidden {
-  overflow: hidden !important;
-}
-
-.o-visible {
-  overflow: visible !important;
-}
-
-.o-auto {
-  overflow: auto !important;
-}
-
-/*
- * Display
- */
+// TODO Display
 .d-block {
   display: block !important;
 }
@@ -318,9 +238,7 @@
   display: none !important;
 }
 
-/*
- * Border
- */
+// TODO Border
 .b-none {
   border: none !important;
 }
@@ -332,16 +250,7 @@
   }
 }
 
-@for $space from 1 through 25 {
-  $space: $space * 4;
-  .b-r-#{$space} {
-    border-radius: #{$space + 'px'} !important
-  }
-}
-
-/*
- * Grid
- */
+// TODO Grid
 .grid-container {
   display: grid;
 }
@@ -394,9 +303,7 @@
   justify-self: end;
 }
 
-/*
- * Others
- */
+// TODO Others
 .label {
   display: inline;
   padding: 0.2em 0.6em 0.3em;
@@ -414,9 +321,7 @@
   white-space: nowrap;
 }
 
-/*
- * Clamp
- */
+// TODO Clamp
 @for $lines from 1 through 25 {
   .clamp-lines-#{$lines} {
     display: -webkit-box;

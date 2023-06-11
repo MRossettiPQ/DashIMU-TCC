@@ -1,5 +1,5 @@
 import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { LoadDataUtils } from 'src/common/utils/LoadDataUtils'
+import { Pagination } from 'src/common/utils/LoadDataUtil/Pagination'
 import PatientService from 'src/common/services/PatientService'
 import { ScreenMixin } from 'src/common/mixins/ScreenMixin'
 
@@ -12,9 +12,8 @@ class TableSession extends Mixins(ScreenMixin) {
 
   loading = false
 
-  pagination = LoadDataUtils.pagination({
-    toLoad: PatientService.getMensurationList,
-    infinite: true,
+  pagination = new Pagination({
+    load: PatientService.getMensurationList,
   })
 
   term = ''
@@ -59,22 +58,9 @@ class TableSession extends Mixins(ScreenMixin) {
     })
   }
 
-  async openImportExample() {
-    // try {
-    //   const data = await DialogUtils.show(ImportExample, {
-    //     id: this.id || null,
-    //   });
-    //   if (data?.save) {
-    //     await this.pagination.search();
-    //   }
-    // } catch (e) {
-    //   console.log(e);
-    // }
-  }
-
-  async toMeasurement() {
+  async session() {
     await this.$router.push({
-      path: `session/${this.id}`,
+      path: `/session/${this.id}`,
     })
   }
 }

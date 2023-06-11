@@ -1,10 +1,6 @@
-import {Component, Vue} from "vue-property-decorator";
+import { Component, Vue } from 'vue-property-decorator'
 
 @Component({
-  name: "public-app",
+  name: 'public-app',
 })
-class PublicApp extends Vue {
-
-}
-
-export default PublicApp;
+export default class PublicApp extends Vue {}

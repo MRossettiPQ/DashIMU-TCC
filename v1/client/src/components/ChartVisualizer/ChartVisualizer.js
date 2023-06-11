@@ -14,15 +14,7 @@ export default class ChartVisualizer extends Mixins(ScreenMixin) {
   @Prop()
   tableColumns
 
-  columns = [
-    'Roll',
-    'Pitch',
-    'Yaw',
-    // 'Quaternion_W',
-    // 'Quaternion_X',
-    // 'Quaternion_Y',
-    // 'Quaternion_Z',
-  ]
+  columns = ['Roll', 'Pitch', 'Yaw']
 
   @Ref('chartElement')
   chartElement
@@ -31,6 +23,9 @@ export default class ChartVisualizer extends Mixins(ScreenMixin) {
   smooth
 
   async mounted() {
+    if (this.tableColumns.length) {
+      this.columns = this.tableColumns
+    }
     this.chartState = new ChartUtils(this.tableColumns)
     this.update()
   }

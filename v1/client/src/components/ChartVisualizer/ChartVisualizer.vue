@@ -1,14 +1,20 @@
 <template>
-  <div ref="chartVisualizer" class="h-100 w-100 p-relative overflow-hidden">
+  <div ref="chartVisualizer" class="h-100 w-100 p-relative overflow-auto">
     <div class="h-100 w-100 z-index-1 chart-container">
       <div id="chartElement" ref="chartElement" class="h-100 w-100 chart" />
       <q-resize-observer @resize="resize" />
     </div>
     <div v-if="!numberOfMeasurements" class="p-absolute z-index-10 w-100 h-100" style="top: 0">
       <div class="column div-lottie">
-        <lottie-vue-player class="lottie" :src="'/lottie/chart-reports.json'" :autoplay="true" :loop="true" :speed="1" />
+        <lottie-vue-player
+          class="lottie"
+          :src="'/lottie/chart-reports.json'"
+          :autoplay="true"
+          :loop="true"
+          :speed="1"
+        />
         <span class="text-weight-bold">
-          {{ $t("session.graphic_temporarily_unavailable") }}
+          {{ $t('session.graphic_temporarily_unavailable') }}
         </span>
       </div>
     </div>
@@ -18,7 +24,7 @@
 <script src="./ChartVisualizer.js" />
 
 <style lang="scss" scoped>
-@import "src/css/mixins.scss";
+@import 'src/css/mixins.scss';
 .chart-container {
   transition: width 1s ease-in-out, height 1s ease-in-out;
 }

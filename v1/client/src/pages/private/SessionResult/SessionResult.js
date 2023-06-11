@@ -30,7 +30,6 @@ export default class SessionResult extends Mixins(ScreenMixin) {
     if (this.fetchData.result?.movements.length) {
       this.tab = `Mov_${this.fetchData.result.movements?.[0].id}`
     }
-    console.log(this.fetchData.result)
   }
 
   selectTab(tab) {

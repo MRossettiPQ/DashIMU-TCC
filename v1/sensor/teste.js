@@ -1,191 +1,101 @@
-// TODO Conhecendo as funções em Javascript a seguir
-function getMean(array) {
-    console.log('[SCILAB] Mean Function')
-    return math.mean(array)
-}
-
-function getMax(array) {
-    console.log('[SCILAB] Max Function')
-    return math.max(array)
-}
-
-function getMin(array) {
-    console.log('[SCILAB] Min Function')
-    return math.min(array)
-}
-
-function getIndexMinMax(array, value) {
-    console.log('[SCILAB] Index Function')
-    return array.indexOf(value)
-}
-
-function getSqrt(value) {
-    console.log('[SCILAB] Sqrt Function')
-    return math.sqrt(value)
-}
-
-function getColumn(array, column) {
-    console.log('[SCILAB] Get Column')
-    return array.map((obj) => obj[`${column}`])
-}
-
-function getArraySubtract(array, subtractValue) {
-    console.log('[SCILAB] Array Subtract')
-    return array.map((obj) => math.subtract(obj, subtractValue))
-}
-
-function getArrayDivision(array, divisorValue) {
-    console.log('[SCILAB] Array Division')
-    return array.map((obj) => math.divide(obj, divisorValue))
-}
-
-function getArrayPow(array, pow) {
-    console.log('[SCILAB] Array Pow')
-    return array.map((obj) => math.pow(obj, pow))
-}
-
-function getArraySqrt(array) {
-    console.log('[SCILAB] Array Sqrt')
-    return array.map((obj) => math.sqrt(obj))
-}
-
-function getStDeviation(array) {
-    console.log('[SCILAB] Standard Deviation')
-    return math.std(array)
-}
-
-// Sabendo que uma medição tem o formato da interface a seguir
-export interface GyroMeasurement {
-    id?: number;
-    sensorName?: string;
-    numberMensuration?: number;
-    hourMensuration?: string;
-    Acc_X?: number | null;
-    Acc_Y?: number | null;
-    Acc_Z?: number | null;
-    AccelX_mss?: number | null;
-    AccelY_mss?: number | null;
-    AccelZ_mss?: number | null;
-    Gyr_X?: number | null;
-    Gyr_Y?: number | null;
-    Gyr_Z?: number | null;
-    Mag_X?: number | null;
-    Mag_Y?: number | null;
-    Mag_Z?: number | null;
-    Roll?: number | null;
-    Pitch?: number | null;
-    Yaw?: number | null;
-    Euler_X?: number | null;
-    Euler_Y?: number | null;
-    Euler_Z?: number | null;
-    Quaternion_X?: number | null;
-    Quaternion_Y?: number | null;
-    Quaternion_Z?: number | null;
-    Quaternion_W?: number | null;
+function calculateQuarterionAngle(gyro_measurement_1, gyro_measurement_2) {
+  // Verifica se as medições possuem os valores do quaternion
+  if (
+    gyro_measurement_1.Quaternion_X == null ||
+    gyro_measurement_1.Quaternion_Y == null ||
+    gyro_measurement_1.Quaternion_Z == null ||
+    gyro_measurement_1.Quaternion_W == null ||
+    gyro_measurement_2.Quaternion_X == null ||
+    gyro_measurement_2.Quaternion_Y == null ||
+    gyro_measurement_2.Quaternion_Z == null ||
+    gyro_measurement_2.Quaternion_W == null
+  ) {
+    return null;
   }
 
-  // Essa interface é a representação de uma linha do arquivo csv e conhecendo o cabeçalho do arquivo em csv, a seguir.
-  // Counter	Acc_X	Acc_Y	Acc_Z	Gyr_X	Gyr_Y	Gyr_Z	Mag_X	Mag_Y	Mag_Z	Roll	Pitch	Yaw	Latitude	Longitude	Altitude	Vel_X	Vel_Y	Vel_Z
+  const q1 = {
+    x: gyro_measurement_1.Quaternion_X,
+    y: gyro_measurement_1.Quaternion_Y,
+    z: gyro_measurement_1.Quaternion_Z,
+    w: gyro_measurement_1.Quaternion_W,
+  };
 
-  // Conveter para javascript o codigo do SciLab a seguir em uma a função recebe measurements_1 e measurements_2 ao inves de um arquivo
-  /*
+  const q2 = {
+    x: gyro_measurement_2.Quaternion_X,
+    y: gyro_measurement_2.Quaternion_Y,
+    z: gyro_measurement_2.Quaternion_Z,
+    w: gyro_measurement_2.Quaternion_W,
+  };
+  // Calcula o produto escalar entre os dois quaternions
+  const dotProduct = q1.x * q2.x + q1.y * q2.y + q1.z * q2.z + q1.w * q2.w;
 
-[Data,text]=fscanfMat('C:\TCC\Exemplo\DJ E 05-000.TXT');   
-  l=size(Data,1);
-  roll1=Data(:,10);
-  pitch1=Data(:,11);
-  yaw1=Data(:,12);
-  yaw1=yaw1*(-1);
-  x1=Data(:,2);
-  y1=Data(:,3);
-  z1=Data(:,4);
-  clear Data;
-  
-  [Data2,text2]=fscanfMat('C:\TCC\Exemplo\SL E 02-000.TXT');   
-  l2=size(Data2,1);
-  roll2=Data2(:,10);
-  pitch2=Data2(:,11);
-  yaw2=Data2(:,12);
-  clear Data2;
-  
-  fl=l/120;
-  tempo=0:0.0083333:fl;
-  tempo=tempo(1:l);
-  
-  // ###################################### FIM - DA ABERTURA DO ARQUIVO A TRATAR ##########################################//
-  
-  // ######################################### FY ###################################################//
-  
-  zerarroll1=mean(roll1(10:100));
-  roll1p=roll1-(zerarroll1);
-  
-  zerarroll2=mean(roll2(10:100));
-  roll2p=roll2-(zerarroll2);
-  
-  zerarpitch1=mean(pitch1(10:100));
-  pitch1p=pitch1-(zerarpitch1);
-  
-  zerarpitch2=mean(pitch2(10:100));
-  pitch2p=pitch2-(zerarpitch2);
-  
-  zeraryaw1=mean(yaw1(10:100));
-  yaw1p=yaw1-(zeraryaw1);
-  
-  zeraryaw2=mean(yaw2(10:100));
-  yaw2p=yaw2-(zeraryaw2);
-  
-  
-  zerarx1=mean(x1(10:100));
-  x1p=x1-(zerarx1);
-  
-  zerary1=mean(y1(10:100));
-  y1p=y1-(zerary1);
-  
-  zerarz1=mean(z1(10:100));
-  z1p=z1-(zerarz1);
-  
-  
-  for i=1:l
-    atorn(i)=90-(yaw1(i))-(pitch2(i));
-  end
-  
-  ////peegar os valores que interessam
-  ////peegar os valores que interessam
-  limit9=max(y1p);
-  
-  yy1p=y1p/2;
-  yy1p=yy1p^4;
-  
-  //encontrar o valor do inicio
-  for i=1:length(yy1p);
-    if yy1p(i)>limit9 then
-     inicioi=i;
-     break
-  end
-  end
-  inicio=inicioi-735;
-  iniciof=inicioi-135;
-  
-  //recortar
-  rpitch1p=pitch1p(inicio:iniciof);
-  ratorn=atorn(inicio:iniciof);
-  
-  [minpitch iminpitch]=min(rpitch1p);
-  [maxpitch imaxpitch]=max(rpitch1p);
-  varpitch=maxpitch-minpitch;
-  
-  [minatorn iminatorn]=min(ratorn);
-  [maxatorn imaxatorn]=max(ratorn);
-  varatorn=maxatorn-minatorn;
-  
-  zatorn=ratorn-90;
-  rmsratorn=sqrt(zatorn^2);
-  rmsrpitch1p=sqrt(rpitch1p^2);
-  
-  meanrmsratorn=mean(rmsratorn);
-  sdrmsratorn=st_deviation(rmsratorn);
-  
-  meanrmsrpitch1p=mean(rmsrpitch1p);
-  sdrmsrpitch1p=st_deviation(rmsrpitch1p);
+  // O ângulo entre os dois quaternions é o arco cosseno do produto escalar
+  const angle = 2 * Math.acos(Math.min(Math.abs(dotProduct), 1));
 
-  */
+  // Converte o ângulo para graus
+  return angle * (180 / Math.PI);
+}
+
+function calculateRollPitchYawAngle(gyro_measurement_1, gyro_measurement_2) {
+    if (
+      gyro_measurement_1.Roll == null ||
+      gyro_measurement_1.Pitch == null ||
+      gyro_measurement_1.Yaw == null ||
+      gyro_measurement_2.Roll == null ||
+      gyro_measurement_2.Pitch == null ||
+      gyro_measurement_2.Yaw == null
+    ) {
+      return null // Verifica se as medições possuem os valores de roll, pitch e yaw
+    }
+  
+    const roll1 = gyro_measurement_1.Roll
+    const pitch1 = gyro_measurement_1.Pitch
+    const yaw1 = gyro_measurement_1.Yaw
+  
+    const roll2 = gyro_measurement_2.Roll
+    const pitch2 = gyro_measurement_2.Pitch
+    const yaw2 = gyro_measurement_2.Yaw
+  
+    // Calcula a diferença entre os ângulos de roll, pitch e yaw
+    const diffRoll = roll2 - roll1
+    const diffPitch = pitch2 - pitch1
+    const diffYaw = yaw2 - yaw1
+  
+    // Calcula a magnitude do ângulo resultante
+    const angle = Math.sqrt(diffRoll * diffRoll + diffPitch * diffPitch + diffYaw * diffYaw)
+    
+    // Converte o ângulo para graus
+    return angle * (180 / Math.PI);
+  }
+
+// Exemplo de uso:
+const measurement1 = {
+  Roll: 0.5,
+  Pitch: 0.8,
+  Yaw: 1.2,
+  Euler_X: 0.5,
+  Euler_Y: 0.8,
+  Euler_Z: 1.2,
+  Quaternion_X: 0.1,
+  Quaternion_Y: 0.2,
+  Quaternion_Z: 0.3,
+  Quaternion_W: 0.4,
+};
+
+const measurement2 = {
+  Roll: 0.7,
+  Pitch: 0.9,
+  Yaw: 1.5,
+  Euler_X: 0.7,
+  Euler_Y: 0.9,
+  Euler_Z: 1.5,
+  Quaternion_X: 0.5,
+  Quaternion_Y: 0.6,
+  Quaternion_Z: 0.7,
+  Quaternion_W: 0.8,
+};
+
+const result = calculateQuarterionAngle(measurement1, measurement2);
+const result1 = calculateRollPitchYawAngle(measurement1, measurement2);
+console.log(`O ângulo formado entre os sensores é: ${result} graus.`);
+console.log(`O ângulo formado entre os sensores é: ${result1} graus.`);

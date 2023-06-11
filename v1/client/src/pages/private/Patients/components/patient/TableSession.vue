@@ -11,23 +11,21 @@
     :rows-per-page-options="[15]"
   >
     <template #top>
-      <div class="form-column gap-8 w-100 justify-between">
-        <div class="row gap-8">
-          <q-btn
-            :disable="loading"
-            :label="!isTinyScreen ? 'Session' : null"
-            color="primary"
-            dense
-            icon="add"
-            unelevated
-            @click="toMeasurement"
-          />
-          <!--          <q-btn :disable="true" :label="!isTinyScreen ? 'Importar' : null" color="primary" dense unelevated icon="publish" @click="open" />-->
-        </div>
+      <div class="row gap-8 w-100 justify-between">
+        <q-btn
+          class="row"
+          :disable="loading"
+          :label="!isTinyScreen ? 'Session' : null"
+          color="primary"
+          dense
+          icon="add"
+          unelevated
+          @click="session"
+        />
         <q-input
           v-model="term"
           borderless
-          class="col col-sm-5"
+          class="col col-sm-7"
           color="primary"
           debounce="300"
           unelevated

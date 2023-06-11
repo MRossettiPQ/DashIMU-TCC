@@ -1,9 +1,6 @@
 import { Component, Prop, PropSync, Vue } from 'vue-property-decorator'
 import RunningInfo from '../RunningInfo/RunningInfo.vue'
 import { ExportCSV } from 'src/common/utils/CSVUtils'
-import { Notify } from 'quasar'
-import DialogUtils from 'src/common/utils/DialogUtils'
-import CheckMeasurementsDialog from '../CheckMeasurementsDialog/CheckMeasurementsDialog.vue'
 
 @Component({
   name: 'stepper-header',
@@ -15,7 +12,10 @@ export default class StepperHeader extends Vue {
   exportFile = new ExportCSV()
 
   @Prop()
-  sessionConnection
+  menuRef
+
+  @Prop()
+  connection
 
   @PropSync('session')
   syncedSession
@@ -23,11 +23,8 @@ export default class StepperHeader extends Vue {
   @Prop()
   navigation
 
-  @Prop()
-  patient
-
   get connected() {
-    return this.sessionConnection?.isConnectedBackend
+    return this.connection?.isConnectedBackend
   }
 
   get showActualMovement() {
@@ -37,33 +34,7 @@ export default class StepperHeader extends Vue {
     )
   }
 
-  notification(message, color) {
-    Notify.create({
-      message,
-      color,
-      textColor: 'white',
-    })
-  }
-
-  get checkMovementsMeasurements() {
-    if (this.syncedSession?.values?.movements.length < 1) {
-      return true
-    }
-    return this.syncedSession?.values?.movements?.some((m) => {
-      if (m.sensors.length < 1) {
-        return true
-      }
-      return m.sensors.some((s) => s.gyro_measurements.length < 1)
-    })
-  }
-
-  async openCheckMeasurements() {
-    try {
-      await DialogUtils.show(CheckMeasurementsDialog, {
-        session: this.syncedSession,
-      })
-    } catch (e) {
-      console.log(e)
-    }
+  openDrawer() {
+    this.menuRef?.toggle()
   }
 }

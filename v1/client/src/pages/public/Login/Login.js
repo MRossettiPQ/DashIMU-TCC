@@ -5,7 +5,7 @@ import AuthenticationService from 'src/common/services/AuthenticationService'
 @Component({
   name: 'login',
 })
-class Login extends Vue {
+export default class Login extends Vue {
   loading = false
   bean = {
     username: '',
@@ -26,5 +26,3 @@ class Login extends Vue {
     }
   }
 }
-
-export default Login

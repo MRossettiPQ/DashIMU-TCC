@@ -1,42 +1,21 @@
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue, Emit } from 'vue-property-decorator'
 
 @Component({
-  name: "menu-item",
+  name: 'menu-item',
 })
 export default class MenuItem extends Vue {
-  @Prop({ type: String, required: true })
-  title;
+  @Prop()
+  item
 
-  @Prop({ type: String, default: "" })
-  caption;
-
-  @Prop({ type: String, default: "" })
-  icon;
-
-  @Prop({ type: String, default: null })
-  link;
-
-  @Prop({ type: Function, default: null })
-  action;
-
-  @Prop({ type: Boolean, default: false })
-  inLogged;
-
-  @Prop({ type: Boolean, default: false })
-  logged;
+  @Emit('click')
+  async click(event) {
+    return event
+  }
 
   get attrs() {
-    if (this.link) {
-      return { to: this.link };
+    if (this.item?.link) {
+      return { to: this.item?.link }
     }
-    return "";
-  }
-
-  get renderLink() {
-    return this.inLogged !== null ? this.logged === !this.inLogged : true;
-  }
-
-  get active() {
-    return true;
+    return ''
   }
 }

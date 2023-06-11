@@ -3,6 +3,8 @@ const { throwSuccess, throwNotFound, throwError } = require('../../../core/utils
 const { PaginationUtil } = require('../../../core/utils/PaginationUtil')
 const Procedure = require('./Procedure')
 const { getUserContextId } = require('../../../core/utils/ContextUtil')
+const WebSocketService = require('../../websocket/services/WebSocketService')
+const { settings } = require('../../../settings')
 
 module.exports = new (class SessionController {
   async save(req) {
@@ -43,10 +45,10 @@ module.exports = new (class SessionController {
   }
 
   async list(req) {
-    const { id: idPatient } = req.params
+    const { id: patientId } = req.params
     const { rpp, page, field } = req.query
 
-    if (!idPatient) {
+    if (!patientId) {
       return await throwError({
         local: 'SERVER:SCILAB',
         message: 'User not found',
@@ -59,6 +61,9 @@ module.exports = new (class SessionController {
       page,
       field,
       order: [['id', 'ASC']],
+      where: {
+        patientId,
+      },
     })
 
     if (!pagination) {
@@ -146,10 +151,12 @@ module.exports = new (class SessionController {
   }
 
   async metadata() {
+    const socket_url = await WebSocketService.getIP()
     return await throwSuccess({
       local: 'SERVER:SESSION',
       content: {
         procedures: Procedure.getProcedures(),
+        socket_url: `${socket_url}:${settings.host.port}`,
       },
     })
   }
