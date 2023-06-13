@@ -1,11 +1,15 @@
 <template>
   <div ref="chartVisualizer" class="h-100 w-100 p-relative overflow-auto">
-    <div class="h-100 w-100 z-index-1 chart-container">
+    <div v-show="numberOfMeasurements" class="h-100 w-100 z-index-1 chart-container">
       <div id="chartElement" ref="chartElement" class="h-100 w-100 chart" />
       <q-resize-observer @resize="resize" />
     </div>
-    <div v-if="!numberOfMeasurements" class="p-absolute z-index-10 w-100 h-100" style="top: 0">
-      <div class="column div-lottie">
+    <div
+      v-if="!numberOfMeasurements"
+      class="p-absolute z-index-10 w-100 h-100 bg-white"
+      style="top: 0"
+    >
+      <div class="column div-lottie bg-white">
         <lottie-vue-player
           class="lottie"
           :src="'/lottie/chart-reports.json'"

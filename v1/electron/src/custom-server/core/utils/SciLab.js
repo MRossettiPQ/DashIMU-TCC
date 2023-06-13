@@ -1,5 +1,20 @@
 const math = require('mathjs')
 
+exports.getColumn = (array, column) => {
+  // console.log('[SCILAB] Get Column')
+  return array.map((obj) => obj[`${column}`])
+}
+
+exports.getIndexMinMax = (array, value) => {
+  // console.log('[SCILAB] Index Function')
+  return array.indexOf(value)
+}
+
+exports.getArraySqrt = (array) => {
+  // console.log('[SCILAB] Array Sqrt')
+  return array.map((obj) => math.sqrt(obj))
+}
+
 exports.getMean = (array) => {
   // console.log('[SCILAB] Mean Function')
   return math.mean(array)
@@ -15,21 +30,10 @@ exports.getMin = (array) => {
   return math.min(array)
 }
 
-exports.getIndexMinMax = (array, value) => {
-  // console.log('[SCILAB] Index Function')
-  return array.indexOf(value)
-}
-
 exports.getSqrt = (value) => {
   // console.log('[SCILAB] Sqrt Function')
   return math.sqrt(value)
 }
-
-exports.getColumn = (array, column) => {
-  // console.log('[SCILAB] Get Column')
-  return array.map((obj) => obj[`${column}`])
-}
-
 exports.getArraySubtract = (array, subtractValue) => {
   // console.log('[SCILAB] Array Subtract')
   return array.map((obj) => math.subtract(obj, subtractValue))
@@ -48,11 +52,6 @@ exports.getArrayMultiply = (array, multiplyValue) => {
 exports.getArrayPow = (array, pow) => {
   // console.log('[SCILAB] Array Pow')
   return array.map((obj) => math.pow(obj, pow))
-}
-
-exports.getArraySqrt = (array) => {
-  // console.log('[SCILAB] Array Sqrt')
-  return array.map((obj) => math.sqrt(obj))
 }
 
 exports.getStDeviation = (array) => {

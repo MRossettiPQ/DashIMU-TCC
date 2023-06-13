@@ -4,15 +4,11 @@
 #include <config.h>
 
 void NotFoundController(AsyncWebServerRequest *request) {
-  if (request->method() == HTTP_OPTIONS) {
-    request->send(200);
-  } else {
-    request->send(404, "text/plain", "Not found");
-  }
-}
-
-
-void SendObjectAllSocketClients(String type, String message) {
+    if (request->method() == HTTP_OPTIONS) {
+        request->send(200);
+    } else {
+        request->send(404, "text/plain", "Not found");
+    }
 }
 
 void SendAppController(AsyncWebServerRequest *request) {
@@ -20,15 +16,12 @@ void SendAppController(AsyncWebServerRequest *request) {
 }
 
 void ConfigurationStateController(AsyncWebServerRequest *request) {
-    String wifiList = ScanWiFi();
-
     String content = "{";
     content += R"("ssid":")" + ssid + "\",";
     content += R"("password":")" + password + "\",";
     content += R"("backend":")" + backend + "\",";
     content += R"("backendPort":")" + backendPort + "\",";
-    content += R"("sensorName":")" + sensorName  + "\",";
-    content += R"("wifiList":)" + wifiList;
+    content += R"("sensorName":")" + sensorName;
     content += "}";
 
     request->send(200, "text/json", content);
@@ -39,35 +32,30 @@ void ConfigurationSaveController(AsyncWebServerRequest *request) {
     for (int i = 0; i < params; i++) {
         AsyncWebParameter *p = request->getParam(i);
         // HTTP POST ssid value
-            if (p->name() == input_ssid) {
-                ssid = p->value().c_str();
-                WriteFile(SPIFFS, SSID_PATH, ssid.c_str());
-            }
-            // HTTP POST password value
-            if (p->name() == input_password) {
-                password = p->value().c_str();
-                WriteFile(SPIFFS, PASSWORD_PATH, password.c_str());
-            }
-            // HTTP POST ip value
-            if (p->name() == input_backend) {
-                backend = p->value().c_str();
-                WriteFile(SPIFFS, BACKEND_PATH, backend.c_str());
-            }
-            // HTTP POST port value
-            if (p->name() == input_backendPort) {
-                backendPort = p->value().c_str();
-                WriteFile(SPIFFS, BACKEND_PORT_PATH, backendPort.c_str());
-            }
-            // HTTP POST sensor name value
-            if (p->name() == input_sensorName) {
-                sensorName = p->value().c_str();
-                WriteFile(SPIFFS, SENSOR_NAME_PATH, sensorName.c_str());
-            }
-            // HTTP POST Sensor frequency value
-            if (p->name() == input_sensorFrequency) {
-                sensorFrequency = p->value().c_str();
-                WriteFile(SPIFFS, SENSOR_FREQUENCY_PATH, sensorFrequency.c_str());
-            }
+        if (p->name() == input_ssid) {
+            ssid = p->value().c_str();
+            WriteFile(SPIFFS, SSID_PATH, ssid.c_str());
+        }
+        // HTTP POST password value
+        if (p->name() == input_password) {
+            password = p->value().c_str();
+            WriteFile(SPIFFS, PASSWORD_PATH, password.c_str());
+        }
+        // HTTP POST ip value
+        if (p->name() == input_backend) {
+            backend = p->value().c_str();
+            WriteFile(SPIFFS, BACKEND_PATH, backend.c_str());
+        }
+        // HTTP POST port value
+        if (p->name() == input_backendPort) {
+            backendPort = p->value().c_str();
+            WriteFile(SPIFFS, BACKEND_PORT_PATH, backendPort.c_str());
+        }
+        // HTTP POST sensor name value
+        if (p->name() == input_sensorName) {
+            sensorName = p->value().c_str();
+            WriteFile(SPIFFS, SENSOR_NAME_PATH, sensorName.c_str());
+        }
     }
     PrintFileSystem();
 
@@ -78,11 +66,10 @@ void ConfigurationSaveController(AsyncWebServerRequest *request) {
 }
 
 void GetMeasurementController(AsyncWebServerRequest *request) {
-    String content = "{";
-    content += R"("message":)" + CreateJsonFromMeasurement(1) + ",";
+    String measurement = CreateJsonFromMeasurement(1);
+    String content = R"({"message":)" + measurement + ",";
     content += R"("origin": "SENSOR",)";
-    content += R"("type": "UNIQUE_MEASUREMENT")";
-    content += "}";
+    content += R"("type": "UNIQUE_MEASUREMENT"})";
     request->send(200, "text/json", content);
 }
 
@@ -114,25 +101,22 @@ void InitServer() {
     confServer.begin();
 }
 
-void RestartServer() {
-    confServer.reset();
-}
-
-void HandleServerMessage(AwsFrameInfo* info, uint8_t *data, size_t len) {
+void HandleServerMessage(AwsFrameInfo *info, uint8_t *data, size_t len) {
     int cmdReceivedFromClient = 0;
     if (info->final && (info->index == 0) && (info->len == len)) {
         if (info->opcode == WS_TEXT) {
             data[len] = 0;
             Serial.print("data is ");
-            Serial.println((char*)data);
-            DynamicJsonDocument doc(1024);
-            deserializeJson(doc, (char*)data);
+            Serial.println((char *)data);
+            DynamicJsonDocument doc(512);
+            deserializeJson(doc, (char *)data);
             if (doc["message"]["cmd"].as<String>()) {
-                cmdReceivedFromClient =  doc["message"]["cmd"].as<int>();
+                cmdReceivedFromClient = doc["message"]["cmd"].as<int>();
                 if (cmdReceivedFromClient != 0) {
                     Serial.println("Diferent of 0");
                 }
                 cmdActual = cmdReceivedFromClient;
+                Serial.printf("\ncmdActual %d\n", cmdActual);
             }
         } else {
             Serial.println("Received a ws message, but it isn't text");
@@ -142,11 +126,12 @@ void HandleServerMessage(AwsFrameInfo* info, uint8_t *data, size_t len) {
     }
 }
 
-void onWsServerEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, AwsEventType type, void * arg, uint8_t *data, size_t len){
+void onWsServerEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len) {
     switch (type) {
         case WS_EVT_CONNECT:
             Serial.println("Websocket client connection received");
-            if(available) {
+            Serial.println(available);
+            if (available) {
                 available = false;
                 RestartMeasurement();
                 SendStatusSensor();
@@ -162,7 +147,7 @@ void onWsServerEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, Aws
             break;
         case WS_EVT_DATA:
             Serial.println("Websocket data");
-            HandleServerMessage((AwsFrameInfo*)arg, data, len);
+            HandleServerMessage((AwsFrameInfo *)arg, data, len);
             break;
         case WS_EVT_PONG:
             Serial.println("Websocket pong: ");
@@ -174,6 +159,6 @@ void onWsServerEvent(AsyncWebSocket * server, AsyncWebSocketClient * client, Aws
             SendStatusSensor();
             RestartMeasurement();
             break;
-    }  
+    }
 }
-#endif //MPU_SOCKET_SERVER_SOCKET_SERVER_H
+#endif  // MPU_SOCKET_SERVER_SOCKET_SERVER_H

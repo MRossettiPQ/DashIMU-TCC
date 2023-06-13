@@ -1,5 +1,5 @@
 import { Component, Prop, PropSync, Vue } from 'vue-property-decorator'
-import DrawerMovement from './components/DrawerMovement.vue'
+import DrawerMovement from './DrawerMovement.vue'
 
 @Component({
   name: 'drawer-menu',
@@ -9,7 +9,7 @@ import DrawerMovement from './components/DrawerMovement.vue'
 })
 export default class DrawerMenu extends Vue {
   @Prop()
-  sessionConnection
+  connection
 
   @PropSync('session')
   syncedSession

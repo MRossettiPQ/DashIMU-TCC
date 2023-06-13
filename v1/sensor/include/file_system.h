@@ -10,7 +10,6 @@ void InitFileSystem() {
 
     ssid = ReadFile(SPIFFS, SSID_PATH);
     password = ReadFile(SPIFFS, PASSWORD_PATH);
-    sensorFrequency = ReadFile(SPIFFS, SENSOR_FREQUENCY_PATH);
     backend = ReadFile(SPIFFS, BACKEND_PATH);
     backendPort = ReadFile(SPIFFS, BACKEND_PORT_PATH);
     sensorName = ReadFile(SPIFFS, SENSOR_NAME_PATH);
@@ -23,7 +22,6 @@ void PrintFileSystem() {
     Serial.println("Password: " + password);
     Serial.println("Backend url: " + backend);
     Serial.println("Backend port: " + backendPort);
-    Serial.println("Sensor frequency: " + sensorFrequency);
     Serial.println("Sensor name: " + sensorName);
 }
 

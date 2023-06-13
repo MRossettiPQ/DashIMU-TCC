@@ -1,5 +1,5 @@
 import { Component, PropSync, Vue } from 'vue-property-decorator'
-import Movement from './components/Movement.vue'
+import Movement from './Movement.vue'
 
 @Component({
   name: 'first-step',

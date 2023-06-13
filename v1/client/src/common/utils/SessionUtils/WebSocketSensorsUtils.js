@@ -4,30 +4,29 @@ import dayjs from 'dayjs'
 const openMessage = '[WebSocket] Conexão com o sensor feita com websocket'
 const closeMessage = '[WebSocket] Websocket desconectado do servidor'
 const errorMessage = '[WebSocket] Erro no servidor websocket'
+
 class SessionWebSocket {
-  constructor() {
-    // Session
-    this.availableSensorsList = []
-    this.registeredSensorsList = []
-    this.registeredSensorsIdList = []
-    this.sessionSocket = null
+  // Session
+  connection = null
+  availableSensorsList = []
+  registeredSensorsList = []
+  registeredSensorsIdList = []
 
-    // Command
-    this.sessionLoadingRequest = false
-    this.connectedBackend = false
-    this.disableStart = false
-    this.disableStop = true
-    this.disableRestart = true
-    this.measurementInProgress = false
+  // Command
+  sessionLoadingRequest = false
+  connectedBackend = false
+  disableStart = false
+  disableStop = true
+  disableRestart = true
+  measurementInProgress = false
 
-    // Timing
-    this.timeout = null
-    this.runTimer = null
-    this.time = null
+  // Timing
+  timeout = null
+  runTimer = null
+  time = null
 
-    this.useAlarm = false
-    this.alarmTime = 0
-  }
+  useAlarm = false
+  alarmTime = 0
 
   // General
   notify(message, color) {
@@ -51,7 +50,45 @@ class SessionWebSocket {
   }
 
   get numberOfMeasurements() {
-    return this.registeredSensorsList?.[0]?.gyro_measurements?.length
+    return this.registeredSensorsList?.[0]?.gyro_measurements?.length || 0
+  }
+
+  calculateQuaternionAngle(gyro_measurement_1, gyro_measurement_2) {
+    // Verifica se as medições possuem os valores do quaternion
+    if (
+      gyro_measurement_1.Quaternion_X == null ||
+      gyro_measurement_1.Quaternion_Y == null ||
+      gyro_measurement_1.Quaternion_Z == null ||
+      gyro_measurement_1.Quaternion_W == null ||
+      gyro_measurement_2.Quaternion_X == null ||
+      gyro_measurement_2.Quaternion_Y == null ||
+      gyro_measurement_2.Quaternion_Z == null ||
+      gyro_measurement_2.Quaternion_W == null
+    ) {
+      return null
+    }
+
+    const q1 = {
+      x: gyro_measurement_1.Quaternion_X,
+      y: gyro_measurement_1.Quaternion_Y,
+      z: gyro_measurement_1.Quaternion_Z,
+      w: gyro_measurement_1.Quaternion_W,
+    }
+
+    const q2 = {
+      x: gyro_measurement_2.Quaternion_X,
+      y: gyro_measurement_2.Quaternion_Y,
+      z: gyro_measurement_2.Quaternion_Z,
+      w: gyro_measurement_2.Quaternion_W,
+    }
+    // Calcula o produto escalar entre os dois quaternions
+    const dotProduct = q1.x * q2.x + q1.y * q2.y + q1.z * q2.z + q1.w * q2.w
+
+    // O ângulo entre os dois quaternions é o arco cosseno do produto escalar
+    const angle = 2 * Math.acos(Math.abs(dotProduct))
+
+    // Converte o ângulo para graus
+    return angle * (180 / Math.PI)
   }
 
   get blockSave() {
@@ -84,61 +121,63 @@ class SessionWebSocket {
 
   // Function
   connectSession(socket_url = 'localhost:8000') {
-    this.sessionSocket = new WebSocket(`ws://${socket_url}/socket`, ['websocket'])
+    this.connection = new WebSocket(`ws://${socket_url}/socket`, ['websocket'])
 
-    this.sessionSocket.onmessage = (event) => {
-      this.manageBackend(JSON.parse(event?.data))
+    this.connection.onmessage = async (event) => {
+      if (event?.data) {
+        await this.manageBackend(JSON.parse(event?.data))
+      }
     }
 
-    this.sessionSocket.onopen = () => {
+    this.connection.onopen = () => {
       this.connectedBackend = true
-      this.sendSocketMessage(this.sessionSocket, 'GET_UPDATE_CLIENT_LIST')
+      this.sendSocketMessage(this.connection, 'GET_UPDATE_CLIENT_LIST')
       this.notify(openMessage, 'positive')
     }
 
-    this.sessionSocket.onclose = () => {
+    this.connection.onclose = () => {
       this.notify(closeMessage, 'warning')
       this.connectedBackend = false
     }
 
-    this.sessionSocket.onerror = () => {
+    this.connection.onerror = () => {
       this.notify(errorMessage, 'error')
-      this.sessionSocket.close()
+      this.connection.close()
       this.connectedBackend = false
     }
   }
 
   requestAvailableSensors() {
-    this.sendSocketMessage(this.sessionSocket, 'GET_UPDATE_CLIENT_LIST')
+    this.sendSocketMessage(this.connection, 'GET_UPDATE_CLIENT_LIST')
     this.sessionLoadingRequest = true
   }
 
-  manageBackend(json) {
+  async manageBackend(json) {
     switch (json?.type) {
       case 'UPDATE_CLIENT_LIST':
         this.availableSensorsList = json?.message
         this.sessionLoadingRequest = false
         break
       case 'SENSOR_DISCONNECTED':
-        this.checkIfConnectedSession(json?.message)
+        await this.checkIfConnectedSession(json?.message)
         break
       default:
         break
     }
   }
 
-  updateSensor({ position, sensor }) {
+  async updateSensor({ position, sensor }) {
     const result = this.getIndexSensorInConnectedList(sensor)
     if (this.inProgress) {
-      this.stop()
-      this.restart()
+      await this.stop()
+      await this.restart()
     }
     this.registeredSensorsList[result].position = position
   }
 
   // Sensors handler socket
   get numberOfValidConnection() {
-    return this.registeredSensorsList?.filter((s) => s.device.active)?.length
+    return this.registeredSensorsList?.filter((s) => s.active)?.length
   }
 
   get filterSensorsConnected() {
@@ -146,10 +185,10 @@ class SessionWebSocket {
   }
 
   checkSensorConnected(ip) {
-    return this.registeredSensorsList?.findIndex(({ device }) => device?.ip === ip) === -1
+    return this.registeredSensorsList?.findIndex((s) => s.ip === ip) === -1
   }
 
-  checkIfConnectedSession(sensor) {
+  async checkIfConnectedSession(sensor) {
     const result = this.getIndexSensorInConnectedList(sensor)
     if (result !== -1) {
       Notify.create({
@@ -157,16 +196,21 @@ class SessionWebSocket {
         textColor: 'white',
         color: 'error',
       })
-      this.stop()
+      // Parar processo de medição atual, caso esteja em andamento.
+      await this.stop()
+      if (this.registeredSensorsList[result].gyro_measurements.length === 0) {
+        // Caso o sensor desconectado não tenha medições remover ele da lista
+        await this.remove(sensor)
+      }
     }
   }
 
   getIndexSensorInConnectedList(sensor) {
-    return this.registeredSensorsList?.findIndex(({ device }) => device.ip === sensor.ip)
+    return this.registeredSensorsList?.findIndex((s) => s.ip === sensor.ip)
   }
 
-  checkIdInList(checkId) {
-    const checked = this.registeredSensorsIdList?.findIndex((id) => id === checkId)
+  checkIdInList(checkId = 0) {
+    const checked = this.registeredSensorsIdList?.findIndex((sessionId) => sessionId === checkId)
     if (checked === -1) {
       return checkId
     }
@@ -174,95 +218,90 @@ class SessionWebSocket {
   }
 
   async connect(sensor) {
+    // TODO socket do sensor
     // Verifica se o sensor já realizou alguma conexão anteriormente
     const isNew = this.getIndexSensorInConnectedList(sensor)
     if (isNew === -1) {
       // Caso não tenha realizado uma conexão anteriormente, adiciona ao array de sensores da sessão
       // Verifica e encontra o id do sensor na sessão
-      const id = this.checkIdInList(0)
-      this.registeredSensorsIdList.push(id)
-      this.registeredSensorsList.push({
-        sensorName: sensor.nameSensor,
-        tabName: 'Sensor_' + id,
+      const sessionId = this.checkIdInList()
+      this.registeredSensorsIdList.push(sessionId)
+      const newSensor = {
+        sessionId,
+        active: false,
+        measurementInProgress: false,
+        connection: null,
+        sensorName: sensor.sensorName,
+        tabName: 'Sensor_' + sessionId,
         position: '',
-        device: {
-          id: id,
-          active: false,
-          measurementInProgress: false,
-          connection: null,
-          ...sensor,
-        },
         gyro_measurements: [],
-      })
+        ...sensor,
+      }
+      this.registeredSensorsList.push(newSensor)
     }
 
     // Resgata o index do sensor na lista de conectados para trabalhar diretamente com item especifico
     const index = this.getIndexSensorInConnectedList(sensor)
-    let url = `ws://${this.registeredSensorsList[index].device.ip}:80/socket/session`
-    this.registeredSensorsList[index].device.connection = new WebSocket(url, ['websocket'])
+
+    let url = `ws://${this.registeredSensorsList[index].ip}:80/socket/session`
+    this.registeredSensorsList[index].connection = new WebSocket(url, ['websocket'])
     // Event listener
-    this.registeredSensorsList[index].device.connection.onmessage = (event) => {
-      this.handlerSensorMessage(JSON.parse(event?.data), index)
+    this.registeredSensorsList[index].connection.onmessage = (event) => {
+      this.manageSensor(JSON.parse(event?.data), index)
     }
 
-    this.registeredSensorsList[index].device.connection.onclose = () => {
+    this.registeredSensorsList[index].connection.onclose = () => {
       this.notify(closeMessage + ' do sensor', 'warning')
       this.setDisconnected(index)
       this.stop()
     }
 
-    this.registeredSensorsList[index].device.connection.onerror = () => {
+    this.registeredSensorsList[index].connection.onerror = () => {
       this.notify(errorMessage + ' do sensor', 'error')
       this.setDisconnected(index)
       this.stop()
-      this.registeredSensorsList[index].device.connection.close()
+      this.registeredSensorsList[index].connection.close()
     }
 
-    this.registeredSensorsList[index].device.connection.onopen = () => {
+    this.registeredSensorsList[index].connection.onopen = () => {
       this.notify(openMessage + ' do sensor', 'positive')
       this.setConnected(index)
     }
   }
 
-  disconnect(sensor) {
+  async disconnect(sensor) {
     const index = this.getIndexSensorInConnectedList(sensor)
-    this.registeredSensorsList[index]?.device?.connection?.close()
-  }
-
-  calibrate(sensor) {
-    const index = this.getIndexSensorInConnectedList(sensor)
-    this.sendSocketMessage(this.registeredSensorsList[index]?.device?.connection, 'CALIBRATE', {
-      cmd: 4,
-    })
+    this.registeredSensorsList[index].connection?.close()
+    await this.remove(sensor)
   }
 
   closeAll() {
+    // Chamado ao sair da pagina.
     if (this.registeredSensorsList.length) {
       this.registeredSensorsList
-        .filter((s) => s?.device?.active)
-        ?.forEach((s) => {
-          if (s?.device?.connection) {
-            s?.device?.connection?.stop()
-            s?.device?.connection?.close()
-          }
+        ?.filter((sensor) => sensor?.active)
+        ?.forEach((sensor) => {
+          sensor.connection?.stop()
+          sensor.connection?.close()
         })
     }
     if (this.timeout !== null) {
       this.endTimer()
     }
-    this.sessionSocket?.close()
+    this.connection?.close()
   }
 
-  remove(sensor) {
+  async remove(sensor) {
     const index = this.getIndexSensorInConnectedList(sensor)
     if (this.inProgress) {
-      this.stop()
-      this.restart()
+      await this.stop()
+      await this.restart()
     }
     this.registeredSensorsList.splice(index, 1)
+    this.registeredSensorsIdList.splice(index, 1)
   }
 
-  handlerSensorMessage(json, index) {
+  manageSensor(json, index) {
     switch (json?.type) {
       case 'MEASUREMENT_LIST':
         this.addMensuration(json?.message, index)
@@ -273,20 +312,25 @@ class SessionWebSocket {
   }
 
   addMensuration(json, index) {
-    if (json?.length) {
-      this.registeredSensorsList[index]?.gyro_measurements?.push(...json.filter((r) => r !== null))
+    if (json?.length && this.registeredSensorsList[index]) {
+      this.registeredSensorsList[index].gyro_measurements =
+        this.registeredSensorsList[index].gyro_measurements?.concat(json)
     }
   }
 
   setDisconnected(index) {
-    this.registeredSensorsList[index].device.active = false
+    if (this.registeredSensorsList[index]) {
+      this.registeredSensorsList[index].active = false
+    }
   }
 
   setConnected(index) {
-    this.registeredSensorsList[index].device.active = true
+    if (this.registeredSensorsList[index]) {
+      this.registeredSensorsList[index].active = true
+    }
   }
 
-  start() {
+  async start() {
     try {
       if (this.useAlarm && this.alarmTime < 1) {
         Notify.create({
@@ -297,12 +341,14 @@ class SessionWebSocket {
         return
       }
       let changed = false
+
       this.registeredSensorsList.map((item, index) => {
-        if (this.registeredSensorsList[index]?.device?.active === true) {
-          this.sendSocketMessage(this.registeredSensorsList[index]?.device?.connection, 'START', {
+        if (this.registeredSensorsList[index].active === true) {
+          console.log('start')
+          this.sendSocketMessage(this.registeredSensorsList[index]?.connection, 'START', {
             cmd: 1,
           })
-          this.registeredSensorsList[index].device.measurementInProgress = true
+          this.registeredSensorsList[index].measurementInProgress = true
           this.measurementInProgress = true
           changed = true
         }
@@ -319,15 +365,15 @@ class SessionWebSocket {
     }
   }
 
-  restart() {
+  async restart() {
     let changed = false
     this.registeredSensorsList.map((item, index) => {
-      if (this.registeredSensorsList[index].device.active === true) {
-        this.sendSocketMessage(this.registeredSensorsList[index]?.device?.connection, 'RESTART', {
+      if (this.registeredSensorsList[index].active === true) {
+        this.sendSocketMessage(this.registeredSensorsList[index]?.connection, 'RESTART', {
           cmd: 3,
         })
       }
-      this.registeredSensorsList[index].device.measurementInProgress = false
+      this.registeredSensorsList[index].measurementInProgress = false
       this.measurementInProgress = false
       this.registeredSensorsList[index].gyro_measurements = []
       changed = true
@@ -341,15 +387,15 @@ class SessionWebSocket {
     }
   }
 
-  stop() {
+  async stop() {
     let changed = false
     this.registeredSensorsList.map((item, index) => {
-      if (this.registeredSensorsList[index].device.active === true) {
-        this.sendSocketMessage(this.registeredSensorsList[index]?.device?.connection, 'STOP', {
+      if (this.registeredSensorsList[index].active === true) {
+        this.sendSocketMessage(this.registeredSensorsList[index]?.connection, 'STOP', {
           cmd: 2,
         })
       }
-      this.registeredSensorsList[index].device.measurementInProgress = false
+      this.registeredSensorsList[index].measurementInProgress = false
       this.measurementInProgress = false
       changed = true
     })
@@ -366,17 +412,17 @@ class SessionWebSocket {
     this.runTimer = 0
     this.time = null
 
-    this.timeout = setInterval(() => {
+    this.timeout = setInterval(async () => {
       this.runTimer = this.runTimer + 1
       this.time = dayjs()
         .set('hour', 0)
         .set('minute', 0)
         .set('second', this.runTimer)
         .format('HH:mm:ss')
-      console.log(this.time)
+
       if (this.useAlarm) {
         if (this.runTimer >= this.alarmTime) {
-          this.stop()
+          await this.stop()
           this.useAlarm = false
         }
       }
@@ -399,18 +445,16 @@ class SessionWebSocket {
       let addIterator = 0
       while (addIterator < sensorN) {
         addIterator++
-        const id = this.registeredSensorsList.length
+        const sessionId = this.registeredSensorsList.length
         this.registeredSensorsList.push({
-          sensorName: 'Sensor_' + id,
+          sessionId,
+          active: true,
+          measurementInProgress: false,
+          ip: `192.168.16.10${sessionId}`,
+          connection: null,
+          sensorName: 'Sensor_' + sessionId,
           position: '',
-          tabName: 'Sensor_' + id,
-          device: {
-            id: id,
-            active: true,
-            measurementInProgress: false,
-            connection: null,
-            ip: `192.168.16.10${id}`,
-          },
+          tabName: 'Sensor_' + sessionId,
           gyro_measurements: [],
         })
       }
@@ -452,6 +496,18 @@ class SessionWebSocket {
       })
     }
   }
+
+  // igualarArraysInternos(arrays) {
+  //   // Encontra o tamanho máximo entre os arrays internos
+  //   const maxLength = arrays.reduce((max, arr) => Math.max(max, arr.length), 0)
+  //
+  //   // Remove os itens extras em cada array interno
+  //   arrays.forEach((arr) => {
+  //     while (arr.length > maxLength) {
+  //       arr.pop() // Remove o último elemento do array interno
+  //     }
+  //   })
+  // }
 }
 
 export { SessionWebSocket }

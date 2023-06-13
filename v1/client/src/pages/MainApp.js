@@ -93,8 +93,8 @@ export default class MainApp extends Mixins(StorageMixin) {
         },
         persistent: true,
       })
-      console.log('aqui')
       await this.$store.dispatch('authentication/logout')
+      await this.$router.push('/')
     } catch (e) {
       console.log(e)
     }

@@ -37,7 +37,6 @@ export default class ChartVisualizer extends Mixins(ScreenMixin) {
         this.chartState.setChart(this.chartElement)
         // window.onresize = this.chartState.resize;
       }
-      console.log('aqui')
       if (this.chartState?.loaded && this.numberOfMeasurements > 0) {
         this.chartState.setData(this.sensors, this.columns, this.smooth)
       }

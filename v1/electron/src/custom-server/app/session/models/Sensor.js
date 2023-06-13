@@ -17,9 +17,9 @@ module.exports = function Sensor(sequelize, Sequelize) {
       values: ['GYROSCOPE', 'HUMIDITY'],
       defaultValue: 'GYROSCOPE',
     },
-    // observation: {
-    //   type: Sequelize.STRING,
-    // },
+    observation: {
+      type: Sequelize.STRING,
+    },
   })
 
   Sensor.associate = ({ Movement, GyroMeasurement }) => {

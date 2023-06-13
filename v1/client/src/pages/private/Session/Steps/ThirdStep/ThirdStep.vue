@@ -9,27 +9,27 @@
     >
       <q-tab icon="leaderboard" name="GRAPH" :label="$t('session.tab')" />
       <q-tab
-        v-for="(sensor, index) in connection.registeredSensorsList"
+        v-for="(sensor, index) in syncedConnection.registeredSensorsList"
         :key="index"
         icon="table_rows"
-        :label="'Tabela ' + sensor.device.id"
-        :name="'Tab_' + sensor.device.id"
+        :label="'Tabela ' + sensor.sessionId"
+        :name="'Tab_' + sensor.sessionId"
       />
     </q-tabs>
     <q-tab-panels v-model="tabPanel" class="row h-100" animated>
       <q-tab-panel class="h-100 w-100 justify-center items-center p-0" name="GRAPH">
         <chart-visualizer
-          :sensors="connection.registeredSensorsList"
+          :sensors="syncedConnection.registeredSensorsList"
           :table-columns="graphColumns"
           :smooth="true"
         />
       </q-tab-panel>
 
       <q-tab-panel
-        v-for="(sensor, index) in connection.registeredSensorsList"
+        v-for="(sensor, index) in syncedConnection.registeredSensorsList"
         :key="index"
         class="h-100 w-100 justify-center items-center p-0"
-        :name="'Tab_' + sensor.device.id"
+        :name="'Tab_' + sensor.sessionId"
       >
         <tab-measurement-table :sensor="sensor" :table-columns="tableColumns" />
       </q-tab-panel>

@@ -37,7 +37,6 @@ void StartWiFi() {
     if (ssid != "") {
         WiFi.begin(ssid.c_str(), password.c_str());
         if (WiFiClass::status() != WL_CONNECTED) {
-            tryConnectWifi++;
             vTaskDelay(500 / portTICK_PERIOD_MS);
             Serial.println("WiFi not connected");
         } 
@@ -51,32 +50,6 @@ void StartWiFi() {
             SetWebsocketClient();
         }
     }
-}
-
-String ScanWiFi() {
-    String wifiList = "[";
-    /*
-    int n = WiFi.scanComplete();
-    if (n == -2) {
-        WiFi.scanNetworks(true);
-    } else if (n) {
-        for (int i = 0; i < n; ++i) {
-            if (i) wifiList += ",";
-            wifiList += "{";
-            wifiList += R"("rssi":")" + String(WiFi.RSSI(i)) + "\"";
-            wifiList += R"(,"ssid":")" + WiFi.SSID(i) + "\"";
-            wifiList += R"(,"bssid":")" + WiFi.BSSIDstr(i) + "\"";
-            wifiList += R"(,"channel":")" + String(WiFi.channel(i)) + "\"";
-            wifiList += R"(,"secure":")" + String(WiFi.encryptionType(i)) + "\"";
-            wifiList += "}";
-        }
-        WiFi.scanDelete();
-        if (WiFi.scanComplete() == -2) {
-            WiFi.scanNetworks(true);
-        }
-    }*/
-    wifiList += "]";
-    return wifiList;
 }
 
 void EventsWiFi(WiFiEvent_t event){

@@ -18,8 +18,8 @@
         unelevated
         round
         icon="play_arrow"
-        :disable="connection.disableStartBtn"
-        @click="connection.start()"
+        :disable="syncedConnection.disableStartBtn"
+        @click="syncedConnection.start()"
       />
       <q-btn
         dense
@@ -28,20 +28,20 @@
         round
         icon="alarm"
         unelevated
-        :disable="connection.disableStartBtn"
+        :disable="syncedConnection.disableStartBtn"
       >
         <q-menu fit>
           <q-list style="min-width: 100px">
             <q-item>
               <q-form ref="mainForm" class="column form-lines form-lines__gap-sm" greedy>
                 <q-checkbox
-                  v-model="connection.useAlarm"
-                  :disable="connection.disableStartBtn"
+                  v-model="syncedConnection.useAlarm"
+                  :disable="syncedConnection.disableStartBtn"
                   label="Usar limitador"
                 />
                 <q-input
-                  v-model="connection.alarmTime"
-                  :disable="connection.disableStartBtn"
+                  v-model="syncedConnection.alarmTime"
+                  :disable="syncedConnection.disableStartBtn"
                   class="col"
                   :rules="[$validators.notBlank]"
                   filled
@@ -58,8 +58,8 @@
                 size="md"
                 unelevated
                 icon="play_arrow"
-                :disable="connection.disableStartBtn"
-                @click="connection.start()"
+                :disable="syncedConnection.disableStartBtn"
+                @click="syncedConnection.start()"
               />
             </q-item>
           </q-list>
@@ -73,8 +73,8 @@
         icon="stop"
         round
         unelevated
-        :disable="connection.disableStopBtn"
-        @click="connection.stop()"
+        :disable="syncedConnection.disableStopBtn"
+        @click="syncedConnection.stop()"
       />
       <q-btn
         dense
@@ -83,10 +83,10 @@
         round
         icon="restart_alt"
         unelevated
-        :disable="connection.disableRestartBtn"
-        @click="connection.restart()"
+        :disable="syncedConnection.disableRestartBtn"
+        @click="syncedConnection.restart()"
       >
-        <q-tooltip v-if="!connection.disableRestartBtn">
+        <q-tooltip v-if="!syncedConnection.disableRestartBtn">
           Reiniciar medições, apaga as medições que não foram adicionadas ao movimento
         </q-tooltip>
       </q-btn>

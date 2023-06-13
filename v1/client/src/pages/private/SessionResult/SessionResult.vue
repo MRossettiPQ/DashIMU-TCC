@@ -37,6 +37,10 @@
 
 <style lang="scss" scoped>
 @import '~src/css/mixins.scss';
+::v-deep .q-tab-panel {
+  padding: 0 !important;
+}
+
 .result-grid {
   display: grid;
   grid-template-columns: min-content 1fr;

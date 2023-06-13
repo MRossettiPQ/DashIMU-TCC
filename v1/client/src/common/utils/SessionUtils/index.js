@@ -113,7 +113,7 @@ class SessionUtils {
   }
 
   checkIndexInList(checkId = 0) {
-    const checked = this.indexList?.findIndex((id) => id === checkId)
+    const checked = this.indexList?.findIndex((sessionId) => sessionId === checkId)
     if (checked === -1) {
       return checkId
     }
@@ -149,7 +149,7 @@ class SessionUtils {
 
   addSensorsToMovement(sensors) {
     if (this.running_movement?.index >= 0) {
-      this.values.movements[this.running_movement.index].sensors = sensors
+      this.values.movements[this.running_movement.index].sensors = [...sensors]
       this.running_movement = null
     }
   }

@@ -10,8 +10,4 @@ export default class TableMeasurements extends Mixins(ScreenMixin) {
 
   @Prop()
   columns
-
-  mounted() {
-    console.log('mounted', this.sensor)
-  }
 }

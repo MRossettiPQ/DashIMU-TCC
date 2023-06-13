@@ -3,6 +3,7 @@ import { ScreenMixin } from 'src/common/mixins/ScreenMixin'
 import TableMeasurements from './components/TableMeasurements.vue'
 import GraphSensor from './components/GraphSensor.vue'
 import GraphResult from './components/GraphResult.vue'
+import GraphAngles from './components/GraphAngles.vue'
 import ResultTable from './components/ResultTable.vue'
 import { FetchAllData } from 'src/common/utils/LoadDataUtil/FetchAllData'
 import SessionService from 'src/common/services/SessionService'
@@ -15,6 +16,7 @@ import dayjs from 'dayjs'
     TableMeasurements,
     GraphSensor,
     GraphResult,
+    GraphAngles,
     ResultTable,
   },
 })
@@ -52,7 +54,6 @@ export default class MovementResult extends Mixins(ScreenMixin) {
         },
       },
     })
-    console.log(this.fetchData.result?.calculation)
     this.tab = 'RESULT'
   }
 

@@ -6,8 +6,7 @@
       <stepper-header
         :navigation="navigation"
         :session.sync="session"
-        :connection="connection"
-        :patient="fetchData.result.patient"
+        :connection.sync="connection"
         :menu-ref="menuRef"
         class="row"
       />
@@ -15,19 +14,18 @@
       <div class="column h-100 w-100 overflow-auto">
         <q-drawer
           ref="menuRef"
-          behavior="desktop"
           bordered
           :value="rightDrawer"
           side="right"
           @hide="rightDrawer = false"
           content-class="bg-grey-1 column justify-between no-wrap"
         >
-          <drawer-menu :session.sync="session" :session-connection="connection" />
+          <drawer-menu :session.sync="session" :connection.sync="connection" />
         </q-drawer>
         <transition class="h-100 w-100" name="slide-fade" mode="out-in">
           <Component
             :is="navigation.actualStepValue"
-            :connection="connection"
+            :connection.sync="connection"
             :session.sync="session"
             :loading-save="loadingSave"
           />
@@ -36,7 +34,7 @@
 
       <stepper-footer
         :navigation="navigation"
-        :connection="connection"
+        :connection.sync="connection"
         :session.sync="session"
         :loading-save="loadingSave"
         class="row"

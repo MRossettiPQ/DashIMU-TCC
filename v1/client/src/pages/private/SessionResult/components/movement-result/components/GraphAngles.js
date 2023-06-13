@@ -3,9 +3,9 @@ import { ScreenMixin } from 'src/common/mixins/ScreenMixin'
 import { GenericChartUtils } from 'src/common/utils/ChartUtils'
 
 @Component({
-  name: 'graph-result',
+  name: 'graph-angles',
 })
-export default class GraphResult extends Mixins(ScreenMixin) {
+export default class GraphAngles extends Mixins(ScreenMixin) {
   @Ref('chartElement')
   chartElement
 
@@ -18,7 +18,7 @@ export default class GraphResult extends Mixins(ScreenMixin) {
   chartState
 
   async mounted() {
-    this.chartState = new GenericChartUtils(this.columns)
+    this.chartState = new GenericChartUtils(['eulerAngle', 'quaternionAngle', 'rollPitchYawAngle'])
     this.update()
   }
 
@@ -30,7 +30,12 @@ export default class GraphResult extends Mixins(ScreenMixin) {
         this.chartState.setChart(this.chartElement)
       }
       if (this.chartState?.loaded && this.numberOfMeasurements > 0) {
-        this.chartState.setData(this.means, this.movement.type, true)
+        this.chartState.setData(
+          this.angles,
+          '',
+          ['eulerAngle', 'quaternionAngle', 'rollPitchYawAngle'],
+          true
+        )
       }
     }
   }
@@ -41,11 +46,11 @@ export default class GraphResult extends Mixins(ScreenMixin) {
     }
   }
 
-  get means() {
-    return this.calculation?.atorn || []
+  get angles() {
+    return this.calculation?.angles?.values || []
   }
 
   get numberOfMeasurements() {
-    return this.means?.length || 0
+    return this.angles?.length || 0
   }
 }

@@ -1,6 +1,5 @@
 import { Component, Prop, PropSync, Vue } from 'vue-property-decorator'
 import RunningInfo from '../RunningInfo/RunningInfo.vue'
-import { ExportCSV } from 'src/common/utils/CSVUtils'
 
 @Component({
   name: 'stepper-header',
@@ -9,13 +8,11 @@ import { ExportCSV } from 'src/common/utils/CSVUtils'
   },
 })
 export default class StepperHeader extends Vue {
-  exportFile = new ExportCSV()
-
   @Prop()
   menuRef
 
-  @Prop()
-  connection
+  @PropSync('connection')
+  syncedConnection
 
   @PropSync('session')
   syncedSession
@@ -24,13 +21,13 @@ export default class StepperHeader extends Vue {
   navigation
 
   get connected() {
-    return this.connection?.isConnectedBackend
+    return this.syncedConnection?.isConnectedBackend
   }
 
   get showActualMovement() {
     return (
       !!this.syncedSession.actualRunningMovement?.label &&
-      this.navigation.actualStepValue === 'run-procedure'
+      this.navigation.actualStepValue === 'third-step'
     )
   }
 

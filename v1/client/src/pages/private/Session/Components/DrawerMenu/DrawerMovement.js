@@ -7,10 +7,6 @@ export default class DrawerMovement extends Vue {
   @Prop()
   movement
 
-  mounted() {
-    console.log(this.movement)
-  }
-
   get name() {
     if (this.movement.label) {
       return this.movement.label + ' - ' + this.movement.index

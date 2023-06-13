@@ -78,7 +78,11 @@ function processData(measurements_1, measurements_2) {
   let z1p = getArraySubtract(z1, zerarz1)
 
   let atorn = []
-  for (let i = 0; i < measurements_1.length; i++) {
+  let length = measurements_2.length
+  if (measurements_1.length < measurements_2.length) {
+    length = measurements_1.length
+  }
+  for (let i = 0; i < length; i++) {
     const calc = 90 - yaw1[i] - pitch2[i]
     atorn.push(calc)
   }
@@ -131,45 +135,53 @@ function processData(measurements_1, measurements_2) {
 }
 
 function calculateAngles(sensor_1, sensor_2) {
-  const length = sensor_2?.length
-
   let result = {}
   let angles = []
   let values = []
-  for (let pos = 0; pos <= length; pos++) {
-    console.log(pos)
+  let length = sensor_2.length
+  if (sensor_1.length < sensor_2.length) {
+    length = sensor_1.length
+  }
+  for (let pos = 0; pos < length; pos++) {
     const measurement_1 = sensor_1[pos]
     const measurement_2 = sensor_2[pos]
 
-    const quarterionAngle = calculateQuarterionAngle(measurement_1, measurement_2)
+    const quaternionAngle = calculateQuaternionAngle(measurement_1, measurement_2)
     const eulerAngle = calculateEulerAngle(measurement_1, measurement_2)
     const rollPitchYawAngle = calculateRollPitchYawAngle(measurement_1, measurement_2)
+    if (pos === 0) {
+      console.log(quaternionAngle)
+      console.log(eulerAngle)
+      console.log(rollPitchYawAngle)
+    }
 
-    angles.push(quarterionAngle)
+    angles.push(quaternionAngle)
     values.push({
-      quarterionAngle,
+      quaternionAngle,
       eulerAngle,
       rollPitchYawAngle,
     })
   }
-  console.log(angles)
+
   if (angles.length) {
     let mean = getMean(angles)
     let min = getMin(angles)
     let max = getMax(angles)
+    let std = getStDeviation(angles)
 
     result = {
       values,
       mean,
       min,
       max,
+      std,
     }
   }
   return result
 }
 
 //
-function calculateQuarterionAngle(gyro_measurement_1, gyro_measurement_2) {
+function calculateQuaternionAngle(gyro_measurement_1, gyro_measurement_2) {
   // Verifica se as medições possuem os valores do quaternion
   if (
     gyro_measurement_1.Quaternion_X == null ||
@@ -201,7 +213,7 @@ function calculateQuarterionAngle(gyro_measurement_1, gyro_measurement_2) {
   const dotProduct = q1.x * q2.x + q1.y * q2.y + q1.z * q2.z + q1.w * q2.w
 
   // O ângulo entre os dois quaternions é o arco cosseno do produto escalar
-  const angle = 2 * Math.acos(Math.min(Math.abs(dotProduct), 1))
+  const angle = 2 * Math.acos(Math.abs(dotProduct))
 
   // Converte o ângulo para graus
   return angle * (180 / Math.PI)
@@ -237,11 +249,24 @@ function calculateEulerAngle(gyro_measurement_1, gyro_measurement_2) {
   const diffY = euler2.y - euler1.y
   const diffZ = euler2.z - euler1.z
 
-  // Calcula a magnitude do ângulo resultante
-  const angle = Math.sqrt(diffX * diffX + diffY * diffY + diffZ * diffZ)
+  // Normaliza os ângulos para o intervalo entre -180 e 180 graus
+  const normX = anglesNormalizer(diffX)
+  const normY = anglesNormalizer(diffY)
+  const normZ = anglesNormalizer(diffZ)
 
-  // Converte o ângulo para graus
-  return angle * (180 / Math.PI)
+  // Calcula a magnitude do ângulo resultante
+  return Math.sqrt(normX * normX + normY * normY + normZ * normZ)
+}
+
+// Função auxiliar para normalizar um ângulo para o intervalo entre -180 e 180 graus
+function anglesNormalizer(angle) {
+  while (angle > 180) {
+    angle -= 360
+  }
+  while (angle < -180) {
+    angle += 360
+  }
+  return angle
 }
 
 //
@@ -270,11 +295,13 @@ function calculateRollPitchYawAngle(gyro_measurement_1, gyro_measurement_2) {
   const diffPitch = pitch2 - pitch1
   const diffYaw = yaw2 - yaw1
 
-  // Calcula a magnitude do ângulo resultante
-  const angle = Math.sqrt(diffRoll * diffRoll + diffPitch * diffPitch + diffYaw * diffYaw)
+  // Normaliza os ângulos para o intervalo entre -180 e 180 graus
+  const normRoll = anglesNormalizer(diffRoll)
+  const normPitch = anglesNormalizer(diffPitch)
+  const normYaw = anglesNormalizer(diffYaw)
 
-  // Converte o ângulo para graus
-  return angle * (180 / Math.PI)
+  // Calcula a magnitude do ângulo resultante
+  return Math.sqrt(normRoll * normRoll + normPitch * normPitch + normYaw * normYaw)
 }
 
 function calculateQuaternionFromRollPitchYaw(roll, pitch, yaw) {

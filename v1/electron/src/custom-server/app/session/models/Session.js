@@ -17,11 +17,20 @@ module.exports = function Session(sequelize, Sequelize) {
     },
     procedure: {
       type: Sequelize.ENUM,
-      values: ['SHOULDER', 'ELBOW', 'RADIOULNAR', 'WRIST', 'CARPOMETACARPAL_THUMB', 'METACARPOPHALANGEAL', 'PROXIMAL_INTERPHALANGEAL', 'DISTAL_INTERPHALANGEAL'],
+      values: [
+        'SHOULDER',
+        'ELBOW',
+        'RADIOULNAR',
+        'WRIST',
+        'CARPOMETACARPAL_THUMB',
+        'METACARPOPHALANGEAL',
+        'PROXIMAL_INTERPHALANGEAL',
+        'DISTAL_INTERPHALANGEAL',
+      ],
     },
-    // observation: {
-    //   type: Sequelize.STRING,
-    // },
+    observation: {
+      type: Sequelize.STRING,
+    },
   })
 
   Session.associate = ({ Movement, Patient, User }) => {

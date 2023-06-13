@@ -23,9 +23,9 @@ module.exports = function Movement(sequelize, Sequelize) {
         'RADIAL_ADDUCTION',
       ],
     },
-    // observation: {
-    //   type: Sequelize.STRING,
-    // },
+    observation: {
+      type: Sequelize.STRING,
+    },
   })
   Movement.associate = ({ Session, Sensor }) => {
     Movement.belongsTo(Session)

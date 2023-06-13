@@ -11,6 +11,13 @@
         />
         <q-btn
           unelevated
+          :text-color="tab !== `RESULT_ANGLES` ? 'primary' : ''"
+          :color="tab === `RESULT_ANGLES` ? 'primary' : ''"
+          icon="las la-chart-line"
+          @click="selectTab('RESULT_ANGLES')"
+        />
+        <q-btn
+          unelevated
           :text-color="tab !== `RESULT_TABLE` ? 'primary' : ''"
           :color="tab === `RESULT_TABLE` ? 'primary' : ''"
           icon="las la-project-diagram"
@@ -36,9 +43,12 @@
 
       <q-btn unelevated color="primary" icon="las la-file-csv" @click="exportCSV()" />
     </div>
-    <q-tab-panels v-model="tab" class="row h-100" animated>
+    <q-tab-panels v-model="tab" class="row h-100 p-0" animated>
       <q-tab-panel class="h-100 w-100 justify-center items-center p-0" name="RESULT">
         <graph-result :movement="movement" :calculation="fetchData.result?.calculation" />
+      </q-tab-panel>
+      <q-tab-panel class="h-100 w-100 justify-center items-center p-0" name="RESULT_ANGLES">
+        <graph-angles :movement="movement" :calculation="fetchData.result?.calculation" />
       </q-tab-panel>
       <q-tab-panel class="h-100 w-100 justify-center items-center p-0" name="RESULT_TABLE">
         <result-table :movement="movement" :calculation="fetchData.result?.calculation" />
@@ -66,6 +76,11 @@
 
 <style lang="scss" scoped>
 @import '~src/css/mixins.scss';
+
+::v-deep .q-tab-panel {
+  padding: 0 !important;
+}
+
 .tabs {
   display: flex;
   flex-direction: column;

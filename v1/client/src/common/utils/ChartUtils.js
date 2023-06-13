@@ -3,45 +3,47 @@ import { throttle } from 'quasar'
 import _ from 'lodash'
 import { BlobDownloader } from 'src/common/utils/CSVUtils'
 
+const defaultOptions = {
+  toolbox: {
+    feature: {
+      restore: {},
+      saveAsImage: {},
+      // dataView: { readOnly: true },
+      // magicType: { type: ['line', 'bar'] },
+    },
+  },
+  grid: {
+    left: '5%',
+    top: '7%',
+    right: '2%',
+  },
+  tooltip: {
+    trigger: 'axis',
+  },
+  yAxis: {
+    type: 'value',
+  },
+  xAxis: {
+    type: 'category',
+    boundaryGap: false,
+    axisLine: { onZero: true },
+  },
+  dataZoom: [
+    {
+      type: 'inside',
+      start: 0,
+      end: 10,
+    },
+    {
+      start: 0,
+      end: 10,
+    },
+  ],
+}
+
 class ChartUtils {
   // reference -> https://echarts.apache.org/
-  defaultOptions = {
-    toolbox: {
-      feature: {
-        restore: {},
-        saveAsImage: {},
-        // dataView: { readOnly: true },
-        // magicType: { type: ['line', 'bar'] },
-      },
-    },
-    grid: {
-      left: '5%',
-      top: '7%',
-      right: '2%',
-    },
-    tooltip: {
-      trigger: 'axis',
-    },
-    yAxis: {
-      type: 'value',
-    },
-    xAxis: {
-      type: 'category',
-      boundaryGap: false,
-      axisLine: { onZero: true },
-    },
-    dataZoom: [
-      {
-        type: 'inside',
-        start: 0,
-        end: 10,
-      },
-      {
-        start: 0,
-        end: 10,
-      },
-    ],
-  }
+  defaultOptions = defaultOptions
   options = {}
 
   chart
@@ -93,7 +95,7 @@ class ChartUtils {
             symbol: 'none',
             sampling: 'average',
             itemStyle: {
-              color: '#' + parseInt(String(Math.random() * 0xffffff)).toString(16),
+              color: `#${parseInt(String(Math.random() * 0xffffff)).toString(16)}`,
             },
             smooth,
           }
@@ -117,43 +119,7 @@ class ChartUtils {
 
 class GenericChartUtils {
   // reference -> https://echarts.apache.org/
-  defaultOptions = {
-    toolbox: {
-      feature: {
-        restore: {},
-        saveAsImage: {},
-        // dataView: { readOnly: true },
-        // magicType: { type: ['line', 'bar'] },
-      },
-    },
-    grid: {
-      left: '5%',
-      top: '7%',
-      right: '2%',
-    },
-    tooltip: {
-      trigger: 'axis',
-    },
-    yAxis: {
-      type: 'value',
-    },
-    xAxis: {
-      type: 'category',
-      boundaryGap: false,
-      axisLine: { onZero: true },
-    },
-    dataZoom: [
-      {
-        type: 'inside',
-        start: 0,
-        end: 10,
-      },
-      {
-        start: 0,
-        end: 10,
-      },
-    ],
-  }
+  defaultOptions = defaultOptions
   options = {}
 
   chart
@@ -188,21 +154,43 @@ class GenericChartUtils {
     this.chart.setOption(this.options)
   }, 500)
 
-  setData(dataSet = [], dataName = 'Data', smooth = false) {
+  getColumnData(array, column) {
+    return _.map(array, column)
+  }
+
+  setData(dataSets = [], dataName = 'Data', allowedColumn = [], smooth = false) {
     const series = []
-    if (dataSet.length) {
-      const serie = {
-        name: dataName,
-        type: 'line',
-        symbol: 'none',
-        sampling: 'average',
-        itemStyle: {
-          color: '#' + parseInt(String(Math.random() * 0xffffff)).toString(16),
-        },
-        smooth,
+    if (dataSets.length) {
+      if (typeof dataSets[0] === 'object') {
+        for (let col of allowedColumn) {
+          const dataSet = this.getColumnData(dataSets, col)
+          const serie = {
+            name: col,
+            type: 'line',
+            symbol: 'none',
+            sampling: 'average',
+            itemStyle: {
+              color: '#' + parseInt(String(Math.random() * 0xffffff)).toString(16),
+            },
+            smooth,
+          }
+          serie.data = dataSet
+          series.push(serie)
+        }
+      } else {
+        const serie = {
+          name: dataName,
+          type: 'line',
+          symbol: 'none',
+          sampling: 'average',
+          itemStyle: {
+            color: '#' + parseInt(String(Math.random() * 0xffffff)).toString(16),
+          },
+          smooth,
+        }
+        serie.data = dataSets
+        series.push(serie)
       }
-      serie.data = dataSet
-      series.push(serie)
     }
     const options = {
       series,

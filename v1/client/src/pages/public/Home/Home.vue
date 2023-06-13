@@ -12,7 +12,7 @@
           dense
           label="Lista"
           size="sm"
-          @click="fetchData.loadAll()"
+          @click="fetchData.fetchAll()"
           :loading="fetchData.loading"
         />
       </div>
@@ -28,7 +28,7 @@
           <span class="text-center f-bold" v-if="fetchData.result?.listSensor.length"
             >IP DOS SENSORES DISPONÍVEIS</span
           >
-          <div class="column col no-wrap h-100">
+          <div class="column col no-wrap h-100 gap-8">
             <sensor-available
               v-for="(sensor, index) in fetchData.result?.listSensor"
               :key="index"

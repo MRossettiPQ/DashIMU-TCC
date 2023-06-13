@@ -6,7 +6,7 @@
       class="row icon-primary"
       label="Medições"
       icon="add"
-      @click="sessionConnection.addTestReading()"
+      @click="connection.addTestReading()"
     />
     <div v-if="!!syncedSession.values.movements[0]?.type">
       <span class="f-bold"> Movimento atual </span>

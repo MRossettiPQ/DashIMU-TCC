@@ -5,6 +5,7 @@
       <span class="timer-value">
         {{ connection?.numberOfMeasurements }}
       </span>
+      - Ângulo: {{ angle }}
     </span>
     <span v-if="connection?.time" class="timer-title no-wrap">
       {{ $t('session.runtime') }}:

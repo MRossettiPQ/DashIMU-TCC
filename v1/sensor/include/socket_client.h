@@ -7,7 +7,6 @@ void SetWebsocketClient() {
     Serial.println("[SENSOR] - Starting the Websocket Client");
     
     // Callback when messages are received
-    clientBackEnd.onMessage(onMessageCallback);
     // Callback of events
     clientBackEnd.onEvent(onEventsCallback);
 
@@ -36,10 +35,6 @@ void SendStatusSensor() {
     clientBackEnd.send(R"({"ip":")" + addressESP + R"(","origin":"SENSOR)" + R"(","sensorName":")" + sensorName + R"(","available":")" + availableString + R"("})");
 }
 
-void onMessageCallback(const WebsocketsMessage& message) {
-    deserializeJson(jsonReceveidFromClient, message.data());
-}
-
 void onEventsCallback(WebsocketsEvent event, String data) {
     switch (event) {
         case WebsocketsEvent::ConnectionOpened:
@@ -47,7 +42,6 @@ void onEventsCallback(WebsocketsEvent event, String data) {
             
             Serial.println("[SENSOR] - Connected with the server!");
             SendStatusSensor();
-
             break;
         case WebsocketsEvent::ConnectionClosed:
             Serial.println("[SENSOR] - Connection Closed");

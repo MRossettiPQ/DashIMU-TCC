@@ -14,9 +14,9 @@
           round
           dense
           unelevated
-          :loading="connection.loadingRequest"
-          :icon="connection?.loadingRequest ? '' : 'refresh'"
-          @click="connection?.requestAvailableSensors()"
+          :loading="syncedConnection.loadingRequest"
+          :icon="syncedConnection?.loadingRequest ? '' : 'refresh'"
+          @click="syncedConnection?.requestAvailableSensors()"
         />
         <q-btn
           class="row disconnected"
@@ -38,7 +38,10 @@
         />
       </div>
     </div>
-    <running-info v-if="navigation.actualStepValue === 'run-procedure'" :connection="connection" />
+    <running-info
+      v-if="navigation.actualStepValue === 'third-step'"
+      :connection="syncedConnection"
+    />
   </div>
 </template>
 

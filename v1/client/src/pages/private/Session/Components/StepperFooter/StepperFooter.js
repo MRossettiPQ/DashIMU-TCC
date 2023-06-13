@@ -5,8 +5,8 @@ import { Notify } from 'quasar'
   name: 'stepper-footer',
 })
 export default class StepperFooter extends Vue {
-  @Prop()
-  connection
+  @PropSync('connection')
+  syncedConnection
 
   @Prop()
   navigation
@@ -20,10 +20,10 @@ export default class StepperFooter extends Vue {
   get disableAddMeasurement() {
     // Desabilita botão que adiciona as medições temporarias ao movimento
     // Caso tenha medições liberar
-    if (this.connection.numberOfMeasurements > 0) {
-      if (this.connection.disableStartBtn) {
+    if (this.syncedConnection.numberOfMeasurements > 0) {
+      if (this.syncedConnection.disableStartBtn) {
         // Caso o botão de start esteja desabilitado, desabilita se a medição estiver em progresso
-        return this.connection.inProgress
+        return this.syncedConnection.inProgress
       }
       return false
     } else {
@@ -34,9 +34,15 @@ export default class StepperFooter extends Vue {
 
   addMeasurement() {
     // Adiciona as medições temporarias exibidas na tela a um movimento escolhido no input do drawer menu
-    if (this.connection.numberOfMeasurements > 0) {
+    if (this.syncedConnection.numberOfMeasurements > 0) {
       if (this.syncedSession.running_movement !== null) {
-        this.syncedSession.addSensorsToMovement(this.connection.registeredSensorsList)
+        let sensors = []
+        for (let sensor of this.syncedConnection.registeredSensorsList) {
+          sensors.push({
+            ...sensor,
+          })
+        }
+        this.syncedSession.addSensorsToMovement(sensors)
         Notify.create({
           message: 'Medições adicionadas ao movimento',
           textColor: 'white',
@@ -64,7 +70,7 @@ export default class StepperFooter extends Vue {
       case 'first-step':
         return true
       case 'third-step':
-        return this.connection?.inProgress
+        return this.syncedConnection?.inProgress
       case 'second-step':
       default:
         return false
@@ -85,12 +91,12 @@ export default class StepperFooter extends Vue {
         )
       case 'second-step':
         return (
-          this.connection?.numberOfValidConnection < this.syncedSession?.minSensor ||
-          this.connection?.numberOfValidConnection > this.syncedSession?.minSensor ||
+          this.syncedConnection?.numberOfValidConnection < this.syncedSession?.minSensor ||
+          this.syncedConnection?.numberOfValidConnection > this.syncedSession?.minSensor ||
           this.checkPositionBlank
         )
       case 'third-step':
-        return this.connection?.blockSave || this.blockIfMovementsMeasurementsEmpty
+        return this.syncedConnection?.blockSave || this.blockIfMovementsMeasurementsEmpty
       default:
         return false
     }
@@ -114,6 +120,6 @@ export default class StepperFooter extends Vue {
 
   get checkPositionBlank() {
     // Verifica se algum sensor registrado está com o campo position em branco, *este campo é obrigatorio
-    return this.connection.registeredSensorsList.some((sr) => sr.position === '')
+    return this.syncedConnection.registeredSensorsList.some((sr) => sr.position === '')
   }
 }
