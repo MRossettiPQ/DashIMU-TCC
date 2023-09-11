@@ -195,3 +195,4 @@ sensor-io/build/*
 /type/node_modules/
 /type/yarn.lock
 /executavel/*
+*.lock

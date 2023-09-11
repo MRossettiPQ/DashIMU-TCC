@@ -1,7 +1,7 @@
 <template>
   <div class="div-result gap-8 h-100 w-100" v-if="fetchData.hasResult">
-    <div class="tabs gap-4 h-100 justify-between">
-      <div class="tabs gap-4 overflow-auto">
+    <div class="tabs gap-4 h-100 justify-between overflow-auto">
+      <div class="tabs gap-4">
         <q-btn
           unelevated
           :text-color="tab !== `RESULT` ? 'primary' : ''"
@@ -16,6 +16,13 @@
           icon="las la-chart-line"
           @click="selectTab('RESULT_ANGLES')"
         />
+        <!--        <q-btn-->
+        <!--          unelevated-->
+        <!--          :text-color="tab !== `VIEW_IN_AR` ? 'primary' : ''"-->
+        <!--          :color="tab === `VIEW_IN_AR` ? 'primary' : ''"-->
+        <!--          icon="view_in_ar"-->
+        <!--          @click="selectTab('VIEW_IN_AR')"-->
+        <!--        />-->
         <q-btn
           unelevated
           :text-color="tab !== `RESULT_TABLE` ? 'primary' : ''"
@@ -53,6 +60,11 @@
       <q-tab-panel class="h-100 w-100 justify-center items-center p-0" name="RESULT_TABLE">
         <result-table :movement="movement" :calculation="fetchData.result?.calculation" />
       </q-tab-panel>
+      <q-tab-panel class="h-100 w-100 justify-center items-center p-0" name="VIEW_IN_AR">
+        <div class="p-relative h-100 w-100">
+          <three-visualizer class="col" />
+        </div>
+      </q-tab-panel>
       <q-tab-panel class="h-100 w-100 justify-center items-center p-0" name="GRAPH">
         <graph-sensor
           :movement="movement"
@@ -84,7 +96,9 @@
 .tabs {
   display: flex;
   flex-direction: column;
+  padding: 0 2px 0 0;
   @include md() {
+    padding: 0 0 2px 0;
     flex-direction: row;
   }
 }

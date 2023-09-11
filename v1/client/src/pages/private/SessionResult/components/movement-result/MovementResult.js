@@ -31,6 +31,8 @@ export default class MovementResult extends Mixins(ScreenMixin) {
 
   exportFile = new ExportCSV()
 
+  standard
+
   fetchData = new FetchAllData({
     loadList: {
       movement: SessionService.getMovement,

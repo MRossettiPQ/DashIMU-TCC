@@ -24,10 +24,10 @@ void setup() {
     //  Initialize MPU-9250
     InitIMU();
 
-    Serial.println("[SENSOR] - Load calibration");
     LoadIMUCalibration();
     //  Initialize CalibrateIMU
-    //  CalibrateIMU();
+    CalibrateIMU();
+    printCalibration();
 
     digitalWrite(LED_READY, HIGH);
 }
@@ -37,12 +37,11 @@ void loop() {
     unsigned long current_millis = millis();
     connected = WiFiClass::status() == WL_CONNECTED;
 
-    confServerSocket.cleanupClients();
-
     if ((current_millis >= (last_clean_up + delayCleanupClients)) && connected) {
         // Verifica e limpa a lista de usuario a cada 500ms
         last_clean_up = current_millis;
-        confServerSocket.pingAll();
+        confServerSocket.cleanupClients();
+        // confServerSocket.pingAll();
         bool available = clientBackEnd.available();
         if (available) {
             clientBackEnd.poll();

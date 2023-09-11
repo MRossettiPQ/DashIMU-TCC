@@ -1,4 +1,5 @@
 const { logColor } = require('./LogUtil')
+const Database = require('../../core/database')
 
 // Setups
 const ServerResponses = {
@@ -76,7 +77,7 @@ const AsyncHandlers = (handlers = [], middleware = false) => {
 
 // Gerenciador de conexão
 const AsyncHandler = (callback, middleware = false, index = 0) => {
-  return function (req, res, next) {
+  return async function (req, res, next) {
     let result = null
 
     function setResult(v) {
@@ -85,66 +86,78 @@ const AsyncHandler = (callback, middleware = false, index = 0) => {
       }
     }
 
-    if (!middleware) {
-      logColor('SERVER:REQUEST', `[${req.method}] - ${req.originalUrl}`, 'fg.magenta')
+    try {
+      // let transaction = await Database.sequelize.transaction()
+
+      if (!middleware) {
+        logColor('SERVER:REQUEST', `[${req.method}] - ${req.originalUrl}`, 'fg.magenta')
+      }
+
+      callback(req, res, next)
+        .then(setResult)
+        .catch(setResult)
+        .finally(() => {
+          // Em caso de não ser um middleware e não possuir type, considerar como erro
+          if (!result?.type && !middleware) {
+            result = {
+              type: 'InternalError',
+              message: result?.toString(),
+              local: 'SERVER:ERROR',
+              color: 'fg.red',
+            }
+          }
+
+          // Em caso de ser um middleware e não possuir type, considerar como sucesso
+          if (!result?.type && middleware) {
+            result = {
+              type: 'Success',
+            }
+          }
+          // Em caso de não ser um middleware responser em qualquer caso
+          // Em caso de ser um middleware só responder a request se não for um sucesso
+          if (!middleware || (middleware && !['Success'].includes(result?.type))) {
+            logColor(
+              result?.local,
+              `[${req.method}] - ${req.originalUrl}`,
+              getResponseColor(result.type) || 'reset'
+            )
+
+            switch (result.responseType) {
+              case 'json':
+                res
+                  .json({
+                    message: result?.message,
+                    content: result?.content,
+                  })
+                  .end()
+                break
+
+              case 'content':
+              default:
+                res
+                  .status(getResponseCode(result.type))
+                  .send({
+                    message: result?.message,
+                    content: result?.content,
+                  })
+                  .end()
+                break
+            }
+          }
+        })
+    } catch (e) {
+      console.log(e)
     }
-
-    callback(req, res, next)
-      .then(setResult)
-      .catch((erro) => {
-        console.log(erro)
-        setResult(erro)
-      })
-      .finally(() => {
-        // Em caso de não ser um middleware e não possuir type, considerar como erro
-        if (!result?.type && !middleware) {
-          result = {
-            type: 'InternalError',
-            message: result?.toString(),
-            local: 'SERVER:ERROR',
-            color: 'fg.red',
-          }
-        }
-
-        // Em caso de ser um middleware e não possuir type, considerar como sucesso
-        if (!result?.type && middleware) {
-          result = {
-            type: 'Success',
-          }
-        }
-        // Em caso de não ser um middleware responser em qualquer caso
-        // Em caso de ser um middleware só responder a request se não for um sucesso
-        if (!middleware || (middleware && !['Success'].includes(result?.type))) {
-          logColor(result?.local, `[${req.method}] - ${req.originalUrl}`, getResponseColor(result.type) || 'reset')
-
-          switch (result.responseType) {
-            case 'json':
-              res
-                .json({
-                  message: result?.message,
-                  content: result?.content,
-                })
-                .end()
-              break
-
-            case 'content':
-            default:
-              res
-                .status(getResponseCode(result.type))
-                .send({
-                  message: result?.message,
-                  content: result?.content,
-                })
-                .end()
-              break
-          }
-        }
-      })
   }
 }
 
 // Error 500
-function throwError({ message = ServerResponses.InternalError.message, local = '', log = '', responseType = 'content' }) {
+function throwError({
+  message = ServerResponses.InternalError.message,
+  local = '',
+  log = '',
+  responseType = 'content',
+}) {
   return new Promise((resolve, reject) => {
     return reject({
       type: 'InternalError',
@@ -157,7 +170,13 @@ function throwError({ message = ServerResponses.InternalError.message, local = '
 }
 
 // Success 200
-function throwSuccess({ content = null, message = '', log = '', local = '', responseType = 'content' }) {
+function throwSuccess({
+  content = null,
+  message = '',
+  log = '',
+  local = '',
+  responseType = 'content',
+}) {
   return new Promise((resolve) => {
     return resolve({
       type: 'Success',
@@ -171,7 +190,12 @@ function throwSuccess({ content = null, message = '', log = '', local = '', resp
 }
 
 // Error 403
-function throwForbidden({ message = null, local = 'SERVER:FORBIDDEN', log = '', responseType = 'content' }) {
+function throwForbidden({
+  message = null,
+  local = 'SERVER:FORBIDDEN',
+  log = '',
+  responseType = 'content',
+}) {
   return new Promise((resolve, reject) => {
     return reject({
       type: 'Forbidden',
@@ -184,7 +208,12 @@ function throwForbidden({ message = null, local = 'SERVER:FORBIDDEN', log = '', 
 }
 
 // Error 404
-function throwNotFound({ message = null, local = 'SERVER:NOTFOUND', log = '', responseType = 'content' }) {
+function throwNotFound({
+  message = null,
+  local = 'SERVER:NOTFOUND',
+  log = '',
+  responseType = 'content',
+}) {
   return new Promise((resolve, reject) => {
     return reject({
       type: 'NotFound',
@@ -197,7 +226,12 @@ function throwNotFound({ message = null, local = 'SERVER:NOTFOUND', log = '', re
 }
 
 // Error 401
-function throwUnauthorized({ message = null, local = 'SERVER:UNAUTHORIZED', log = '', responseType = 'content' }) {
+function throwUnauthorized({
+  message = null,
+  local = 'SERVER:UNAUTHORIZED',
+  log = '',
+  responseType = 'content',
+}) {
   return new Promise((resolve, reject) => {
     return reject({
       type: 'Unauthorized',

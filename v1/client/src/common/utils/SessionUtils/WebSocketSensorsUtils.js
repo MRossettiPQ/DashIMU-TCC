@@ -275,20 +275,23 @@ class SessionWebSocket {
     await this.remove(sensor)
   }
 
-  closeAll() {
-    // Chamado ao sair da pagina.
-    if (this.registeredSensorsList.length) {
-      this.registeredSensorsList
-        ?.filter((sensor) => sensor?.active)
-        ?.forEach((sensor) => {
-          sensor.connection?.stop()
+  async closeAll() {
+    return new Promise((resolve) => {
+      // Chamado ao sair da pagina.
+      if (this.registeredSensorsList.length) {
+        this.stop()
+        this.registeredSensorsList?.forEach((sensor) => {
+          console.log(sensor)
+          console.log(sensor.connection)
           sensor.connection?.close()
         })
-    }
-    if (this.timeout !== null) {
-      this.endTimer()
-    }
-    this.connection?.close()
+      }
+      if (this.timeout !== null) {
+        this.endTimer()
+      }
+      this.connection?.close()
+      resolve()
+    })
   }
 
   async remove(sensor) {

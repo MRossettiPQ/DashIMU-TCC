@@ -35,8 +35,10 @@ import {
   QSplitter,
   QToolbarTitle,
   QTooltip,
+  QSlider,
 } from 'quasar'
 import ChartVisualizer from 'components/ChartVisualizer/ChartVisualizer.vue'
+import ThreeVisualizer from 'components/ThreeVisualizer/ThreeVisualizer.vue'
 
 export default async ({ Vue }) => {
   console.log('[INIT] - Loading components')
@@ -104,6 +106,8 @@ export default async ({ Vue }) => {
   Vue.component('QTabs', QTabs)
   Vue.component('QTabPanels', QTabPanels)
   Vue.component('QSplitter', QSplitter)
+  Vue.component('QSlider', QSlider)
 
   Vue.component('ChartVisualizer', ChartVisualizer)
+  Vue.component('ThreeVisualizer', ThreeVisualizer)
 }

@@ -1,7 +1,7 @@
 <template>
-  <q-card bordered flat class="column no-wrap p-8">
+  <q-card bordered flat class="column no-wrap p-8 gap-8">
     <span>{{ name }}</span>
-    <span v-if="movement.observation">{{ movement.observation }}</span>
+    <q-input dense v-model="movement.observation" outlined label="Observação" type="text" />
 
     <table class="w-100" v-if="movement.sensors.length">
       <tr>
