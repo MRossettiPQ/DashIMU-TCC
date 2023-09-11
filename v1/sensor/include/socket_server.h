@@ -27,6 +27,15 @@ void ConfigurationStateController(AsyncWebServerRequest *request) {
     request->send(200, "text/json", content);
 }
 
+void CalibrateController(AsyncWebServerRequest *request) {
+
+    RestartMeasurement();
+    CalibrateIMU();
+
+    request->send(200);
+}
+
+
 void ConfigurationSaveController(AsyncWebServerRequest *request) {
     int params = request->params();
     for (int i = 0; i < params; i++) {
@@ -90,6 +99,8 @@ void SetServer() {
     confServer.on("/api/configuration", HTTP_POST, ConfigurationSaveController);
 
     confServer.on("/api/measurement", HTTP_GET, GetMeasurementController);
+
+    confServer.on("/api/calibrate", HTTP_POST, CalibrateController);
 
     confServerSocket.onEvent(onWsServerEvent);
 

@@ -64,8 +64,8 @@ export default class SessionPage extends Mixins(ScreenMixin, DevMixin) {
     }
   }
 
-  beforeDestroy() {
-    this.connection.closeAll()
+  async beforeDestroy() {
+    await this.connection.closeAll()
   }
 
   async saveSession() {
@@ -88,6 +88,7 @@ export default class SessionPage extends Mixins(ScreenMixin, DevMixin) {
       const data = await SessionService.postSession(bean)
 
       if (data != null) {
+        //await this.connection.closeAll()
         await this.$router.push({
           path: `/result/${data.id}`,
         })

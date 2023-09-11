@@ -144,6 +144,7 @@ void SendAppController(AsyncWebServerRequest *request);             //
 void ConfigurationStateController(AsyncWebServerRequest *request);  //
 void ConfigurationSaveController(AsyncWebServerRequest *request);   //
 void GetMeasurementController(AsyncWebServerRequest *request);      //
+void CalibrateController(AsyncWebServerRequest *request);      //
 void SetServer();                                                   //
 void InitServer();                                                  //
 void onWsServerEvent(AsyncWebSocket *server,

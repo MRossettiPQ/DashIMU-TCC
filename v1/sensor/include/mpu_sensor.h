@@ -52,8 +52,8 @@ void InitIMU() {
         setting.gyro_dlpf_cfg = GYRO_DLPF_CFG::DLPF_184HZ;
         setting.accel_fchoice = 0x01;
         setting.accel_dlpf_cfg = ACCEL_DLPF_CFG::DLPF_218HZ_0;
-        mpu.selectFilter(QuatFilterSel::MAHONY);
-        // mpu.setFilterIterations(10);
+        mpu.selectFilter(QuatFilterSel::MADGWICK);
+        mpu.setFilterIterations(10);
 
         if (!mpu.setup(ADDRESS_SENSOR, setting)) {
             Serial.println("[SENSOR] - It has not been initialized, Check the connection between the IMU and the ESP32 and restart the device");

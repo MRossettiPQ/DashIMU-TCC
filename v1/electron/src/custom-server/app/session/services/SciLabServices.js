@@ -11,6 +11,8 @@ const {
   getIndexMinMax,
   getArrayMultiply,
 } = require('../../../core/utils/SciLab')
+const math = require('mathjs')
+const { Quaternion } = require('quaternion')
 
 exports.calculationVariabilityCenter = (sensors) => {
   console.log('[Service] - /api/session/:id/scilab - calculationVariabilityCenter')
@@ -148,7 +150,7 @@ function calculateAngles(sensor_1, sensor_2) {
 
     const quaternionAngle = calculateQuaternionAngle(measurement_1, measurement_2)
     const eulerAngle = calculateEulerAngle(measurement_1, measurement_2)
-    const rollPitchYawAngle = calculateRollPitchYawAngle(measurement_1, measurement_2)
+    const rollPitchYawAngle = calculateRollPitchYawAngle2(measurement_1, measurement_2)
     if (pos === 0) {
       console.log(quaternionAngle)
       console.log(eulerAngle)
@@ -213,10 +215,15 @@ function calculateQuaternionAngle(gyro_measurement_1, gyro_measurement_2) {
   const dotProduct = q1.x * q2.x + q1.y * q2.y + q1.z * q2.z + q1.w * q2.w
 
   // O ângulo entre os dois quaternions é o arco cosseno do produto escalar
-  const angle = 2 * Math.acos(Math.abs(dotProduct))
+  const angle = 2 * Math.acos(Math.min(Math.abs(dotProduct), 1))
 
   // Converte o ângulo para graus
   return angle * (180 / Math.PI)
+}
+
+//
+function calculateRollPitchYawAngle2(gyro_measurement_1, gyro_measurement_2) {
+  return 0
 }
 
 //
@@ -267,76 +274,4 @@ function anglesNormalizer(angle) {
     angle += 360
   }
   return angle
-}
-
-//
-function calculateRollPitchYawAngle(gyro_measurement_1, gyro_measurement_2) {
-  if (
-    gyro_measurement_1.Roll == null ||
-    gyro_measurement_1.Pitch == null ||
-    gyro_measurement_1.Yaw == null ||
-    gyro_measurement_2.Roll == null ||
-    gyro_measurement_2.Pitch == null ||
-    gyro_measurement_2.Yaw == null
-  ) {
-    return null // Verifica se as medições possuem os valores de roll, pitch e yaw
-  }
-
-  const roll1 = gyro_measurement_1.Roll
-  const pitch1 = gyro_measurement_1.Pitch
-  const yaw1 = gyro_measurement_1.Yaw
-
-  const roll2 = gyro_measurement_2.Roll
-  const pitch2 = gyro_measurement_2.Pitch
-  const yaw2 = gyro_measurement_2.Yaw
-
-  // Calcula a diferença entre os ângulos de roll, pitch e yaw
-  const diffRoll = roll2 - roll1
-  const diffPitch = pitch2 - pitch1
-  const diffYaw = yaw2 - yaw1
-
-  // Normaliza os ângulos para o intervalo entre -180 e 180 graus
-  const normRoll = anglesNormalizer(diffRoll)
-  const normPitch = anglesNormalizer(diffPitch)
-  const normYaw = anglesNormalizer(diffYaw)
-
-  // Calcula a magnitude do ângulo resultante
-  return Math.sqrt(normRoll * normRoll + normPitch * normPitch + normYaw * normYaw)
-}
-
-function calculateQuaternionFromRollPitchYaw(roll, pitch, yaw) {
-  const eulerX = roll * (Math.PI / 180) // Converter roll para radianos
-  const eulerY = pitch * (Math.PI / 180) // Converter pitch para radianos
-  const eulerZ = yaw * (Math.PI / 180) // Converter yaw para radianos
-
-  const cy = Math.cos(eulerZ * 0.5)
-  const sy = Math.sin(eulerZ * 0.5)
-  const cp = Math.cos(eulerY * 0.5)
-  const sp = Math.sin(eulerY * 0.5)
-  const cr = Math.cos(eulerX * 0.5)
-  const sr = Math.sin(eulerX * 0.5)
-
-  const qw = cr * cp * cy + sr * sp * sy
-  const qx = sr * cp * cy - cr * sp * sy
-  const qy = cr * sp * cy + sr * cp * sy
-  const qz = cr * cp * sy - sr * sp * cy
-
-  return {
-    Quaternion_X: qx,
-    Quaternion_Y: qy,
-    Quaternion_Z: qz,
-    Quaternion_W: qw,
-  }
-}
-
-function calculateEulerFromRollPitchYaw(roll, pitch, yaw) {
-  const eulerX = roll * (Math.PI / 180) // Converter roll para radianos
-  const eulerY = pitch * (Math.PI / 180) // Converter pitch para radianos
-  const eulerZ = yaw * (Math.PI / 180) // Converter yaw para radianos
-
-  return {
-    Euler_X: eulerX,
-    Euler_Y: eulerY,
-    Euler_Z: eulerZ,
-  }
 }
