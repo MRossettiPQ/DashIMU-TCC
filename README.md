@@ -6,4 +6,6 @@ Prerequisites - Server and Front (#Dev):
 * [Yarn](https://yarnpkg.com/) (Version 1.22.0+) - [Download](https://classic.yarnpkg.com/en/docs/install)
 
 Sensor:
--Desenvolvido utilizando o PlatformIO no VSCode
+* Desenvolvido utilizando o PlatformIO no VSCode
+
+Importante: V2 (socket.io + typescript) não foi concluida.
