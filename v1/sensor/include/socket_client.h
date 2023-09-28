@@ -5,10 +5,6 @@
 
 void SetWebsocketClient() {
     Serial.println("[SENSOR] - Starting the Websocket Client");
-    
-    // Callback when messages are received
-    // Callback of events
-    clientBackEnd.onEvent(onEventsCallback);
 
     ConnectBackend();
 
@@ -20,9 +16,16 @@ void SetWebsocketClient() {
 void ConnectBackend(){
     if (!connectedWebsocketClient) {
         Serial.println("[SENSOR] - Not connected to the server!");
+
+        // Callback of events
+        clientBackEnd.onEvent(onEventsCallback);
         connectedWebsocketClient = clientBackEnd.connect(backend, backendPort.toInt(), "/socket");
         vTaskDelay(500 / portTICK_PERIOD_MS);
-    } 
+
+        if(connectedWebsocketClient) {
+            Serial.println("[SENSOR] - Connected to the server!");
+        }
+    }
 }
 
 void SendStatusSensor() {
@@ -32,15 +35,15 @@ void SendStatusSensor() {
     } else {
         availableString = "false";
     }
-    clientBackEnd.send(R"({"ip":")" + addressESP + R"(","origin":"SENSOR)" + R"(","sensorName":")" + sensorName + R"(","available":")" + availableString + R"("})");
+    clientBackEnd.send(R"({"ip":")" + addressESP + R"(","origin":"SENSOR")" + R"(,"sensorName":")" + sensorName + R"(","available":")" + availableString + R"("})");
 }
 
 void onEventsCallback(WebsocketsEvent event, String data) {
+    //Serial.println("[SENSOR] - onEventsCallback");
     switch (event) {
         case WebsocketsEvent::ConnectionOpened:
-            Serial.println("[SENSOR] - Connection Opened");
+            Serial.println("[SENSOR] - Connection Opened - Connected with the server!");
             
-            Serial.println("[SENSOR] - Connected with the server!");
             SendStatusSensor();
             break;
         case WebsocketsEvent::ConnectionClosed:

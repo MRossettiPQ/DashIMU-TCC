@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <title>IMU Manager</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="alert.css">
+    <script src="modules/vue.js"></script>
+    <script src="modules/axios.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div v-if="dataLoaded">
+            <div class="topnav">
+                <h1>IMU Manager</h1>
+            </div>
+            <div class="content" v-if="!saved">
+                <div class="card-grid">
+                    <div class="card">
+                        <form class="form" @submit.prevent="checkForm">
+                            <div class="form-section" v-for="(section, index) in formSection" :key="index">
+                                <p class="card-title">
+                                    {{section.title}}
+                                </p>
+                                <div v-for="(field, index) in section.fields" class="form-column" :key="index">
+                                    <label :for="field.name">
+                                        {{field.label}}
+                                    </label>
+                                    <div class="div-input-validate">
+                                        <input v-model="field.value" :type="field.type" :id="field.name"
+                                            :name="field.name" :placeholder="field.placeholder">
+                                        <span class="field-error" v-if="field.errorMessage.length">
+                                            {{field.errorMessage[0]}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <input type="submit" value="Configure">
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div v-else>
+                <p class="card-title">
+                    Aguarde, redefinição das configurações do modulo. estará disponível em breve!
+                </p>
+            </div>
+            <div class="alert" v-if="saved">
+                <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+                <strong>Atenção!</strong> Modulo será reiniciado e ficara temporariamente indisponível.
+            </div>
+        </div>
+    </div>
+    <script>
+        axios.interceptors.response.use(
+            (response) => {
+                if (response.config.method.toUpperCase() !== "GET") {
+                    if (response.data && (response.data.message || response.data.msg)) {
+                        //notifySuccess(response.data.message || response.data.msg);
+                    }
+                }
+                if (response.config.method.toUpperCase() !== "POST") {
+                    if (response.data && (response.data.message || response.data.msg)) {
+                        //notifySuccess(response.data.message || response.data.msg);
+                    }
+                }
+
+                return response;
+            },
+            (error) => {
+                if (error.response.status === 404) {
+                    //notifyError("Endpoint não encontrado");
+                }
+
+                if (
+                    error.response &&
+                    error.response.data &&
+                    (error.response.data.message || error.response.data.msg)
+                ) {
+                    //notifyError(error.response.data.message || error.response.data.msg);
+                }
+
+                if (
+                    error.response &&
+                    error.response.data &&
+                    typeof error.response.data == "string"
+                ) {
+                    //notifyError(error.response.data);
+                    console.log("error.response.data", error.response.data)
+                }
+                return Promise.reject(error);
+            }
+        );
+
+        function checkIp(value) {
+            let test = checkNumberAddress(value)
+            if (!test) {
+                test = checkUrlAddress(value)
+            }
+
+            return !test ? 'Warning! Ip not valid!' : ''
+        }
+
+        function checkNumberAddress(value) {
+            let pattern = /^[0-9]\+\.[0-9]\+\.[0-9]\+\.[0-9]\+$/g
+            return pattern.test(value)
+        }
+
+        function checkUrlAddress(value) {
+            let pattern = /^[0-9]\+\.[0-9]\+\.[0-9]\+\.[0-9]\+$/g
+            return pattern.test(value)
+        }
+
+        function checkNumber(value) {
+            return isNaN(parseInt(value)) ? "Warning! Not a number value!" : ""
+        }
+
+        function checkSensorName(value) {
+            let pattern = /\s/g
+            return pattern.test(value) ? "Warning! The name must not have blank spaces!" : ""
+        }
+
+        function checkInFrequency(value, min, max) {
+            return value <= max && value >= min ? "" : `Warning! Value must be less than ${max} and must be greater than ${min}!`
+        }
+
+        function checkNotNull(value) {
+            return value === null || value.length === 0 ? "Warning! Required field!" : ""
+        }
+
+        const app = new Vue({
+            el: "#app",
+            computed: {
+                getSaved: () => {
+                    return this.saved
+                },
+                getLoaded: () => {
+                    return this.dataLoaded
+                }
+            },
+            async beforeMount() {
+                try {
+                    const { data } = await axios.get('/api/configuration')
+                    this.memoSensor = data
+                    this.formSection.map((section, indexSection) => {
+                        section.fields.map((field, indexField) => {
+                            this.formSection[indexSection].fields[indexField].value = this.memoSensor[`${field.name}`]
+                        })
+                    })
+                    this.wifiList = this.memoSensor.wifiList
+                    this.dataLoaded = true
+                } catch (e) {
+                    console.log(e)
+                }
+            },
+            data: {
+                loadingSend: false,
+                memoSensor: {},
+                loading: false,
+                formValid: true,
+                saved: false,
+                dataLoaded: false,
+                wifiList: [],
+                form: {},
+                errorsForm: [],
+                formSection: [
+                    {
+                        title: "Wi-Fi",
+                        fields: [
+                            {
+                                name: "ssid",
+                                label: "SSID",
+                                value: "",
+                                placeholder: "",
+                                rules: [
+                                    checkNotNull,
+                                ],
+                                type: "text",
+                                nErrors: 0,
+                                errorMessage: []
+                            },
+                            {
+                                name: "password",
+                                label: "Password",
+                                placeholder: "",
+                                value: "",
+                                rules: [],
+                                type: "password",
+                                nErrors: 0,
+                                errorMessage: []
+                            },
+                        ]
+                    },
+                    {
+                        title: "API",
+                        fields: [
+                            {
+                                name: "backend",
+                                label: "Server Address",
+                                value: "",
+                                placeholder: "192.168.16.113",
+                                rules: [
+                                    checkNotNull,
+                                ],
+                                type: "text",
+                                nErrors: 0,
+                                errorMessage: []
+                            },
+                            {
+                                name: "backendPort",
+                                label: "Server Port",
+                                value: "",
+                                placeholder: "8000",
+                                rules: [
+                                    checkNotNull,
+                                    checkNumber,
+                                ],
+                                type: "text",
+                                nErrors: 0,
+                                errorMessage: []
+                            },
+                        ]
+                    },
+                    {
+                        title: "Sensor",
+                        fields: [
+                            {
+                                name: "sensorName",
+                                label: "Sensor Name",
+                                value: "",
+                                placeholder: "SENSOR_1",
+                                rules: [
+                                    checkNotNull,
+                                    checkSensorName,
+                                ],
+                                type: "text",
+                                nErrors: 0,
+                                errorMessage: []
+                            },
+                        ]
+                    }
+                ],
+            },
+            methods: {
+                sendForm: async function () {
+                    try {
+                        this.loadingSend = true
+                        const { data } = await axios.post('/api/configuration', {}, {
+                            params: {
+                                ...this.form
+                            }
+                        })
+                        this.saved = true
+                    } catch (e) {
+                        console.log(e)
+                    } finally {
+                        this.loadingSend = false
+                    }
+                },
+                checkForm: async function (e) {
+                    try {
+                        this.loading = true
+
+                        this.formSection.map(section => {
+                            section.fields.map(field => {
+                                field.errorMessage = []
+                                field.nErrors = 0
+                            })
+                        })
+
+                        this.formSection.map(section => {
+                            section.fields.map(field => {
+                                this.form[field?.name] = field.value
+                                field.rules.every((rule, index, array) => {
+                                    const result = rule(field.value)
+                                    if (result?.length > 0) {
+                                        field.nErrors++
+                                        field.errorMessage.push(result)
+                                        this.errorsForm.push(result)
+                                        return false
+                                    }
+                                    return true
+                                })
+                            })
+                        })
+
+                        if (this.errorsForm.length > 0) {
+                            this.formValid = false
+                            e.preventDefault();
+                            return false
+                        }
+                        await this.sendForm()
+                    } catch (e) {
+                        console.log(e)
+                        this.formValid = false
+                    } finally {
+                        this.loading = false
+                    }
+                },
+            },
+        })
+    </script>
+</body>
+
+</html>

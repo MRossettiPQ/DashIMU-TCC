@@ -24,9 +24,9 @@ class AppElectron {
       app.on('window-all-closed', () => this.quit())
 
       //
-      //
       if (!this.server.started) {
         await this.server.boot()
+        await shell.openExternal(`${settings.electron.url}:${this.server.port}/`)
       }
       //
       //
@@ -57,7 +57,11 @@ class AppElectron {
 
       // await mainWindow.show()
 
-      await this.showNotification(packageFile.productName, 'Pronto para uso', resolve(__dirname, './assets/icon.ico'))
+      await this.showNotification(
+        packageFile.productName,
+        'Pronto para uso',
+        resolve(__dirname, './assets/icon.ico')
+      )
     }
   }
 
@@ -116,6 +120,6 @@ class AppElectron {
 }
 
 const run = (async () => {
-    const el = new AppElectron()
-    await el.boot()
+  const el = new AppElectron()
+  await el.boot()
 })()

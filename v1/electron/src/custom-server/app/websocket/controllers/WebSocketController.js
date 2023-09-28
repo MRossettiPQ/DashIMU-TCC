@@ -29,7 +29,7 @@ module.exports = new (class WebSocketController {
 
   sensorConnection(expressWs) {
     return function (client) {
-      logColor(`[SOCKET] - Client connected in network! - ${dayjs()}`)
+      logColor('SOCKET', `Client connected in network! - ${dayjs()}`)
 
       client.origin = null
 
@@ -38,7 +38,6 @@ module.exports = new (class WebSocketController {
       client.isAlive = true
 
       client.on('message', async (msg) => {
-        console.log(`[SOCKET] - message`)
         const data = JSON.parse(msg)
         if (data.origin) {
           client.origin = data.origin
@@ -85,13 +84,13 @@ module.exports = new (class WebSocketController {
         clearInterval(client.interval)
       })
 
-      client.on('pong', () => {
-        client.isAlive = true
-      })
-
       client.once('error', () => {
         logColor(`[SOCKET] - Error sensor - ${dayjs()}`)
         client.close(1000, 'Keep alive timeout')
+      })
+
+      client.on('pong', () => {
+        client.isAlive = true
       })
 
       client.interval = setInterval(() => {

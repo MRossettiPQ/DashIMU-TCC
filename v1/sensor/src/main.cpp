@@ -26,7 +26,7 @@ void setup() {
 
     LoadIMUCalibration();
     //  Initialize CalibrateIMU
-    CalibrateIMU();
+    //CalibrateIMU();
     printCalibration();
 
     digitalWrite(LED_READY, HIGH);
@@ -42,14 +42,18 @@ void loop() {
         last_clean_up = current_millis;
         confServerSocket.cleanupClients();
         // confServerSocket.pingAll();
+
         bool available = clientBackEnd.available();
         if (available) {
             clientBackEnd.poll();
+        } else if (available && connectedWebsocketClient == true) {
+            connectedWebsocketClient = false;
         }
+
         if (!available) {
             RestartMeasurement();
-            ConnectBackend();
         }
+        ConnectBackend();
     }
 
     if ((current_millis >= (previous_millis + delayInterval)) && connected) {
