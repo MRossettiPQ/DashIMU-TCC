@@ -97,25 +97,6 @@
             }
         );
 
-        function checkIp(value) {
-            let test = checkNumberAddress(value)
-            if (!test) {
-                test = checkUrlAddress(value)
-            }
-
-            return !test ? 'Warning! Ip not valid!' : ''
-        }
-
-        function checkNumberAddress(value) {
-            let pattern = /^[0-9]\+\.[0-9]\+\.[0-9]\+\.[0-9]\+$/g
-            return pattern.test(value)
-        }
-
-        function checkUrlAddress(value) {
-            let pattern = /^[0-9]\+\.[0-9]\+\.[0-9]\+\.[0-9]\+$/g
-            return pattern.test(value)
-        }
-
         function checkNumber(value) {
             return isNaN(parseInt(value)) ? "Warning! Not a number value!" : ""
         }
@@ -123,10 +104,6 @@
         function checkSensorName(value) {
             let pattern = /\s/g
             return pattern.test(value) ? "Warning! The name must not have blank spaces!" : ""
-        }
-
-        function checkInFrequency(value, min, max) {
-            return value <= max && value >= min ? "" : `Warning! Value must be less than ${max} and must be greater than ${min}!`
         }
 
         function checkNotNull(value) {
@@ -146,12 +123,16 @@
             async beforeMount() {
                 try {
                     const { data } = await axios.get('/api/configuration')
+                    console.log('Before mount')
+                    console.log(this.memoSensor)
                     this.memoSensor = data
-                    this.formSection.map((section, indexSection) => {
-                        section.fields.map((field, indexField) => {
-                            this.formSection[indexSection].fields[indexField].value = this.memoSensor[`${field.name}`]
+
+                    this.formSection.forEach((section, indexSection) => {
+                        section.fields.forEach((field, indexField) => {
+                            this.formSection[indexSection].fields[indexField].value = this.memoSensor[field.name.toString()]
                         })
                     })
+
                     this.wifiList = this.memoSensor.wifiList
                     this.dataLoaded = true
                 } catch (e) {

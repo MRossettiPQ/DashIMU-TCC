@@ -15,7 +15,6 @@ class CustomServer {
   started = false
   port = 8000
   loading = false
-  expressWs = null
 
   constructor(lang = 'pt-br') {
     this.lang = lang
@@ -56,13 +55,13 @@ class CustomServer {
       this.app.use(bodyParser.urlencoded({ extended: true }))
 
       // Active web-socket on app express
-      this.expressWs = enableWs(this.app)
+      let expressWs = enableWs(this.app)
 
       // Morgan logging
       this.app.use(morgan(logMiddleware))
 
       // Routes
-      routes(this.app, this.expressWs)
+      routes(this.app, expressWs)
 
       // Listen server in port
       await this.listen()
@@ -71,7 +70,7 @@ class CustomServer {
     } catch (e) {
       logColor('SERVER', translate('main.error'), 'fg.red')
       console.log(e)
-      throw Error('Erro no server' + e.toString())
+      throw Error('Error no server' + e.toString())
     } finally {
       this.loading = false
     }
@@ -96,5 +95,5 @@ class CustomServer {
 }
 
 module.exports = {
-    CustomServer,
+  CustomServer,
 }

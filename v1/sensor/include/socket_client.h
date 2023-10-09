@@ -3,50 +3,40 @@
 
 #include <config.h>
 
-void SetWebsocketClient() {
-    Serial.println("[SENSOR] - Starting the Websocket Client");
-
-    ConnectBackend();
-
-    // Configure time zone
-    timeClient.begin();
-    timeClient.forceUpdate();
-}
-
-void ConnectBackend(){
+void ConnectBackend() {
     if (!connectedWebsocketClient) {
-        Serial.println("[SENSOR] - Not connected to the server!");
+        Serial.println("[SENSOR] - Not connectedWifi to the server!");
 
         // Callback of events
         clientBackEnd.onEvent(onEventsCallback);
         connectedWebsocketClient = clientBackEnd.connect(backend, backendPort.toInt(), "/socket");
-        vTaskDelay(500 / portTICK_PERIOD_MS);
-
-        if(connectedWebsocketClient) {
-            Serial.println("[SENSOR] - Connected to the server!");
-        }
+        vTaskDelay(250 / portTICK_PERIOD_MS);
     }
 }
 
 void SendStatusSensor() {
-    String availableString = "";
-    if(available){
-        availableString = "true";
+    String available = "";
+    if (serverAvailable) {
+        available = "true";
     } else {
-        availableString = "false";
+        available = "false";
     }
-    clientBackEnd.send(R"({"ip":")" + addressESP + R"(","origin":"SENSOR")" + R"(,"sensorName":")" + sensorName + R"(","available":")" + availableString + R"("})");
+    clientBackEnd.send(R"({"ip":")" + addressESP + R"(","origin":"SENSOR")" + R"(,"sensorName":")" + sensorName +
+                       R"(","available":")" + available + R"("})");
 }
 
 void onEventsCallback(WebsocketsEvent event, String data) {
     //Serial.println("[SENSOR] - onEventsCallback");
     switch (event) {
         case WebsocketsEvent::ConnectionOpened:
+            digitalWrite(LED_READY, HIGH);
+            connectedWebsocketClient = true;
             Serial.println("[SENSOR] - Connection Opened - Connected with the server!");
-            
+
             SendStatusSensor();
             break;
         case WebsocketsEvent::ConnectionClosed:
+            digitalWrite(LED_READY, LOW);
             Serial.println("[SENSOR] - Connection Closed");
             connectedWebsocketClient = false;
             RestartMeasurement();

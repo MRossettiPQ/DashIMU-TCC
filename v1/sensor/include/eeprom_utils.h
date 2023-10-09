@@ -71,19 +71,23 @@ void loadCalibration() {
         mpu.setAccBias(
                 readFloat(EEP_ACC_BIAS + 0),
                 readFloat(EEP_ACC_BIAS + 4),
-                readFloat(EEP_ACC_BIAS + 8));
+                readFloat(EEP_ACC_BIAS + 8)
+        );
         mpu.setGyroBias(
                 readFloat(EEP_GYRO_BIAS + 0),
                 readFloat(EEP_GYRO_BIAS + 4),
-                readFloat(EEP_GYRO_BIAS + 8));
+                readFloat(EEP_GYRO_BIAS + 8)
+        );
         mpu.setMagBias(
                 readFloat(EEP_MAG_BIAS + 0),
                 readFloat(EEP_MAG_BIAS + 4),
-                readFloat(EEP_MAG_BIAS + 8));
+                readFloat(EEP_MAG_BIAS + 8)
+        );
         mpu.setMagScale(
                 readFloat(EEP_MAG_SCALE + 0),
                 readFloat(EEP_MAG_SCALE + 4),
-                readFloat(EEP_MAG_SCALE + 8));
+                readFloat(EEP_MAG_SCALE + 8)
+        );
     } else {
         Serial.println("calibrated? : NO");
         Serial.println("load default values");

@@ -46,8 +46,6 @@ void StartWiFi() {
             addressESP = WiFi.localIP().toString();
             Serial.println("\n[SENSOR] - Wi-Fi connection established - IP address: " + addressESP);
             Serial.println("\n[SENSOR] - IP Address:\t" + addressESP + ":" + WEB_PORT);
-
-            SetWebsocketClient();
         }
     }
 }

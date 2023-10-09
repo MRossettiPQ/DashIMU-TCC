@@ -50,7 +50,7 @@ module.exports = new (class WebSocketController {
 
             sensorList[data.ip] = client.info
 
-            logColor(`[SOCKET] - Add sensor - ${msg} - ${dayjs()}`)
+            logColor('SOCKET', `Add sensor - ${msg} - ${dayjs()}`)
             sendMessageAllClients(expressWs, 'UPDATE_CLIENT_LIST', Object.values(sensorList))
           } else if (data.origin === 'SENSOR') {
             // Atualiza um sensor disponivel
@@ -61,7 +61,7 @@ module.exports = new (class WebSocketController {
 
             sensorList[data.ip] = client.info
 
-            logColor(`[SOCKET] - Update sensor - ${msg} - ${dayjs()}`)
+            logColor('SOCKET', `Update sensor - ${msg} - ${dayjs()}`)
             sendMessageAllClients(expressWs, 'UPDATE_CLIENT_LIST', Object.values(sensorList))
           } else {
             switch (data?.type) {
@@ -85,7 +85,7 @@ module.exports = new (class WebSocketController {
       })
 
       client.once('error', () => {
-        logColor(`[SOCKET] - Error sensor - ${dayjs()}`)
+        logColor('SOCKET', `Error sensor - ${dayjs()}`)
         client.close(1000, 'Keep alive timeout')
       })
 
@@ -95,7 +95,7 @@ module.exports = new (class WebSocketController {
 
       client.interval = setInterval(() => {
         if (!client.isAlive) {
-          logColor(`[SOCKET] - Not alive - ${dayjs()}`)
+          logColor('SOCKET', `Not alive - ${dayjs()}`)
           return client.terminate()
         }
 

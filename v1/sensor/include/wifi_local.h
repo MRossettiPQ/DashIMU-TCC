@@ -12,7 +12,7 @@ void SetWiFi() {
     String name = "MPU-MANAGER-";
     char *ssidName = const_cast<char *>(name.c_str());
     char str[256];
-    itoa(getRandom(0, 100, 1), str, 10);
+    itoa(getRandom(0, 100), str, 10);
     strcat(ssidName, str);
     WiFi.softAP(ssidName, nullptr);
 
@@ -34,29 +34,23 @@ void SetWiFi() {
 
 void StartWiFi() {
     Serial.println("Connecting to WiFi...");
-    if (ssid != "") {
-        WiFi.begin(ssid.c_str(), password.c_str());
-        if (WiFiClass::status() != WL_CONNECTED) {
-            vTaskDelay(500 / portTICK_PERIOD_MS);
-            Serial.println("WiFi not connected");
-        } 
-        
-        if (WiFiClass::status() == WL_CONNECTED)  {
-            Serial.println("");
-            addressESP = WiFi.localIP().toString();
-            Serial.println("\n[SENSOR] - Wi-Fi connection established - IP address: " + addressESP);
-            Serial.println("\n[SENSOR] - IP Address:\t" + addressESP + ":" + WEB_PORT);
+    WiFi.begin(ssid.c_str(), password.c_str());
+    vTaskDelay(100 / portTICK_PERIOD_MS);
 
-            SetWebsocketClient();
-        }
+    if (WiFiClass::status() != WL_CONNECTED) {
+        Serial.println("WiFi not connectedWifi");
+    } else {
+        Serial.println("");
+        addressESP = WiFi.localIP().toString();
+        Serial.println("\n[SENSOR] - Wi-Fi connection established - IP address: " + addressESP);
+        Serial.println("\n[SENSOR] - IP Address:\t" + addressESP + ":" + WEB_PORT);
     }
 }
 
-void EventsWiFi(WiFiEvent_t event){
+void EventsWiFi(WiFiEvent_t event) {
     Serial.printf("[WiFi-event] event: %d\n", event);
-
     switch (event) {
-        case ARDUINO_EVENT_WIFI_READY: 
+        case ARDUINO_EVENT_WIFI_READY:
             Serial.println("WiFi interface ready");
             break;
         case ARDUINO_EVENT_WIFI_SCAN_DONE:
@@ -78,9 +72,9 @@ void EventsWiFi(WiFiEvent_t event){
         case ARDUINO_EVENT_WIFI_STA_AUTHMODE_CHANGE:
             Serial.println("Authentication mode of access point has changed");
             break;
+
         case ARDUINO_EVENT_WIFI_STA_GOT_IP:
-            Serial.print("Obtained IP address: ");
-            Serial.println(WiFi.localIP());
+            OnConnectWifi();
             break;
         case ARDUINO_EVENT_WIFI_STA_LOST_IP:
             Serial.println("Lost IP address and IP address is reset to 0");
@@ -104,7 +98,7 @@ void EventsWiFi(WiFiEvent_t event){
             Serial.println("WiFi access point  stopped");
             break;
         case ARDUINO_EVENT_WIFI_AP_STACONNECTED:
-            Serial.println("Client connected");
+            Serial.println("Client connectedWifi");
             break;
         case ARDUINO_EVENT_WIFI_AP_STADISCONNECTED:
             Serial.println("Client disconnected");
@@ -131,7 +125,7 @@ void EventsWiFi(WiFiEvent_t event){
             Serial.println("Ethernet stopped");
             break;
         case ARDUINO_EVENT_ETH_CONNECTED:
-            Serial.println("Ethernet connected");
+            Serial.println("Ethernet connectedWifi");
             break;
         case ARDUINO_EVENT_ETH_DISCONNECTED:
             Serial.println("Ethernet disconnected");
@@ -139,8 +133,19 @@ void EventsWiFi(WiFiEvent_t event){
         case ARDUINO_EVENT_ETH_GOT_IP:
             Serial.println("Obtained IP address");
             break;
-        default: break;
+        default:
+            break;
     }
 }
 
-#endif //MPU_SOCKET_SERVER_WIFI_LOCAL_H
+void OnConnectWifi() {
+    Serial.print("Obtained IP address: ");
+
+    addressESP = WiFi.localIP().toString();
+    Serial.println(addressESP);
+    // Configure time zone
+    timeClient.begin();
+    timeClient.forceUpdate();
+}
+
+#endif // MPU_SOCKET_SERVER_WIFI_LOCAL_H

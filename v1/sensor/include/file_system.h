@@ -1,5 +1,6 @@
 #ifndef MPU_SOCKET_SERVER_FILE_SYSTEM_H
 #define MPU_SOCKET_SERVER_FILE_SYSTEM_H
+
 #include <config.h>
 
 void InitFileSystem() {
@@ -58,7 +59,7 @@ void WriteFile(fs::FS &fs, const char *path, const char *message) {
     }
 }
 
-int getRandom(int lower, int upper, int count) {
+int getRandom(int lower, int upper) {
     int randomized = random(lower, upper);
     return randomized;
 }

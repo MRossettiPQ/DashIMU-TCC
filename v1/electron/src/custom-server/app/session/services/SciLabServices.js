@@ -96,8 +96,12 @@ function processData(measurements_1, measurements_2) {
 
   // Finding the start value
   let inicioi = getIndexMinMax(yy1p, limit9)
-  let inicio = inicioi - 734
-  let iniciof = inicioi - 134
+  let inicio = inicioi
+  let iniciof = inicioi
+  if (inicioi > 734) {
+    inicio = inicioi - 734
+    iniciof = inicioi - 134
+  }
 
   // Crop
   let rpitch1p = pitch1p.slice(inicio, iniciof + 1)

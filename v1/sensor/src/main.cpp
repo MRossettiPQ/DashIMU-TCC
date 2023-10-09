@@ -35,28 +35,26 @@ void setup() {
 void loop() {
     // running time atual
     unsigned long current_millis = millis();
-    connected = WiFiClass::status() == WL_CONNECTED;
+    connectedWifi = WiFiClass::status() == WL_CONNECTED;
 
-    if ((current_millis >= (last_clean_up + delayCleanupClients)) && connected) {
+    if ((current_millis >= (last_clean_up + delayCleanupClients)) && connectedWifi) {
         // Verifica e limpa a lista de usuario a cada 500ms
         last_clean_up = current_millis;
+        confServerSocket.pingAll();
         confServerSocket.cleanupClients();
-        // confServerSocket.pingAll();
 
-        bool available = clientBackEnd.available();
-        if (available) {
+        clientAvailable = clientBackEnd.available();
+        if (clientAvailable) {
             clientBackEnd.poll();
-        } else if (available && connectedWebsocketClient == true) {
-            connectedWebsocketClient = false;
         }
 
-        if (!available) {
+        if (!clientAvailable) {
             RestartMeasurement();
         }
         ConnectBackend();
     }
 
-    if ((current_millis >= (previous_millis + delayInterval)) && connected) {
+    if ((current_millis >= (previous_millis + delayInterval)) && connectedWifi) {
         // ACESSANDO O UPDATE DO GYROSCOPIO A CADA 8 ms
         previous_millis = current_millis;
 
@@ -78,17 +76,16 @@ void loop() {
                     break;
 
                 default:
+                    // Não faz nada
                     break;
             }
         }
     }
 
-    if (!connected) {
+    if ((current_millis >= (last_wifi_try_connect + 500)) && !connectedWifi) {
+        // Delay entre tentativas de conexão com WiFi
+        last_wifi_try_connect = current_millis;
+        // Não conectado a Internet
         StartWiFi();
-
-        vTaskDelay(500 / portTICK_PERIOD_MS);
-        digitalWrite(LED_READY, HIGH);
-        vTaskDelay(500 / portTICK_PERIOD_MS);
-        digitalWrite(LED_READY, LOW);
     }
 }

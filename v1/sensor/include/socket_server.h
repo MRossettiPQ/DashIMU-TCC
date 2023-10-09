@@ -3,6 +3,8 @@
 
 #include <config.h>
 
+#define HTML_FILE "/index.html"
+
 void NotFoundController(AsyncWebServerRequest *request) {
     if (request->method() == HTTP_OPTIONS) {
         request->send(200);
@@ -12,7 +14,7 @@ void NotFoundController(AsyncWebServerRequest *request) {
 }
 
 void SendAppController(AsyncWebServerRequest *request) {
-    request->send(SPIFFS, "/index.html", "text/html");
+    request->send(SPIFFS, HTML_FILE, "text/html");
 }
 
 void ConfigurationStateController(AsyncWebServerRequest *request) {
@@ -28,13 +30,11 @@ void ConfigurationStateController(AsyncWebServerRequest *request) {
 }
 
 void CalibrateController(AsyncWebServerRequest *request) {
-
     RestartMeasurement();
     CalibrateIMU();
 
     request->send(200);
 }
-
 
 void ConfigurationSaveController(AsyncWebServerRequest *request) {
     int params = request->params();
@@ -85,8 +85,10 @@ void GetMeasurementController(AsyncWebServerRequest *request) {
 void SetServer() {
     Serial.println("[SENSOR] - Set th Server");
     DefaultHeaders::Instance().addHeader("Access-Control-Allow-Origin", "*");
-    DefaultHeaders::Instance().addHeader("Access-Control-Allow-Methods", "GET, POST, PUT");
-    DefaultHeaders::Instance().addHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    DefaultHeaders::Instance().addHeader("Access-Control-Allow-Methods",
+                                         "GET, POST, PUT");
+    DefaultHeaders::Instance().addHeader("Access-Control-Allow-Headers",
+                                         "Content-Type, Authorization");
 
     confServer.serveStatic("/", SPIFFS, "/");
 
@@ -113,21 +115,20 @@ void InitServer() {
 }
 
 void HandleServerMessage(AwsFrameInfo *info, uint8_t *data, size_t len) {
-    int cmdReceivedFromClient = 0;
+    int cmdReceivedFromClient;
     if (info->final && (info->index == 0) && (info->len == len)) {
         if (info->opcode == WS_TEXT) {
             data[len] = 0;
-            Serial.print("data is ");
-            Serial.println((char *)data);
+            Serial.print("Data is ");
+            Serial.println((char *) data);
+
             DynamicJsonDocument doc(512);
-            deserializeJson(doc, (char *)data);
+            deserializeJson(doc, (char *) data);
+
             if (doc["message"]["cmd"].as<String>()) {
                 cmdReceivedFromClient = doc["message"]["cmd"].as<int>();
-                if (cmdReceivedFromClient != 0) {
-                    Serial.println("Diferent of 0");
-                }
                 cmdActual = cmdReceivedFromClient;
-                Serial.printf("\ncmdActual %d\n", cmdActual);
+                Serial.printf("\nCmdActual %d\n", cmdActual);
             }
         } else {
             Serial.println("Received a ws message, but it isn't text");
@@ -137,13 +138,15 @@ void HandleServerMessage(AwsFrameInfo *info, uint8_t *data, size_t len) {
     }
 }
 
-void onWsServerEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len) {
+void onWsServerEvent(AsyncWebSocket *server, AsyncWebSocketClient *client,
+                     AwsEventType type, void *arg, uint8_t *data, size_t len) {
+    unsigned long current_millis = millis();
     switch (type) {
         case WS_EVT_CONNECT:
-            Serial.println("Websocket client connection received");
-            Serial.println(available);
-            if (available) {
-                available = false;
+            Serial.println(&"[Websocket Server] Client connection received: "[serverAvailable]);
+            Serial.println(serverAvailable);
+            if (serverAvailable) {
+                serverAvailable = false;
                 RestartMeasurement();
                 SendStatusSensor();
             } else {
@@ -151,25 +154,25 @@ void onWsServerEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEv
             }
             break;
         case WS_EVT_DISCONNECT:
-            Serial.println("Websocket disconnected");
-            available = true;
+            Serial.println("[Websocket Server] Disconnected");
+            serverAvailable = true;
             SendStatusSensor();
             RestartMeasurement();
             break;
         case WS_EVT_DATA:
-            Serial.println("Websocket data");
-            HandleServerMessage((AwsFrameInfo *)arg, data, len);
+            Serial.println("[Websocket Server] Received data");
+            HandleServerMessage((AwsFrameInfo *) arg, data, len);
             break;
         case WS_EVT_PONG:
-            Serial.println("Websocket pong: ");
-            client->ping();
+            Serial.println("[Websocket Server] Received pong -> send ping");
             break;
         case WS_EVT_ERROR:
-            Serial.println("Websocket error ");
-            available = true;
+            Serial.println("[Websocket Server] Connection error");
+            serverAvailable = true;
             SendStatusSensor();
             RestartMeasurement();
             break;
     }
 }
+
 #endif  // MPU_SOCKET_SERVER_SOCKET_SERVER_H

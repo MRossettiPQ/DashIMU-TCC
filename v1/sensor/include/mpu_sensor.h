@@ -19,7 +19,7 @@ void ScannerI2C() {
                 Serial.println(address, HEX);
                 nDevices++;
             } else if (error == 4) {
-                Serial.print("Unknow error at address 0x");
+                Serial.print("Unknown error at address 0x");
                 if (address < 16) {
                     Serial.print("0");
                 }
@@ -56,7 +56,9 @@ void InitIMU() {
         mpu.setFilterIterations(10);
 
         if (!mpu.setup(ADDRESS_SENSOR, setting)) {
-            Serial.println("[SENSOR] - It has not been initialized, Check the connection between the IMU and the ESP32 and restart the device");
+            Serial.println(
+                    "[SENSOR] - It has not been initialized, Check the connection "
+                    "between the IMU and the ESP32 and restart the device");
             Serial.println(&"[SENSOR] - Status: "[status]);
         } else {
             Serial.println("[SENSOR] - IMU Initialized");
@@ -84,7 +86,8 @@ void CalibrateIMU() {
     // digitalWrite(LED_SENSOR_CALIBRATION_PLAN, LOW);
 
     Serial.println("[SENSOR] - Magnetic calibration will start in 5 seconds");
-    Serial.println("[SENSOR] - Please wave the device in a figure eight until finished");
+    Serial.println(
+            "[SENSOR] - Please wave the device in a figure eight until finished");
     // delay(5000);
     vTaskDelay(5000 / portTICK_PERIOD_MS);
     // digitalWrite(LED_SENSOR_CALIBRATION_EIGHT, HIGH);
@@ -114,18 +117,21 @@ void LoadIMUCalibration() {
 void PrintIMUCalibration() {
     Serial.println("< calibration parameters >");
     Serial.println("accel bias [g]: ");
-    Serial.print(mpu.getAccBiasX() * 1000.f / (float)MPU9250::CALIB_ACCEL_SENSITIVITY);
+    Serial.print(mpu.getAccBiasX() * 1000.f /
+                 (float) MPU9250::CALIB_ACCEL_SENSITIVITY);
     Serial.print("\", ");
-    Serial.print(mpu.getAccBiasY() * 1000.f / (float)MPU9250::CALIB_ACCEL_SENSITIVITY);
+    Serial.print(mpu.getAccBiasY() * 1000.f /
+                 (float) MPU9250::CALIB_ACCEL_SENSITIVITY);
     Serial.print("\", ");
-    Serial.print(mpu.getAccBiasZ() * 1000.f / (float)MPU9250::CALIB_ACCEL_SENSITIVITY);
+    Serial.print(mpu.getAccBiasZ() * 1000.f /
+                 (float) MPU9250::CALIB_ACCEL_SENSITIVITY);
     Serial.println();
     Serial.println("gyro bias [deg/s]: ");
-    Serial.print(mpu.getGyroBiasX() / (float)MPU9250::CALIB_GYRO_SENSITIVITY);
+    Serial.print(mpu.getGyroBiasX() / (float) MPU9250::CALIB_GYRO_SENSITIVITY);
     Serial.print("\", ");
-    Serial.print(mpu.getGyroBiasY() / (float)MPU9250::CALIB_GYRO_SENSITIVITY);
+    Serial.print(mpu.getGyroBiasY() / (float) MPU9250::CALIB_GYRO_SENSITIVITY);
     Serial.print("\", ");
-    Serial.print(mpu.getGyroBiasZ() / (float)MPU9250::CALIB_GYRO_SENSITIVITY);
+    Serial.print(mpu.getGyroBiasZ() / (float) MPU9250::CALIB_GYRO_SENSITIVITY);
     Serial.println();
     Serial.println("mag bias [mG]: ");
     Serial.print(mpu.getMagBiasX());
@@ -146,17 +152,23 @@ void PrintIMUCalibration() {
 String CreateJsonFromMeasurement(int MeasurementNumber) {
     String date = timeClient.getFormattedTime();
     // Accelerometer
-    double AccelX_mss = mpu.getAccBiasX() * 1000.f / (float)MPU9250::CALIB_ACCEL_SENSITIVITY;
-    double AccelY_mss = mpu.getAccBiasY() * 1000.f / (float)MPU9250::CALIB_ACCEL_SENSITIVITY;
-    double AccelZ_mss = mpu.getAccBiasZ() * 1000.f / (float)MPU9250::CALIB_ACCEL_SENSITIVITY;
+    double AccelX_mss =
+            mpu.getAccBiasX() * 1000.f / (float) MPU9250::CALIB_ACCEL_SENSITIVITY;
+    double AccelY_mss =
+            mpu.getAccBiasY() * 1000.f / (float) MPU9250::CALIB_ACCEL_SENSITIVITY;
+    double AccelZ_mss =
+            mpu.getAccBiasZ() * 1000.f / (float) MPU9250::CALIB_ACCEL_SENSITIVITY;
     // Accelerometer Linear
     double AccelX_Lin = mpu.getLinearAccX();
     double AccelY_Lin = mpu.getLinearAccY();
     double AccelZ_Lin = mpu.getLinearAccZ();
     // Gyroscope
-    double GyroX_rads = mpu.getGyroBiasX() / (float)MPU9250::CALIB_GYRO_SENSITIVITY;
-    double GyroY_rads = mpu.getGyroBiasY() / (float)MPU9250::CALIB_GYRO_SENSITIVITY;
-    double GyroZ_rads = mpu.getGyroBiasZ() / (float)MPU9250::CALIB_GYRO_SENSITIVITY;
+    double GyroX_rads =
+            mpu.getGyroBiasX() / (float) MPU9250::CALIB_GYRO_SENSITIVITY;
+    double GyroY_rads =
+            mpu.getGyroBiasY() / (float) MPU9250::CALIB_GYRO_SENSITIVITY;
+    double GyroZ_rads =
+            mpu.getGyroBiasZ() / (float) MPU9250::CALIB_GYRO_SENSITIVITY;
     // Magnetometer
     double MagX_uT = mpu.getMagBiasX();
     double MagY_uT = mpu.getMagBiasY();
@@ -238,11 +250,6 @@ String CreateJsonFromMeasurement(int MeasurementNumber) {
 }
 
 void StopMeasurement() {
-    /*
-    if (!measurements.isEmpty() && confServerSocket.availableForWriteAll() && connected) {
-        String content = R"({"origin":"SENSOR","type":"MEASUREMENT_LIST","message":[)" + measurements + "]}";
-        confServerSocket.textAll(content);
-    }*/
     measurements = "";
     cmdActual = 0;
     numberOfBuffer = 0;
@@ -257,23 +264,26 @@ void RestartMeasurement() {
 
 void MountBufferToSend() {
     if (numberOfBuffer != 0) {
-        // Adiciona uma , no fim da posição do objeto quando não for o primeiro elemento do array
+        // Adiciona uma , no fim da posição do objeto quando não for o primeiro
+        // elemento do array
         measurements += ",";
     }
     numberMeasurement = numberMeasurement + 1;
     numberOfBuffer = numberOfBuffer + 1;
     measurements += CreateJsonFromMeasurement(numberMeasurement);
 
-    // Serial.println(measurements.overflowed());
     // Buffer de 40 Measurement = BUFFER_LENGTH /  = 120Hz, default BUFFER_LENGTH = 40
     if (numberMeasurement == (lastDispatch + BUFFER_LENGTH)) {
         Serial.println("\n[SENSOR] - Send buffer");
+
         String content = R"({"origin":"SENSOR","type":"MEASUREMENT_LIST","message":[)" + measurements + "]}";
         confServerSocket.textAll(content);
 
         numberOfBuffer = 0;
         lastDispatch = numberMeasurement;
-        numberSended = numberSended + 1;
+        numberOfSendBuffer = numberOfSendBuffer + 1;
+
+        measurements.clear();
         measurements = "";
     }
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="form-lines gap-8">
     <span class="text-center f-bold">Variação</span>
-    <div class="form-column gap-8">
+    <div class="form-column gap-8" v-if="calculation">
       <q-input
         v-model="calculation.min_pitch"
         outlined
@@ -76,7 +76,7 @@
       />
     </div>
     <span class="text-center f-bold">Abertura</span>
-    <div class="form-column gap-8">
+    <div class="form-column gap-8" v-if="calculation">
       <q-input
         v-model="calculation.angles.mean"
         outlined
