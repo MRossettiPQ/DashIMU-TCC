@@ -40,7 +40,7 @@ void loop() {
     if ((current_millis >= (last_clean_up + delayCleanupClients)) && connectedWifi) {
         // Verifica e limpa a lista de usuario a cada 500ms
         last_clean_up = current_millis;
-        confServerSocket.pingAll();
+        //confServerSocket.pingAll();
         confServerSocket.cleanupClients();
 
         clientAvailable = clientBackEnd.available();

@@ -281,9 +281,8 @@ void MountBufferToSend() {
 
         numberOfBuffer = 0;
         lastDispatch = numberMeasurement;
-        numberOfSendBuffer = numberOfSendBuffer + 1;
 
-        measurements.clear();
+        // measurements.clear();
         measurements = "";
     }
 }

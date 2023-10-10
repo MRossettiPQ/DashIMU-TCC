@@ -56,7 +56,7 @@ const char *BACKEND_PORT_PATH = "/config/backendPort.txt";
 const char *SENSOR_NAME_PATH = "/config/sensorName.txt";
 
 // LOOP
-#define BUFFER_LENGTH 40
+#define BUFFER_LENGTH 30
 
 unsigned long last_clean_up = 0;
 unsigned long last_wifi_try_connect = 0;
@@ -79,7 +79,6 @@ bool calibrating = false;
 int status;
 int numberMeasurement = 0;
 int numberOfBuffer = 0;
-int numberOfSendBuffer = 0;
 int lastDispatch = 0;
 int cmdActual = 0;
 

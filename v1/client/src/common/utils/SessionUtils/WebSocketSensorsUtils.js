@@ -121,6 +121,7 @@ class SessionWebSocket {
 
   // Function
   connectSession(socket_url = 'localhost:8000') {
+    console.log(socket_url)
     this.connection = new WebSocket(`ws://${socket_url}/socket`, ['websocket'])
 
     this.connection.onmessage = async (event) => {
@@ -281,9 +282,11 @@ class SessionWebSocket {
       if (this.registeredSensorsList.length) {
         this.stop()
         this.registeredSensorsList?.forEach((sensor) => {
-          console.log(sensor)
-          console.log(sensor.connection)
-          sensor.connection?.close()
+          try {
+            sensor.connection?.close()
+          } catch (e) {
+            console.log(e)
+          }
         })
       }
       if (this.timeout !== null) {
@@ -347,10 +350,14 @@ class SessionWebSocket {
 
       this.registeredSensorsList.map((item, index) => {
         if (this.registeredSensorsList[index].active === true) {
-          console.log('start')
-          this.sendSocketMessage(this.registeredSensorsList[index]?.connection, 'START', {
-            cmd: 1,
-          })
+          try {
+            this.sendSocketMessage(this.registeredSensorsList[index]?.connection, 'START', {
+              cmd: 1,
+            })
+          } catch (e) {
+            console.log(e)
+            stop()
+          }
           this.registeredSensorsList[index].measurementInProgress = true
           this.measurementInProgress = true
           changed = true
@@ -372,9 +379,14 @@ class SessionWebSocket {
     let changed = false
     this.registeredSensorsList.map((item, index) => {
       if (this.registeredSensorsList[index].active === true) {
-        this.sendSocketMessage(this.registeredSensorsList[index]?.connection, 'RESTART', {
-          cmd: 3,
-        })
+        try {
+          this.sendSocketMessage(this.registeredSensorsList[index]?.connection, 'RESTART', {
+            cmd: 3,
+          })
+        } catch (e) {
+          console.log(e)
+          stop()
+        }
       }
       this.registeredSensorsList[index].measurementInProgress = false
       this.measurementInProgress = false
@@ -394,9 +406,13 @@ class SessionWebSocket {
     let changed = false
     this.registeredSensorsList.map((item, index) => {
       if (this.registeredSensorsList[index].active === true) {
-        this.sendSocketMessage(this.registeredSensorsList[index]?.connection, 'STOP', {
-          cmd: 2,
-        })
+        try {
+          this.sendSocketMessage(this.registeredSensorsList[index]?.connection, 'STOP', {
+            cmd: 2,
+          })
+        } catch (e) {
+          console.log(e)
+        }
       }
       this.registeredSensorsList[index].measurementInProgress = false
       this.measurementInProgress = false
